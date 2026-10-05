@@ -14,7 +14,7 @@ data/external/*
 !data/external/gre/
 data/external/gre/*
 !data/external/gre/download.sh
-!data/external/gre/download.sh.fn
+!data/external/gre/SHA256SUMS
 data/samples/*
 !data/samples/*.manifest.json
 

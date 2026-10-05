@@ -31,7 +31,8 @@ cd experimental/scaleli
 python3 tools/aidb_pipeline.py --binary-dir ../../build-fs --steps verify-downloads,sort,sample
 ```
 
-The download is resumable (four in parallel, ~1.6 GB each, from the GRE mirror). The pipeline checks the files,
+The download (bash + curl) is resumable, runs four files in parallel (~1.6 GB each, from the GRE mirror) and ends by
+checking every file against `SHA256SUMS`, the copies all Mac results were computed on. The pipeline then
 writes `<name>.sorted` copies for the seven datasets GRE serves unsorted, and draws the 2M-key samples
 (`data/samples/<name>_2M_uniform_s42`, seed 42) that the 2M-scale scripts read. The `.manifest.json` beside each
 sample is committed, so a server sample can be checked against the one used on the Mac.
