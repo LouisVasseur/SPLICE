@@ -171,6 +171,8 @@ def done(out):
     return k
 
 def run(planfile, out):
+    if not os.access(BIN, os.X_OK):
+        sys.exit(f'no benchmark binary at {BIN}: build it first (SERVER.md, step 1) or point SCALELI_BENCH at your build')
     jobs = json.load(open(planfile))
     for i, job in enumerate(jobs):
         d, c, b, inst, timeout = job[:5]; opts = job[5] if len(job) > 5 else None
@@ -193,6 +195,8 @@ def run(planfile, out):
                 if p.returncode == 0: rec = json.loads(p.stdout)
             except subprocess.TimeoutExpired:
                 meta['status'] = f'timeout>{timeout}s'
+            except OSError as e:
+                meta['status'] = f'could not start: {e}'
         meta.update(wall_s=time.time() - t0, loadavg_end=os.getloadavg(), other_cpu_end=other_cpu())
         r = rec or {}; r['ba'] = meta
         with open(out if rec else out + '.failed', 'a') as f: f.write(json.dumps(r) + '\n')
