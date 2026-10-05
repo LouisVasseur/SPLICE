@@ -4,6 +4,9 @@
 # The full suite needs AVX2/BMI2 (HOT) and Intel MKL (XIndex, FINEdex) and cannot compile on the DIAS Atom (no AVX).
 # This build keeps the indexes the NFL / CSV comparison needs: ALEX, LIPP, dynamic PGM, STX B+tree and ART (unsync),
 # plus 'sortedarray', our own binary-search baseline.
+# SCALE-LI (SPLICE): scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice, the protocol cells of
+# results/aidb_ba/run_ba.py plus the joint G+T+V root, from integrations/gre/ (README.md 'GRE cells'). They
+# read SCALELI_FLOW (per-dataset flow file, cells _n _nc _j _jg0) and SCALELI_BUILD_THREADS (default 16).
 # GRE ships no licence file, so it is cloned OUTSIDE this repository and only edited locally; nothing of it is committed here.
 # Every edit starts from the pristine file (git checkout) and is recorded in DEST/build/gre_lite_build.txt:
 #  - ALEX: on CPUs without LZCNT/BMI1 (the Atom is Goldmont) ALEX_USE_LZCNT 0, ALEX's own documented switch, which only
@@ -75,6 +78,7 @@ fi
 
 echo "== 2/4 GRE at $GRE_SHA with only the needed submodules"
 [ -d "$DEST/.git" ] || git clone https://github.com/gre4index/GRE.git "$DEST"
+SCALELI_DIR=$(cd "$(dirname "$0")/.." && pwd)   # experimental/scaleli of this SPLICE checkout (SCALE-LI cells)
 cd "$DEST"
 git checkout -q "$GRE_SHA"
 git submodule update --init src/competitor/alex/src src/competitor/lipp/src src/competitor/pgm/src \
@@ -96,7 +100,8 @@ echo "   ALEX_USE_LZCNT=$ALEX_LZCNT (CPU $(grep -qw __LZCNT__ <<<"$MACROS" && ec
 [ -f src/competitor/competitor.h.full ] || cp src/competitor/competitor.h src/competitor/competitor.h.full
 [ -f CMakeLists.txt.full ] || cp CMakeLists.txt CMakeLists.txt.full
 cat > src/competitor/competitor.h <<'EOF'
-// Trimmed by SPLICE gre_lite.sh: ALEX, LIPP, PGM, STX B+tree, ART only (no AVX2 / MKL needed), plus SPLICE's sortedarray.
+// Trimmed by SPLICE gre_lite.sh: ALEX, LIPP, PGM, STX B+tree, ART only (no AVX2 / MKL needed), plus SPLICE's sortedarray
+// and SCALE-LI (scaleli_*).
 // Original: competitor.h.full
 #include "./indexInterface.h"
 #include "./alex/alex.h"
@@ -105,6 +110,7 @@ cat > src/competitor/competitor.h <<'EOF'
 #include "pgm/pgm.h"
 #include "btree/btree.h"
 #include "./sortedarray/sortedarray.h"
+#include "./scaleli/scaleli_interface.h"
 #include "iostream"
 
 template<class KEY_TYPE, class PAYLOAD_TYPE>
@@ -116,7 +122,15 @@ indexInterface<KEY_TYPE, PAYLOAD_TYPE> *get_index(std::string index_type) {
   else if (index_type == "btree") index = new BTreeInterface<KEY_TYPE, PAYLOAD_TYPE>;
   else if (index_type == "artunsync") index = new ARTUnsynchronizedInterface<KEY_TYPE, PAYLOAD_TYPE>;
   else if (index_type == "sortedarray") index = new SortedArrayInterface<KEY_TYPE, PAYLOAD_TYPE>;
-  else { std::cout << "Could not find a matching index called " << index_type << " (gre_lite: alex lipp pgm btree artunsync sortedarray).\n"; exit(0); }
+  else if (index_type == "scaleli_b") index = new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("B");
+  else if (index_type == "scaleli_n") index = new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("N");
+  else if (index_type == "scaleli_c") index = new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("C");
+  else if (index_type == "scaleli_nc") index = new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("NC");
+  else if (index_type == "scaleli_j") index = new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("J");
+  else if (index_type == "scaleli_jg0") index = new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("Jg0");
+  else if (index_type == "scaleli_splice") index = new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("Jg0");
+  else if (index_type == "scaleli_cr") index = new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("Cr");
+  else { std::cout << "Could not find a matching index called " << index_type << " (gre_lite: alex lipp pgm btree artunsync sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice).\n"; exit(0); }
   return index;
 }
 EOF
@@ -135,10 +149,27 @@ include_directories(${TBB_INCLUDE_DIRS} ${JEMALLOC_INCLUDE_DIR})
 add_compile_options(-faligned-new -march=native -g -O3 -include cstdint)
 add_executable(microbench ${CMAKE_CURRENT_SOURCE_DIR}/src/benchmark/microbench.cpp)
 target_link_libraries(microbench PUBLIC OpenMP::OpenMP_CXX ${JEMALLOC_LIBRARIES} ${TBB_LIBRARIES})
+# SPLICE SCALE-LI: C++20 in its own TU (GRE's TU is C++17 and ALEX needs that), linked into microbench.
+# -ffp-contract=off: with -march=native on an FMA host, GCC would fuse multiply-adds the portable scaleli_bench does not.
+set(SCALELI_INCLUDE "" CACHE PATH "SPLICE experimental/scaleli/include")
+if(NOT EXISTS "${SCALELI_INCLUDE}/scaleli/index.hpp")
+  message(FATAL_ERROR "SCALELI_INCLUDE must point to SPLICE experimental/scaleli/include")
+endif()
+find_package(Threads REQUIRED)
+add_library(scaleli_gre STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/competitor/scaleli/scaleli_gre.cpp)
+set_target_properties(scaleli_gre PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
+target_include_directories(scaleli_gre PRIVATE ${SCALELI_INCLUDE})
+target_compile_options(scaleli_gre PRIVATE -ffp-contract=off)
+target_link_libraries(scaleli_gre PUBLIC Threads::Threads)
+target_link_libraries(microbench PUBLIC scaleli_gre)
 EOF
 
 # Our own code (MIT, SPLICE), written whole on every run.
 mkdir -p src/competitor/sortedarray
+# SCALE-LI wrapper and facade (SPLICE, MIT), copied whole on every run; the core headers are read in place.
+mkdir -p src/competitor/scaleli
+cp "$SCALELI_DIR"/integrations/gre/scaleli_interface.h "$SCALELI_DIR"/integrations/gre/scaleli_gre.hpp \
+   "$SCALELI_DIR"/integrations/gre/scaleli_gre.cpp src/competitor/scaleli/
 cat > src/competitor/sortedarray/sortedarray.h <<'EOF'
 // Written by SPLICE gre_lite.sh (MIT). A sorted array of (key, payload) pairs searched with std::lower_bound:
 // a binary-search throughput reference, and a check of the RSS memory method (exactly n records, 16 B each for uint64).
@@ -422,7 +453,8 @@ if [ "$EDIT_ONLY" = 1 ]; then
 else
     echo "== 4/4 build"
     cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
-          -DTBB_ROOT_DIR="$CONDA_PREFIX" -DJEMALLOC_ROOT_DIR="$CONDA_PREFIX"
+          -DTBB_ROOT_DIR="$CONDA_PREFIX" -DJEMALLOC_ROOT_DIR="$CONDA_PREFIX" \
+          -DSCALELI_INCLUDE="$SCALELI_DIR/include"
     cmake --build build -j
 fi
 { echo "GRE $GRE_SHA, trimmed by SPLICE gre_lite.sh: competitor.h and CMakeLists.txt replaced (originals *.full)"
@@ -432,6 +464,9 @@ fi
   echo "  $BENCH: gre_lite_patch.h probes, --warmup_num, --pin_core; diff cksum $(git diff -- "$BENCH" | cksum)"
   echo "  src/benchmark/gre_lite_patch.h: SPLICE, cksum $(cksum < src/benchmark/gre_lite_patch.h)"
   echo "  src/competitor/sortedarray/sortedarray.h: SPLICE, cksum $(cksum < src/competitor/sortedarray/sortedarray.h)"
+  for f in src/competitor/scaleli/*; do echo "  $f: SPLICE, cksum $(cksum < "$f")"; done
+  echo "  SCALE-LI headers $SCALELI_DIR/include/scaleli: cksum $(cat "$SCALELI_DIR"/include/scaleli/*.hpp | cksum)"
+  echo "  SPLICE $(git -C "$SCALELI_DIR" rev-parse HEAD 2>/dev/null || echo unknown) ($(git -C "$SCALELI_DIR" status --porcelain -- . 2>/dev/null | wc -l | tr -d ' ') uncommitted paths in experimental/scaleli)"
   echo "  src/competitor/competitor.h: trimmed + sortedarray, cksum $(cksum < src/competitor/competitor.h)"
   echo "  CMakeLists.txt: trimmed, cksum $(cksum < CMakeLists.txt)"
   "${CXX:-c++}" --version | sed -n 1p
@@ -444,4 +479,4 @@ fi
 } > build/gre_lite_build.txt
 cat build/gre_lite_build.txt
 if [ "$EDIT_ONLY" = 1 ]; then echo "edited: $DEST (not built)"
-else echo "built: $DEST/build/microbench   (indexes: alex lipp pgm btree artunsync sortedarray)"; fi
+else echo "built: $DEST/build/microbench   (indexes: alex lipp pgm btree artunsync sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice)"; fi

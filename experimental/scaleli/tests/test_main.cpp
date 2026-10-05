@@ -171,6 +171,102 @@ void learned_root(){
      CHECK(l.root_model);CHECK(l.root_probes_raw<l.root_probes_binary);for(auto [k,v]:w)CHECK(ix.find(k)==v);ix.validate();}
     must_throw([]{Config c;(void)parse_root("tree");});must_throw([]{Config c;c.root_alpha=64.0;Index bad(c);});must_throw([]{Config c;c.virtual_alpha=1.0;Index bad(c);});
 }
+void joint_root(){
+    // Building blocks. pysum is CPython's compensated sum(): a plain loop loses the 1.
+    CHECK(joint_detail::pysum({1e100,1.0,-1e100})==1.0);
+    const auto& G=joint_detail::gains();CHECK(std::abs(G[0]-0.01)<1e-15 && std::abs(G[63]-200.0)<1e-12);
+    for(std::size_t i=1;i<64;++i)CHECK(G[i]>G[i-1]);
+    // Fences with a few very wide gaps: G must cut them and stay strictly increasing (and invertible) on [0, 1].
+    std::vector<Key> F;Key k=1000;std::mt19937_64 rng(3);
+    for(unsigned i=0;i<400;++i){F.push_back(k);k+=1000+rng()%100+(i%97==0?Key(5000000):0)+(i==200?Key(90000000):0);}
+    std::vector<Key> P;for(std::size_t j=0;j<F.size();++j){P.push_back(F[j]);if(j+1<F.size())P.push_back(F[j]+(F[j+1]-F[j])/2);}
+    auto nocount=[](const LinearModel&,const JointFeature&,const std::vector<std::uint32_t>&){return std::size_t(0);};
+    JointParams p;
+    for(std::size_t kk:{1u,4u,16u}){
+        joint_detail::Cycle<decltype(nocount)> cy(F,P,p,nocount,kk);auto s=cy.empty();
+        CHECK(cy.G(s));CHECK(!s.gidx.empty() && s.gidx.size()<=kk);CHECK(s.f.scale>0 && s.f.scale<1);
+        CHECK(s.f.g(0.0)==0.0);CHECK(std::abs(s.f.g(1.0)-1.0)<1e-12);
+        double prev=-1;for(unsigned i=0;i<=20000;++i){const double u=s.f.g(double(i)/20000);CHECK(u>prev);prev=u;}
+        CHECK(cy.monotone(s));
+        for(std::size_t j=0;j<s.gidx.size();++j)CHECK(s.gs[j]>0 && s.gs[j]<1); // only gaps wider than the median shrink, none collapses
+        // T: least-squares warp to ranks in the g coordinate, strictly increasing, non-negative, gains from the grid.
+        cy.T(s);CHECK(s.f.nunits>=1 && s.f.nunits<=2);
+        for(std::uint32_t h=0;h<s.f.nunits;++h){CHECK(s.f.units[h].coef>0);CHECK(std::find(G.begin(),G.end(),s.f.units[h].gain)!=G.end());}
+        prev=-1e300;for(auto q:P){const double z=s.f(q);CHECK(z>prev);prev=z;}
+        CHECK(cy.V(s));CHECK(s.virt<=std::size_t(p.alpha*double(F.size())));
+        if(s.virt){CHECK(s.slots.size()==F.size());CHECK(s.slots.back()==F.size()-1+s.virt);for(std::size_t j=1;j<s.slots.size();++j)CHECK(s.slots[j]>s.slots[j-1]);}
+    }
+    // A warp alone (no G) is fitted in x = key/span and is strictly increasing on the probe keys.
+    {joint_detail::Cycle<decltype(nocount)> cy(F,P,p,nocount,0);auto s=cy.empty();CHECK(cy.G(s));CHECK(s.gidx.empty());cy.T(s);CHECK(s.f.nunits>0);CHECK(cy.monotone(s));}
+    // Whole index: cubic keys (a concave CDF, where the warp pays) with one wide gap (where G pays).
+    std::vector<Record> rows;for(unsigned i=0;i<24000;++i){const double t=double(i)/24000;rows.emplace_back(Key(t*t*t*1e15)+Key(i)*3+1000+(i>12000?Key(1e14):0),i);}
+    rows=canonicalize(rows);
+    for(float charge:{1.0f,0.0f})for(unsigned threads:{1u,4u}){
+        Config c;c.region_keys=64;c.block_keys=8;c.delta_limit=11;c.routing=Routing::Rank;c.root=Root::Model;c.root_alpha=0.1;c.flow_cost=0;
+        c.root_joint_rounds=6;c.root_joint_kmax=64;c.root_joint_gap_charge=charge;c.build_threads=threads;
+        Index ix(c);ix.bulk_load(rows);const auto l=ix.learnability();const RootJoint* j=l.joint;
+        CHECK(j && j->candidate);CHECK(l.root_joint);CHECK(l.root_model && !l.root_flow);CHECK(l.root_vp==(j->virt>0));CHECK(l.root_virtual==j->virt);
+        const std::size_t n=ix.region_count();CHECK(j->probe_keys==2*n-1);
+        // Budget accounting: V within root_alpha, G within k, charges exactly as scored.
+        CHECK(j->virt<=std::size_t(c.root_alpha*double(n)));CHECK(j->k_eff<=j->k);CHECK(j->gap_index.size()==j->k_eff);
+        CHECK(j->gap_probes==(j->k_eff?std::ceil(std::log2(double(j->k_eff+1))):0.0));
+        CHECK(j->model_probes==double(j->count)/double(j->probe_keys));
+        CHECK(j->cost==j->model_probes+double(charge)*j->gap_probes+(j->map.nunits?c.flow_cost:0));
+        if(charge==0)CHECK(j->k_eff>0); // free gap table: G is used on this key set
+        // Guard: round 1 accepted, every later accepted round improves by > 1e-6, the cycle stops at the first rejection.
+        CHECK(!j->trace.empty() && j->trace[0].accepted);double last=j->trace[0].total;
+        for(std::size_t r=1;r<j->trace.size();++r){const auto& t=j->trace[r];
+            if(t.accepted){CHECK(t.total<last-1e-6);last=t.total;}else CHECK(r+1==j->trace.size());}
+        CHECK(j->trace[j->round-1].accepted);CHECK(j->model_probes+double(charge)*j->gap_probes==last);
+        CHECK(j->rounds_run==j->trace.size() && j->rounds_run<=c.root_joint_rounds);
+        for(const auto& b:j->by_k)if(b.candidate)CHECK(b.total>=last);           // the selected k has the minimum total
+        CHECK(j->by_k.front().k==0 && j->cost<=j->seq_total+1e-12);             // never worse than the sequential T -> V pass
+        CHECK(j->cost<l.root_probes_raw && j->cost<l.root_probes_binary && (l.root_probes_vp_raw==0 || j->cost<l.root_probes_vp_raw));
+        // Accounting: the joint state is metadata; same regions as without it.
+        Config c0=c;c0.root_joint_rounds=0;Index ref0(c0);ref0.bulk_load(rows);const auto m=ix.memory(),m0=ref0.memory();const auto l0=ref0.learnability();
+        CHECK(m.key_bytes==m0.key_bytes && m.value_bytes==m0.value_bytes);CHECK(!l0.joint && !l0.root_joint);
+        CHECK(m.metadata_bytes==m0.metadata_bytes+j->bytes()+4*((n+l.root_virtual)*(l.root_vp?1:0))-4*((n+l0.root_virtual)*(l0.root_vp?1:0)));
+        std::uint64_t walked=0;ix.for_each_allocation([&](const void*,std::size_t b){walked+=b;});
+        std::uint64_t walked0=0;ref0.for_each_allocation([&](const void*,std::size_t b){walked0+=b;});
+        CHECK(walked-walked0==m.metadata_bytes-m0.metadata_bytes);
+        // Lookups through the adopted joint root: every key found, misses (in gaps, below, above, uint64 max) not found.
+        QueryStats s;for(auto [key,v]:rows)CHECK(ix.find(key,&s)==v);
+        if(j->map.nunits)CHECK(s.transform_calls==rows.size());CHECK(s.root_probes>0);
+        OrderedMap ref;ref.bulk_load(rows);
+        for(std::size_t i=0;i+1<rows.size();i+=7){const Key a=rows[i].first,b=rows[i+1].first;if(b-a>1){CHECK(!ix.find(a+1));CHECK(!ix.find(a+(b-a)/2));}}
+        CHECK(!ix.find(0));CHECK(!ix.find(rows.front().first-1));CHECK(!ix.find(rows.back().first+1));CHECK(!ix.find(~Key(0)));
+        for(Key q=0;q<rows.back().first+(Key(1)<<30);q+=rows.back().first/4999)CHECK(ix.lower_bound(q)==ref.lower_bound(q));
+        // Splits: the joint root is remapped and re-scored, never refitted; answers stay exact.
+        if(threads==1){
+            std::mt19937_64 r2(17);for(unsigned op=0;op<6000;++op){const Key key=r2()%(rows.back().first+1000);const auto t=r2()%10;
+                if(t<6){const auto v=r2();CHECK(ix.upsert(key,v)==ref.upsert(key,v));}else if(t<7)CHECK(ix.erase(key)==ref.erase(key));
+                else if(t<8){const auto v=r2();const bool had=ref.find(key).has_value();CHECK(ix.update(key,v)==had);if(had)ref.upsert(key,v);}
+                else CHECK(ix.find(key)==ref.find(key));}
+            ix.maintain();ix.validate();CHECK(ix.maintenance().splits>0);CHECK(ix.scan(0,1000000)==ref.scan(0,1000000));
+            const auto l2=ix.learnability();CHECK(l2.root_joint && l2.joint->rescores==ix.maintenance().splits); // still adopted after every split on this key set
+            for(auto [key,v]:ref.scan(0,1000000))CHECK(ix.find(key)==v);
+        }
+    }
+    // Determinism: the k cycles run in parallel, the result must not depend on the thread count.
+    {Config c;c.region_keys=64;c.block_keys=8;c.routing=Routing::Rank;c.root=Root::Model;c.root_alpha=0.1;c.flow_cost=0;c.root_joint_rounds=6;
+     Index a(c);a.bulk_load(rows);c.build_threads=8;Index b(c);b.bulk_load(rows);const auto *x=a.learnability().joint,*y=b.learnability().joint;
+     CHECK(x->by_k.size()==y->by_k.size());for(std::size_t i=0;i<x->by_k.size();++i)CHECK(x->by_k[i].count==y->by_k[i].count && x->by_k[i].total==y->by_k[i].total);
+     CHECK(x->cost==y->cost && x->gap_index==y->gap_index && x->map.units[0].coef==y->map.units[0].coef);}
+    // A charged warp must lose to the sequential candidates; ties go to them. One round with k = 0 is the sequential pass itself.
+    {Config c;c.region_keys=64;c.block_keys=8;c.routing=Routing::Rank;c.root=Root::Model;c.root_alpha=0.1;c.flow_cost=1000;c.root_joint_rounds=6;
+     Index ix(c);ix.bulk_load(rows);const auto l=ix.learnability();CHECK(l.joint->candidate);if(l.joint->map.nunits)CHECK(!l.root_joint);
+     for(auto [key,v]:rows)CHECK(ix.find(key)==v);
+     c.flow_cost=0;c.root_joint_rounds=1;c.root_joint_kmax=0;Index one(c);one.bulk_load(rows);const auto* j=one.learnability().joint;
+     CHECK(j->by_k.size()==1 && j->rounds_run==1 && j->round==1 && j->cost==j->seq_total);}
+    // Too few regions: no joint fit, nothing changes.
+    {Config c;c.region_keys=64;c.block_keys=8;c.root=Root::Model;c.root_joint_rounds=6;Index ix(c);std::vector<Record> few;for(unsigned i=0;i<100;++i)few.emplace_back(i*i,i);
+     ix.bulk_load(few);CHECK(!ix.learnability().joint);for(auto [key,v]:few)CHECK(ix.find(key)==v);}
+    must_throw([]{Config c;c.root_joint_rounds=6;Index bad(c);});   // needs root model
+    must_throw([]{Config c;c.root=Root::Model;c.root_joint_rounds=6;c.root_joint_kmin=65;Index bad(c);});
+    must_throw([]{Config c;c.root=Root::Model;c.root_joint_rounds=6;c.root_joint_order=2;Index bad(c);});
+    must_throw([]{Config c;c.root=Root::Model;c.root_joint_rounds=6;c.root_joint_gap_charge=-1;Index bad(c);});
+    must_throw([]{Config c;c.root=Root::Model;c.root_joint_rounds=6;c.root_joint_gap_charge=std::numeric_limits<float>::quiet_NaN();Index bad(c);});
+}
 int main(){try{
     codecs();std::cout<<"codec roundtrips / full-width arithmetic: PASS\n";
     endpoints();std::cout<<"empty / duplicate / uint64 endpoint semantics: PASS\n";
@@ -180,5 +276,6 @@ int main(){try{
     learnability();std::cout<<"flow transform / virtual-point smoothing / differential with both: PASS\n";
     fusion_auto();std::cout<<"fused per-region selection (auto) / differential: PASS\n";
     learned_root();std::cout<<"learned root routing with exact correction / splits refit / differential: PASS\n";
+    joint_root();std::cout<<"joint G+T+V root: monotone blocks / guard / budgets / exact lookups / split remap: PASS\n";
     std::cout<<"ASSERTIONS="<<assertions<<" ALL TESTS PASSED\n";return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

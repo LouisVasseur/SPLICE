@@ -58,3 +58,11 @@ add_test(NAME scaleli_hardness_tests COMMAND scaleli_hardness_tests $<TARGET_FIL
 add_executable(scaleli_example examples/basic.cpp)
 target_link_libraries(scaleli_example PRIVATE scaleli)
 add_test(NAME scaleli_example COMMAND scaleli_example)
+# GRE facade (integrations/gre, INTEGRATION.md): the C++20 TU that GRE's microbench links, and a C++17 driver that
+# reaches it only through scaleli_gre.hpp, as GRE's TU does. PRIVATE scaleli: the driver must stay C++17.
+add_library(scaleli_gre STATIC integrations/gre/scaleli_gre.cpp)
+target_link_libraries(scaleli_gre PRIVATE scaleli)
+add_executable(scaleli_gre_check integrations/gre/facade_check.cpp)
+set_target_properties(scaleli_gre_check PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
+target_link_libraries(scaleli_gre_check PRIVATE scaleli_gre)
+add_test(NAME scaleli_gre_check COMMAND scaleli_gre_check B "${SCALELI_HARDNESS_FIXTURE}" 0 --time)

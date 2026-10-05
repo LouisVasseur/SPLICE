@@ -1,5 +1,6 @@
 #pragma once
 #include "codec.hpp"
+#include "joint.hpp"
 #include "model.hpp"
 #include "smoothing.hpp"
 #include "transform.hpp"
@@ -52,6 +53,11 @@ struct Config {
     // Learnability controls (NFL-style transform, CSV-style virtual points).
     const FlowTransform* flow=nullptr;   // feature = flow(key) instead of normalized key
     bool flow_bypass=true;               // NFL auto-switch: keep the flow only if tail conflicts fall by flow_min_gain
+    // Joint G+T+V root (joint.hpp), offered as one more fit_root candidate. The fields sit in Config's
+    // padding: sizeof(Config) enters every cell's metadata_bytes, so existing cells must not see it change.
+    std::uint8_t root_joint_rounds=0;    // 0 = off; arm A's guarded cycle runs up to this many rounds per k
+    std::uint8_t root_joint_order=0;     // block order per round: 0 = G,T,V; 1 = T,G,V
+    float root_joint_gap_charge=1.0f;    // probe-equivalents per gap-table comparison in the joint score
     double flow_min_gain=0.10;
     double virtual_alpha=0;              // CSV smoothing threshold; budget = alpha * region keys; 0 disables
     // Compactions reuse the bulk-load flow decision and the region's virtual points
@@ -63,10 +69,14 @@ struct Config {
     double root_alpha=0;                 // Root::Model: CSV-style virtual fences budget (fraction of regions); slots map to regions in O(1)
     double flow_cost=4.0;
     unsigned build_threads=1;            // bulk_load builds regions concurrently (regions are independent); queries stay single-threaded                // Auto mode: transform cost per lookup in probe-equivalents (measure it; default is a placeholder)
+    std::uint16_t root_joint_kmin=0,root_joint_kmax=64; // gap-count grid of the joint root: kmin, then every power of 4 up to kmax
     void validate()const{
         if(!(virtual_alpha>=0 && virtual_alpha<1) || !(flow_min_gain>=0 && flow_min_gain<=1))throw std::invalid_argument("virtual_alpha in [0,1) and flow_min_gain in [0,1] required");
         if(!(flow_cost>=0) || !std::isfinite(flow_cost))throw std::invalid_argument("flow_cost must be a nonnegative finite number");
         if(!(root_alpha>=0 && root_alpha<64))throw std::invalid_argument("root_alpha must be in [0, 64)");
+        if(root_joint_rounds && root!=Root::Model)throw std::invalid_argument("the joint root requires root model");
+        if(!(root_joint_gap_charge>=0) || !std::isfinite(root_joint_gap_charge) || root_joint_kmin>root_joint_kmax || root_joint_order>1)
+            throw std::invalid_argument("joint root: gap charge must be finite and >= 0, kmin <= kmax, order gtv or tgv");
         if(!region_keys || region_keys>16*1024*1024 || !block_keys || block_keys>region_keys || !delta_limit)
             throw std::invalid_argument("require 1 <= block_keys <= region_keys <= 16777216 and delta_limit > 0");
         if(delta_limit>2*region_keys)throw std::invalid_argument("delta_limit exceeds 2*region_keys");
@@ -76,6 +86,9 @@ struct Config {
             throw std::invalid_argument("invalid policy parameters");
     }
 };
+#if defined(__LP64__)
+static_assert(sizeof(Config)==152,"Config size enters every cell's metadata_bytes; new fields must reuse its padding");
+#endif
 struct BlockDescriptor {
     Key first=0,last=0;
     std::size_t rank_begin=0, count=0, offset=0, length=0;
@@ -349,12 +362,17 @@ class Index {
     std::vector<std::unique_ptr<Region>> regions_;
     std::size_t size_=0;
     MaintenanceStats maintenance_;
-    LinearModel root_model_;bool root_ready_=false,root_flow_=false,root_vp_=false;double root_cost_raw_=0,root_cost_flow_=0,root_cost_binary_=0,root_cost_vp_raw_=0,root_cost_vp_flow_=0;
+    LinearModel root_model_;bool root_ready_=false,root_flow_=false,root_vp_=false,root_joint_on_=false;double root_cost_raw_=0,root_cost_flow_=0,root_cost_binary_=0,root_cost_vp_raw_=0,root_cost_vp_flow_=0;
     std::vector<std::uint32_t> root_slot_to_region_; // virtual-fence slot -> region index (empty without virtual fences)
-    std::size_t root_virtual_=0;
+    // Joint root (root_joint_rounds > 0 only): lookup state when adopted, plus fit diagnostics. It takes the
+    // slot of the former root_virtual_ counter (now derived from the table) so sizeof(Index) is unchanged.
+    std::unique_ptr<RootJoint> root_joint_;
+    std::size_t root_virtual()const{return root_slot_to_region_.empty()?0:root_slot_to_region_.size()-regions_.size();}
     double root_feature(Key k,QueryStats* s=nullptr)const{
         if(s)s->note(&root_model_);
-        return root_flow_ ? (*config_.flow)(k,s) : root_model_.normalized(k);}
+        if(root_flow_)return (*config_.flow)(k,s);
+        if(root_joint_on_){if(s)s->note_range(&root_joint_->map,sizeof(JointFeature));return root_joint_->map(k,s);}
+        return root_model_.normalized(k);}
     // Last region whose low fence is <= k. Region 0 has fence 0, so the answer always exists.
     template<class Ok> std::size_t last_true(Ok ok,std::size_t lo,std::size_t hi)const{ // ok(lo) true; all i >= hi false or hi == n
         while(hi-lo>1){const auto m=lo+(hi-lo)/2;if(ok(m))lo=m;else hi=m;}return lo;
@@ -383,8 +401,17 @@ class Index {
     // real locate routine spends on the fences and the fence midpoints (charging flow_cost per lookup).
     // Candidates {raw, flow} x {ranks, virtual-fence slots}; each scored by the probes the real root
     // locate spends on the fences and fence midpoints (+ flow_cost for the flow); binary search if none wins.
-    void fit_root(){
-        root_ready_=false;root_flow_=false;root_vp_=false;root_virtual_=0;root_slot_to_region_.clear();
+    // The joint G+T+V candidate (root_joint_rounds > 0) is fitted only by bulk_load (bulk). After a split at
+    // region `split` an adopted joint root is not refitted (minutes at 200M): its slot table is remapped
+    // (regions after the split shift by one), re-scored on the new fences and offered again.
+    void fit_root(bool bulk,std::size_t split=0){
+        std::optional<std::pair<LinearModel,std::vector<std::uint32_t>>> carry;
+        if(!bulk && root_joint_on_){
+            carry.emplace(root_model_,std::move(root_slot_to_region_));
+            for(auto& j:carry->second)if(j>split)++j;
+        }
+        if(bulk)root_joint_.reset();
+        root_ready_=false;root_flow_=false;root_vp_=false;root_joint_on_=false;root_slot_to_region_.clear();
         root_cost_raw_=root_cost_flow_=root_cost_binary_=root_cost_vp_raw_=root_cost_vp_flow_=0;
         const auto n=regions_.size();if(config_.root!=Root::Model || n<2)return;
         // Fit on the regions' first real keys, not on region 0's sentinel fence (0). A fit through
@@ -419,9 +446,37 @@ class Index {
             }
         }
         {std::size_t count=0;for(auto k:probes){std::size_t lo=0,hi=n;while(lo<hi){auto m=lo+(hi-lo)/2;++count;if(regions_[m]->low_fence<=k)lo=m+1;else hi=m;}}root_cost_binary_=double(count)/double(probes.size());}
+        // Joint candidate: scored exactly like the others (same locate, same probe keys), appended last so
+        // ties keep the sequential choice; T is charged flow_cost (N's convention), G gap_charge per comparison.
+        std::optional<Cand> joint;
+        if(config_.root_joint_rounds && n>=3 && (bulk || carry)){
+            auto count=[&](const LinearModel& m,const JointFeature& f,const std::vector<std::uint32_t>& table){
+                std::size_t c=0;
+                for(auto k:probes){auto ok=[&](std::size_t i){++c;return regions_[i]->low_fence<=k;};(void)locate_from_prediction(ok,m.predict_x(f(k)),n,&table);}
+                return c;};
+            Cand cd{false,false,{},{},0,0};
+            if(bulk){
+                JointParams p;p.rounds=config_.root_joint_rounds;p.tgv=config_.root_joint_order==1;p.kmin=config_.root_joint_kmin;p.kmax=config_.root_joint_kmax;
+                p.gap_charge=double(config_.root_joint_gap_charge);p.alpha=config_.root_alpha;p.threads=config_.build_threads;
+                const auto t=std::chrono::steady_clock::now();
+                auto jf=fit_joint_root(fences,probes,p,count);
+                root_joint_=std::make_unique<RootJoint>(std::move(jf.root));
+                root_joint_->build_ns=std::chrono::duration<double,std::nano>(std::chrono::steady_clock::now()-t).count();
+                if(jf.candidate){cd.model=jf.model;cd.table=std::move(jf.table);cd.cost=jf.total+(jf.warp?config_.flow_cost:0);joint=std::move(cd);}
+            }else{
+                const auto c=count(carry->first,root_joint_->map,carry->second);
+                const double mp=double(c)/double(probes.size()),total=mp+double(config_.root_joint_gap_charge)*root_joint_->map.gap_probes();
+                root_joint_->count=c;root_joint_->model_probes=mp;++root_joint_->rescores;
+                cd.model=carry->first;cd.table=std::move(carry->second);cd.cost=total+(root_joint_->map.nunits?config_.flow_cost:0);joint=std::move(cd);
+            }
+            if(joint)root_joint_->cost=joint->cost;
+        }
         if(cands.empty())return;
         std::size_t best=0;for(std::size_t i=1;i<cands.size();++i)if(cands[i].cost<cands[best].cost)best=i;
-        if(cands[best].cost<root_cost_binary_){auto& cd=cands[best];root_ready_=true;root_flow_=cd.flow;root_vp_=cd.vp;root_virtual_=cd.virt;root_model_=cd.model;root_slot_to_region_=std::move(cd.table);}
+        if(joint && joint->cost<cands[best].cost && joint->cost<root_cost_binary_){
+            root_ready_=true;root_joint_on_=true;root_vp_=!joint->table.empty();root_model_=joint->model;root_slot_to_region_=std::move(joint->table);
+        }else if(cands[best].cost<root_cost_binary_){auto& cd=cands[best];root_ready_=true;root_flow_=cd.flow;root_vp_=cd.vp;root_model_=cd.model;root_slot_to_region_=std::move(cd.table);}
+        if(root_joint_ && !root_joint_on_){root_joint_->map.gaps.clear();root_joint_->map.gaps.shrink_to_fit();} // not in use: keep diagnostics only
     }
     void compact(std::size_t r,bool force=false){
         auto& region=*regions_[r];const bool hot=region.desired_hot(config_);
@@ -439,7 +494,7 @@ class Index {
             // failure leaves the original base+delta accessible.
             regions_.reserve(regions_.size()+1);
             regions_.insert(regions_.begin()+std::ptrdiff_t(r+1),std::move(right));regions_[r]=std::move(left);
-            ++maintenance_.splits;fit_root();
+            ++maintenance_.splits;fit_root(false,r);
         }else{
             region.rebuild(rows,config_,hot,&region);rewritten=region.arena.size()+region.values.size()*8;
         }
@@ -464,7 +519,7 @@ public:
             for(auto& t:pool)t.join();for(auto& e:errors)if(e)std::rethrow_exception(e);
         }
         if(next.empty())next.push_back(std::make_unique<Region>());
-        next.shrink_to_fit();regions_=std::move(next);size_=rows.size();maintenance_={};fit_root();
+        next.shrink_to_fit();regions_=std::move(next);size_=rows.size();maintenance_={};fit_root(true);
     }
     std::optional<Value> find(Key k,QueryStats* s=nullptr){
         const auto j=locate_region(k,s);auto& r=*regions_[j];
@@ -487,6 +542,13 @@ public:
         if(!r.find(k,config_,s))return false;r.set_delta(k,0,true);--size_;
         if(r.delta.size()>=config_.delta_limit)compact(j);return true;
     }
+    // Replace the value of an existing key in one traversal; false, and nothing written, when absent
+    // (an update that must not insert, as GRE's interface expects). Not used by scaleli_bench.
+    bool update(Key k,Value v,QueryStats* s=nullptr){
+        const auto j=locate_region(k,s);auto& r=*regions_[j];r.observe(true,config_);
+        if(!r.find(k,config_,s))return false;r.set_delta(k,v,false);
+        if(r.delta.size()>=config_.delta_limit)compact(j);return true;
+    }
     std::vector<Record> scan(Key lo,std::size_t limit,QueryStats* s=nullptr){
         std::vector<Record> out;out.reserve(std::min(limit,size_));if(!limit)return out;
         for(auto j=locate_region(lo,s);j<regions_.size() && out.size()<limit;++j){
@@ -507,6 +569,7 @@ public:
         double cost_none_mean=0,cost_selected_mean=0; // Auto mode only (0 otherwise)
         bool root_model=false,root_flow=false,root_vp=false;std::size_t root_virtual=0;
         double root_probes_binary=0,root_probes_raw=0,root_probes_flow=0,root_probes_vp_raw=0,root_probes_vp_flow=0; // expected root probes per lookup on fence probes
+        bool root_joint=false;const RootJoint* joint=nullptr; // joint root adopted; its fit diagnostics (null unless root_joint_rounds > 0)
     };
     // Base-structure diagnostics of the CURRENT regions (bulk load or last compaction).
     Learnability learnability()const{
@@ -517,8 +580,9 @@ public:
             l.cost_none_mean+=r->cost_none;l.cost_selected_mean+=r->cost_selected;
             switch(r->choice){case 0:++l.choice_none;break;case 1:++l.choice_flow;break;case 2:++l.choice_vp;break;default:++l.choice_both;}}
         if(l.regions){l.tail_conflicts_raw_mean/=double(l.regions);l.tail_conflicts_flow_mean/=double(l.regions);l.cost_none_mean/=double(l.regions);l.cost_selected_mean/=double(l.regions);}
-        l.root_model=root_ready_;l.root_flow=root_flow_;l.root_vp=root_vp_;l.root_virtual=root_virtual_;l.root_probes_binary=root_cost_binary_;l.root_probes_raw=root_cost_raw_;l.root_probes_flow=root_cost_flow_;
+        l.root_model=root_ready_;l.root_flow=root_flow_;l.root_vp=root_vp_;l.root_virtual=root_virtual();l.root_probes_binary=root_cost_binary_;l.root_probes_raw=root_cost_raw_;l.root_probes_flow=root_cost_flow_;
         l.root_probes_vp_raw=root_cost_vp_raw_;l.root_probes_vp_flow=root_cost_vp_flow_;
+        l.root_joint=root_joint_on_;l.joint=root_joint_.get();
         return l;
     }
     // Walk every allocation the index owns: the index object, the region pointer vector,
@@ -529,10 +593,11 @@ public:
         f(static_cast<const void*>(this),sizeof(Index));
         if(!regions_.empty())f(static_cast<const void*>(regions_.data()),regions_.size()*sizeof(std::unique_ptr<Region>));
         if(!root_slot_to_region_.empty())f(static_cast<const void*>(root_slot_to_region_.data()),root_slot_to_region_.size()*sizeof(std::uint32_t));
+        if(root_joint_)root_joint_->for_each_allocation(f);
         for(const auto& r:regions_)r->for_each_allocation(f);
     }
     MemoryUsage memory()const{
-        MemoryUsage m;m.metadata_bytes=sizeof(Index)+regions_.capacity()*sizeof(std::unique_ptr<Region>)+root_slot_to_region_.size()*sizeof(std::uint32_t);
+        MemoryUsage m;m.metadata_bytes=sizeof(Index)+regions_.capacity()*sizeof(std::unique_ptr<Region>)+root_slot_to_region_.size()*sizeof(std::uint32_t)+(root_joint_?root_joint_->bytes():0);
         for(const auto& r:regions_){const auto x=r->memory();m.key_bytes+=x.key_bytes;m.value_bytes+=x.value_bytes;
             m.metadata_bytes+=x.metadata_bytes;m.delta_bytes+=x.delta_bytes;m.reserved_slack_bytes+=x.reserved_slack_bytes;}return m;
     }
@@ -569,4 +634,7 @@ public:
         }
     }
 };
+#if defined(__LP64__)
+static_assert(sizeof(Index)==336,"sizeof(Index) enters every cell's metadata_bytes; new members must reuse its padding");
+#endif
 } // namespace scaleli

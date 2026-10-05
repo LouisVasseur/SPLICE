@@ -1,4 +1,5 @@
 #include "scaleli/index.hpp"
+#include "scaleli/cli.hpp"
 #include "scaleli/baselines.hpp"
 #include "scaleli/workload.hpp"
 #ifdef SCALELI_EXTERNAL
@@ -20,18 +21,6 @@ using namespace scaleli;
 using Clock=std::chrono::steady_clock;
 static double nanos(Clock::duration d){return std::chrono::duration<double,std::nano>(d).count();}
 static std::string quote(const std::string& s){std::string out="\"";for(char c:s){if(c=='"'||c=='\\')out+='\\';if(c=='\n')out+="\\n";else if(c=='\r')out+="\\r";else out+=c;}return out+'"';}
-struct Args {
-    std::map<std::string,std::string> a;
-    Args(int argc,char** argv){for(int i=1;i<argc;++i){std::string x=argv[i];if(x.rfind("--",0)!=0)throw std::invalid_argument("expected --option");x=x.substr(2);const auto eq=x.find('=');
-        if(eq!=std::string::npos)a[x.substr(0,eq)]=x.substr(eq+1);else if(i+1<argc && std::string(argv[i+1]).rfind("--",0)!=0)a[x]=argv[++i];else a[x]="1";}
-        const std::set<std::string> allowed={"help","index","n","ops","distribution","seed","profile","routing","policy","codec","region-keys","block-keys","delta-limit","restart","min-saving","smooth-scale","hot-enter","hot-exit","heat-decay","scan-length","load-ratio","miss","query-distribution","zipf-theta","insert-mode","bulk-sampling","insert-order","read","insert","update","erase","scan","data","format","dtype","limit","verify","instrument","dump-layout","dump-trace","warmup","flow","flow-bypass","flow-min-gain","virtual-alpha","relearn","dump-keys","latency","fusion","flow-cost","build-threads","root","qos","root-alpha","prefault","warmup-mode","chunks"};
-        for(auto& [k,v]:a)if(!allowed.count(k))throw std::invalid_argument("unknown option: "+k);
-    }
-    std::string get(std::string k,std::string d)const{auto it=a.find(k);return it==a.end()?d:it->second;}
-    std::size_t number(std::string k,std::size_t d)const{auto s=get(k,std::to_string(d));if(s.empty()||s[0]=='-')throw std::invalid_argument("nonnegative integer required: "+k);std::size_t pos;const auto v=std::stoull(s,&pos);if(pos!=s.size())throw std::invalid_argument("invalid integer: "+k);return v;}
-    double real(std::string k,double d)const{auto s=get(k,std::to_string(d));std::size_t pos;auto v=std::stod(s,&pos);if(pos!=s.size()||!std::isfinite(v))throw std::invalid_argument("finite number required: "+k);return v;}
-    bool flag(std::string k,bool d)const{auto s=get(k,d?"1":"0");if(s!="1"&&s!="0")throw std::invalid_argument("flag requires 0 or 1: "+k);return s=="1";}
-};
 struct OpResult {std::uint64_t checksum=0,rows=0;};
 template<class I>OpResult execute(I& ix,const Operation& o,QueryStats* s=nullptr){
     switch(o.kind){
@@ -85,7 +74,7 @@ static double percentile(std::vector<double> a,double q){if(a.empty())return 0;s
 static void print_latency(const std::vector<double>& a){
     std::cout<<"{\"count\":"<<a.size()<<",\"p50\":"<<percentile(a,.50)<<",\"p95\":"<<percentile(a,.95)<<",\"p99\":"<<percentile(a,.99)<<",\"max\":"<<(a.empty()?0:*std::max_element(a.begin(),a.end()))<<'}';
 }
-static void print_memory(const MemoryUsage& m){std::cout<<"{\"key_bytes\":"<<m.key_bytes<<",\"value_bytes\":"<<m.value_bytes<<",\"metadata_bytes\":"<<m.metadata_bytes<<",\"delta_bytes\":"<<m.delta_bytes<<",\"reserved_slack_bytes\":"<<m.reserved_slack_bytes<<",\"accounted_bytes\":"<<m.accounted_bytes()<<",\"estimated\":"<<(m.estimated?"true":"false")<<'}';}
+static void print_memory(const MemoryUsage& m){std::cout<<memory_json(m);}
 static std::uint64_t fingerprint(const Workload& w){std::uint64_t h=0;for(auto r:w.initial)h=mix64(h^digest_record(r));for(auto o:w.trace)h=mix64(h^mix64(o.key)^mix64(o.value)^mix64(unsigned(o.kind))^mix64(o.length));return h;}
 
 template<class Maker>int benchmark(Maker make,const Args& a,const Workload& w,const Config& cfg,const WorkloadConfig& wc){
@@ -112,15 +101,7 @@ template<class Maker>int benchmark(Maker make,const Args& a,const Workload& w,co
         // Learnability diagnostics describe the bulk-loaded base structure; they are read here,
         // after build timing and before warmup/replay, so no extra bulk load is needed.
         if constexpr(std::is_same_v<I,Index>){
-            const auto l=ix->learnability();std::ostringstream o;o<<std::setprecision(12)
-            <<"{\"regions\":"<<l.regions<<",\"flow_regions\":"<<l.flow_regions<<",\"virtual_points\":"<<l.virtual_points<<",\"keys\":"<<l.keys
-            <<",\"rank_sse_before\":"<<l.rank_sse_before<<",\"rank_sse_after\":"<<l.rank_sse_after<<",\"smoothing_ns\":"<<l.smoothing_ns<<",\"transform_ns\":"<<l.transform_ns
-            <<",\"tail_conflicts_raw_mean\":"<<l.tail_conflicts_raw_mean<<",\"tail_conflicts_flow_mean\":"<<l.tail_conflicts_flow_mean
-            <<",\"flow_bytes\":"<<(cfg.flow?cfg.flow->bytes():0)
-        <<",\"choices\":{\"none\":"<<l.choice_none<<",\"flow\":"<<l.choice_flow<<",\"vp\":"<<l.choice_vp<<",\"both\":"<<l.choice_both<<"}"
-        <<",\"cost_none_mean\":"<<l.cost_none_mean<<",\"cost_selected_mean\":"<<l.cost_selected_mean
-        <<",\"root_model\":"<<(l.root_model?"true":"false")<<",\"root_flow\":"<<(l.root_flow?"true":"false")<<",\"root_probes_binary\":"<<l.root_probes_binary<<",\"root_probes_raw\":"<<l.root_probes_raw<<",\"root_probes_flow\":"<<l.root_probes_flow
-        <<",\"root_vp\":"<<(l.root_vp?"true":"false")<<",\"root_virtual\":"<<l.root_virtual<<",\"root_probes_vp_raw\":"<<l.root_probes_vp_raw<<",\"root_probes_vp_flow\":"<<l.root_probes_vp_flow<<"}";learn=o.str();
+            learn=learnability_json(*ix,cfg);
         }
         before=ix->memory();
         if(do_prefault)pf=prefault(*ix);
@@ -198,7 +179,10 @@ template<class Maker>int benchmark(Maker make,const Args& a,const Workload& w,co
         <<",\"delta_limit\":"<<cfg.delta_limit<<",\"restart_interval\":"<<cfg.restart_interval
         <<",\"min_saving_fraction\":"<<cfg.min_saving_fraction<<",\"smooth_scale\":"<<cfg.smooth_scale
         <<",\"flow_weights\":"<<quote(a.get("flow",""))<<",\"flow_bypass\":"<<(cfg.flow_bypass?"true":"false")<<",\"flow_min_gain\":"<<cfg.flow_min_gain
-        <<",\"virtual_alpha\":"<<cfg.virtual_alpha<<",\"relearn_on_compaction\":"<<(cfg.relearn_on_compaction?"true":"false")<<",\"fusion\":"<<quote(a.get("fusion","manual"))<<",\"flow_cost\":"<<cfg.flow_cost<<",\"build_threads\":"<<cfg.build_threads<<",\"root\":"<<quote(a.get("root","binary"))<<",\"root_alpha\":"<<cfg.root_alpha<<",\"learnability\":"<<learn
+        <<",\"virtual_alpha\":"<<cfg.virtual_alpha<<",\"relearn_on_compaction\":"<<(cfg.relearn_on_compaction?"true":"false")<<",\"fusion\":"<<quote(a.get("fusion","manual"))<<",\"flow_cost\":"<<cfg.flow_cost<<",\"build_threads\":"<<cfg.build_threads<<",\"root\":"<<quote(a.get("root","binary"))<<",\"root_alpha\":"<<cfg.root_alpha;
+    if(cfg.root_joint_rounds)std::cout<<",\"root_joint_rounds\":"<<unsigned(cfg.root_joint_rounds)<<",\"root_joint_order\":"<<quote(joint_order_name(cfg.root_joint_order))
+        <<",\"root_joint_kmin\":"<<cfg.root_joint_kmin<<",\"root_joint_kmax\":"<<cfg.root_joint_kmax<<",\"root_joint_gap_charge\":"<<cfg.root_joint_gap_charge;
+    std::cout<<",\"learnability\":"<<learn
         <<",\"query_distribution\":"<<quote(wc.query_distribution)<<",\"insert_mode\":"<<quote(wc.insert_mode)
         <<",\"bulk_sampling\":"<<quote(wc.bulk_sampling)<<",\"insert_order\":"<<quote(wc.insert_order)<<",\"load_ratio\":"<<wc.load_ratio
         <<",\"scan_length\":"<<wc.scan_length<<",\"requested_miss_ratio\":"<<wc.miss<<",\"warmup_reads\":"<<std::min(warm,w.initial.size())
@@ -252,6 +236,10 @@ int main(int argc,char** argv){try{
   --qos 1|0 (macOS: 1 requests the user-interactive QoS class so timed passes prefer performance cores)
   --root binary|model (model = one global linear model routes to regions, raw or flow feature chosen by measured probes; binary = fence binary search)
   --root-alpha 2 (with --root model: CSV-style virtual fences, budget = alpha * regions, alpha < 64; slots map to regions in O(1); chosen only if it lowers root probes)
+  --root-joint-rounds 6 (with --root model: also offer a joint G+T+V root, gap removal + tanh-pair warp + virtual fences at
+     root-alpha, fitted together by up to N guarded rounds per k; adopted only if its probe score beats every other root; 0 = off)
+  --root-joint-order gtv|tgv --root-joint-kmin 0 --root-joint-kmax 64 (k grid: kmin, then powers of 4 up to kmax)
+  --root-joint-gap-charge 1 (probe-equivalents per gap-table comparison; the warp is charged --flow-cost)
   --build-threads 1 (bulk load builds regions concurrently; build_ns becomes wall-clock of the parallel build; queries are always single-threaded)
   --verify 1 --instrument 1 --latency 1 (0 skips the per-operation latency replay; latency blocks are emitted with count 0)
   --warmup 4096 --dump-layout layout.csv --dump-trace trace.csv --dump-keys keys.sosd
@@ -265,11 +253,7 @@ int main(int argc,char** argv){try{
 Output: one JSON object. Timing, validation, and instrumentation use separate fresh replays;
 the learnability block is read from the throughput pass's bulk-loaded index.
 )";return 0;}
-    Config c;c.region_keys=a.number("region-keys",4096);c.block_keys=a.number("block-keys",128);c.delta_limit=a.number("delta-limit",64);
-    c.restart_interval=unsigned(a.number("restart",16));c.routing=parse_routing(a.get("routing","byte"));c.policy=parse_policy(a.get("policy","min_bytes"));c.forced_codec=parse_codec(a.get("codec","for"));
-    c.min_saving_fraction=a.real("min-saving",.05);c.flow_bypass=a.flag("flow-bypass",true);c.flow_min_gain=a.real("flow-min-gain",.1);c.virtual_alpha=a.real("virtual-alpha",0);c.relearn_on_compaction=a.flag("relearn",false);c.fusion=parse_fusion(a.get("fusion","manual"));c.flow_cost=a.real("flow-cost",4);c.build_threads=unsigned(a.number("build-threads",1));c.root=parse_root(a.get("root","binary"));c.root_alpha=a.real("root-alpha",0);
-    std::optional<FlowTransform> flow;if(a.a.count("flow")){flow=FlowTransform::load(a.get("flow",""));c.flow=&*flow;}
-    c.smooth_scale=a.real("smooth-scale",1);c.hot_enter=a.real("hot-enter",.25);c.hot_exit=a.real("hot-exit",.05);c.heat_decay=a.real("heat-decay",.99);c.validate();
+    std::optional<FlowTransform> flow;const Config c=config_from_args(a,flow);
     WorkloadConfig wc;const auto profile=a.get("profile","read_only");
     if(profile=="read_only"){}
     else if(profile=="read_heavy"){wc.read=.8;wc.insert=.1;wc.update=.05;wc.erase=.02;wc.scan=.03;}

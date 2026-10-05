@@ -29,7 +29,7 @@ PGM's upstream `size_in_bytes()` is not a measurement of all reserved capacity o
 
 | Target | Why it belongs | Required work before comparison |
 |---|---|---|
-| GRE | Dynamic ordered-index workload framework | Add a real wrapper to its interface; align duplicate/scan semantics and operation accounting |
+| GRE | Dynamic ordered-index workload framework | Wrapper and C++20 facade in `gre/` (cells B, N, C, NC, J, Jg0; `gre/INTEGRATION.md`); facade-built index checked equal to scaleli_bench's on 1M prefixes; not yet wired into `tools/gre_lite.sh` |
 | RoBin | Uniform/prefix sampling, bulk-load size, sorted/shuffled insertion stress | Use its upstream scripts for a real reproduction; compare the local inspired grid separately |
 | SOSD | Static sorted-key lookup benchmark and data provenance | Match equality/duplicate result contract; avoid equating it with a dynamic map benchmark |
 | LIPP / SALI / LINE | Structural conflicts, adaptivity, maintenance and concurrency | Fetch official revisions; add explicit iterator/update capability checks |

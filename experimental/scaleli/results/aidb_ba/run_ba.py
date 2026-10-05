@@ -13,6 +13,7 @@ Presets (layered, PROTOCOL.md; validate.py reads their output):
   aa        night-0 E1 (PROTOCOL 5.2): fb, 10 x B and 10 x B2 in random order, seed 1001, 80 chunks, prefault 1
   memory    one build per (dataset, B / N / C / NC), no counters, 100k lookups: bytes per key only (memory_report.py)
   timing    throughput: B, B2, N, C, NC, SV x 3 blocks on fb, osm, planet, 4M warm-up, no counters (analyze_ba.py)
+  joint     D layer for the joint-root cells J and Jg0 (compare with validity's NC: same regions, same seed)
   run ... --jobs N runs N jobs at once; allowed only for D, V and M (their results do not depend on load)
 v1 presets (prefault 0, 16 chunks, seed 1000 + block; kept for the record): aa_v1, e2, overnight, full, sweep, rss_check
 
@@ -62,6 +63,8 @@ def cells(d):
     B = PK + ['--root', 'model']                     # BEFORE: learned raw root (falls back to binary itself)
     nfl = ['--flow', F, '--flow-bypass', '1', '--flow-cost', '0']
     C = B + ['--virtual-alpha', '0.1', '--root-alpha', '0.1']   # CSV paper alpha at both levels
+    JR = ['--root-joint-rounds', '6', '--root-joint-order', 'gtv', '--root-joint-kmin', '0', '--root-joint-kmax', '64',
+          '--root-joint-gap-charge', '1']                     # arm A's guarded cycle, k in {0,1,4,16,64}, V budget = root alpha
     return {
         'B': B, 'B2': B,                              # B2 = identical rebuild, live A/A
         'Bb': ['--policy', 'min_bytes', '--routing', 'binary', '--root', 'model'],   # control: binary search over a region's blocks, no model
@@ -70,6 +73,8 @@ def cells(d):
         'Cr': B + ['--root-alpha', '0.1'],            # CSV-style fences at the root only (PROTOCOL name of Cr01)
         'C': C,                                       # after CSV
         'NC': C + nfl,                                # after both
+        'J': C + nfl + JR,                            # NC regions + joint G+T+V root; T free (N's convention), gap table charged as in the prototypes
+        'Jg0': C + nfl + JR[:-1] + ['0'],             # side cell: the whole G-T input transform offered free, throughput decides whether the gap table pays
         'SV': ['--index', 'sorted_vector'],           # reference: plain binary search, 16 B/key
         'RAW': ['--policy', 'raw', '--routing', 'rank', '--root', 'model'],          # reference: no compression
         'RC': ['--policy', 'raw', '--routing', 'rank', '--root', 'model', '--root-alpha', '0.1'],  # E2
@@ -89,7 +94,7 @@ def command(d, cell, block, opts=None):
     cmd = [BIN, '--data', data(d)] + layer_flags(opts['layer']) + cells(d)[cell]
     return cmd + (['--limit', str(opts['limit'])] if opts.get('limit') else [])
 
-EXPENSIVE = {'C', 'NC', 'Cv05', 'Cv1', 'Cv2', 'C4'}
+EXPENSIVE = {'C', 'NC', 'Cv05', 'Cv1', 'Cv2', 'C4', 'J', 'Jg0'}
 def tmo(cell, inst):
     if cell == 'C4' or cell == 'Cr4': return 9000
     if cell in EXPENSIVE: return 3600 if inst else 1800
@@ -114,6 +119,9 @@ def plan(preset, rng, datasets=None, limit=None):
     elif preset == 'verify':      # correctness against std::map on the D trace (same seed, so checksums must match D)
         for d in shuffled(datasets or ['fb']):
             for c in shuffled(VALIDITY_CELLS): layered(d, c, 'V')
+    elif preset == 'joint':       # J vs NC isolates joint vs sequential at the root; NC comes from validity (same layer and seed)
+        for d in shuffled(datasets or DATASETS):
+            for c in shuffled(['J', 'Jg0']): layered(d, c, 'D')
     elif preset == 'aa':          # E1 (PROTOCOL 5.2): is run-level timing viable on this host? ~25 min at 200M
         order = [('B', i) for i in range(10)] + [('B2', i) for i in range(10)]; rng.shuffle(order)
         for c, i in order: layered((datasets or ['fb'])[0], c, 'E1', i)
@@ -251,9 +259,11 @@ if __name__ == '__main__':
 # ---- wall-clock estimate (pilot: cheap run ~70 s with instrument at 5M ops; fixed ~31 s + 1 s per M ops)
 SMOOTH = {'fb': 184, 'osm': 200, 'planet': 384, 'books': 451, 'genome': 222, 'covid': 256, 'history': 237,
           'libio': 241, 'stack': 300, 'wise': 300}   # fb/osm: bench build_ns; others: hardness CSV wall (upper side)
+RV = 25 - 7    # one root V run at alpha 0.1 (Cr build - B build below); calibrate from the server's Cr minus B build_ns
 def est(d, c, inst):
     build = 7
     if c in ('C', 'NC', 'Cv1'): build = SMOOTH[d] + 10
+    if c in ('J', 'Jg0'): build = SMOOTH[d] + 10 + 6 * RV   # k cycles run in parallel: up to 6 rounds of one root V run each
     if c == 'Cv05': build = SMOOTH[d] * 0.5 + 10
     if c == 'Cv2': build = SMOOTH[d] * 2 + 10
     if c in ('Cr004', 'Cr01', 'Cr'): build = 25

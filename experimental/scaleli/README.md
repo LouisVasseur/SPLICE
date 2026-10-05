@@ -184,6 +184,13 @@ int main() {
 
 See `docs/METRICS.md`, `integrations/STATUS.md`, and `results/example/VALIDATION.md` before interpreting any timing or space number.
 
+## Run SCALE-LI inside GRE
+
+`integrations/gre/` registers the protocol cells B, N, C and NC, and the joint G+T+V root cells J and Jg0, as GRE
+indexes (`scaleli_b` ... `scaleli_jg0`), behind a C++20 facade that builds each cell's Config with scaleli_bench's
+own parser. What each cell is: [integrations/gre/README.md](integrations/gre/README.md#gre-cells). How the
+`tools/gre_lite.sh` build and the `tools/gre_run.sh` runner take them: [INTEGRATION.md](integrations/gre/INTEGRATION.md).
+
 ## Repository map
 
 ```text

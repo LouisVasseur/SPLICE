@@ -5,6 +5,7 @@
 #   gre_run.sh OUTDIR --datasets fb,osm --indexes btree,alex,pgm,artunsync,lipp,sortedarray
 #       [--gre DIR] [--data DIR] [--repeats 3] [--ops 100000000] [--warmup 0] [--init-ratio 1] [--pin -1]
 #       [--table-size -1] [--read 1 --insert 0] [--resume] [-- extra microbench flags]
+#       [--flows DIR] [--build-threads 16]   (SCALE-LI cells scaleli_b _n _c _nc _j _jg0, integrations/gre/)
 #   defaults: --gre /tmp/louisvasseur/GRE, --data /tmp/louisvasseur/SPLICE/experimental/scaleli/data/external/gre
 #
 # The standard conditions (read-only, single thread, every key bulk-loaded, 100M lookups of loaded keys):
@@ -57,6 +58,9 @@ case $OUT in /*) ;; *) OUT=$PWD/$OUT;; esac        # absolute, so the recorded c
 GRE=/tmp/louisvasseur/GRE
 DATA=/tmp/louisvasseur/SPLICE/experimental/scaleli/data/external/gre
 DATASETS= INDEXES= REPEATS=3 OPS=100000000 WARMUP=0 INIT_RATIO=1 PIN=-1 TABLE_SIZE=-1 READ=1 INSERT=0 RESUME=0
+# SCALE-LI: the per-dataset NFL flow files (tracked in SPLICE) and run_ba.py's 16 build threads
+FLOWS=$(cd "$(dirname "$0")/.." && pwd)/results/aidb_flowv2/flows_free
+BUILD_THREADS=16
 EXTRA=()
 while [ $# -gt 0 ]; do
   case $1 in --resume|--|-h|--help) ;; --*) [ $# -ge 2 ] && [ -n "$2" ] || die "$1 needs a value";; esac
@@ -73,6 +77,8 @@ while [ $# -gt 0 ]; do
     --table-size) TABLE_SIZE=$2; shift 2;;
     --read) READ=$2; shift 2;;
     --insert) INSERT=$2; shift 2;;
+    --flows) FLOWS=$2; shift 2;;
+    --build-threads) BUILD_THREADS=$2; shift 2;;
     --resume) RESUME=1; shift;;
     -h|--help) usage 0;;
     --) shift; EXTRA=("$@"); break;;
@@ -83,6 +89,7 @@ done
 [ -n "$INDEXES" ] || die "--indexes is required"
 int --repeats "$REPEATS"; int --ops "$OPS"; int --warmup "$WARMUP"; int --pin "$PIN"; int --table-size "$TABLE_SIZE"
 range --repeats "$REPEATS" 1 1000
+int --build-threads "$BUILD_THREADS"; range --build-threads "$BUILD_THREADS" 1 1024
 # stoi in GRE: operations_num and table_size must fit in an int; so must the warm-up count (the patch checks it)
 range --ops "$OPS" 1 2147483647
 range --warmup "$WARMUP" 0 2147483647
@@ -118,6 +125,21 @@ table_size=$TABLE_SIZE
 read=$READ
 insert=$INSERT
 extra=${EXTRA[*]+${EXTRA[*]}}"
+# SCALE-LI cells: flow file per dataset with run_ba.py's PERIOD; recorded only when a scaleli_* index runs, so
+# OUTDIRs of the baseline indexes resume as before.
+period() { case $1 in fb|osm|planet) echo s512;; *) echo s64;; esac; }
+flow_cell() { case $1 in scaleli_n|scaleli_nc|scaleli_j|scaleli_jg0|scaleli_splice) return 0;; *) return 1;; esac; }
+case ",$INDEXES," in *,scaleli_*) CONFIG="$CONFIG
+flows=$FLOWS
+build_threads=$BUILD_THREADS
+scaleli_args=${SCALELI_ARGS-}";; esac
+for idx in "${IX[@]}"; do
+  flow_cell "$idx" || continue
+  for ds in "${DS[@]}"; do
+    f=$FLOWS/${ds}_$(period "$ds")_t2000.txt
+    [ -f "$f" ] && [ -r "$f" ] || die "$idx needs the flow file $f (--flows DIR)"
+  done
+done
 NRUNS=0
 [ -f "$OUT/runs.tsv" ] && NRUNS=$(( $(wc -l < "$OUT/runs.tsv") - 1 ))
 if [ "$NRUNS" -gt 0 ] && [ "$RESUME" = 0 ]; then
@@ -140,7 +162,7 @@ if [ "$WARMUP" != 0 ] || [ "$PIN" != -1 ]; then
   done
 fi
 # gre_lite.sh compiles its index list into get_index's error message: '(gre_lite: alex lipp ... sortedarray)'.
-KNOWN=$(grep -a -o 'gre_lite: [a-z ]*)' "$SRC" | sed -n '1{s/^gre_lite: //;s/)$//;p;}' || true)
+KNOWN=$(grep -a -o 'gre_lite: [a-z0-9_ ]*)' "$SRC" | sed -n '1{s/^gre_lite: //;s/)$//;p;}' || true)
 for idx in "${IX[@]}"; do
   case $idx in *[!a-z0-9_]*) die "index '$idx' is not a GRE index name";; esac
   if [ -n "$KNOWN" ]; then
@@ -228,6 +250,9 @@ check_run() {
   [ "$READ_ONLY" != 1 ] || [ "$sr" = "$OPS" ] || bad="${bad:+$bad, }success_read ${sr:-missing} != $OPS"
   [ "$WARMUP" = 0 ] || [ "$wsr" = "$WARMUP" ] || bad="${bad:+$bad, }warmup_success_read ${wsr:-missing} != $WARMUP"
   [ "$PIN" = -1 ] || [ "$pc" = "$PIN" ] || bad="${bad:+$bad, }not pinned to core $PIN"
+  case $log in *__scaleli_*)  # the facade prints scaleli_cell after bulk_load, scaleli_error on any failure
+    grep -q '^scaleli_cell: ' "$log" || bad="${bad:+$bad, }no scaleli_cell line"
+    ! grep -q 'scaleli_error' "$log" || bad="${bad:+$bad, }scaleli_error";; esac
   return 0
 }
 recorded_ok() {  # repeat dataset index: the last row for it passes the same checks as a fresh run
@@ -255,11 +280,14 @@ for r in $(seq 1 "$REPEATS"); do
       cmd=("$BIN" --keys_file="$DATA/$ds" --keys_file_type=binary --read="$READ" --insert="$INSERT"
            --operations_num="$OPS" --table_size="$TABLE_SIZE" --init_table_ratio="$INIT_RATIO" --thread_num=1 --memory
            --index="$idx" --output_path="$OUT/gre_out.csv" ${PATCH[@]+"${PATCH[@]}"} ${EXTRA[@]+"${EXTRA[@]}"})
-      echo "cmd: OMP_NUM_THREADS=1 ${cmd[*]}" > "$log"
+      runenv=(OMP_NUM_THREADS=1)
+      case $idx in scaleli_*) runenv+=(SCALELI_BUILD_THREADS="$BUILD_THREADS");; esac
+      if flow_cell "$idx"; then runenv+=(SCALELI_FLOW="$FLOWS/${ds}_$(period "$ds")_t2000.txt"); fi
+      echo "cmd: ${runenv[*]} ${cmd[*]}" > "$log"
       l1=$(load1); nb=$(busy); bnote=
       [ "$nb" = 0 ] || bnote="  BUSY ($nb other benchmark processes at the start: pids $({ pgrep -f "$BUSY" || true; } | tr '\n' ' '))"
       t0=$(now); rc=0
-      OMP_NUM_THREADS=1 "${cmd[@]}" >> "$log" 2>&1 & child=$!
+      env "${runenv[@]}" "${cmd[@]}" >> "$log" 2>&1 & child=$!
       wait "$child" || rc=$?
       child=
       wall=$(awk -v a="$t0" -v b="$(now)" 'BEGIN { printf "%.1f", b - a }')
