@@ -4,20 +4,23 @@ REPO = _os.environ.get("SPLICE_ROOT") or next(p for p in (_os.path.dirname(_os.p
 """Before/after NFL & CSV at 200M keys. Serial, resumable, stdlib only (Python >= 3.6).
 
   run_ba.py plan  <preset> [--datasets a,b] [--cells B,C] [--limit N] [--shuffle-seed S] > plan.json
-  run_ba.py run   plan.json out.jsonl              runs jobs one at a time, skips finished ones
+  run_ba.py run   plan.json out.jsonl [--jobs N]   runs jobs (one at a time by default), skips finished ones
   run_ba.py show  <cell> <dataset> [layer]         prints the exact bench command (layer D, V or E1; default v1 flags)
 
 Presets (layered, PROTOCOL.md; validate.py reads their output):
   validity  D layer (PROTOCOL 4.1): one instrumented run of B, Bb, N, Nf, Cr, C, NC, SV per dataset, seed 1001
   verify    V layer: the same cells with --verify 1 (std::map oracle, about 20 GB RAM at 200M); default dataset fb
   aa        night-0 E1 (PROTOCOL 5.2): fb, 10 x B and 10 x B2 in random order, seed 1001, 80 chunks, prefault 1
+  memory    one build per (dataset, B / N / C / NC), no counters, 100k lookups: bytes per key only (memory_report.py)
+  timing    throughput: B, B2, N, C, NC, SV x 3 blocks on fb, osm, planet, 4M warm-up, no counters (analyze_ba.py)
+  run ... --jobs N runs N jobs at once; allowed only for D, V and M (their results do not depend on load)
 v1 presets (prefault 0, 16 chunks, seed 1000 + block; kept for the record): aa_v1, e2, overnight, full, sweep, rss_check
 
 A v1 job is [dataset, cell, block, instrument, timeout]; a layered job appends {"layer", "rep", "limit"}. All cells
 of one v1 block, or of one layer, share the workload seed, so result_checksum must agree across them. --limit N
 loads only the first N rows of each file (smoke tests; validate.py flags such runs).
 """
-import json, os, random, subprocess, sys, time
+import concurrent.futures, json, os, random, subprocess, sys, threading, time
 
 BIN = _os.environ.get("SCALELI_BENCH") or _os.environ.get("SCALELI_BIN") or REPO + '/build-fs/scaleli_bench'  # override with your build
 THREADS = os.environ.get('SCALELI_BUILD_THREADS', '16')   # PROTOCOL: 16 build threads
@@ -47,8 +50,11 @@ def layer_flags(layer):                           # PROTOCOL 4.1 COMMON plus the
     if layer == 'E1':                             # night-0 A/A on build-fs (5.2)
         return base + ['--ops', '5000000', '--warmup', '4000000', '--warmup-mode', 'workload', '--prefault', '1',
                        '--chunks', '80', '--verify', '0']
+    if layer == 'M':                              # memory only: one build, no counted replay, a token 100k lookups
+        return base + ['--ops', '100000', '--warmup', '0', '--warmup-mode', 'workload', '--prefault', '0',
+                       '--chunks', '4', '--verify', '0']
     sys.exit(f'unknown layer {layer}')
-LAYER_INST = {'D': 1, 'V': 0, 'E1': 0}
+LAYER_INST = {'D': 1, 'V': 0, 'E1': 0, 'M': 0}
 
 PK = ['--policy', 'min_bytes', '--routing', 'rank']
 def cells(d):
@@ -111,6 +117,12 @@ def plan(preset, rng, datasets=None, limit=None):
     elif preset == 'aa':          # E1 (PROTOCOL 5.2): is run-level timing viable on this host? ~25 min at 200M
         order = [('B', i) for i in range(10)] + [('B2', i) for i in range(10)]; rng.shuffle(order)
         for c, i in order: layered((datasets or ['fb'])[0], c, 'E1', i)
+    elif preset == 'memory':      # memory footprint: one build per (dataset, cell); safe to run with --jobs N
+        for d in shuffled(datasets or DATASETS):
+            for c in ['B', 'N', 'C', 'NC']: layered(d, c, 'M')
+    elif preset == 'timing':      # throughput: v1 timed runs, 3 blocks, no counted rebuilds; always serial
+        for b in range(1, 4):
+            add(b, [(d, ['B', 'B2', 'N', 'C', 'NC', 'SV']) for d in shuffled(datasets or ['fb', 'osm', 'planet'])])
     elif preset == 'aa_v1':       # v1 E1: 5 blocks x (B, B2), prefault 0, 16 chunks
         for b in range(1, 6): add(b, [('fb', ['B', 'B2'])])
     elif preset == 'e2':          # E2: can any learned layout beat binary search? ~15 min
@@ -170,38 +182,52 @@ def done(out):
             m = json.loads(l)['ba']; k.add((m['dataset'], m['cell'], m['block'], m.get('layer', 'v1'), m.get('rep', 0)))
     return k
 
-def run(planfile, out):
+def execute(i, n, job, out, lock):
+    d, c, b, inst, timeout = job[:5]; opts = job[5] if len(job) > 5 else None
+    cmd = command(d, c, b, opts) + ['--instrument', str(inst)]
+    meta = {'dataset': d, 'cell': c, 'block': b, 'instrument': inst, 'cmd': cmd,
+            'loadavg_start': os.getloadavg(), 'other_cpu_start': other_cpu(),
+            'started': time.strftime('%Y-%m-%dT%H:%M:%S')}
+    if opts: meta.update(layer=opts['layer'], rep=opts.get('rep', 0), limit=opts.get('limit'))
+    print(time.strftime('%H:%M:%S'), f'[{i+1}/{n}] start', d, c, b, inst, (opts or {}).get('layer', ''), flush=True)
+    t0 = time.time(); rec = None
+    if not os.path.exists(data(d)):
+        meta['status'] = f'missing data file {data(d)} (download.sh; .sorted copies come from the pipeline sort step)'
+    else:
+        try:
+            p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, timeout=timeout)
+            meta['status'] = 'ok' if p.returncode == 0 else f'rc={p.returncode}: {p.stderr[-400:]}'
+            if p.returncode == 0: rec = json.loads(p.stdout)
+        except subprocess.TimeoutExpired:
+            meta['status'] = f'timeout>{timeout}s'
+        except OSError as e:
+            meta['status'] = f'could not start: {e}'
+    meta.update(wall_s=time.time() - t0, loadavg_end=os.getloadavg(), other_cpu_end=other_cpu())
+    r = rec or {}; r['ba'] = meta
+    with lock:
+        with open(out if rec else out + '.failed', 'a') as f: f.write(json.dumps(r) + '\n')
+    print(time.strftime('%H:%M:%S'), 'end', d, c, b, meta['status'], f"{meta['wall_s']:.0f}s",
+          f"thr={rec['throughput_ops_s']:.0f}" if rec else '', flush=True)
+
+PARALLEL_OK = {'D', 'V', 'M'}   # layers whose outputs (memory, counters, answers) do not depend on machine load
+def run(planfile, out, workers=1):
     if not os.access(BIN, os.X_OK):
         sys.exit(f'no benchmark binary at {BIN}: build it first (SERVER.md, step 1) or point SCALELI_BENCH at your build')
     jobs = json.load(open(planfile))
-    for i, job in enumerate(jobs):
-        d, c, b, inst, timeout = job[:5]; opts = job[5] if len(job) > 5 else None
-        if jkey(d, c, b, opts) in done(out):
-            continue
-        while others(): time.sleep(15)          # never two 200M jobs at once
-        cmd = command(d, c, b, opts) + ['--instrument', str(inst)]
-        meta = {'dataset': d, 'cell': c, 'block': b, 'instrument': inst, 'cmd': cmd,
-                'loadavg_start': os.getloadavg(), 'other_cpu_start': other_cpu(),
-                'started': time.strftime('%Y-%m-%dT%H:%M:%S')}
-        if opts: meta.update(layer=opts['layer'], rep=opts.get('rep', 0), limit=opts.get('limit'))
-        print(time.strftime('%H:%M:%S'), f'[{i+1}/{len(jobs)}] start', d, c, b, inst, (opts or {}).get('layer', ''), flush=True)
-        t0 = time.time(); rec = None
-        if not os.path.exists(data(d)):
-            meta['status'] = f'missing data file {data(d)} (download.sh; .sorted copies come from the pipeline sort step)'
-        else:
-            try:
-                p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, timeout=timeout)
-                meta['status'] = 'ok' if p.returncode == 0 else f'rc={p.returncode}: {p.stderr[-400:]}'
-                if p.returncode == 0: rec = json.loads(p.stdout)
-            except subprocess.TimeoutExpired:
-                meta['status'] = f'timeout>{timeout}s'
-            except OSError as e:
-                meta['status'] = f'could not start: {e}'
-        meta.update(wall_s=time.time() - t0, loadavg_end=os.getloadavg(), other_cpu_end=other_cpu())
-        r = rec or {}; r['ba'] = meta
-        with open(out if rec else out + '.failed', 'a') as f: f.write(json.dumps(r) + '\n')
-        print(time.strftime('%H:%M:%S'), 'end', d, c, b, meta['status'], f"{meta['wall_s']:.0f}s",
-              f"thr={rec['throughput_ops_s']:.0f}" if rec else '', flush=True)
+    finished = done(out)
+    todo = [(i, j) for i, j in enumerate(jobs) if jkey(j[0], j[1], j[2], j[5] if len(j) > 5 else None) not in finished]
+    lock = threading.Lock()
+    if workers > 1:
+        layers = {(j[5] if len(j) > 5 else {}).get('layer', 'v1') for _, j in todo}
+        if not layers <= PARALLEL_OK:
+            sys.exit(f'--jobs > 1 is refused for timed layers {sorted(layers - PARALLEL_OK)}: parallel runs would disturb the timing')
+        print(f'running {len(todo)} jobs, {workers} at a time (deterministic layers only)', flush=True)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as ex:
+            for f in [ex.submit(execute, i, len(jobs), j, out, lock) for i, j in todo]: f.result()
+    else:
+        for i, j in todo:
+            while others(): time.sleep(15)          # never two 200M jobs at once
+            execute(i, len(jobs), j, out, lock)
     print('PLAN DONE', flush=True)
 
 def opt(a, name, default=None):
@@ -217,7 +243,7 @@ if __name__ == '__main__':
         if cl: jobs = [j for j in jobs if j[1] in cl.split(',')]
         print(json.dumps(jobs))
     elif a[0] == 'run':
-        run(a[1], a[2])
+        run(a[1], a[2], int(opt(a, '--jobs', 1)))
     elif a[0] == 'show':
         layer = a[3] if len(a) > 3 else None
         print(' '.join(command(a[2], a[1], 1, {'layer': layer} if layer else None) + ['--instrument', str(LAYER_INST.get(layer, 1))]))
