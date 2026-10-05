@@ -3,7 +3,7 @@ import os as _os  # repo root: $SPLICE_ROOT, else the nearest ancestor holding w
 REPO = _os.environ.get("SPLICE_ROOT") or next(p for p in (_os.path.dirname(_os.path.abspath(__file__)).rsplit("/", i)[0] for i in range(12)) if _os.path.exists(p + "/walkthrough.py"))
 """Before/after NFL & CSV at 200M keys. Serial, resumable, stdlib only (Python >= 3.6).
 
-  run_ba.py plan  <preset> [--datasets a,b] [--limit N] [--shuffle-seed S] > plan.json
+  run_ba.py plan  <preset> [--datasets a,b] [--cells B,C] [--limit N] [--shuffle-seed S] > plan.json
   run_ba.py run   plan.json out.jsonl              runs jobs one at a time, skips finished ones
   run_ba.py show  <cell> <dataset> [layer]         prints the exact bench command (layer D, V or E1; default v1 flags)
 
@@ -211,8 +211,11 @@ if __name__ == '__main__':
     a = sys.argv[1:]
     if a[0] == 'plan':
         seed = int(opt(a, '--shuffle-seed', 20261002 if a[1] == 'aa' else 20261001))
-        ds = opt(a, '--datasets'); lim = opt(a, '--limit')
-        print(json.dumps(plan(a[1], random.Random(seed), ds.split(',') if ds else None, int(lim) if lim else None)))
+        ds = opt(a, '--datasets'); lim = opt(a, '--limit'); cl = opt(a, '--cells')
+        jobs = plan(a[1], random.Random(seed), ds.split(',') if ds else None, int(lim) if lim else None)
+        if ds: jobs = [j for j in jobs if j[0] in ds.split(',')]      # also narrows the v1 presets
+        if cl: jobs = [j for j in jobs if j[1] in cl.split(',')]
+        print(json.dumps(jobs))
     elif a[0] == 'run':
         run(a[1], a[2])
     elif a[0] == 'show':
