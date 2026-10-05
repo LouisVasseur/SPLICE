@@ -1,0 +1,22 @@
+{
+  "status": "locally_measured_source_transcription",
+  "contract": "static uint64 lower_bound; keys only, no payload",
+  "dataset": "bundled dense_sparse synthetic fixture",
+  "keys": 16384,
+  "queries": 100000,
+  "absent_queries": 8349,
+  "repeats_same_trace": 5,
+  "epsilon": 32,
+  "radix_bits": 10,
+  "key_bytes": 131072,
+  "auxiliary_index_bytes": 5908,
+  "build_ns": 509559,
+  "binary_ns_per_query_median": 78.4,
+  "radix_ns_per_query_median": 33.8287,
+  "mean_search_window_keys": 65.9195,
+  "max_search_window_keys": 66,
+  "verified": true,
+  "trace_fingerprint": "6904169734224255362",
+  "checksum": "10336956078313747101",
+  "caution": "Same-process warmed repeated trace. Not independent trials or paper reproduction."
+}

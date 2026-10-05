@@ -1,0 +1,81 @@
+{
+  "description": "Synthetic discovery sweep. Add verified real dataset paths before drawing empirical SOTA conclusions.",
+  "datasets": [
+    "linear",
+    "uniform",
+    "lognormal",
+    "dense_sparse",
+    "staircase",
+    "locally_hard",
+    "clustered"
+  ],
+  "profiles": [
+    "read_only",
+    "read_heavy",
+    "scan_heavy",
+    "write_heavy",
+    "churn",
+    "append",
+    "shift"
+  ],
+  "variants": [
+    {
+      "name": "sorted_vector",
+      "index": "sorted_vector"
+    },
+    {
+      "name": "ordered_map",
+      "index": "ordered_map"
+    },
+    {
+      "name": "raw_binary",
+      "policy": "raw",
+      "routing": "binary"
+    },
+    {
+      "name": "raw_rank",
+      "policy": "raw",
+      "routing": "rank"
+    },
+    {
+      "name": "packed_binary",
+      "policy": "min_bytes",
+      "routing": "binary"
+    },
+    {
+      "name": "packed_rank",
+      "policy": "min_bytes",
+      "routing": "rank"
+    },
+    {
+      "name": "packed_byte",
+      "policy": "min_bytes",
+      "routing": "byte"
+    },
+    {
+      "name": "smooth_byte",
+      "policy": "smooth",
+      "routing": "byte"
+    },
+    {
+      "name": "adaptive_byte",
+      "policy": "adaptive",
+      "routing": "byte"
+    }
+  ],
+  "seeds": [
+    11,
+    29,
+    43,
+    71,
+    101
+  ],
+  "repeats": 5,
+  "common": {
+    "n": 1000000,
+    "ops": 1000000,
+    "verify": 0,
+    "instrument": 1,
+    "warmup": 10000
+  }
+}

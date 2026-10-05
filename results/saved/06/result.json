@@ -1,0 +1,103 @@
+{
+  "status": "LOCAL EXPERIMENTAL MAP, not prior SOTA",
+  "verified": true,
+  "logical_rank_invariance_verified": true,
+  "geometry": [
+    {
+      "keys": 16384,
+      "regions": 4,
+      "blocks": 128,
+      "key_bytes": 133120,
+      "bytes_per_key": 8.125,
+      "codecs": {
+        "raw": 128
+      },
+      "rank_mae": 34.42683131607788,
+      "rank_p99": 79.20677843437397,
+      "byte_mae": 279.63942895029237,
+      "byte_p99": 645.0885163711864,
+      "rank_normalized_mse": 9.47166199335147e-05,
+      "byte_normalized_mse": 9.468897803580027e-05,
+      "rank_mean_block_error": 0.25274658203125,
+      "byte_mean_block_error": 0.252685546875,
+      "rank_p99_block_error": 1,
+      "byte_p99_block_error": 1,
+      "policy": "raw"
+    },
+    {
+      "keys": 16384,
+      "regions": 4,
+      "blocks": 128,
+      "key_bytes": 26624,
+      "bytes_per_key": 1.625,
+      "codecs": {
+        "linear": 128
+      },
+      "rank_mae": 34.42683131607788,
+      "rank_p99": 79.20677843437397,
+      "byte_mae": 23.858286665389993,
+      "byte_p99": 71.44028677211281,
+      "rank_normalized_mse": 9.47166199335147e-05,
+      "byte_normalized_mse": 1.9584483244034233e-05,
+      "rank_mean_block_error": 0.25274658203125,
+      "byte_mean_block_error": 0.30474853515625,
+      "rank_p99_block_error": 1,
+      "byte_p99_block_error": 1,
+      "policy": "min_bytes"
+    },
+    {
+      "keys": 16384,
+      "regions": 4,
+      "blocks": 128,
+      "key_bytes": 69632,
+      "bytes_per_key": 4.25,
+      "codecs": {
+        "linear": 64,
+        "raw": 64
+      },
+      "rank_mae": 34.42683131607788,
+      "rank_p99": 79.20677843437397,
+      "byte_mae": 52.54571608602909,
+      "byte_p99": 174.1646054919056,
+      "rank_normalized_mse": 9.47166199335147e-05,
+      "byte_normalized_mse": 1.406069922370435e-05,
+      "rank_mean_block_error": 0.25274658203125,
+      "byte_mean_block_error": 0.4111328125,
+      "rank_p99_block_error": 1,
+      "byte_p99_block_error": 2,
+      "policy": "smooth"
+    }
+  ],
+  "update_controls": [
+    {
+      "policy": "raw",
+      "trace_fingerprint": "15056163051654466426",
+      "checksum": "17727645650178343746",
+      "verified": true,
+      "insert_p50_ns": 220,
+      "insert_p99_ns": 173552,
+      "compactions": 25,
+      "drain_ns": 558734
+    },
+    {
+      "policy": "min_bytes",
+      "trace_fingerprint": "15056163051654466426",
+      "checksum": "17727645650178343746",
+      "verified": true,
+      "insert_p50_ns": 291,
+      "insert_p99_ns": 273533,
+      "compactions": 25,
+      "drain_ns": 848351
+    }
+  ],
+  "warning": "Geometry has full initial fixture; dynamic experiment has 75% initial load. Geometry error and mutation timing are not one combined metric.",
+  "lesson": "06",
+  "title": "Project controls: byte geometry and update cost",
+  "environment": {
+    "system": "Linux-6.18.35-x86_64-with-glibc2.41",
+    "python": "3.13.5",
+    "fixture_sha256": "621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca",
+    "radix_binary_sha256": "bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863",
+    "experimental_binary_sha256": "6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884"
+  }
+}

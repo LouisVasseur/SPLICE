@@ -1,0 +1,10 @@
+books_window     alpha=32.0 flow=0 wall=  27.0s  est bin/raw/flow/vp_raw/vp_flow = 8.96/14.24/0.00/11.50/0.00  chosen model=False flow=False vp=False virt=0  measured root/op=8.96
+fb_window        alpha=32.0 flow=0 wall=  16.1s  est bin/raw/flow/vp_raw/vp_flow = 8.96/14.34/0.00/13.81/0.00  chosen model=False flow=False vp=False virt=0  measured root/op=8.96
+history_window   alpha=32.0 flow=0 wall=  17.4s  est bin/raw/flow/vp_raw/vp_flow = 8.96/14.33/0.00/13.76/0.00  chosen model=False flow=False vp=False virt=0  measured root/op=8.96
+libio_window     alpha=32.0 flow=0 wall=  14.1s  est bin/raw/flow/vp_raw/vp_flow = 8.96/14.35/0.00/13.91/0.00  chosen model=False flow=False vp=False virt=0  measured root/op=8.96
+planet_window    alpha=32.0 flow=0 wall=  19.3s  est bin/raw/flow/vp_raw/vp_flow = 8.96/14.14/0.00/10.94/0.00  chosen model=False flow=False vp=False virt=0  measured root/op=8.96
+stack_window     alpha=32.0 flow=0 wall=  16.5s  est bin/raw/flow/vp_raw/vp_flow = 8.96/14.34/0.00/13.79/0.00  chosen model=False flow=False vp=False virt=0  measured root/op=8.96
+wise_window      alpha=32.0 flow=0 wall=   4.9s  est bin/raw/flow/vp_raw/vp_flow = 8.96/14.37/0.00/14.25/0.00  chosen model=False flow=False vp=False virt=0  measured root/op=8.96
+covid_window     alpha=32.0 flow=0 wall=   0.5s  est bin/raw/flow/vp_raw/vp_flow = 8.96/14.38/0.00/14.37/0.00  chosen model=False flow=False vp=False virt=0  measured root/op=8.96
+planet_window    alpha=63.0 flow=0 wall=  19.3s  est bin/raw/flow/vp_raw/vp_flow = 8.96/14.14/0.00/10.94/0.00  chosen model=False flow=False vp=False virt=0  measured root/op=8.96
+books_window     alpha=63.0 flow=0 wall=  27.0s  est bin/raw/flow/vp_raw/vp_flow = 8.96/14.24/0.00/11.50/0.00  chosen model=False flow=False vp=False virt=0  measured root/op=8.96

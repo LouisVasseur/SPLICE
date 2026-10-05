@@ -1,0 +1,23 @@
+build*/
+/external/
+external.lock.json
+__pycache__/
+*.pyc
+.DS_Store
+data/downloads/
+results/local*/
+
+# Datasets are fetched and sampled on each machine (data/external/gre/download.sh, tools/aidb_pipeline.py).
+# The 1.6 GB GRE files, their .sorted copies and the 16 MB samples carry third-party terms and are never committed;
+# the download script and the sample manifests (seed, source hash) are.
+data/external/*
+!data/external/gre/
+data/external/gre/*
+!data/external/gre/download.sh
+!data/external/gre/download.sh.fn
+data/samples/*
+!data/samples/*.manifest.json
+
+# Compiled demos and key copies written by the reading-guide scratch scripts (sources are kept).
+results/aidb/guide_deep/scratch/*
+!results/aidb/guide_deep/scratch/*.*

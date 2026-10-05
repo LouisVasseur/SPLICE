@@ -1,0 +1,164 @@
+{
+  "review_date": "2026-09-07",
+  "sources": [
+    {
+      "id": "R01",
+      "citation": "Wu et al. (2022). NFL: Robust Learned Index via Distribution Transformation. PVLDB 15(10), 2188\u20132200.",
+      "urls": [
+        "https://arxiv.org/abs/2205.11807",
+        "https://github.com/luffy06/NFL"
+      ],
+      "note": "Primary basis: supplied 2205.11807v1.pdf; sections 3\u20134 for implementation and evaluation caveats."
+    },
+    {
+      "id": "R02",
+      "citation": "Amarasinghe et al. Learned Indexes with Distribution Smoothing via Virtual Points.",
+      "urls": [
+        "https://arxiv.org/abs/2408.06134",
+        "https://openproceedings.org/2025/conf/edbt/paper-204.pdf"
+      ],
+      "note": "Primary basis: supplied 2408.06134v3.pdf. Separately located published EDBT 2025 version; do not silently conflate version metadata. Sections 4\u20136 and page 11 tables support the discussion."
+    },
+    {
+      "id": "R03",
+      "citation": "Kraska et al. (2018). The Case for Learned Index Structures. SIGMOD.",
+      "urls": [
+        "https://doi.org/10.1145/3183713.3196909",
+        "https://arxiv.org/abs/1712.01208",
+        "https://github.com/learnedsystems/rmi"
+      ],
+      "note": "Foundational key-to-position model perspective."
+    },
+    {
+      "id": "R04",
+      "citation": "Galakatos et al. (2019). FITing-Tree: A Data-aware Index Structure. SIGMOD.",
+      "urls": [
+        "https://doi.org/10.1145/3299869.3319860",
+        "https://arxiv.org/abs/1801.10207"
+      ],
+      "note": "Error-bounded piecewise-linear fitting and cost trade-offs."
+    },
+    {
+      "id": "R05",
+      "citation": "Ding et al. (2020). ALEX: An Updatable Adaptive Learned Index. SIGMOD.",
+      "urls": [
+        "https://doi.org/10.1145/3318464.3389711",
+        "https://github.com/microsoft/ALEX"
+      ],
+      "note": "Official API inspected for an optional uncompiled bridge."
+    },
+    {
+      "id": "R06",
+      "citation": "Ferragina and Vinciguerra (2020). The PGM-index: A fully-dynamic compressed learned index with provable worst-case bounds. PVLDB 13(8), 1162\u20131175.",
+      "urls": [
+        "https://www.vldb.org/pvldb/vol13/p1162-ferragina.pdf",
+        "https://github.com/gvinciguerra/PGM-index",
+        "https://pgm.di.unipi.it/docs/"
+      ],
+      "note": "Distinguish compact model/index representation from encoded source-key storage."
+    },
+    {
+      "id": "R07",
+      "citation": "Wu et al. (2021). Updatable Learned Index with Precise Positions. PVLDB 14(8), 1276\u20131288.",
+      "urls": [
+        "https://vldb.org/pvldb/vol14/p1276-wu.pdf"
+      ],
+      "note": "LIPP: predicted placement and conflict handling."
+    },
+    {
+      "id": "R08",
+      "citation": "Ge et al. (2023). SALI: A Scalable Adaptive Learned Index Framework based on Probability Models. PACMMOD 1(4), Article 258.",
+      "urls": [
+        "https://doi.org/10.1145/3626752",
+        "https://arxiv.org/abs/2308.15012"
+      ],
+      "note": "Workload-aware evolution and concurrency context."
+    },
+    {
+      "id": "R09",
+      "citation": "Boffa, Ferragina and Vinciguerra (2022). A Learned Approach to Design Compressed Rank/Select Data Structures. ACM Transactions on Algorithms 18(3).",
+      "urls": [
+        "https://doi.org/10.1145/3524060",
+        "https://github.com/gvinciguerra/la_vector"
+      ],
+      "note": "LA-vector; compressed random access and rank/select baseline. Earlier ALENEX 2021 version is linked by the official repository."
+    },
+    {
+      "id": "R10",
+      "citation": "Liu, Zeng and Zhang (2024). LeCo: Lightweight Compression via Learning Serial Correlations. PACMMOD / SIGMOD.",
+      "urls": [
+        "https://doi.org/10.1145/3639320",
+        "https://arxiv.org/abs/2306.15374",
+        "https://github.com/yhliu918/Learn-to-Compress"
+      ],
+      "note": "Model-plus-residual representation and random access; not reproduced by the simple integer-secant codec."
+    },
+    {
+      "id": "R11",
+      "citation": "Bellomo, Cianci, de Rosa, Ferragina and Odorisio (2025). A Comparative Study of Compressed, Learned, and Traditional Indexing Methods for Integer Data. SEA.",
+      "urls": [
+        "https://doi.org/10.4230/LIPIcs.SEA.2025.5",
+        "https://github.com/LorenzoBellomo/SortedStaticIndexBenchmark",
+        "https://github.com/mattiaodorisio/S-Tree"
+      ],
+      "note": "Expanded static frontier including compressed representations and SIMD traditional indexes."
+    },
+    {
+      "id": "R12",
+      "citation": "Luo, Xie, Tong, Jiang and Chai (2025). Understanding Robustness Issues of Updatable Learned Indexes: [Experiments & Analysis]. PACMMOD 3(4), Article 270; SIGMOD 2026 conference program.",
+      "urls": [
+        "https://doi.org/10.1145/3749188",
+        "https://minhui-xie.github.io/papers/sigmod26-robust_learned_index.pdf",
+        "https://github.com/cds-ruc/RoBin"
+      ],
+      "note": "RoBin: bulk sampling, initial cardinality, and insertion-order robustness grid. Publication year is 2025 despite the author PDF filename."
+    },
+    {
+      "id": "R13",
+      "citation": "Chen and Chen (2026). LINE: A Learned Index with Group-Enhanced Leaves and Cache-Optimized Inner Tree. PACMMOD 4(3), Article 203.",
+      "urls": [
+        "https://doi.org/10.1145/3802080",
+        "https://www.shimin-chen.com/papers/LINE-pacmmod26.pdf",
+        "https://github.com/schencoding/line"
+      ],
+      "note": "Recent dynamic frontier; no local reproduction or adapter is claimed."
+    },
+    {
+      "id": "R14",
+      "citation": "Zhu et al. (2026). LICO: An SIMD-Aware High-Performance Learned Inverted Index Compression Framework. PACMMOD / SIGMOD.",
+      "urls": [
+        "https://doi.org/10.1145/3802079",
+        "https://github.com/xianyuzhuruc/LICO",
+        "https://2026.sigmod.org/sigmod_papers.shtml"
+      ],
+      "note": "Adjacent compressed-postings work; check ISA requirements and different operation semantics."
+    },
+    {
+      "id": "R15",
+      "citation": "Croquevielle, Sokolovskii and Heinis (2026). Lower Bounds for the Algorithmic Complexity of Learned Indexes. ICDT.",
+      "urls": [
+        "https://doi.org/10.4230/LIPIcs.ICDT.2026.14"
+      ],
+      "note": "Model-class/distribution-dependent lower-bound context; no direct theorem is transferred to this design."
+    },
+    {
+      "id": "R16",
+      "citation": "SOSD / Search on Sorted Data. Official benchmark repository and dataset acquisition script.",
+      "urls": [
+        "https://github.com/learnedsystems/SOSD",
+        "https://raw.githubusercontent.com/learnedsystems/SOSD/master/scripts/download.sh"
+      ],
+      "note": "Static equality-lookup benchmark; source for SOSD manifest URLs and upstream checksums."
+    },
+    {
+      "id": "R17",
+      "citation": "Wongkham et al. (2022). Are Updatable Learned Indexes Ready? PVLDB 15(11), 3004\u20133017. GRE official artifact.",
+      "urls": [
+        "https://www.vldb.org/pvldb/vol15/p3004-wongkham.pdf",
+        "https://github.com/gre4index/GRE",
+        "https://raw.githubusercontent.com/gre4index/GRE/master/datasets/download.sh"
+      ],
+      "note": "Dynamic benchmark and real-data acquisition source."
+    }
+  ]
+}

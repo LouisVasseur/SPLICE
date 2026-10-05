@@ -1,0 +1,90 @@
+{
+ "description": "pilot uniform",
+ "datasets": [
+  {
+   "name": "fb",
+   "data": "data/samples/fb_2M_uniform_s42",
+   "format": "sosd",
+   "dtype": "uint64",
+   "flow_weights": "results/aidb_pilot/flows/fb_uniform_2D2H2L.txt"
+  },
+  {
+   "name": "osm",
+   "data": "data/samples/osm_2M_uniform_s42",
+   "format": "sosd",
+   "dtype": "uint64",
+   "flow_weights": "results/aidb_pilot/flows/osm_uniform_2D2H2L.txt"
+  },
+  {
+   "name": "planet",
+   "data": "data/samples/planet_2M_uniform_s42",
+   "format": "sosd",
+   "dtype": "uint64",
+   "flow_weights": "results/aidb_pilot/flows/planet_uniform_2D2H2L.txt"
+  }
+ ],
+ "profiles": [
+  "read_only"
+ ],
+ "variants": [
+  {
+   "name": "sorted_vector",
+   "index": "sorted_vector"
+  },
+  {
+   "name": "packed_rank",
+   "policy": "min_bytes",
+   "routing": "rank"
+  },
+  {
+   "name": "packed_rank_flow",
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "flow-bypass": 1
+  },
+  {
+   "name": "packed_rank_flow_forced",
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "flow-bypass": 0
+  },
+  {
+   "name": "packed_rank_vp10",
+   "policy": "min_bytes",
+   "routing": "rank",
+   "virtual-alpha": 0.1
+  },
+  {
+   "name": "packed_rank_flow_vp10",
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "flow-bypass": 1,
+   "virtual-alpha": 0.1
+  },
+  {
+   "name": "packed_rank_fusion_auto",
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "virtual-alpha": 0.1,
+   "fusion": "auto"
+  }
+ ],
+ "seeds": [
+  11
+ ],
+ "repeats": 1,
+ "common": {
+  "load-ratio": 1,
+  "miss": 0,
+  "query-distribution": "uniform",
+  "ops": 1000000,
+  "warmup": 200000,
+  "verify": 0,
+  "instrument": 1,
+  "latency": 0
+ }
+}

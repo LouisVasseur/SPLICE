@@ -1,0 +1,26 @@
+[
+ {
+  "cell": "B osm-uniform k=64 G->T->V",
+  "gaps_match": true,
+  "virt_indep": 1696,
+  "virt_stored": 1696,
+  "model_indep": 4.670419651995906,
+  "model_stored": 4.670419651995906,
+  "charge_indep": 7,
+  "charge_stored": 7.0,
+  "mono_violations": 0,
+  "V_seconds": 62.304110050201416
+ },
+ {
+  "cell": "B osm-uniform k=1 G->V",
+  "gaps_match": true,
+  "virt_indep": 1956,
+  "virt_stored": 1956,
+  "model_indep": 8.014329580348004,
+  "model_stored": 8.014329580348004,
+  "charge_indep": 1,
+  "charge_stored": 1.0,
+  "mono_violations": 0,
+  "V_seconds": 70.90033292770386
+ }
+]

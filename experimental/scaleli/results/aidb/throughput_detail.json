@@ -1,0 +1,2322 @@
+{
+  "sorted_vector": {
+    "books": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.10800109879,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.12231458103,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.00663602153,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "covid": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.54775095476,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.8734128761399997,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.14526814726,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "fb": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.5216372234,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.35392362948,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.33719335365,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "genome": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.9122530864400002,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.10350579774,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 5.69712515943,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "history": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.80823871977,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.84281742902,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.8751184938599996,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "libio": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.7467336447800004,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.55839752905,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.78952477656,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "osm": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.43292032962,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.71108354855,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.58092709565,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "planet": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.45368862579,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.33491857727,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.22087080996,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "stack": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.18480591715,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.79512942577,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.75793754282,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "wise": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.11912524457,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.90414415649,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.73601330021,
+        "verified": false,
+        "operations": 1000000
+      }
+    ]
+  },
+  "raw_rank": {
+    "books": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.20171014353,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.15473585002,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.74375050802,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "covid": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.40935097283,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.49320215176,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.2075518601,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "fb": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.9056879026700004,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.10523646054,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.76863391821,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "genome": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.47600952771,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.4042200775,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.56568199136,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "history": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.40815449274,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.25056448084,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.21263464955,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "libio": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.57149128937,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.2932643723300004,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.68546882987,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "osm": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.71879780199,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.05822243255,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.94999101772,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "planet": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.1354777181099998,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.27990728437,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.20814784344,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "stack": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.92604137527,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.51045273459,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.70528826368,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "wise": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.05750011459,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.9917099716699997,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.1705339100799996,
+        "verified": false,
+        "operations": 1000000
+      }
+    ]
+  },
+  "packed_rank": {
+    "books": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.00402776314,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.2192207261899997,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.14387567216,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "covid": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.21738298588,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.13828788892,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.25750429532,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "fb": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.6381140627,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.6484289984,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.4964062173,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "genome": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.41708881989,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.67573174614,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.47582051787,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "history": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.79623356399,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.82027117172,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.81580681313,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "libio": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.82435378814,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.13986283509,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.76173923036,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "osm": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.82575705016,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.2602443439,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 1.9317229322899998,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "planet": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.78901258674,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.51851845845,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.83820292087,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "stack": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.9417136275,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.94517050293,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.78951829463,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "wise": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.4820873465,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.46586928673,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.5983049786,
+        "verified": false,
+        "operations": 1000000
+      }
+    ]
+  },
+  "packed_rank_flow": {
+    "books": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.92680346844,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 1.95140021757,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 1.98694823379,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "covid": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.0737646720700003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.1870581759700003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.15193581421,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "fb": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.48503800243,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.49745701434,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.60250254927,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "genome": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.40001367816,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.66754132146,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.72107516689,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "history": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.7532003634700004,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.71824075458,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.9240617479699997,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "libio": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.04326688614,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.9750124951999997,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.01448119689,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "osm": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.00562008442,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.05838524107,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.03796127587,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "planet": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.67256739615,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.53175292876,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.5046685958099997,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "stack": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.9972810943800003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.9043836952300004,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.09899987527,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "wise": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.35557965293,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.40400819902,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.6940193395699996,
+        "verified": false,
+        "operations": 1000000
+      }
+    ]
+  },
+  "packed_rank_flow_forced": {
+    "books": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.06574704772,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.82895770444,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 1.8908181724,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "covid": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.07452578285,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.0426983562400003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.09046395816,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "fb": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.99763673814,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.54631454606,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.41876380402,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "genome": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.7869576369,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.43166859275,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.49199033189,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "history": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.552131816,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.82469485295,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.73386320159,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "libio": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.77725833018,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.81946473872,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.80939747614,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "osm": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 1.9436026453,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 1.88146179233,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.91347352328,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "planet": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.91003376003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.6110989985099997,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.634374504,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "stack": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.07913334516,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.9063821609200002,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.83360972835,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "wise": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.33191915573,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.41005160222,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.60509834888,
+        "verified": false,
+        "operations": 1000000
+      }
+    ]
+  },
+  "packed_rank_vp10": {
+    "books": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.33271743295,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 1.91543436941,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.0629732912,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "covid": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.38664362817,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.27151816426,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.11157732979,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "fb": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.45395811997,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.56804489493,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.50816852802,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "genome": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.33922278518,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.58767557198,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.58141847432,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "history": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.0177029773,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.7170387538000003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.77874487362,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "libio": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.1936637710799998,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.1122688751300003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.03658669436,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "osm": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.85153426229,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 1.97585325934,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 1.91817987993,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "planet": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.81408831102,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.54247388221,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.46180383339,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "stack": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.75780158835,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.03790469637,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.9836714818699996,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "wise": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.2351001241,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.5793041960200003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.42331495552,
+        "verified": false,
+        "operations": 1000000
+      }
+    ]
+  },
+  "packed_rank_flow_vp10": {
+    "books": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.30843411589,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.12172101278,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 1.97699437285,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "covid": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.24722699212,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.2430763975800003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.1894348275,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "fb": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.74491221942,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.58681178681,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.4670187836000004,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "genome": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.68497791533,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.73926604834,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.4845296599099997,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "history": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.67886862034,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.83364385347,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.95046464611,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "libio": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.02106095486,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.93700383469,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.04394274403,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "osm": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.97549659999,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.07852962187,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.1115881022100003,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "planet": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.85118489898,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.8284425855800004,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.5628342897,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "stack": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.9170872668900003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.0180798070800003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.80216144723,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "wise": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.67688911371,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.43836276132,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.47312078168,
+        "verified": false,
+        "operations": 1000000
+      }
+    ]
+  },
+  "packed_byte": {
+    "books": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.16594827722,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.00916530985,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.99306231749,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "covid": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 1.9173759559599999,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.07593618884,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.24670107389,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "fb": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.40647993043,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.50004166944,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.6019766087000002,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "genome": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.49602534173,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.46359297376,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.61329932434,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "history": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.8163943226,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.8984044098200004,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.78662013371,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "libio": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.0379346904799998,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.17258128352,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.05223208771,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "osm": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 1.89589648335,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 1.9739216953799998,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.99102264217,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "planet": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.69748604174,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.58671978065,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.48329338302,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "stack": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.11515440847,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.1575449141000003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.1182972881900004,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "wise": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.5937912181000002,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.6666139246,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.57417677653,
+        "verified": false,
+        "operations": 1000000
+      }
+    ]
+  },
+  "packed_rank_fusion_auto": {
+    "books": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.05347136768,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.9878594782199999,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.07414157617,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "covid": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 1.94307801531,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.38086403956,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.20401096936,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "fb": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.7628729760099997,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.54730559184,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.47972207275,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "genome": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.5138937123500003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.84963305631,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.4515246726899997,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "history": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.76567570331,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.72179202787,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.7728485849799998,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "libio": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.15297734342,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.90344906202,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.94655538144,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "osm": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.10865643002,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.90787416356,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 1.9955174054,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "planet": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.52052865356,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.5845648089,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.6304468722600003,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "stack": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.01212795973,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.11273065657,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.96019975025,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "wise": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.48328773429,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.663093094,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.43860407601,
+        "verified": false,
+        "operations": 1000000
+      }
+    ]
+  },
+  "packed_rank_flow_costsel": {
+    "books": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.7964547884500002,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.1244943039699997,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.02214399334,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "covid": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.37604542286,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.2628792479500004,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.09356034071,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "fb": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.83952865244,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.69089005898,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.52304963532,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "genome": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.48073758739,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.44685507247,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.4296000605000003,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "history": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.59915505576,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.9977101271700004,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.6786820414,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "libio": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.7950101098199998,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.89963178301,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.90682781151,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "osm": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.26935011357,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 1.82523954827,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.00945919559,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "planet": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.60134177209,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.60068413389,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.62964074298,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "stack": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.88369655294,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.8918958687200003,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 3.12214575387,
+        "verified": false,
+        "operations": 1000000
+      }
+    ],
+    "wise": [
+      {
+        "seed": 47,
+        "repeat": 0,
+        "mops": 2.60185250181,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.48056836846,
+        "verified": false,
+        "operations": 1000000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.48563046464,
+        "verified": false,
+        "operations": 1000000
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+-- The CXX compiler identification is GNU 14.2.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (0.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /mnt/data/sota_build/sanitize
+[ 50%] Building CXX object CMakeFiles/radix_walkthrough.dir/native/radix_walkthrough.cpp.o
+[100%] Linking CXX executable radix_walkthrough
+[100%] Built target radix_walkthrough
+PASS radix_differential checks=1159528

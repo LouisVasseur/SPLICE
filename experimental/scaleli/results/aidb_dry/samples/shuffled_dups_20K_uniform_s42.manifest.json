@@ -1,0 +1,11 @@
+{
+  "source": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/shuffled_dups.sorted",
+  "source_count": 50000,
+  "source_sha256": "c1ebf163142adb8667aea91ae89c671c295061d65113bf85401a92bc96bad1cd",
+  "mode": "uniform",
+  "seed": 42,
+  "sample_count": 20000,
+  "dtype": "uint64",
+  "sample_sha256": "5ade78b169e4d3ccad50f4cb5cb0ba54eaf68ec816faeebf522ee48821820e0e",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

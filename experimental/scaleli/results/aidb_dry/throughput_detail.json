@@ -1,0 +1,822 @@
+{
+  "sorted_vector": {
+    "clustered": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 20.195206869600003,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 20.4813108039,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "dense_sparse_fixture": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 21.738161668900002,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 21.210774649300003,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "locally_hard": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 20.646930266,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 20.4918032787,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "lognormal": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 20.4664718259,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 20.517197515,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "shuffled_dups": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 20.5242298796,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 20.6825232678,
+        "verified": false,
+        "operations": 20000
+      }
+    ]
+  },
+  "raw_rank": {
+    "clustered": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 9.266767056639999,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 9.442126140200001,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "dense_sparse_fixture": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 10.7312890585,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 10.8452518132,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "locally_hard": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 10.9172748953,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 10.7908797642,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "lognormal": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 9.08059023837,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 8.93405550282,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "shuffled_dups": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 9.06173442503,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 9.047898670770001,
+        "verified": false,
+        "operations": 20000
+      }
+    ]
+  },
+  "packed_rank": {
+    "clustered": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.9673683949500003,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.9894280157599997,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "dense_sparse_fixture": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 5.0483276405,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.99199159748,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "locally_hard": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.32677238373,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.21132493005,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "lognormal": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.340238218310001,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.3618522867400005,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "shuffled_dups": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.36018816828,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.35955423558,
+        "verified": false,
+        "operations": 20000
+      }
+    ]
+  },
+  "packed_rank_flow": {
+    "clustered": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.76482352201,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.9651070578899996,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "dense_sparse_fixture": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.977343134050001,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 5.0126356011899995,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "locally_hard": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.31748350298,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.3559625890700002,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "lognormal": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.222972972969999,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.23045398059,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "shuffled_dups": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.22382737049,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.2244973957,
+        "verified": false,
+        "operations": 20000
+      }
+    ]
+  },
+  "packed_rank_flow_forced": {
+    "clustered": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.49604509898,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.38242529026,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "dense_sparse_fixture": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.28487292031,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.23698921241,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "locally_hard": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 2.74257492406,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 2.97903518881,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "lognormal": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.87719000654,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.910800889,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "shuffled_dups": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.91692821955,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.90895343831,
+        "verified": false,
+        "operations": 20000
+      }
+    ]
+  },
+  "packed_rank_vp10": {
+    "clustered": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.9701248108000002,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.95827268105,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "dense_sparse_fixture": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 5.03292286492,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 5.01258283606,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "locally_hard": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.37095203439,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.35228323173,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "lognormal": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.425799044820001,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.41452378325,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "shuffled_dups": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.44144202963,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.488162135750001,
+        "verified": false,
+        "operations": 20000
+      }
+    ]
+  },
+  "packed_rank_flow_vp10": {
+    "clustered": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.91657691178,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.97436534353,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "dense_sparse_fixture": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.94722914353,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.97749673725,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "locally_hard": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.26828519776,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.30751651319,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "lognormal": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.3644689456000005,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.3460942628699994,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "shuffled_dups": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.31115781532,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.27213499947,
+        "verified": false,
+        "operations": 20000
+      }
+    ]
+  },
+  "packed_byte": {
+    "clustered": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.95071483246,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.95497889327,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "dense_sparse_fixture": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.88589361895,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.95161896896,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "locally_hard": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.32060434999,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.2956166486,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "lognormal": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.39447728462,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.36018816828,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "shuffled_dups": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.3022706524,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.38712807848,
+        "verified": false,
+        "operations": 20000
+      }
+    ]
+  },
+  "packed_rank_fusion_auto": {
+    "clustered": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.9906220382099997,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.99294526431,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "dense_sparse_fixture": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.9248456245600005,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 5.0336094100299995,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "locally_hard": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.14341846758,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.35932104091,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "lognormal": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.4595166196200005,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.49001006436,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "shuffled_dups": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.36653383671,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.485939383740001,
+        "verified": false,
+        "operations": 20000
+      }
+    ]
+  },
+  "packed_rank_flow_costsel": {
+    "clustered": [
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.9475302178500002,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.98250961428,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "dense_sparse_fixture": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 5.04132754286,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 5.03382098474,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "locally_hard": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 3.35509503894,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 3.3138643801,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "lognormal": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.37261979175,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.34959902134,
+        "verified": false,
+        "operations": 20000
+      }
+    ],
+    "shuffled_dups": [
+      {
+        "seed": 29,
+        "repeat": 0,
+        "mops": 4.31841020319,
+        "verified": false,
+        "operations": 20000
+      },
+      {
+        "seed": 11,
+        "repeat": 0,
+        "mops": 4.33827716168,
+        "verified": false,
+        "operations": 20000
+      }
+    ]
+  }
+}

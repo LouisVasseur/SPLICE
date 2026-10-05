@@ -1,0 +1,46 @@
+{
+ "dataset": "genome",
+ "mode": "window",
+ "k": 1,
+ "order": "GTV",
+ "pert": "-x2@0.001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.6755373592630503,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.6755373592630503,
+   "virt": 155,
+   "gaps": [
+    429
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model": 2.6734902763561923,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.6734902763561923,
+   "virt": 155,
+   "gaps": [
+    429
+   ]
+  },
+  {
+   "round": 3,
+   "accepted": false,
+   "model": 2.6734902763561923,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.6734902763561923,
+   "virt": 155,
+   "gaps": [
+    429
+   ]
+  }
+ ],
+ "seconds": 2.3749990463256836
+}

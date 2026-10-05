@@ -1,0 +1,170 @@
+[
+  {
+    "slide": 1,
+    "title": "Learned indexes: from positions to compressed layouts",
+    "lesson": null,
+    "source": "SCALE-LI research workspace • 8 September 2026",
+    "notes": "Open with the purpose, not the implementation. Say: I organized the existing approaches and their evidence so we can agree on a baseline before choosing a new contribution. The custom compressed map is one experimental control, not a replacement for the state of the art. Spend about 30 seconds here."
+  },
+  {
+    "slide": 2,
+    "title": "Three evidence labels — three different claims",
+    "lesson": null,
+    "source": "Coverage: docs/APPROACHES.md • Raw evidence: results/saved/",
+    "notes": "Explain the three labels once. Published means a number is taken from a paper in its own experimental setup. Teaching means independently written code that explains a mechanism, not an implementation of that paper. Local measurement means compiled code was actually executed on the bundled synthetic fixture. RadixSpline is source-derived but not an exact commit-pinned checkout. There is no complete upstream ALEX, PGM, NFL or CSV reproduction in this release."
+  },
+  {
+    "slide": 3,
+    "title": "The history is branching, not a single leaderboard",
+    "lesson": null,
+    "source": "Primary-source registry: sources/registry.json",
+    "notes": "Present the history as parallel design choices. Early work learns rank; later work adds explicit error bounds and cheaper construction. Dynamic indexes change placement and maintenance. Another branch compresses representations. NFL and CSV change what the models see. Recent work strengthens robustness evaluation. Publication order is not a universal performance ranking."
+  },
+  {
+    "slide": 4,
+    "title": "Start with the task: exact ordered lookup",
+    "lesson": "01",
+    "source": "Fixture: evidence/dense_sparse_fixture_uint64 • SHA-256 in its manifest",
+    "notes": "The use case is an ordered map over integer keys: find a record or scan its successors. The live fixture contains 16,384 synthetic, distinct uint64 keys. The plot shows only the first 1,024 records to expose local density changes. These are not Facebook or OpenStreetMap data. Lesson 01 loads this exact checksummed file. Rank is the position in sorted order."
+  },
+  {
+    "slide": 5,
+    "title": "2018 · predict rank, then specialize",
+    "lesson": "01",
+    "source": "Kraska et al., SIGMOD 2018 • L01 is NOT the authors’ RMI implementation",
+    "notes": "Show lesson 01. A root prediction selects a leaf model, then the leaf predicts a rank and an exact expanding-window search resolves the answer. The capacity sweep changes the leaf count while keeping the keys fixed. The root is additional. It measures mean absolute fitting error, not throughput or total model memory. This is our teaching model, not the original RMI implementation. Every stored key and a selection of missing keys are checked against bisect."
+  },
+  {
+    "slide": 6,
+    "title": "2019 · make prediction error an explicit parameter",
+    "lesson": null,
+    "source": "Galakatos et al., SIGMOD 2019 • https://arxiv.org/abs/1801.10207",
+    "notes": "FITing-Tree makes the error tolerance an explicit control. A tighter tolerance can require more segments but reduce final correction work. The paper also supplies a cost model for choosing the parameter. Do not imply that our two-stage model implements FITing-Tree. There is no local FITing-Tree executable in this pack. The next native demonstration uses RadixSpline to illustrate bounded final search."
+  },
+  {
+    "slide": 7,
+    "title": "2020 · build a hierarchy of bounded models",
+    "lesson": null,
+    "source": "Ferragina & Vinciguerra, PVLDB 2020, §§2–4 • doi:10.14778/3389133.3389135",
+    "notes": "PGM recursively indexes the keys identifying its linear segments. The paper includes static, dynamic and compressed-model variants. The important distinction for this project is that compressing model parameters is not the same as compressing stored keys. The inherited Dynamic PGM adapter has not been compiled and tested against its upstream implementation here; it is an integration starting point only."
+  },
+  {
+    "slide": 8,
+    "title": "2020 · RadixSpline makes the path concrete",
+    "lesson": "02",
+    "source": "Kipf et al., aiDM 2020 • third_party/radix_spline/PROVENANCE.md • results/saved/02/",
+    "notes": "Run: python3 walkthrough.py demo 02. The code is transcribed from three small MIT-licensed RadixSpline headers, with provenance disclosed. It is not a byte-identical, commit-pinned source checkout or a reproduction of the full SOSD experiment. There are 16,384 keys and 100,000 queries; epsilon is 32 and radix bits is 10. The largest returned search interval contains 66 keys in this implementation. All query results are checked against std::lower_bound. Five warmed repeats use the same process and trace, so they are not five independent performance trials. Memory here excludes payloads because the contract is keys-only lower_bound."
+  },
+  {
+    "slide": 9,
+    "title": "2020–21 · updates require a storage strategy",
+    "lesson": null,
+    "source": "Ding et al., ALEX, SIGMOD 2020 • Wu et al., LIPP, PVLDB 2021",
+    "notes": "ALEX uses gapped data nodes and structural adaptation to accommodate writes. LIPP focuses on predicted placement and additional nodes for collisions. Explain the contrasting mechanisms, not a winner. Neither system is executed in this release. Our experimental sorted overlay and regional rebuild are not a reproduction of either. Ask how insertion order, initial sampling and domain growth should be included in later evaluation."
+  },
+  {
+    "slide": 10,
+    "title": "2022 · NFL changes the input distribution",
+    "lesson": "03",
+    "source": "Uploaded NFL paper • Table 1 p.3; framework pp.4–6 • results/saved/03/",
+    "notes": "Show lesson 03 and NFL Table 1 on page 3 of the supplied paper. ALEX on Facebook is reported at 4.13 Mops/s without NF and 9.16 with NF; maximum tree height is 11 versus 3. This is not the paper's overall NFL-versus-all-baselines comparison. Table 1 does not state its exact operation mix or batch size, so do not silently borrow settings from later experiments. The lesson recomputes source-table arithmetic; it does not train or execute a flow."
+  },
+  {
+    "slide": 11,
+    "title": "The cost of a transformation is part of the result",
+    "lesson": "03",
+    "source": "NFL Table 2 p.6; §4.3 p.10; §4.2 discussion p.10",
+    "notes": "NFL Table 2 reports transformation-only average costs for its 2H2L model: 169.53 ns/key at batch size 1, and 8.38 at batch size 256. These are not complete query times. Separately, the paper defines its reported P99 as a batch-latency percentile divided by batch size. That is not the P99 of individual request latencies. The paper also reports cases where transformation overhead offsets improved indexing. This motivates measuring total cost."
+  },
+  {
+    "slide": 12,
+    "title": "2021–24 · compress without losing efficient access",
+    "lesson": null,
+    "source": "Boffa et al., ALENEX 2021 • Liu et al., LeCo, SIGMOD 2024, §5.2",
+    "notes": "Return to the parallel compression branch. LA-vector combines a learned compressed representation with exact rank/select. LeCo models serial relationships and stores lossless residuals with random access. Its reported up-to-16% Seek throughput gain comes from the RocksDB experiment against the second-best tested configuration: 900 million generated records, 20-byte keys, 400-byte values and 64 threads. It is not a predicted benefit for our small in-memory map. Neither LA-vector nor LeCo is reproduced here."
+  },
+  {
+    "slide": 13,
+    "title": "Run a control: compression can save space yet slow reads",
+    "lesson": "04",
+    "source": "results/saved/04/ • 16,384 synthetic records; 10K ops/seed; three seeds; full initial load",
+    "notes": "Show lesson 04. The custom map is useful as an attribution experiment: compare raw/rank with packed/rank, then packed/rank with packed/byte, and use packed/binary as a control. Keys, partitions and operation traces are matched. The new dataset is the bundled binary fixture, not the old C++-generated archive. Three seeds each run 10,000 read-only operations after a full load. Memory includes values and metadata. The compact layout is slower here; do not hide that. This is not a SOTA comparison."
+  },
+  {
+    "slide": 14,
+    "title": "CSV · change positions with virtual points",
+    "lesson": null,
+    "source": "Uploaded CSV paper • Figure 2 p.2; §6.1 p.9; Figure 7 p.10; Table 4 p.11",
+    "notes": "CSV inserts virtual positions and refits models, then applies a cost condition to selected subtree reconstructions. Explain the single-model and hierarchical steps separately. Its reported up-to-34% query-time reduction concerns promoted keys; each queried key is repeated 100 times and averaged. ALEX preprocessing at alpha 0.1 ranges from 889 to 2,902 seconds across the four datasets. The maximum query improvement and these fixed-alpha costs are not claimed to be one matched setting. The attached paper's date labels are inconsistent; retain its supplied version."
+  },
+  {
+    "slide": 15,
+    "title": "Make virtual-point smoothing inspectable",
+    "lesson": "05",
+    "source": "experiments/lessons.py::lesson05 • inherited virtual_points_lab.py • results/saved/05/",
+    "notes": "Run: python3 walkthrough.py demo 05. First say that these are our ten keys and a budget of three, not the paper's Figure 2 or Table 2. Greedy selection and exhaustive enumeration optimize augmented-set OLS SSE; original-key SSE is retained separately. Exhaustive enumeration checks 1,351 subsets. The greedy result is close to, but not equal to, the best result in that finite space. These are fitting errors, not query-time improvements. This is not the optimized CSV Algorithm 1 or hierarchical Algorithm 2."
+  },
+  {
+    "slide": 16,
+    "title": "The project hypothesis must distinguish rank from bytes",
+    "lesson": "06",
+    "source": "results/saved/06/layout_*.csv • same fixture and block boundaries; full initial load",
+    "notes": "Show lesson 06's geometry table. Verify that rank-normalized error is identical across layouts for the same keys and partitions. The normalized byte error decreases, but initial block displacement gets worse on this fixture. The plot shows block displacement only, not a mixture of units. These numbers differ from the earlier archive because the binary fixture is different. The lesson is to optimize actual search cost rather than assume a smoother byte curve is sufficient."
+  },
+  {
+    "slide": 17,
+    "title": "Updates expose another cost: rebuilding a region",
+    "lesson": "06",
+    "source": "results/saved/06/updates_*.json • same trace; 75% initial load; read-heavy mix",
+    "notes": "Show the separate update-control table in lesson 06. Both variants have the same trace, byte router, 75% initial load and 10,000 read-heavy operations. They each record 25 compactions here. Insert P99 is about 173.6 microseconds for raw and 273.5 for packed on the recorded Linux run. Your Mac timings will differ. Synchronous rebuilding is included in the triggering operation. Remaining maintenance is drained and reported separately. Profiling is still needed to allocate time among decoding, allocation, copying, fitting and rewriting."
+  },
+  {
+    "slide": 18,
+    "title": "2025–26 · robustness is part of the baseline",
+    "lesson": null,
+    "source": "SEA 2025 comparison • RoBin, PACMMOD 2025 / SIGMOD context • LINE, SIGMOD 2026",
+    "notes": "Recent evaluations argue for stronger baselines and workload variation. The SEA 2025 comparison includes optimized traditional and compressed methods. RoBin varies initial sampling, initial size and insertion order; its article is dated September 2025 even though the linked filename refers to SIGMOD 2026. LINE is a June 2026 paper: group-enhanced leaves, a cache-optimized inner tree and group-wise migrations address local hardness and maintenance tails. These are literature coverage, not new local reproductions or a universal ranking."
+  },
+  {
+    "slide": 19,
+    "title": "What is ready — and what still needs reproduction",
+    "lesson": null,
+    "source": "docs/APPROACHES.md • evidence/VALIDATION.md",
+    "notes": "Use this status slide explicitly. The chronological meeting package, paper evidence and runnable lessons are ready. The full common-data, commit-pinned upstream SOTA comparison is not. The native RadixSpline-derived code and custom map have passed checks, but that does not stand in for reproducing all other systems. No real-data performance results have been produced in this release."
+  },
+  {
+    "slide": 20,
+    "title": "Agree on the next baseline milestone",
+    "lesson": null,
+    "source": "Proposed next work • not completed experiments",
+    "notes": "Close by asking for concrete scope decisions: the common API contract, the mandatory implementations, and the first real datasets. Propose one commit-pinned static comparison with a strong conventional baseline before moving to mutable point/scan/update workloads. Agree on memory accounting, exactness, tail latency and maintenance debt. This is a proposed milestone, not a claim that the work has already been completed."
+  },
+  {
+    "slide": 21,
+    "title": "Appendix · one command for each evidence trail",
+    "lesson": null,
+    "source": "Entrypoint: walkthrough.py • Optional notebook: Walkthrough.ipynb",
+    "notes": "This is the navigation appendix. The command for any stage is python3 walkthrough.py demo followed by its two-digit lesson ID. The report gives the figure, raw result, environment and a repeat command. Lesson 03 recomputes paper arithmetic. Lesson 07 audits archived data; neither is a new performance reproduction. Use the saved report instead of running everything during the meeting."
+  },
+  {
+    "slide": 22,
+    "title": "Appendix · rehearse once; keep a fallback open",
+    "lesson": null,
+    "source": "docs/REHEARSAL.md • All timings are machine-dependent",
+    "notes": "Use the new scaleli_sota folder, not the older Downloads/scaleli folder. Before the meeting run prepare, then demo all, and open the local report. Prepare builds and runs three CTest entries plus twelve Python test methods. During the meeting limit live work to lessons 02, 05 and optionally 06. The deck charts reflect results/saved and do not automatically change after a Mac rerun. If setup fails, use the saved report and PDF. Do not debug a new dependency installation in front of the supervisor."
+  },
+  {
+    "slide": 23,
+    "title": "Appendix · source map, foundations",
+    "lesson": null,
+    "source": "Full references and URLs: sources/registry.json",
+    "notes": "Foundation references. All URLs and bibliographic context are in sources/registry.json. The local runtime covers only the subset listed in the status matrix. Mentioning a source does not imply its implementation was run. The two uploaded papers are also preserved as PDFs for offline inspection."
+  },
+  {
+    "slide": 24,
+    "title": "Appendix · source map, transformation and compression",
+    "lesson": null,
+    "source": "Full references and URLs: sources/registry.json",
+    "notes": "Transformation, compression and robustness references. The original supplied NFL and CSV versions define the cited numeric results. Published timings must stay attached to their datasets, workload and machine. The new native numbers have their own raw results and validation logs. Do not combine them into a cross-paper leaderboard."
+  }
+]

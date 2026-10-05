@@ -1,0 +1,14 @@
+Test project /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final
+    Start 1: radix_differential
+1/4 Test #1: radix_differential ...............   Passed    0.60 sec
+    Start 2: scaleli_core
+2/4 Test #2: scaleli_core .....................   Passed    0.74 sec
+    Start 3: scaleli_hardness_tests
+3/4 Test #3: scaleli_hardness_tests ...........   Passed    0.89 sec
+    Start 4: scaleli_example
+4/4 Test #4: scaleli_example ..................   Passed    0.15 sec
+
+100% tests passed out of 4
+
+Total Test time (real) =   2.39 sec
+ctest --output-on-failure  1.36s user 0.06s system 58% cpu 2.423 total

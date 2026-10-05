@@ -1,0 +1,5 @@
+17:13:08 prepared fb uniform: tail 8 -> 8
+17:13:15 prepared osm uniform: tail 99 -> 99
+17:13:22 prepared planet uniform: tail 18 -> 9
+[7/21] fb / read_only / packed_rank seed=11 repeat=0
+[8/21] planet / read_only / sorted_vector seed=11 repeat=0

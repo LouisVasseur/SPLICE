@@ -1,0 +1,74 @@
+[
+  {
+    "variant": "sorted_vector",
+    "label": "Sorted vector",
+    "runs": 2,
+    "bytes_per_key": 16.0016,
+    "Mops_s": 13.35585378475,
+    "read_hit_p99_ns": 290.5
+  },
+  {
+    "variant": "ordered_map",
+    "label": "Ordered map",
+    "runs": 2,
+    "bytes_per_key": 48.00586666666667,
+    "Mops_s": 8.334548956995,
+    "read_hit_p99_ns": 205.5
+  },
+  {
+    "variant": "raw_binary",
+    "label": "Raw / binary",
+    "runs": 2,
+    "bytes_per_key": 16.62773333333333,
+    "Mops_s": 8.250885893535,
+    "read_hit_p99_ns": 195.0
+  },
+  {
+    "variant": "raw_rank",
+    "label": "Raw / rank",
+    "runs": 2,
+    "bytes_per_key": 16.62773333333333,
+    "Mops_s": 7.401914630065,
+    "read_hit_p99_ns": 191.0
+  },
+  {
+    "variant": "packed_binary",
+    "label": "Packed / binary",
+    "runs": 2,
+    "bytes_per_key": 11.248766666666667,
+    "Mops_s": 4.71103415308,
+    "read_hit_p99_ns": 361.0
+  },
+  {
+    "variant": "packed_rank",
+    "label": "Packed / rank",
+    "runs": 2,
+    "bytes_per_key": 11.248766666666667,
+    "Mops_s": 4.44371234447,
+    "read_hit_p99_ns": 390.5
+  },
+  {
+    "variant": "packed_byte",
+    "label": "Packed / byte",
+    "runs": 2,
+    "bytes_per_key": 11.248766666666667,
+    "Mops_s": 4.622262531655,
+    "read_hit_p99_ns": 350.5
+  },
+  {
+    "variant": "smooth_byte",
+    "label": "Smooth / byte",
+    "runs": 2,
+    "bytes_per_key": 15.0517,
+    "Mops_s": 6.319531432934999,
+    "read_hit_p99_ns": 285.5
+  },
+  {
+    "variant": "adaptive_byte",
+    "label": "Adaptive / byte",
+    "runs": 2,
+    "bytes_per_key": 15.0517,
+    "Mops_s": 6.469690814804999,
+    "read_hit_p99_ns": 286.0
+  }
+]

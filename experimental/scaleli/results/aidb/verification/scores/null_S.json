@@ -1,0 +1,1031 @@
+{
+ "full": {
+  "metrics": {
+   "RMSE": {
+    "dims": [
+     "RMSE"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME": {
+    "dims": [
+     "ME"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "CD": {
+    "dims": [
+     "CD"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "PLA-32": {
+    "dims": [
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "PLA-4096": {
+    "dims": [
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·ME": {
+    "dims": [
+     "RMSE",
+     "ME"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·CD": {
+    "dims": [
+     "RMSE",
+     "CD"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·PLA-32": {
+    "dims": [
+     "RMSE",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·PLA-4096": {
+    "dims": [
+     "RMSE",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·CD": {
+    "dims": [
+     "ME",
+     "CD"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·PLA-32": {
+    "dims": [
+     "ME",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·PLA-4096": {
+    "dims": [
+     "ME",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "CD·PLA-32": {
+    "dims": [
+     "CD",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "CD·PLA-4096": {
+    "dims": [
+     "CD",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "PLA-32·PLA-4096": {
+    "dims": [
+     "PLA-32",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    },
+    "alias": "GRE"
+   },
+   "RMSE·ME·CD": {
+    "dims": [
+     "RMSE",
+     "ME",
+     "CD"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·ME·PLA-32": {
+    "dims": [
+     "RMSE",
+     "ME",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·ME·PLA-4096": {
+    "dims": [
+     "RMSE",
+     "ME",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·CD·PLA-32": {
+    "dims": [
+     "RMSE",
+     "CD",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·CD·PLA-4096": {
+    "dims": [
+     "RMSE",
+     "CD",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·PLA-32·PLA-4096": {
+    "dims": [
+     "RMSE",
+     "PLA-32",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·CD·PLA-32": {
+    "dims": [
+     "ME",
+     "CD",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·CD·PLA-4096": {
+    "dims": [
+     "ME",
+     "CD",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·PLA-32·PLA-4096": {
+    "dims": [
+     "ME",
+     "PLA-32",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "CD·PLA-32·PLA-4096": {
+    "dims": [
+     "CD",
+     "PLA-32",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": 1.0,
+    "per_variant": {
+     "ix": 1.0
+    },
+    "comparable_pairs": 3,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {
+     "ix": {
+      "conformance": 1.0,
+      "reward": 0.5598932483108441,
+      "penalty": 0.0,
+      "conforming": 3,
+      "violating": 0
+     }
+    },
+    "pairs": {
+     "comparable": [
+      [
+       "covid",
+       "books"
+      ],
+      [
+       "osm",
+       "books"
+      ],
+      [
+       "covid",
+       "osm"
+      ]
+     ],
+     "incomparable": []
+    }
+   }
+  },
+  "datasets": [
+   "books",
+   "covid",
+   "osm"
+  ],
+  "variants": [
+   "ix"
+  ],
+  "skipped": {},
+  "dropped_datasets": {
+   "fb": "null throughput for variant ix (removed from every variant's corpus in scope full)"
+  },
+  "ddof": 0,
+  "normalized_throughput": {
+   "ix": {
+    "books": 3.2071349029490928,
+    "covid": 0.8017837257372732,
+    "osm": 1.6035674514745464
+   }
+  },
+  "hardness": {
+   "books": {
+    "RMSE": 1.0,
+    "ME": 1.0,
+    "CD": 1.0,
+    "PLA-32": 1.0,
+    "PLA-4096": 1.0
+   },
+   "covid": {
+    "RMSE": 4.0,
+    "ME": 4.0,
+    "CD": 4.0,
+    "PLA-32": 4.0,
+    "PLA-4096": 4.0
+   },
+   "osm": {
+    "RMSE": 3.0,
+    "ME": 3.0,
+    "CD": 3.0,
+    "PLA-32": 3.0,
+    "PLA-4096": 3.0
+   }
+  },
+  "note": "Reduced-scale, single-host, clean-room control variants scored with the AIDB 2026 protocol; not a reproduction of the paper or of NFL/CSV."
+ }
+}

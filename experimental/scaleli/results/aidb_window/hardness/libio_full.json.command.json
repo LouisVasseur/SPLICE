@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness",
+    "--data",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/libio.sorted",
+    "--flow",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/libio_2D2H2L.txt",
+    "--dtype",
+    "uint64",
+    "--region-keys",
+    "4096",
+    "--pla-eps",
+    "32,4096",
+    "--check-sorted",
+    "1"
+  ],
+  "sha256": {
+    "/Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness": "1a414ce41813bb39f66a4b782859357e619c6427c4009dba111b1b8db02e18de"
+  }
+}

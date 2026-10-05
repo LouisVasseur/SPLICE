@@ -1,0 +1,40 @@
+{
+ "dataset": "wise",
+ "mode": "uniform",
+ "k": 4,
+ "order": "GTV",
+ "pert": "+x2@0.001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.879222108495394,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.879222108495394,
+   "virt": 67,
+   "gaps": [
+    0,
+    1,
+    222,
+    458
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": false,
+   "model": 2.8996929375639713,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.899692937563971,
+   "virt": 67,
+   "gaps": [
+    0,
+    1,
+    221,
+    222
+   ]
+  }
+ ],
+ "seconds": 0.6767730712890625
+}

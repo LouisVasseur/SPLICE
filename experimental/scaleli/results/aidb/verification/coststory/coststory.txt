@@ -1,0 +1,596 @@
+max |1e9/throughput - elapsed/ops| = 0.0000 ns  (n=540 rows on seeds 11/29/47)
+
+== transform_calls per lookup (T) by variant, split by root_flow ==
+  packed_rank                    root_flow=False n= 60 T min/med/max = 0.0000/0.0000/0.0000   flow_regions/regions min/max = 0.0000/0.0000
+  packed_rank_root_flow          root_flow=False n= 60 T min/med/max = 0.0000/0.0174/0.0882   flow_regions/regions min/max = 0.0000/0.0879
+  packed_rank_root_fusion        root_flow=False n= 30 T min/med/max = 0.0006/0.0348/0.0882   flow_regions/regions min/max = 0.0020/0.0879
+  packed_rank_root_fusion        root_flow=True  n= 30 T min/med/max = 1.0000/1.0092/1.0349   flow_regions/regions min/max = 0.0000/0.0348
+  packed_rank_root_raw           root_flow=False n= 60 T min/med/max = 0.0000/0.0000/0.0000   flow_regions/regions min/max = 0.0000/0.0000
+  packed_rank_root_vf4           root_flow=False n= 60 T min/med/max = 0.0000/0.0000/0.0000   flow_regions/regions min/max = 0.0000/0.0000
+  packed_rank_vp10               root_flow=False n= 60 T min/med/max = 0.0000/0.0000/0.0000   flow_regions/regions min/max = 0.0000/0.0000
+  packed_rank_vp10_root_fusion   root_flow=False n= 30 T min/med/max = 0.0006/0.0348/0.0882   flow_regions/regions min/max = 0.0020/0.0879
+  packed_rank_vp10_root_fusion   root_flow=True  n= 30 T min/med/max = 1.0000/1.0092/1.0349   flow_regions/regions min/max = 0.0000/0.0348
+  raw_rank                       root_flow=False n= 60 T min/med/max = 0.0000/0.0000/0.0000   flow_regions/regions min/max = 0.0000/0.0000
+  sorted_vector                  root_flow=False n= 60 T min/med/max = 0.0000/0.0000/0.0000   flow_regions/regions min/max = 0.0000/0.0000
+  max |T - (root_flow + flow_regions/regions)| = 0.0015 at ('stack_uniform', 'packed_rank_vp10_root_fusion', 47, 0.0005836, 0.002044989775051125)
+
+== counters of the root variants vs packed_rank on the same (dataset, seed): max abs diff per lookup ==
+  packed_rank_root_raw         fence_probes:[+0.000,+0.000]  coordinate_probes:[+0.000,+0.000]  key_at_calls:[+0.000,+0.000]  decoded_keys:[+0.000,+0.000]  codec_bytes_examined:[+0.000,+0.000]  correction_distance:[+0.000,+0.000]
+                               root_probes:[-6.813,+0.000]  transform_calls:[+0.000,+0.000]
+  packed_rank_root_flow        fence_probes:[-0.000,+0.000]  coordinate_probes:[+0.000,+0.000]  key_at_calls:[+0.000,+0.000]  decoded_keys:[+0.000,+0.000]  codec_bytes_examined:[+0.000,+0.000]  correction_distance:[-0.000,+0.000]
+                               root_probes:[-6.813,+0.000]  transform_calls:[+0.000,+0.088]
+  packed_rank_root_vf4         fence_probes:[+0.000,+0.000]  coordinate_probes:[+0.000,+0.000]  key_at_calls:[+0.000,+0.000]  decoded_keys:[+0.000,+0.000]  codec_bytes_examined:[+0.000,+0.000]  correction_distance:[+0.000,+0.000]
+                               root_probes:[-6.878,+0.000]  transform_calls:[+0.000,+0.000]
+  packed_rank_root_fusion      fence_probes:[-0.000,+0.000]  coordinate_probes:[+0.000,+0.000]  key_at_calls:[+0.000,+0.000]  decoded_keys:[+0.000,+0.000]  codec_bytes_examined:[+0.000,+0.000]  correction_distance:[-0.000,+0.000]
+                               root_probes:[-6.878,+0.000]  transform_calls:[+0.001,+1.035]
+  same for packed_rank_vp10_root_fusion vs packed_rank_vp10:
+  root_probes:[-6.878,+0.000]  fence_probes:[-0.000,+0.000]  coordinate_probes:[-0.000,+0.000]  key_at_calls:[+0.000,+0.000]  decoded_keys:[+0.000,+0.000]  codec_bytes_examined:[+0.000,+0.000]  transform_calls:[+0.001,+1.035]
+
+== metadata_bytes: variant minus packed_rank (bytes), root_virtual, slot-table bytes 4*(regions+virt) ==
+  books_uniform    packed meta=  1141168 | root_vf4: d=  +4604 virt=  662 slot= 4604 raw+fences  | root_fusion: d=  +4604 virt=  662 slot= 4604 raw+fences  | vp10: d=+1480400 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1485228 virt=  662 slot= 4604 raw+fences 
+  books_window     packed meta=  1141168 | root_vf4: d=     +0 virt=    0 slot=    0 binary      | root_fusion: d=  +7452 virt= 1374 slot= 7452 flow+fences | vp10: d=+1597656 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1605108 virt= 1374 slot= 7452 flow+fences
+  covid_uniform    packed meta=  1141168 | root_vf4: d=     +0 virt=    0 slot=    0 binary      | root_fusion: d=  +7312 virt= 1339 slot= 7312 flow+fences | vp10: d=+1592720 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1600032 virt= 1339 slot= 7312 flow+fences
+  covid_window     packed meta=  1141168 | root_vf4: d=     +0 virt=    0 slot=    0 binary      | root_fusion: d=  +7316 virt= 1340 slot= 7316 flow+fences | vp10: d=+1579544 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1586860 virt= 1340 slot= 7316 flow+fences
+  fb_uniform       packed meta=  1141168 | root_vf4: d=  +1960 virt=    1 slot= 1960 raw+fences  | root_fusion: d=  +1960 virt=    1 slot= 1960 raw+fences  | vp10: d=+1597656 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1599616 virt=    1 slot= 1960 raw+fences 
+  fb_window        packed meta=  1141168 | root_vf4: d=     +0 virt=    0 slot=    0 binary      | root_fusion: d=  +7500 virt= 1386 slot= 7500 flow+fences | vp10: d=+1597656 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1605156 virt= 1386 slot= 7500 flow+fences
+  genome_uniform   packed meta=  1141168 | root_vf4: d=  +3192 virt=  309 slot= 3192 raw+fences  | root_fusion: d=  +3192 virt=  309 slot= 3192 raw+fences  | vp10: d=+1597656 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1600848 virt=  309 slot= 3192 raw+fences 
+  genome_window    packed meta=  1141168 | root_vf4: d=     +0 virt=    0 slot=    0 binary      | root_fusion: d=  +7852 virt= 1474 slot= 7852 flow+fences | vp10: d=+1597656 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1605508 virt= 1474 slot= 7852 flow+fences
+  history_uniform  packed meta=  1141168 | root_vf4: d=  +2036 virt=   20 slot= 2036 raw+fences  | root_fusion: d=  +2036 virt=   20 slot= 2036 raw+fences  | vp10: d=+1562984 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1564844 virt=   20 slot= 2036 raw+fences 
+  history_window   packed meta=  1141168 | root_vf4: d=     +0 virt=    0 slot=    0 binary      | root_fusion: d=  +7552 virt= 1399 slot= 7552 flow+fences | vp10: d=+1558504 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1566056 virt= 1399 slot= 7552 flow+fences
+  libio_uniform    packed meta=  1141168 | root_vf4: d=  +2460 virt=  126 slot= 2460 raw+fences  | root_fusion: d=  +2460 virt=  126 slot= 2460 raw+fences  | vp10: d=+1564320 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1566780 virt=  126 slot= 2460 raw+fences 
+  libio_window     packed meta=  1141168 | root_vf4: d=     +0 virt=    0 slot=    0 binary      | root_fusion: d=  +7400 virt= 1361 slot= 7400 flow+fences | vp10: d=+1359424 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1366816 virt= 1361 slot= 7400 flow+fences
+  osm_uniform      packed meta=  1141168 | root_vf4: d=  +9780 virt= 1956 slot= 9780 raw+fences  | root_fusion: d=  +9780 virt= 1956 slot= 9780 raw+fences  | vp10: d=+1597656 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1607436 virt= 1956 slot= 9780 raw+fences 
+  osm_window       packed meta=  1141168 | root_vf4: d=     +0 virt=    0 slot=    0 binary      | root_fusion: d=     +0 virt=    0 slot=    0 binary      | vp10: d=+1597656 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1597656 virt=    0 slot=    0 binary     
+  planet_uniform   packed meta=  1141168 | root_vf4: d=  +9780 virt= 1956 slot= 9780 raw+fences  | root_fusion: d=  +9780 virt= 1956 slot= 9780 raw+fences  | vp10: d=+1597440 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1607220 virt= 1956 slot= 9780 raw+fences 
+  planet_window    packed meta=  1141168 | root_vf4: d=     +0 virt=    0 slot=    0 binary      | root_fusion: d=  +8780 virt= 1706 slot= 8780 flow+fences | vp10: d=+1597656 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1606436 virt= 1706 slot= 8780 flow+fences
+  stack_uniform    packed meta=  1141168 | root_vf4: d=  +2008 virt=   13 slot= 2008 raw+fences  | root_fusion: d=  +2008 virt=   13 slot= 2008 raw+fences  | vp10: d=+1474408 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1476416 virt=   13 slot= 2008 raw+fences 
+  stack_window     packed meta=  1141168 | root_vf4: d=     +0 virt=    0 slot=    0 binary      | root_fusion: d=  +8032 virt= 1519 slot= 8032 flow+fences | vp10: d=+496280 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+504312 virt= 1519 slot= 8032 flow+fences
+  wise_uniform     packed meta=  1141168 | root_vf4: d=  +4256 virt=  575 slot= 4256 raw+fences  | root_fusion: d=  +4256 virt=  575 slot= 4256 raw+fences  | vp10: d=+1559696 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1563952 virt=  575 slot= 4256 raw+fences 
+  wise_window      packed meta=  1141168 | root_vf4: d=     +0 virt=    0 slot=    0 binary      | root_fusion: d=  +7548 virt= 1398 slot= 7548 flow+fences | vp10: d=+1564592 virt=    0 slot=    0 binary      | vp10_root_fusion: d=+1572140 virt= 1398 slot= 7548 flow+fences
+
+== per (dataset, variant): chosen root, T, probes/lookup (root, fence, coord, total), ns/lookup by seed 11/29/47 ==
+  books_uniform   packed_rank                   binary      T=0.000 root= 8.96 fence= 2.23 coord= 5.03 tot=16.22  ns= 389.9  442.7  476.1  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  books_uniform   packed_rank_root_flow         binary      T=0.053 root= 8.96 fence= 2.23 coord= 5.03 tot=16.22  ns= 391.8  376.1  373.5  est b/r/f/vr/vf=8.96/11.08/14.91/0.00/0.00
+  books_uniform   packed_rank_root_fusion       raw+fences  T=0.053 root= 2.60 fence= 2.23 coord= 5.03 tot= 9.86  ns= 421.9  374.0  421.4  est b/r/f/vr/vf=8.96/11.08/14.91/2.73/6.61
+  books_uniform   packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 2.23 coord= 5.03 tot=16.22  ns= 431.5  433.2  400.5  est b/r/f/vr/vf=8.96/11.08/0.00/0.00/0.00
+  books_uniform   packed_rank_root_vf4          raw+fences  T=0.000 root= 2.60 fence= 2.23 coord= 5.03 tot= 9.86  ns= 367.8  412.5  382.0  est b/r/f/vr/vf=8.96/11.08/0.00/2.73/0.00
+  books_uniform   packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.01 coord= 5.03 tot=15.99  ns= 437.3  435.1  416.7  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  books_uniform   packed_rank_vp10_root_fusion  raw+fences  T=0.053 root= 2.60 fence= 2.01 coord= 5.03 tot= 9.64  ns= 368.2  389.7  395.0  est b/r/f/vr/vf=8.96/11.08/14.91/2.73/6.61
+  books_uniform   raw_rank                      binary      T=0.000 root= 8.96 fence= 2.23 coord= 5.03 tot=16.22  ns= 277.5  337.0  256.5  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  books_uniform   sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 165.8  233.5  235.7  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  books_window    packed_rank                   binary      T=0.000 root= 8.96 fence= 2.95 coord= 5.03 tot=16.94  ns= 363.0  408.3  400.6  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  books_window    packed_rank_root_flow         binary      T=0.008 root= 8.96 fence= 2.95 coord= 5.03 tot=16.94  ns= 385.5  355.5  364.4  est b/r/f/vr/vf=8.96/14.24/13.95/0.00/0.00
+  books_window    packed_rank_root_fusion       flow+fences T=1.008 root= 2.93 fence= 2.95 coord= 5.03 tot=10.91  ns= 514.5  414.2  407.5  est b/r/f/vr/vf=8.96/14.24/13.95/13.90/6.99
+  books_window    packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 2.95 coord= 5.03 tot=16.94  ns= 355.4  362.8  387.1  est b/r/f/vr/vf=8.96/14.24/0.00/0.00/0.00
+  books_window    packed_rank_root_vf4          binary      T=0.000 root= 8.96 fence= 2.95 coord= 5.03 tot=16.94  ns= 404.3  400.1  432.0  est b/r/f/vr/vf=8.96/14.24/0.00/13.90/0.00
+  books_window    packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.44 coord= 5.03 tot=16.42  ns= 408.3  387.4  360.2  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  books_window    packed_rank_vp10_root_fusion  flow+fences T=1.008 root= 2.93 fence= 2.44 coord= 5.03 tot=10.40  ns= 402.9  499.2  405.2  est b/r/f/vr/vf=8.96/14.24/13.95/13.90/6.99
+  books_window    raw_rank                      binary      T=0.000 root= 8.96 fence= 2.95 coord= 5.03 tot=16.94  ns= 266.0  276.6  230.1  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  books_window    sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 155.7  195.1  162.0  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  covid_uniform   packed_rank                   binary      T=0.000 root= 8.96 fence= 3.06 coord= 5.03 tot=17.05  ns= 404.1  373.0  405.2  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  covid_uniform   packed_rank_root_flow         binary      T=0.035 root= 8.96 fence= 3.06 coord= 5.03 tot=17.05  ns= 431.0  421.2  393.2  est b/r/f/vr/vf=8.96/13.78/13.99/0.00/0.00
+  covid_uniform   packed_rank_root_fusion       flow+fences T=1.035 root= 4.34 fence= 3.06 coord= 5.03 tot=12.43  ns= 415.2  519.7  464.9  est b/r/f/vr/vf=8.96/13.78/13.99/13.04/8.33
+  covid_uniform   packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 3.06 coord= 5.03 tot=17.05  ns= 368.4  365.1  400.7  est b/r/f/vr/vf=8.96/13.78/0.00/0.00/0.00
+  covid_uniform   packed_rank_root_vf4          binary      T=0.000 root= 8.96 fence= 3.06 coord= 5.03 tot=17.05  ns= 364.1  386.2  396.0  est b/r/f/vr/vf=8.96/13.78/0.00/13.04/0.00
+  covid_uniform   packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.33 coord= 5.03 tot=16.31  ns= 391.3  406.7  430.0  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  covid_uniform   packed_rank_vp10_root_fusion  flow+fences T=1.035 root= 4.34 fence= 2.33 coord= 5.03 tot=11.69  ns= 403.1  455.8  491.6  est b/r/f/vr/vf=8.96/13.78/13.99/13.04/8.33
+  covid_uniform   raw_rank                      binary      T=0.000 root= 8.96 fence= 3.06 coord= 5.03 tot=17.05  ns= 242.1  246.4  269.7  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  covid_uniform   sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 151.9  164.6  276.0  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  covid_window    packed_rank                   binary      T=0.000 root= 8.96 fence= 2.60 coord= 5.03 tot=16.58  ns= 372.9  359.2  372.8  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  covid_window    packed_rank_root_flow         binary      T=0.002 root= 8.96 fence= 2.60 coord= 5.03 tot=16.58  ns= 368.8  344.7  368.3  est b/r/f/vr/vf=8.96/14.38/14.02/0.00/0.00
+  covid_window    packed_rank_root_fusion       flow+fences T=1.002 root= 4.73 fence= 2.60 coord= 5.03 tot=12.35  ns= 395.8  426.4  432.6  est b/r/f/vr/vf=8.96/14.38/14.02/14.37/8.80
+  covid_window    packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 2.60 coord= 5.03 tot=16.58  ns= 334.6  345.2  363.1  est b/r/f/vr/vf=8.96/14.38/0.00/0.00/0.00
+  covid_window    packed_rank_root_vf4          binary      T=0.000 root= 8.96 fence= 2.60 coord= 5.03 tot=16.58  ns= 343.0  381.1  359.8  est b/r/f/vr/vf=8.96/14.38/0.00/14.37/0.00
+  covid_window    packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.05 coord= 5.03 tot=16.04  ns= 362.5  374.0  366.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  covid_window    packed_rank_vp10_root_fusion  flow+fences T=1.002 root= 4.73 fence= 2.05 coord= 5.03 tot=11.81  ns= 427.2  393.9  416.2  est b/r/f/vr/vf=8.96/14.38/14.02/14.37/8.80
+  covid_window    raw_rank                      binary      T=0.000 root= 8.96 fence= 2.60 coord= 5.03 tot=16.58  ns= 347.3  329.1  322.2  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  covid_window    sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 152.9  235.8  149.4  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  fb_uniform      packed_rank                   binary      T=0.000 root= 8.96 fence= 2.60 coord= 5.03 tot=16.59  ns= 312.8  340.7  357.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  fb_uniform      packed_rank_root_flow         raw+ranks   T=0.084 root= 2.14 fence= 2.60 coord= 5.03 tot= 9.77  ns= 321.6  290.7  324.9  est b/r/f/vr/vf=8.96/2.27/8.14/0.00/0.00
+  fb_uniform      packed_rank_root_fusion       raw+fences  T=0.084 root= 2.08 fence= 2.60 coord= 5.03 tot= 9.71  ns= 287.4  296.2  321.3  est b/r/f/vr/vf=8.96/2.27/8.14/2.22/6.35
+  fb_uniform      packed_rank_root_raw          raw+ranks   T=0.000 root= 2.14 fence= 2.60 coord= 5.03 tot= 9.77  ns= 321.6  301.6  315.9  est b/r/f/vr/vf=8.96/2.27/0.00/0.00/0.00
+  fb_uniform      packed_rank_root_vf4          raw+fences  T=0.000 root= 2.08 fence= 2.60 coord= 5.03 tot= 9.71  ns= 321.1  294.9  293.5  est b/r/f/vr/vf=8.96/2.27/0.00/2.22/0.00
+  fb_uniform      packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.18 coord= 5.03 tot=16.17  ns= 332.2  348.0  324.2  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  fb_uniform      packed_rank_vp10_root_fusion  raw+fences  T=0.084 root= 2.08 fence= 2.18 coord= 5.03 tot= 9.29  ns= 295.6  369.0  319.2  est b/r/f/vr/vf=8.96/2.27/8.14/2.22/6.35
+  fb_uniform      raw_rank                      binary      T=0.000 root= 8.96 fence= 2.60 coord= 5.03 tot=16.59  ns= 255.3  245.0  245.1  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  fb_uniform      sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 248.7  179.2  141.4  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  fb_window       packed_rank                   binary      T=0.000 root= 8.96 fence= 5.17 coord= 5.03 tot=19.15  ns= 346.5  323.3  332.1  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  fb_window       packed_rank_root_flow         binary      T=0.025 root= 8.96 fence= 5.17 coord= 5.03 tot=19.15  ns= 339.5  332.9  349.4  est b/r/f/vr/vf=8.96/14.34/14.07/0.00/0.00
+  fb_window       packed_rank_root_fusion       flow+fences T=1.025 root= 2.88 fence= 5.17 coord= 5.03 tot=13.08  ns= 376.6  399.5  361.0  est b/r/f/vr/vf=8.96/14.34/14.07/14.23/7.00
+  fb_window       packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 5.17 coord= 5.03 tot=19.15  ns= 329.9  331.9  354.6  est b/r/f/vr/vf=8.96/14.34/0.00/0.00/0.00
+  fb_window       packed_rank_root_vf4          binary      T=0.000 root= 8.96 fence= 5.17 coord= 5.03 tot=19.15  ns= 369.3  349.2  336.9  est b/r/f/vr/vf=8.96/14.34/0.00/14.23/0.00
+  fb_window       packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 4.77 coord= 5.03 tot=18.75  ns= 356.6  349.4  328.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  fb_window       packed_rank_vp10_root_fusion  flow+fences T=1.025 root= 2.88 fence= 4.77 coord= 5.03 tot=12.68  ns= 362.2  382.3  376.2  est b/r/f/vr/vf=8.96/14.34/14.07/14.23/7.00
+  fb_window       raw_rank                      binary      T=0.000 root= 8.96 fence= 5.17 coord= 5.03 tot=19.15  ns= 280.8  325.8  318.0  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  fb_window       sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 190.0  187.7  172.3  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  genome_uniform  packed_rank                   binary      T=0.000 root= 8.96 fence= 3.30 coord= 5.03 tot=17.28  ns= 377.5  353.1  359.5  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  genome_uniform  packed_rank_root_flow         raw+ranks   T=0.016 root= 8.67 fence= 3.30 coord= 5.03 tot=17.00  ns= 369.7  363.0  361.4  est b/r/f/vr/vf=8.96/8.63/12.98/0.00/0.00
+  genome_uniform  packed_rank_root_fusion       raw+fences  T=0.016 root= 2.79 fence= 3.30 coord= 5.03 tot=11.11  ns= 338.4  347.3  321.3  est b/r/f/vr/vf=8.96/8.63/12.98/2.91/6.97
+  genome_uniform  packed_rank_root_raw          raw+ranks   T=0.000 root= 8.67 fence= 3.30 coord= 5.03 tot=17.00  ns= 357.7  343.1  327.8  est b/r/f/vr/vf=8.96/8.63/0.00/0.00/0.00
+  genome_uniform  packed_rank_root_vf4          raw+fences  T=0.000 root= 2.79 fence= 3.30 coord= 5.03 tot=11.11  ns= 334.7  317.6  316.9  est b/r/f/vr/vf=8.96/8.63/0.00/2.91/0.00
+  genome_uniform  packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.61 coord= 5.03 tot=16.60  ns= 354.7  349.8  330.7  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  genome_uniform  packed_rank_vp10_root_fusion  raw+fences  T=0.016 root= 2.79 fence= 2.61 coord= 5.03 tot=10.42  ns= 316.2  328.1  351.2  est b/r/f/vr/vf=8.96/8.63/12.98/2.91/6.97
+  genome_uniform  raw_rank                      binary      T=0.000 root= 8.96 fence= 3.30 coord= 5.03 tot=17.28  ns= 350.2  284.0  310.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  genome_uniform  sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 256.7  264.6  153.6  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  genome_window   packed_rank                   binary      T=0.000 root= 8.96 fence= 3.05 coord= 5.03 tot=17.04  ns= 394.8  380.5  402.6  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  genome_window   packed_rank_root_flow         binary      T=0.018 root= 8.96 fence= 3.05 coord= 5.03 tot=17.04  ns= 379.6  379.9  382.6  est b/r/f/vr/vf=8.96/14.37/13.33/0.00/0.00
+  genome_window   packed_rank_root_fusion       flow+fences T=1.018 root= 4.67 fence= 3.05 coord= 5.03 tot=12.75  ns= 459.6  452.6  455.3  est b/r/f/vr/vf=8.96/14.37/13.33/14.28/8.73
+  genome_window   packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 3.05 coord= 5.03 tot=17.04  ns= 376.2  395.0  403.2  est b/r/f/vr/vf=8.96/14.37/0.00/0.00/0.00
+  genome_window   packed_rank_root_vf4          binary      T=0.000 root= 8.96 fence= 3.05 coord= 5.03 tot=17.04  ns= 401.6  408.8  377.3  est b/r/f/vr/vf=8.96/14.37/0.00/14.28/0.00
+  genome_window   packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.55 coord= 5.03 tot=16.53  ns= 392.9  374.2  365.0  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  genome_window   packed_rank_vp10_root_fusion  flow+fences T=1.018 root= 4.67 fence= 2.55 coord= 5.03 tot=12.25  ns= 457.1  426.8  433.0  est b/r/f/vr/vf=8.96/14.37/13.33/14.28/8.73
+  genome_window   raw_rank                      binary      T=0.000 root= 8.96 fence= 3.05 coord= 5.03 tot=17.04  ns= 248.4  282.9  291.0  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  genome_window   sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 240.3  145.9  236.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  history_uniform packed_rank                   binary      T=0.000 root= 8.96 fence= 2.46 coord= 5.03 tot=16.45  ns= 338.1  300.2  334.5  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  history_uniform packed_rank_root_flow         raw+ranks   T=0.027 root= 3.64 fence= 2.46 coord= 5.03 tot=11.13  ns= 321.2  313.1  306.1  est b/r/f/vr/vf=8.96/3.78/6.71/0.00/0.00
+  history_uniform packed_rank_root_fusion       raw+fences  T=0.027 root= 2.18 fence= 2.46 coord= 5.03 tot= 9.67  ns= 291.2  305.1  311.4  est b/r/f/vr/vf=8.96/3.78/6.71/2.32/6.29
+  history_uniform packed_rank_root_raw          raw+ranks   T=0.000 root= 3.64 fence= 2.46 coord= 5.03 tot=11.13  ns= 295.2  329.9  295.8  est b/r/f/vr/vf=8.96/3.78/0.00/0.00/0.00
+  history_uniform packed_rank_root_vf4          raw+fences  T=0.000 root= 2.18 fence= 2.46 coord= 5.03 tot= 9.67  ns= 278.9  277.1  281.3  est b/r/f/vr/vf=8.96/3.78/0.00/2.32/0.00
+  history_uniform packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.07 coord= 5.03 tot=16.06  ns= 306.0  341.4  326.6  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  history_uniform packed_rank_vp10_root_fusion  raw+fences  T=0.027 root= 2.18 fence= 2.07 coord= 5.03 tot= 9.28  ns= 273.5  274.0  303.1  est b/r/f/vr/vf=8.96/3.78/6.71/2.32/6.29
+  history_uniform raw_rank                      binary      T=0.000 root= 8.96 fence= 2.46 coord= 5.03 tot=16.45  ns= 346.0  294.1  346.1  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  history_uniform sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 282.7  160.4  183.8  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  history_window  packed_rank                   binary      T=0.000 root= 8.96 fence= 2.45 coord= 5.03 tot=16.44  ns= 308.8  289.4  305.7  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  history_window  packed_rank_root_flow         binary      T=0.004 root= 8.96 fence= 2.45 coord= 5.03 tot=16.44  ns= 292.0  314.3  291.5  est b/r/f/vr/vf=8.96/14.33/13.79/0.00/0.00
+  history_window  packed_rank_root_fusion       flow+fences T=1.004 root= 3.91 fence= 2.45 coord= 5.03 tot=11.39  ns= 344.4  339.6  374.4  est b/r/f/vr/vf=8.96/14.33/13.79/14.21/8.05
+  history_window  packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 2.45 coord= 5.03 tot=16.44  ns= 316.5  297.0  314.7  est b/r/f/vr/vf=8.96/14.33/0.00/0.00/0.00
+  history_window  packed_rank_root_vf4          binary      T=0.000 root= 8.96 fence= 2.45 coord= 5.03 tot=16.44  ns= 295.0  308.9  308.8  est b/r/f/vr/vf=8.96/14.33/0.00/14.21/0.00
+  history_window  packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.10 coord= 5.03 tot=16.09  ns= 292.2  301.4  298.2  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  history_window  packed_rank_vp10_root_fusion  flow+fences T=1.004 root= 3.91 fence= 2.10 coord= 5.03 tot=11.04  ns= 360.3  371.0  365.1  est b/r/f/vr/vf=8.96/14.33/13.79/14.21/8.05
+  history_window  raw_rank                      binary      T=0.000 root= 8.96 fence= 2.45 coord= 5.03 tot=16.44  ns= 241.5  275.5  354.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  history_window  sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 267.7  272.9  236.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  libio_uniform   packed_rank                   binary      T=0.000 root= 8.96 fence= 2.56 coord= 5.03 tot=16.54  ns= 296.8  300.8  320.2  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  libio_uniform   packed_rank_root_flow         raw+ranks   T=0.043 root= 6.53 fence= 2.56 coord= 5.03 tot=14.11  ns= 310.4  290.0  314.5  est b/r/f/vr/vf=8.96/6.52/10.89/0.00/0.00
+  libio_uniform   packed_rank_root_fusion       raw+fences  T=0.043 root= 2.16 fence= 2.56 coord= 5.03 tot= 9.74  ns= 270.9  285.7  299.2  est b/r/f/vr/vf=8.96/6.52/10.89/2.31/6.27
+  libio_uniform   packed_rank_root_raw          raw+ranks   T=0.000 root= 6.53 fence= 2.56 coord= 5.03 tot=14.11  ns= 305.8  288.9  288.9  est b/r/f/vr/vf=8.96/6.52/0.00/0.00/0.00
+  libio_uniform   packed_rank_root_vf4          raw+fences  T=0.000 root= 2.16 fence= 2.56 coord= 5.03 tot= 9.74  ns= 274.8  287.9  271.1  est b/r/f/vr/vf=8.96/6.52/0.00/2.31/0.00
+  libio_uniform   packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.15 coord= 5.03 tot=16.13  ns= 322.8  313.4  316.7  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  libio_uniform   packed_rank_vp10_root_fusion  raw+fences  T=0.043 root= 2.16 fence= 2.15 coord= 5.03 tot= 9.33  ns= 292.9  277.0  274.7  est b/r/f/vr/vf=8.96/6.52/10.89/2.31/6.27
+  libio_uniform   raw_rank                      binary      T=0.000 root= 8.96 fence= 2.56 coord= 5.03 tot=16.54  ns= 259.0  333.8  308.6  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  libio_uniform   sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 241.6  165.7  181.1  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  libio_window    packed_rank                   binary      T=0.000 root= 8.96 fence= 3.07 coord= 5.03 tot=17.05  ns= 293.9  303.8  288.6  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  libio_window    packed_rank_root_flow         binary      T=0.010 root= 8.96 fence= 3.07 coord= 5.03 tot=17.05  ns= 286.2  289.2  286.1  est b/r/f/vr/vf=8.96/14.35/13.59/0.00/0.00
+  libio_window    packed_rank_root_fusion       flow+fences T=1.010 root= 3.48 fence= 3.07 coord= 5.03 tot=11.58  ns= 350.0  334.0  333.7  est b/r/f/vr/vf=8.96/14.35/13.59/14.25/7.55
+  libio_window    packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 3.07 coord= 5.03 tot=17.05  ns= 282.9  289.1  292.7  est b/r/f/vr/vf=8.96/14.35/0.00/0.00/0.00
+  libio_window    packed_rank_root_vf4          binary      T=0.000 root= 8.96 fence= 3.07 coord= 5.03 tot=17.05  ns= 294.5  287.8  300.0  est b/r/f/vr/vf=8.96/14.35/0.00/14.25/0.00
+  libio_window    packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.55 coord= 5.03 tot=16.54  ns= 289.4  297.7  300.4  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  libio_window    packed_rank_vp10_root_fusion  flow+fences T=1.010 root= 3.48 fence= 2.55 coord= 5.03 tot=11.06  ns= 321.8  314.1  341.2  est b/r/f/vr/vf=8.96/14.35/13.59/14.25/7.55
+  libio_window    raw_rank                      binary      T=0.000 root= 8.96 fence= 3.07 coord= 5.03 tot=17.05  ns= 261.3  306.8  318.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  libio_window    sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 265.8  165.7  233.8  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  osm_uniform     packed_rank                   binary      T=0.000 root= 8.96 fence= 5.08 coord= 5.03 tot=19.06  ns= 395.3  443.7  407.2  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  osm_uniform     packed_rank_root_flow         binary      T=0.014 root= 8.96 fence= 5.08 coord= 5.03 tot=19.06  ns= 391.7  445.4  443.4  est b/r/f/vr/vf=8.96/11.66/15.83/0.00/0.00
+  osm_uniform     packed_rank_root_fusion       raw+fences  T=0.014 root= 8.17 fence= 5.08 coord= 5.03 tot=18.27  ns= 441.6  445.2  467.3  est b/r/f/vr/vf=8.96/11.66/15.83/8.19/12.19
+  osm_uniform     packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 5.08 coord= 5.03 tot=19.06  ns= 418.8  442.0  426.4  est b/r/f/vr/vf=8.96/11.66/0.00/0.00/0.00
+  osm_uniform     packed_rank_root_vf4          raw+fences  T=0.000 root= 8.17 fence= 5.08 coord= 5.03 tot=18.27  ns= 427.5  416.6  435.0  est b/r/f/vr/vf=8.96/11.66/0.00/8.19/0.00
+  osm_uniform     packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 4.64 coord= 5.02 tot=18.62  ns= 416.6  494.1  449.0  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  osm_uniform     packed_rank_vp10_root_fusion  raw+fences  T=0.014 root= 8.17 fence= 4.64 coord= 5.02 tot=17.83  ns= 426.4  446.1  392.7  est b/r/f/vr/vf=8.96/11.66/15.83/8.19/12.19
+  osm_uniform     raw_rank                      binary      T=0.000 root= 8.96 fence= 5.08 coord= 5.03 tot=19.06  ns= 264.9  288.9  301.1  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  osm_uniform     sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 235.8  305.9  188.0  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  osm_window      packed_rank                   binary      T=0.000 root= 8.96 fence= 4.37 coord= 5.03 tot=18.36  ns= 390.3  392.8  435.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  osm_window      packed_rank_root_flow         binary      T=0.043 root= 8.96 fence= 4.37 coord= 5.03 tot=18.36  ns= 406.0  378.7  402.3  est b/r/f/vr/vf=8.96/14.38/15.63/0.00/0.00
+  osm_window      packed_rank_root_fusion       binary      T=0.043 root= 8.96 fence= 4.37 coord= 5.03 tot=18.36  ns= 379.5  402.8  413.6  est b/r/f/vr/vf=8.96/14.38/15.63/14.36/10.51
+  osm_window      packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 4.37 coord= 5.03 tot=18.36  ns= 396.1  377.6  369.7  est b/r/f/vr/vf=8.96/14.38/0.00/0.00/0.00
+  osm_window      packed_rank_root_vf4          binary      T=0.000 root= 8.96 fence= 4.37 coord= 5.03 tot=18.36  ns= 379.9  414.6  413.0  est b/r/f/vr/vf=8.96/14.38/0.00/14.36/0.00
+  osm_window      packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 3.77 coord= 5.03 tot=17.76  ns= 402.0  378.1  432.8  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  osm_window      packed_rank_vp10_root_fusion  binary      T=0.043 root= 8.96 fence= 3.77 coord= 5.03 tot=17.76  ns= 447.7  400.2  463.6  est b/r/f/vr/vf=8.96/14.38/15.63/14.36/10.51
+  osm_window      raw_rank                      binary      T=0.000 root= 8.96 fence= 4.37 coord= 5.03 tot=18.36  ns= 305.0  305.5  310.2  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  osm_window      sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 152.5  262.8  239.6  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  planet_uniform  packed_rank                   binary      T=0.000 root= 8.96 fence= 3.23 coord= 5.03 tot=17.21  ns= 333.1  334.5  332.8  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  planet_uniform  packed_rank_root_flow         binary      T=0.088 root= 8.96 fence= 3.23 coord= 5.03 tot=17.21  ns= 339.6  357.0  339.5  est b/r/f/vr/vf=8.96/12.59/14.58/0.00/0.00
+  planet_uniform  packed_rank_root_fusion       raw+fences  T=0.088 root= 5.14 fence= 3.23 coord= 5.03 tot=13.40  ns= 326.5  325.3  326.4  est b/r/f/vr/vf=8.96/12.59/14.58/5.24/7.11
+  planet_uniform  packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 3.23 coord= 5.03 tot=17.21  ns= 320.8  354.3  320.7  est b/r/f/vr/vf=8.96/12.59/0.00/0.00/0.00
+  planet_uniform  packed_rank_root_vf4          raw+fences  T=0.000 root= 5.14 fence= 3.23 coord= 5.03 tot=13.40  ns= 332.7  331.3  317.7  est b/r/f/vr/vf=8.96/12.59/0.00/5.24/0.00
+  planet_uniform  packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.60 coord= 5.03 tot=16.59  ns= 315.5  311.5  314.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  planet_uniform  packed_rank_vp10_root_fusion  raw+fences  T=0.088 root= 5.14 fence= 2.60 coord= 5.03 tot=12.77  ns= 329.5  345.1  314.7  est b/r/f/vr/vf=8.96/12.59/14.58/5.24/7.11
+  planet_uniform  raw_rank                      binary      T=0.000 root= 8.96 fence= 3.23 coord= 5.03 tot=17.21  ns= 232.5  304.5  250.4  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  planet_uniform  sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 205.1  154.6  241.8  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  planet_window   packed_rank                   binary      T=0.000 root= 8.96 fence= 4.62 coord= 5.03 tot=18.61  ns= 323.8  319.5  327.3  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  planet_window   packed_rank_root_flow         binary      T=0.035 root= 8.96 fence= 4.62 coord= 5.03 tot=18.61  ns= 332.9  317.1  317.9  est b/r/f/vr/vf=8.96/14.14/14.80/0.00/0.00
+  planet_window   packed_rank_root_fusion       flow+fences T=1.035 root= 4.77 fence= 4.62 coord= 5.03 tot=14.42  ns= 365.7  367.0  356.4  est b/r/f/vr/vf=8.96/14.14/14.80/13.64/8.83
+  planet_window   packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 4.62 coord= 5.03 tot=18.61  ns= 333.2  330.7  337.2  est b/r/f/vr/vf=8.96/14.14/0.00/0.00/0.00
+  planet_window   packed_rank_root_vf4          binary      T=0.000 root= 8.96 fence= 4.62 coord= 5.03 tot=18.61  ns= 337.5  350.7  348.3  est b/r/f/vr/vf=8.96/14.14/0.00/13.64/0.00
+  planet_window   packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 4.09 coord= 5.03 tot=18.08  ns= 344.9  342.3  323.5  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  planet_window   packed_rank_vp10_root_fusion  flow+fences T=1.035 root= 4.77 fence= 4.09 coord= 5.03 tot=13.89  ns= 362.2  369.4  391.1  est b/r/f/vr/vf=8.96/14.14/14.80/13.64/8.83
+  planet_window   raw_rank                      binary      T=0.000 root= 8.96 fence= 4.62 coord= 5.03 tot=18.61  ns= 286.4  251.7  321.7  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  planet_window   sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 194.1  145.2  172.0  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  stack_uniform   packed_rank                   binary      T=0.000 root= 8.96 fence= 2.29 coord= 5.03 tot=16.28  ns= 320.3  292.7  291.3  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  stack_uniform   packed_rank_root_flow         raw+ranks   T=0.001 root= 3.34 fence= 2.29 coord= 5.03 tot=10.66  ns= 297.9  289.7  281.9  est b/r/f/vr/vf=8.96/3.32/9.05/0.00/0.00
+  stack_uniform   packed_rank_root_fusion       raw+fences  T=0.001 root= 2.17 fence= 2.29 coord= 5.03 tot= 9.49  ns= 267.8  296.8  283.7  est b/r/f/vr/vf=8.96/3.32/9.05/2.31/6.30
+  stack_uniform   packed_rank_root_raw          raw+ranks   T=0.000 root= 3.34 fence= 2.29 coord= 5.03 tot=10.66  ns= 284.6  305.9  322.6  est b/r/f/vr/vf=8.96/3.32/0.00/0.00/0.00
+  stack_uniform   packed_rank_root_vf4          raw+fences  T=0.000 root= 2.17 fence= 2.29 coord= 5.03 tot= 9.49  ns= 277.6  284.4  279.0  est b/r/f/vr/vf=8.96/3.32/0.00/2.31/0.00
+  stack_uniform   packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.03 coord= 5.03 tot=16.02  ns= 315.2  286.5  296.7  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  stack_uniform   packed_rank_vp10_root_fusion  raw+fences  T=0.001 root= 2.17 fence= 2.03 coord= 5.03 tot= 9.23  ns= 268.6  290.4  293.2  est b/r/f/vr/vf=8.96/3.32/9.05/2.31/6.30
+  stack_uniform   raw_rank                      binary      T=0.000 root= 8.96 fence= 2.29 coord= 5.03 tot=16.28  ns= 276.2  299.1  328.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  stack_uniform   sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 244.9  224.7  223.7  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  stack_window    packed_rank                   binary      T=0.000 root= 8.96 fence= 2.08 coord= 5.03 tot=16.07  ns= 278.3  294.8  283.8  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  stack_window    packed_rank_root_flow         binary      T=0.000 root= 8.96 fence= 2.08 coord= 5.03 tot=16.07  ns= 293.3  279.7  311.0  est b/r/f/vr/vf=8.96/14.34/14.29/0.00/0.00
+  stack_window    packed_rank_root_fusion       flow+fences T=1.000 root= 3.76 fence= 2.08 coord= 5.03 tot=10.87  ns= 323.7  311.4  334.7  est b/r/f/vr/vf=8.96/14.34/14.29/14.22/7.86
+  stack_window    packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 2.08 coord= 5.03 tot=16.07  ns= 280.9  296.8  288.0  est b/r/f/vr/vf=8.96/14.34/0.00/0.00/0.00
+  stack_window    packed_rank_root_vf4          binary      T=0.000 root= 8.96 fence= 2.08 coord= 5.03 tot=16.07  ns= 282.0  283.6  285.3  est b/r/f/vr/vf=8.96/14.34/0.00/14.22/0.00
+  stack_window    packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 1.98 coord= 5.03 tot=15.97  ns= 298.4  293.6  294.2  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  stack_window    packed_rank_vp10_root_fusion  flow+fences T=1.000 root= 3.76 fence= 1.98 coord= 5.03 tot=10.77  ns= 329.0  305.2  308.4  est b/r/f/vr/vf=8.96/14.34/14.29/14.22/7.86
+  stack_window    raw_rank                      binary      T=0.000 root= 8.96 fence= 2.08 coord= 5.03 tot=16.07  ns= 336.0  289.5  236.5  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  stack_window    sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 229.2  215.3  312.5  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  wise_uniform    packed_rank                   binary      T=0.000 root= 8.96 fence= 2.42 coord= 5.03 tot=16.40  ns= 360.2  356.4  351.4  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  wise_uniform    packed_rank_root_flow         raw+ranks   T=0.008 root= 6.47 fence= 2.42 coord= 5.03 tot=13.92  ns= 341.8  314.9  321.2  est b/r/f/vr/vf=8.96/6.54/10.39/0.00/0.00
+  wise_uniform    packed_rank_root_fusion       raw+fences  T=0.008 root= 3.29 fence= 2.42 coord= 5.03 tot=10.74  ns= 336.3  348.0  324.0  est b/r/f/vr/vf=8.96/6.54/10.39/3.35/7.46
+  wise_uniform    packed_rank_root_raw          raw+ranks   T=0.000 root= 6.47 fence= 2.42 coord= 5.03 tot=13.92  ns= 371.1  347.0  321.5  est b/r/f/vr/vf=8.96/6.54/0.00/0.00/0.00
+  wise_uniform    packed_rank_root_vf4          raw+fences  T=0.000 root= 3.29 fence= 2.42 coord= 5.03 tot=10.74  ns= 340.5  349.9  376.0  est b/r/f/vr/vf=8.96/6.54/0.00/3.35/0.00
+  wise_uniform    packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.06 coord= 5.03 tot=16.04  ns= 388.4  361.8  390.8  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  wise_uniform    packed_rank_vp10_root_fusion  raw+fences  T=0.008 root= 3.29 fence= 2.06 coord= 5.03 tot=10.38  ns= 341.5  325.8  330.2  est b/r/f/vr/vf=8.96/6.54/10.39/3.35/7.46
+  wise_uniform    raw_rank                      binary      T=0.000 root= 8.96 fence= 2.42 coord= 5.03 tot=16.40  ns= 245.9  344.0  240.6  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  wise_uniform    sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 266.0  295.8  221.9  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  wise_window     packed_rank                   binary      T=0.000 root= 8.96 fence= 2.32 coord= 5.03 tot=16.30  ns= 313.2  339.3  324.2  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  wise_window     packed_rank_root_flow         binary      T=0.002 root= 8.96 fence= 2.32 coord= 5.03 tot=16.30  ns= 352.9  341.5  314.6  est b/r/f/vr/vf=8.96/14.37/14.13/0.00/0.00
+  wise_window     packed_rank_root_fusion       flow+fences T=1.002 root= 2.56 fence= 2.32 coord= 5.03 tot= 9.91  ns= 365.0  382.4  377.7  est b/r/f/vr/vf=8.96/14.37/14.13/14.31/6.71
+  wise_window     packed_rank_root_raw          binary      T=0.000 root= 8.96 fence= 2.32 coord= 5.03 tot=16.30  ns= 340.8  332.3  313.1  est b/r/f/vr/vf=8.96/14.37/0.00/0.00/0.00
+  wise_window     packed_rank_root_vf4          binary      T=0.000 root= 8.96 fence= 2.32 coord= 5.03 tot=16.30  ns= 325.0  331.8  321.5  est b/r/f/vr/vf=8.96/14.37/0.00/14.31/0.00
+  wise_window     packed_rank_vp10              binary      T=0.000 root= 8.96 fence= 2.02 coord= 5.03 tot=16.00  ns= 323.7  335.0  350.3  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  wise_window     packed_rank_vp10_root_fusion  flow+fences T=1.002 root= 2.56 fence= 2.02 coord= 5.03 tot= 9.61  ns= 397.0  404.9  342.8  est b/r/f/vr/vf=8.96/14.37/14.13/14.31/6.71
+  wise_window     raw_rank                      binary      T=0.000 root= 8.96 fence= 2.32 coord= 5.03 tot=16.30  ns= 253.7  262.3  338.4  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+  wise_window     sorted_vector                 n/a         T=0.000 root= 0.00 fence= 0.00 coord= 0.00 tot= 0.00  ns= 271.7  178.1  171.7  est b/r/f/vr/vf=0.00/0.00/0.00/0.00/0.00
+
+== NOISE FLOOR: sham pairs (root variant fell back to binary => identical lookup path to packed_rank), delta ns/lookup and ratio ==
+  root_raw/root_vf4 fallback vs packed_rank: dns n=75 mean=-0.9 sd=21.7 min=-75.5 p25=-12.3 med=+1.6 p75=+13.2 max=+41.6
+      ratio: n=75 mean=+0.3 sd=5.8 min=-10.2 p25=-3.7 med=-0.5 p75=+3.8 max=+18.9 (percent)
+  root_flow fallback (region-level flow only, T<=0.09) vs packed_rank: dns n=42 mean=-3.5 sd=27.4 min=-102.5 p25=-14.5 med=-3.1 p75=+15.0 max=+48.2
+      ratio: n=42 mean=+1.1 sd=7.4 min=-11.4 p25=-3.9 med=+0.9 p75=+4.2 max=+27.4 (percent)
+     books_uniform   packed_rank_root_flow   s11  dns=  +1.9 ratio=0.995 dT=0.053 dmeta=+0
+     books_uniform   packed_rank_root_flow   s29  dns= -66.6 ratio=1.177 dT=0.053 dmeta=+0
+     books_uniform   packed_rank_root_flow   s47  dns=-102.5 ratio=1.274 dT=0.053 dmeta=+0
+     books_uniform   packed_rank_root_raw    s11  dns= +41.6 ratio=0.904 dT=0.000 dmeta=+0
+     books_uniform   packed_rank_root_raw    s29  dns=  -9.5 ratio=1.022 dT=0.000 dmeta=+0
+     books_uniform   packed_rank_root_raw    s47  dns= -75.5 ratio=1.189 dT=0.000 dmeta=+0
+     books_window    packed_rank_root_flow   s11  dns= +22.5 ratio=0.942 dT=0.008 dmeta=+0
+     books_window    packed_rank_root_flow   s29  dns= -52.8 ratio=1.149 dT=0.008 dmeta=+0
+     books_window    packed_rank_root_flow   s47  dns= -36.2 ratio=1.099 dT=0.008 dmeta=+0
+     books_window    packed_rank_root_raw    s11  dns=  -7.6 ratio=1.021 dT=0.000 dmeta=+0
+     books_window    packed_rank_root_raw    s29  dns= -45.5 ratio=1.125 dT=0.000 dmeta=+0
+     books_window    packed_rank_root_raw    s47  dns= -13.5 ratio=1.035 dT=0.000 dmeta=+0
+     books_window    packed_rank_root_vf4    s11  dns= +41.3 ratio=0.898 dT=0.000 dmeta=+0
+     books_window    packed_rank_root_vf4    s29  dns=  -8.2 ratio=1.021 dT=0.000 dmeta=+0
+     books_window    packed_rank_root_vf4    s47  dns= +31.4 ratio=0.927 dT=0.000 dmeta=+0
+     covid_uniform   packed_rank_root_flow   s11  dns= +26.9 ratio=0.938 dT=0.035 dmeta=+0
+     covid_uniform   packed_rank_root_flow   s29  dns= +48.2 ratio=0.886 dT=0.035 dmeta=+0
+     covid_uniform   packed_rank_root_flow   s47  dns= -12.1 ratio=1.031 dT=0.035 dmeta=+0
+     covid_uniform   packed_rank_root_raw    s11  dns= -35.7 ratio=1.097 dT=0.000 dmeta=+0
+     covid_uniform   packed_rank_root_raw    s29  dns=  -7.9 ratio=1.022 dT=0.000 dmeta=+0
+     covid_uniform   packed_rank_root_raw    s47  dns=  -4.5 ratio=1.011 dT=0.000 dmeta=+0
+     covid_uniform   packed_rank_root_vf4    s11  dns= -40.0 ratio=1.110 dT=0.000 dmeta=+0
+     covid_uniform   packed_rank_root_vf4    s29  dns= +13.2 ratio=0.966 dT=0.000 dmeta=+0
+     covid_uniform   packed_rank_root_vf4    s47  dns=  -9.2 ratio=1.023 dT=0.000 dmeta=+0
+     covid_window    packed_rank_root_flow   s11  dns=  -4.1 ratio=1.011 dT=0.002 dmeta=+0
+     covid_window    packed_rank_root_flow   s29  dns= -14.5 ratio=1.042 dT=0.002 dmeta=+0
+     covid_window    packed_rank_root_flow   s47  dns=  -4.5 ratio=1.012 dT=0.002 dmeta=+0
+     covid_window    packed_rank_root_raw    s11  dns= -38.3 ratio=1.114 dT=0.000 dmeta=+0
+     covid_window    packed_rank_root_raw    s29  dns= -14.0 ratio=1.041 dT=0.000 dmeta=+0
+     covid_window    packed_rank_root_raw    s47  dns=  -9.7 ratio=1.027 dT=0.000 dmeta=+0
+     covid_window    packed_rank_root_vf4    s11  dns= -29.9 ratio=1.087 dT=0.000 dmeta=+0
+     covid_window    packed_rank_root_vf4    s29  dns= +21.8 ratio=0.943 dT=0.000 dmeta=+0
+     covid_window    packed_rank_root_vf4    s47  dns= -13.0 ratio=1.036 dT=0.000 dmeta=+0
+     fb_window       packed_rank_root_flow   s11  dns=  -7.0 ratio=1.021 dT=0.025 dmeta=+0
+     fb_window       packed_rank_root_flow   s29  dns=  +9.6 ratio=0.971 dT=0.025 dmeta=+0
+     fb_window       packed_rank_root_flow   s47  dns= +17.3 ratio=0.950 dT=0.025 dmeta=+0
+     fb_window       packed_rank_root_raw    s11  dns= -16.5 ratio=1.050 dT=0.000 dmeta=+0
+     fb_window       packed_rank_root_raw    s29  dns=  +8.6 ratio=0.974 dT=0.000 dmeta=+0
+     fb_window       packed_rank_root_raw    s47  dns= +22.5 ratio=0.937 dT=0.000 dmeta=+0
+     fb_window       packed_rank_root_vf4    s11  dns= +22.8 ratio=0.938 dT=0.000 dmeta=+0
+     fb_window       packed_rank_root_vf4    s29  dns= +25.9 ratio=0.926 dT=0.000 dmeta=+0
+     fb_window       packed_rank_root_vf4    s47  dns=  +4.8 ratio=0.986 dT=0.000 dmeta=+0
+     genome_window   packed_rank_root_flow   s11  dns= -15.1 ratio=1.040 dT=0.018 dmeta=+0
+     genome_window   packed_rank_root_flow   s29  dns=  -0.5 ratio=1.001 dT=0.018 dmeta=+0
+     genome_window   packed_rank_root_flow   s47  dns= -20.0 ratio=1.052 dT=0.018 dmeta=+0
+     genome_window   packed_rank_root_raw    s11  dns= -18.5 ratio=1.049 dT=0.000 dmeta=+0
+     genome_window   packed_rank_root_raw    s29  dns= +14.6 ratio=0.963 dT=0.000 dmeta=+0
+     genome_window   packed_rank_root_raw    s47  dns=  +0.6 ratio=0.999 dT=0.000 dmeta=+0
+     genome_window   packed_rank_root_vf4    s11  dns=  +6.9 ratio=0.983 dT=0.000 dmeta=+0
+     genome_window   packed_rank_root_vf4    s29  dns= +28.4 ratio=0.931 dT=0.000 dmeta=+0
+     genome_window   packed_rank_root_vf4    s47  dns= -25.3 ratio=1.067 dT=0.000 dmeta=+0
+     history_window  packed_rank_root_flow   s11  dns= -16.8 ratio=1.058 dT=0.004 dmeta=+0
+     history_window  packed_rank_root_flow   s29  dns= +24.9 ratio=0.921 dT=0.004 dmeta=+0
+     history_window  packed_rank_root_flow   s47  dns= -14.3 ratio=1.049 dT=0.004 dmeta=+0
+     history_window  packed_rank_root_raw    s11  dns=  +7.7 ratio=0.976 dT=0.000 dmeta=+0
+     history_window  packed_rank_root_raw    s29  dns=  +7.7 ratio=0.974 dT=0.000 dmeta=+0
+     history_window  packed_rank_root_raw    s47  dns=  +8.9 ratio=0.972 dT=0.000 dmeta=+0
+     history_window  packed_rank_root_vf4    s11  dns= -13.9 ratio=1.047 dT=0.000 dmeta=+0
+     history_window  packed_rank_root_vf4    s29  dns= +19.5 ratio=0.937 dT=0.000 dmeta=+0
+     history_window  packed_rank_root_vf4    s47  dns=  +3.1 ratio=0.990 dT=0.000 dmeta=+0
+     libio_window    packed_rank_root_flow   s11  dns=  -7.6 ratio=1.027 dT=0.010 dmeta=+0
+     libio_window    packed_rank_root_flow   s29  dns= -14.6 ratio=1.051 dT=0.010 dmeta=+0
+     libio_window    packed_rank_root_flow   s47  dns=  -2.5 ratio=1.009 dT=0.010 dmeta=+0
+     libio_window    packed_rank_root_raw    s11  dns= -10.9 ratio=1.039 dT=0.000 dmeta=+0
+     libio_window    packed_rank_root_raw    s29  dns= -14.7 ratio=1.051 dT=0.000 dmeta=+0
+     libio_window    packed_rank_root_raw    s47  dns=  +4.2 ratio=0.986 dT=0.000 dmeta=+0
+     libio_window    packed_rank_root_vf4    s11  dns=  +0.6 ratio=0.998 dT=0.000 dmeta=+0
+     libio_window    packed_rank_root_vf4    s29  dns= -16.0 ratio=1.056 dT=0.000 dmeta=+0
+     libio_window    packed_rank_root_vf4    s47  dns= +11.4 ratio=0.962 dT=0.000 dmeta=+0
+     osm_uniform     packed_rank_root_flow   s11  dns=  -3.6 ratio=1.009 dT=0.014 dmeta=+0
+     osm_uniform     packed_rank_root_flow   s29  dns=  +1.7 ratio=0.996 dT=0.014 dmeta=+0
+     osm_uniform     packed_rank_root_flow   s47  dns= +36.2 ratio=0.918 dT=0.014 dmeta=+0
+     osm_uniform     packed_rank_root_raw    s11  dns= +23.5 ratio=0.944 dT=0.000 dmeta=+0
+     osm_uniform     packed_rank_root_raw    s29  dns=  -1.7 ratio=1.004 dT=0.000 dmeta=+0
+     osm_uniform     packed_rank_root_raw    s47  dns= +19.3 ratio=0.955 dT=0.000 dmeta=+0
+     osm_window      packed_rank_root_flow   s11  dns= +15.7 ratio=0.961 dT=0.043 dmeta=+0
+     osm_window      packed_rank_root_flow   s29  dns= -14.2 ratio=1.037 dT=0.043 dmeta=+0
+     osm_window      packed_rank_root_flow   s47  dns= -33.6 ratio=1.084 dT=0.043 dmeta=+0
+     osm_window      packed_rank_root_raw    s11  dns=  +5.8 ratio=0.985 dT=0.000 dmeta=+0
+     osm_window      packed_rank_root_raw    s29  dns= -15.3 ratio=1.040 dT=0.000 dmeta=+0
+     osm_window      packed_rank_root_raw    s47  dns= -66.2 ratio=1.179 dT=0.000 dmeta=+0
+     osm_window      packed_rank_root_vf4    s11  dns= -10.4 ratio=1.027 dT=0.000 dmeta=+0
+     osm_window      packed_rank_root_vf4    s29  dns= +21.8 ratio=0.947 dT=0.000 dmeta=+0
+     osm_window      packed_rank_root_vf4    s47  dns= -22.9 ratio=1.055 dT=0.000 dmeta=+0
+     planet_uniform  packed_rank_root_flow   s11  dns=  +6.6 ratio=0.981 dT=0.088 dmeta=+0
+     planet_uniform  packed_rank_root_flow   s29  dns= +22.4 ratio=0.937 dT=0.088 dmeta=+0
+     planet_uniform  packed_rank_root_flow   s47  dns=  +6.7 ratio=0.980 dT=0.088 dmeta=+0
+     planet_uniform  packed_rank_root_raw    s11  dns= -12.3 ratio=1.038 dT=0.000 dmeta=+0
+     planet_uniform  packed_rank_root_raw    s29  dns= +19.8 ratio=0.944 dT=0.000 dmeta=+0
+     planet_uniform  packed_rank_root_raw    s47  dns= -12.1 ratio=1.038 dT=0.000 dmeta=+0
+     planet_window   packed_rank_root_flow   s11  dns=  +9.1 ratio=0.973 dT=0.035 dmeta=+0
+     planet_window   packed_rank_root_flow   s29  dns=  -2.4 ratio=1.008 dT=0.035 dmeta=+0
+     planet_window   packed_rank_root_flow   s47  dns=  -9.4 ratio=1.030 dT=0.035 dmeta=+0
+     planet_window   packed_rank_root_raw    s11  dns=  +9.4 ratio=0.972 dT=0.000 dmeta=+0
+     planet_window   packed_rank_root_raw    s29  dns= +11.2 ratio=0.966 dT=0.000 dmeta=+0
+     planet_window   packed_rank_root_raw    s47  dns= +10.0 ratio=0.970 dT=0.000 dmeta=+0
+     planet_window   packed_rank_root_vf4    s11  dns= +13.7 ratio=0.959 dT=0.000 dmeta=+0
+     planet_window   packed_rank_root_vf4    s29  dns= +31.2 ratio=0.911 dT=0.000 dmeta=+0
+     planet_window   packed_rank_root_vf4    s47  dns= +21.1 ratio=0.940 dT=0.000 dmeta=+0
+     stack_window    packed_rank_root_flow   s11  dns= +15.0 ratio=0.949 dT=0.000 dmeta=+0
+     stack_window    packed_rank_root_flow   s29  dns= -15.1 ratio=1.054 dT=0.000 dmeta=+0
+     stack_window    packed_rank_root_flow   s47  dns= +27.3 ratio=0.912 dT=0.000 dmeta=+0
+     stack_window    packed_rank_root_raw    s11  dns=  +2.6 ratio=0.991 dT=0.000 dmeta=+0
+     stack_window    packed_rank_root_raw    s29  dns=  +2.0 ratio=0.993 dT=0.000 dmeta=+0
+     stack_window    packed_rank_root_raw    s47  dns=  +4.2 ratio=0.985 dT=0.000 dmeta=+0
+     stack_window    packed_rank_root_vf4    s11  dns=  +3.6 ratio=0.987 dT=0.000 dmeta=+0
+     stack_window    packed_rank_root_vf4    s29  dns= -11.2 ratio=1.040 dT=0.000 dmeta=+0
+     stack_window    packed_rank_root_vf4    s47  dns=  +1.6 ratio=0.995 dT=0.000 dmeta=+0
+     wise_window     packed_rank_root_flow   s11  dns= +39.7 ratio=0.887 dT=0.002 dmeta=+0
+     wise_window     packed_rank_root_flow   s29  dns=  +2.2 ratio=0.993 dT=0.002 dmeta=+0
+     wise_window     packed_rank_root_flow   s47  dns=  -9.6 ratio=1.031 dT=0.002 dmeta=+0
+     wise_window     packed_rank_root_raw    s11  dns= +27.5 ratio=0.919 dT=0.000 dmeta=+0
+     wise_window     packed_rank_root_raw    s29  dns=  -7.0 ratio=1.021 dT=0.000 dmeta=+0
+     wise_window     packed_rank_root_raw    s47  dns= -11.1 ratio=1.035 dT=0.000 dmeta=+0
+     wise_window     packed_rank_root_vf4    s11  dns= +11.7 ratio=0.964 dT=0.000 dmeta=+0
+     wise_window     packed_rank_root_vf4    s29  dns=  -7.5 ratio=1.023 dT=0.000 dmeta=+0
+     wise_window     packed_rank_root_vf4    s47  dns=  -2.7 ratio=1.008 dT=0.000 dmeta=+0
+
+== GROUP A: model root WITHOUT flow (raw feature), paired vs packed_rank: probes saved S, dns, ns per probe saved ==
+  packed_rank_root_flow         fb_uniform      s11 raw+ranks   S= 6.81 Stot= 6.81 dns=  +8.8 ns/probe=  -1.3 dT=0.084 base=313
+  packed_rank_root_flow         fb_uniform      s29 raw+ranks   S= 6.81 Stot= 6.81 dns= -50.0 ns/probe=  +7.3 dT=0.084 base=341
+  packed_rank_root_flow         fb_uniform      s47 raw+ranks   S= 6.81 Stot= 6.81 dns= -33.0 ns/probe=  +4.8 dT=0.084 base=358
+  packed_rank_root_flow         genome_uniform  s11 raw+ranks   S= 0.29 Stot= 0.29 dns=  -7.8 ns/probe= +27.2 dT=0.016 base=377
+  packed_rank_root_flow         genome_uniform  s29 raw+ranks   S= 0.29 Stot= 0.29 dns=  +9.9 ns/probe= -34.9 dT=0.016 base=353
+  packed_rank_root_flow         genome_uniform  s47 raw+ranks   S= 0.29 Stot= 0.29 dns=  +1.8 ns/probe=  -6.5 dT=0.016 base=360
+  packed_rank_root_flow         history_uniform s11 raw+ranks   S= 5.31 Stot= 5.31 dns= -16.9 ns/probe=  +3.2 dT=0.027 base=338
+  packed_rank_root_flow         history_uniform s29 raw+ranks   S= 5.31 Stot= 5.31 dns= +12.9 ns/probe=  -2.4 dT=0.027 base=300
+  packed_rank_root_flow         history_uniform s47 raw+ranks   S= 5.31 Stot= 5.31 dns= -28.4 ns/probe=  +5.3 dT=0.027 base=335
+  packed_rank_root_flow         libio_uniform   s11 raw+ranks   S= 2.43 Stot= 2.43 dns= +13.7 ns/probe=  -5.6 dT=0.043 base=297
+  packed_rank_root_flow         libio_uniform   s29 raw+ranks   S= 2.43 Stot= 2.43 dns= -10.7 ns/probe=  +4.4 dT=0.043 base=301
+  packed_rank_root_flow         libio_uniform   s47 raw+ranks   S= 2.43 Stot= 2.43 dns=  -5.7 ns/probe=  +2.4 dT=0.043 base=320
+  packed_rank_root_flow         stack_uniform   s11 raw+ranks   S= 5.62 Stot= 5.62 dns= -22.4 ns/probe=  +4.0 dT=0.001 base=320
+  packed_rank_root_flow         stack_uniform   s29 raw+ranks   S= 5.62 Stot= 5.62 dns=  -3.0 ns/probe=  +0.5 dT=0.001 base=293
+  packed_rank_root_flow         stack_uniform   s47 raw+ranks   S= 5.62 Stot= 5.62 dns=  -9.3 ns/probe=  +1.7 dT=0.001 base=291
+  packed_rank_root_flow         wise_uniform    s11 raw+ranks   S= 2.48 Stot= 2.48 dns= -18.5 ns/probe=  +7.4 dT=0.008 base=360
+  packed_rank_root_flow         wise_uniform    s29 raw+ranks   S= 2.48 Stot= 2.48 dns= -41.5 ns/probe= +16.7 dT=0.008 base=356
+  packed_rank_root_flow         wise_uniform    s47 raw+ranks   S= 2.48 Stot= 2.48 dns= -30.2 ns/probe= +12.2 dT=0.008 base=351
+  packed_rank_root_fusion       books_uniform   s11 raw+fences  S= 6.36 Stot= 6.36 dns= +32.0 ns/probe=  -5.0 dT=0.053 base=390
+  packed_rank_root_fusion       books_uniform   s29 raw+fences  S= 6.36 Stot= 6.36 dns= -68.7 ns/probe= +10.8 dT=0.053 base=443
+  packed_rank_root_fusion       books_uniform   s47 raw+fences  S= 6.36 Stot= 6.36 dns= -54.7 ns/probe=  +8.6 dT=0.053 base=476
+  packed_rank_root_fusion       fb_uniform      s11 raw+fences  S= 6.88 Stot= 6.88 dns= -25.4 ns/probe=  +3.7 dT=0.084 base=313
+  packed_rank_root_fusion       fb_uniform      s29 raw+fences  S= 6.88 Stot= 6.88 dns= -44.6 ns/probe=  +6.5 dT=0.084 base=341
+  packed_rank_root_fusion       fb_uniform      s47 raw+fences  S= 6.88 Stot= 6.88 dns= -36.6 ns/probe=  +5.3 dT=0.084 base=358
+  packed_rank_root_fusion       genome_uniform  s11 raw+fences  S= 6.17 Stot= 6.17 dns= -39.0 ns/probe=  +6.3 dT=0.016 base=377
+  packed_rank_root_fusion       genome_uniform  s29 raw+fences  S= 6.17 Stot= 6.17 dns=  -5.8 ns/probe=  +0.9 dT=0.016 base=353
+  packed_rank_root_fusion       genome_uniform  s47 raw+fences  S= 6.17 Stot= 6.17 dns= -38.2 ns/probe=  +6.2 dT=0.016 base=360
+  packed_rank_root_fusion       history_uniform s11 raw+fences  S= 6.78 Stot= 6.78 dns= -47.0 ns/probe=  +6.9 dT=0.027 base=338
+  packed_rank_root_fusion       history_uniform s29 raw+fences  S= 6.78 Stot= 6.78 dns=  +4.9 ns/probe=  -0.7 dT=0.027 base=300
+  packed_rank_root_fusion       history_uniform s47 raw+fences  S= 6.78 Stot= 6.78 dns= -23.1 ns/probe=  +3.4 dT=0.027 base=335
+  packed_rank_root_fusion       libio_uniform   s11 raw+fences  S= 6.80 Stot= 6.80 dns= -25.9 ns/probe=  +3.8 dT=0.043 base=297
+  packed_rank_root_fusion       libio_uniform   s29 raw+fences  S= 6.80 Stot= 6.80 dns= -15.1 ns/probe=  +2.2 dT=0.043 base=301
+  packed_rank_root_fusion       libio_uniform   s47 raw+fences  S= 6.80 Stot= 6.80 dns= -21.1 ns/probe=  +3.1 dT=0.043 base=320
+  packed_rank_root_fusion       osm_uniform     s11 raw+fences  S= 0.79 Stot= 0.79 dns= +46.2 ns/probe= -58.3 dT=0.014 base=395
+  packed_rank_root_fusion       osm_uniform     s29 raw+fences  S= 0.79 Stot= 0.79 dns=  +1.5 ns/probe=  -1.9 dT=0.014 base=444
+  packed_rank_root_fusion       osm_uniform     s47 raw+fences  S= 0.79 Stot= 0.79 dns= +60.2 ns/probe= -76.1 dT=0.014 base=407
+  packed_rank_root_fusion       planet_uniform  s11 raw+fences  S= 3.82 Stot= 3.82 dns=  -6.6 ns/probe=  +1.7 dT=0.088 base=333
+  packed_rank_root_fusion       planet_uniform  s29 raw+fences  S= 3.81 Stot= 3.82 dns=  -9.3 ns/probe=  +2.4 dT=0.088 base=335
+  packed_rank_root_fusion       planet_uniform  s47 raw+fences  S= 3.82 Stot= 3.82 dns=  -6.4 ns/probe=  +1.7 dT=0.088 base=333
+  packed_rank_root_fusion       stack_uniform   s11 raw+fences  S= 6.79 Stot= 6.79 dns= -52.5 ns/probe=  +7.7 dT=0.001 base=320
+  packed_rank_root_fusion       stack_uniform   s29 raw+fences  S= 6.79 Stot= 6.79 dns=  +4.0 ns/probe=  -0.6 dT=0.001 base=293
+  packed_rank_root_fusion       stack_uniform   s47 raw+fences  S= 6.79 Stot= 6.79 dns=  -7.6 ns/probe=  +1.1 dT=0.001 base=291
+  packed_rank_root_fusion       wise_uniform    s11 raw+fences  S= 5.66 Stot= 5.66 dns= -24.0 ns/probe=  +4.2 dT=0.008 base=360
+  packed_rank_root_fusion       wise_uniform    s29 raw+fences  S= 5.66 Stot= 5.66 dns=  -8.4 ns/probe=  +1.5 dT=0.008 base=356
+  packed_rank_root_fusion       wise_uniform    s47 raw+fences  S= 5.66 Stot= 5.66 dns= -27.4 ns/probe=  +4.8 dT=0.008 base=351
+  packed_rank_root_raw          fb_uniform      s11 raw+ranks   S= 6.81 Stot= 6.81 dns=  +8.8 ns/probe=  -1.3 dT=0.000 base=313
+  packed_rank_root_raw          fb_uniform      s29 raw+ranks   S= 6.81 Stot= 6.81 dns= -39.2 ns/probe=  +5.7 dT=0.000 base=341
+  packed_rank_root_raw          fb_uniform      s47 raw+ranks   S= 6.81 Stot= 6.81 dns= -42.0 ns/probe=  +6.2 dT=0.000 base=358
+  packed_rank_root_raw          genome_uniform  s11 raw+ranks   S= 0.29 Stot= 0.29 dns= -19.8 ns/probe= +69.0 dT=0.000 base=377
+  packed_rank_root_raw          genome_uniform  s29 raw+ranks   S= 0.29 Stot= 0.29 dns=  -9.9 ns/probe= +34.8 dT=0.000 base=353
+  packed_rank_root_raw          genome_uniform  s47 raw+ranks   S= 0.29 Stot= 0.29 dns= -31.7 ns/probe=+111.0 dT=0.000 base=360
+  packed_rank_root_raw          history_uniform s11 raw+ranks   S= 5.31 Stot= 5.31 dns= -42.9 ns/probe=  +8.1 dT=0.000 base=338
+  packed_rank_root_raw          history_uniform s29 raw+ranks   S= 5.31 Stot= 5.31 dns= +29.7 ns/probe=  -5.6 dT=0.000 base=300
+  packed_rank_root_raw          history_uniform s47 raw+ranks   S= 5.31 Stot= 5.31 dns= -38.7 ns/probe=  +7.3 dT=0.000 base=335
+  packed_rank_root_raw          libio_uniform   s11 raw+ranks   S= 2.43 Stot= 2.43 dns=  +9.0 ns/probe=  -3.7 dT=0.000 base=297
+  packed_rank_root_raw          libio_uniform   s29 raw+ranks   S= 2.43 Stot= 2.43 dns= -11.8 ns/probe=  +4.9 dT=0.000 base=301
+  packed_rank_root_raw          libio_uniform   s47 raw+ranks   S= 2.43 Stot= 2.43 dns= -31.3 ns/probe= +12.9 dT=0.000 base=320
+  packed_rank_root_raw          stack_uniform   s11 raw+ranks   S= 5.62 Stot= 5.62 dns= -35.7 ns/probe=  +6.3 dT=0.000 base=320
+  packed_rank_root_raw          stack_uniform   s29 raw+ranks   S= 5.62 Stot= 5.62 dns= +13.2 ns/probe=  -2.3 dT=0.000 base=293
+  packed_rank_root_raw          stack_uniform   s47 raw+ranks   S= 5.62 Stot= 5.62 dns= +31.3 ns/probe=  -5.6 dT=0.000 base=291
+  packed_rank_root_raw          wise_uniform    s11 raw+ranks   S= 2.48 Stot= 2.48 dns= +10.9 ns/probe=  -4.4 dT=0.000 base=360
+  packed_rank_root_raw          wise_uniform    s29 raw+ranks   S= 2.48 Stot= 2.48 dns=  -9.4 ns/probe=  +3.8 dT=0.000 base=356
+  packed_rank_root_raw          wise_uniform    s47 raw+ranks   S= 2.48 Stot= 2.48 dns= -29.9 ns/probe= +12.1 dT=0.000 base=351
+  packed_rank_root_vf4          books_uniform   s11 raw+fences  S= 6.36 Stot= 6.36 dns= -22.1 ns/probe=  +3.5 dT=0.000 base=390
+  packed_rank_root_vf4          books_uniform   s29 raw+fences  S= 6.36 Stot= 6.36 dns= -30.2 ns/probe=  +4.7 dT=0.000 base=443
+  packed_rank_root_vf4          books_uniform   s47 raw+fences  S= 6.36 Stot= 6.36 dns= -94.1 ns/probe= +14.8 dT=0.000 base=476
+  packed_rank_root_vf4          fb_uniform      s11 raw+fences  S= 6.88 Stot= 6.88 dns=  +8.3 ns/probe=  -1.2 dT=0.000 base=313
+  packed_rank_root_vf4          fb_uniform      s29 raw+fences  S= 6.88 Stot= 6.88 dns= -45.8 ns/probe=  +6.7 dT=0.000 base=341
+  packed_rank_root_vf4          fb_uniform      s47 raw+fences  S= 6.88 Stot= 6.88 dns= -64.4 ns/probe=  +9.4 dT=0.000 base=358
+  packed_rank_root_vf4          genome_uniform  s11 raw+fences  S= 6.17 Stot= 6.17 dns= -42.8 ns/probe=  +6.9 dT=0.000 base=377
+  packed_rank_root_vf4          genome_uniform  s29 raw+fences  S= 6.17 Stot= 6.17 dns= -35.4 ns/probe=  +5.7 dT=0.000 base=353
+  packed_rank_root_vf4          genome_uniform  s47 raw+fences  S= 6.17 Stot= 6.17 dns= -42.6 ns/probe=  +6.9 dT=0.000 base=360
+  packed_rank_root_vf4          history_uniform s11 raw+fences  S= 6.78 Stot= 6.78 dns= -59.3 ns/probe=  +8.7 dT=0.000 base=338
+  packed_rank_root_vf4          history_uniform s29 raw+fences  S= 6.78 Stot= 6.78 dns= -23.1 ns/probe=  +3.4 dT=0.000 base=300
+  packed_rank_root_vf4          history_uniform s47 raw+fences  S= 6.78 Stot= 6.78 dns= -53.2 ns/probe=  +7.9 dT=0.000 base=335
+  packed_rank_root_vf4          libio_uniform   s11 raw+fences  S= 6.80 Stot= 6.80 dns= -22.0 ns/probe=  +3.2 dT=0.000 base=297
+  packed_rank_root_vf4          libio_uniform   s29 raw+fences  S= 6.80 Stot= 6.80 dns= -12.9 ns/probe=  +1.9 dT=0.000 base=301
+  packed_rank_root_vf4          libio_uniform   s47 raw+fences  S= 6.80 Stot= 6.80 dns= -49.1 ns/probe=  +7.2 dT=0.000 base=320
+  packed_rank_root_vf4          osm_uniform     s11 raw+fences  S= 0.79 Stot= 0.79 dns= +32.2 ns/probe= -40.6 dT=0.000 base=395
+  packed_rank_root_vf4          osm_uniform     s29 raw+fences  S= 0.79 Stot= 0.79 dns= -27.1 ns/probe= +34.3 dT=0.000 base=444
+  packed_rank_root_vf4          osm_uniform     s47 raw+fences  S= 0.79 Stot= 0.79 dns= +27.8 ns/probe= -35.2 dT=0.000 base=407
+  packed_rank_root_vf4          planet_uniform  s11 raw+fences  S= 3.82 Stot= 3.82 dns=  -0.4 ns/probe=  +0.1 dT=0.000 base=333
+  packed_rank_root_vf4          planet_uniform  s29 raw+fences  S= 3.81 Stot= 3.81 dns=  -3.3 ns/probe=  +0.9 dT=0.000 base=335
+  packed_rank_root_vf4          planet_uniform  s47 raw+fences  S= 3.82 Stot= 3.82 dns= -15.1 ns/probe=  +4.0 dT=0.000 base=333
+  packed_rank_root_vf4          stack_uniform   s11 raw+fences  S= 6.79 Stot= 6.79 dns= -42.7 ns/probe=  +6.3 dT=0.000 base=320
+  packed_rank_root_vf4          stack_uniform   s29 raw+fences  S= 6.79 Stot= 6.79 dns=  -8.4 ns/probe=  +1.2 dT=0.000 base=293
+  packed_rank_root_vf4          stack_uniform   s47 raw+fences  S= 6.79 Stot= 6.79 dns= -12.3 ns/probe=  +1.8 dT=0.000 base=291
+  packed_rank_root_vf4          wise_uniform    s11 raw+fences  S= 5.66 Stot= 5.66 dns= -19.7 ns/probe=  +3.5 dT=0.000 base=360
+  packed_rank_root_vf4          wise_uniform    s29 raw+fences  S= 5.66 Stot= 5.66 dns=  -6.5 ns/probe=  +1.2 dT=0.000 base=356
+  packed_rank_root_vf4          wise_uniform    s47 raw+fences  S= 5.66 Stot= 5.66 dns= +24.6 ns/probe=  -4.3 dT=0.000 base=351
+  packed_rank_vp10_root_fusion  books_uniform   s11 raw+fences  S= 6.36 Stot= 6.36 dns= -69.1 ns/probe= +10.9 dT=0.053 base=437
+  packed_rank_vp10_root_fusion  books_uniform   s29 raw+fences  S= 6.36 Stot= 6.36 dns= -45.4 ns/probe=  +7.1 dT=0.053 base=435
+  packed_rank_vp10_root_fusion  books_uniform   s47 raw+fences  S= 6.36 Stot= 6.36 dns= -21.7 ns/probe=  +3.4 dT=0.053 base=417
+  packed_rank_vp10_root_fusion  fb_uniform      s11 raw+fences  S= 6.88 Stot= 6.88 dns= -36.6 ns/probe=  +5.3 dT=0.084 base=332
+  packed_rank_vp10_root_fusion  fb_uniform      s29 raw+fences  S= 6.88 Stot= 6.88 dns= +21.0 ns/probe=  -3.0 dT=0.084 base=348
+  packed_rank_vp10_root_fusion  fb_uniform      s47 raw+fences  S= 6.88 Stot= 6.88 dns=  -5.0 ns/probe=  +0.7 dT=0.084 base=324
+  packed_rank_vp10_root_fusion  genome_uniform  s11 raw+fences  S= 6.17 Stot= 6.17 dns= -38.5 ns/probe=  +6.2 dT=0.016 base=355
+  packed_rank_vp10_root_fusion  genome_uniform  s29 raw+fences  S= 6.17 Stot= 6.17 dns= -21.7 ns/probe=  +3.5 dT=0.016 base=350
+  packed_rank_vp10_root_fusion  genome_uniform  s47 raw+fences  S= 6.17 Stot= 6.17 dns= +20.5 ns/probe=  -3.3 dT=0.016 base=331
+  packed_rank_vp10_root_fusion  history_uniform s11 raw+fences  S= 6.78 Stot= 6.78 dns= -32.4 ns/probe=  +4.8 dT=0.027 base=306
+  packed_rank_vp10_root_fusion  history_uniform s29 raw+fences  S= 6.78 Stot= 6.78 dns= -67.4 ns/probe=  +9.9 dT=0.027 base=341
+  packed_rank_vp10_root_fusion  history_uniform s47 raw+fences  S= 6.78 Stot= 6.78 dns= -23.5 ns/probe=  +3.5 dT=0.027 base=327
+  packed_rank_vp10_root_fusion  libio_uniform   s11 raw+fences  S= 6.80 Stot= 6.80 dns= -29.9 ns/probe=  +4.4 dT=0.043 base=323
+  packed_rank_vp10_root_fusion  libio_uniform   s29 raw+fences  S= 6.80 Stot= 6.80 dns= -36.4 ns/probe=  +5.3 dT=0.043 base=313
+  packed_rank_vp10_root_fusion  libio_uniform   s47 raw+fences  S= 6.80 Stot= 6.80 dns= -41.9 ns/probe=  +6.2 dT=0.043 base=317
+  packed_rank_vp10_root_fusion  osm_uniform     s11 raw+fences  S= 0.79 Stot= 0.79 dns=  +9.7 ns/probe= -12.3 dT=0.014 base=417
+  packed_rank_vp10_root_fusion  osm_uniform     s29 raw+fences  S= 0.79 Stot= 0.79 dns= -48.1 ns/probe= +60.9 dT=0.014 base=494
+  packed_rank_vp10_root_fusion  osm_uniform     s47 raw+fences  S= 0.79 Stot= 0.79 dns= -56.3 ns/probe= +71.2 dT=0.014 base=449
+  packed_rank_vp10_root_fusion  planet_uniform  s11 raw+fences  S= 3.82 Stot= 3.82 dns= +14.0 ns/probe=  -3.7 dT=0.088 base=315
+  packed_rank_vp10_root_fusion  planet_uniform  s29 raw+fences  S= 3.81 Stot= 3.81 dns= +33.6 ns/probe=  -8.8 dT=0.088 base=312
+  packed_rank_vp10_root_fusion  planet_uniform  s47 raw+fences  S= 3.82 Stot= 3.82 dns=  -0.2 ns/probe=  +0.1 dT=0.088 base=315
+  packed_rank_vp10_root_fusion  stack_uniform   s11 raw+fences  S= 6.79 Stot= 6.79 dns= -46.6 ns/probe=  +6.9 dT=0.001 base=315
+  packed_rank_vp10_root_fusion  stack_uniform   s29 raw+fences  S= 6.79 Stot= 6.79 dns=  +3.9 ns/probe=  -0.6 dT=0.001 base=287
+  packed_rank_vp10_root_fusion  stack_uniform   s47 raw+fences  S= 6.79 Stot= 6.79 dns=  -3.5 ns/probe=  +0.5 dT=0.001 base=297
+  packed_rank_vp10_root_fusion  wise_uniform    s11 raw+fences  S= 5.66 Stot= 5.66 dns= -46.9 ns/probe=  +8.3 dT=0.008 base=388
+  packed_rank_vp10_root_fusion  wise_uniform    s29 raw+fences  S= 5.66 Stot= 5.66 dns= -36.0 ns/probe=  +6.4 dT=0.008 base=362
+  packed_rank_vp10_root_fusion  wise_uniform    s47 raw+fences  S= 5.66 Stot= 5.66 dns= -60.7 ns/probe= +10.7 dT=0.008 base=391
+  FIT raw/vf4 only (T=0): n=45; through origin: ns/probe = 4.07 [2.61,5.53] (dataset-cluster bootstrap); with intercept: dns = +1.5 [-12.5,+21.1] - 4.31 [1.83,8.11] * S; pooled sum(-dns)/sum(S) = 4.02
+     per-dataset (mean over seeds) ns/probe: fb_uniform(root_raw) S=6.8 +3.5, history_uniform(root_raw) S=5.3 +3.3, libio_uniform(root_raw) S=2.4 +4.7, stack_uniform(root_raw) S=5.6 -0.5, wise_uniform(root_raw) S=2.5 +3.8, books_uniform(root_vf4) S=6.4 +7.7, fb_uniform(root_vf4) S=6.9 +4.9, genome_uniform(root_vf4) S=6.2 +6.5, history_uniform(root_vf4) S=6.8 +6.7, libio_uniform(root_vf4) S=6.8 +4.1, osm_uniform(root_vf4) S=0.8 -13.9, planet_uniform(root_vf4) S=3.8 +1.6, stack_uniform(root_vf4) S=6.8 +3.1, wise_uniform(root_vf4) S=5.7 +0.1
+     per-dataset ns/probe distribution: min=-13.9 med=+3.7 max=+7.7; per-seed ns/probe (S>0.5): n=42 mean=+2.6 sd=11.2 min=-40.6 p25=+0.1 med=+3.9 p75=+6.9 max=+34.3
+  FIT all no-flow model roots (incl. root_flow/fusion/vp10_fusion with region flow T<=0.09): n=117; through origin: ns/probe = 3.87 [2.94,4.80] (dataset-cluster bootstrap); with intercept: dns = +3.4 [-7.3,+18.6] - 4.45 [2.56,7.27] * S; pooled sum(-dns)/sum(S) = 3.76
+     per-dataset (mean over seeds) ns/probe: fb_uniform(root_flow) S=6.8 +3.6, history_uniform(root_flow) S=5.3 +2.0, libio_uniform(root_flow) S=2.4 +0.4, stack_uniform(root_flow) S=5.6 +2.1, wise_uniform(root_flow) S=2.5 +12.1, books_uniform(root_fusion) S=6.4 +4.8, fb_uniform(root_fusion) S=6.9 +5.2, genome_uniform(root_fusion) S=6.2 +4.5, history_uniform(root_fusion) S=6.8 +3.2, libio_uniform(root_fusion) S=6.8 +3.0, osm_uniform(root_fusion) S=0.8 -45.5, planet_uniform(root_fusion) S=3.8 +1.9, stack_uniform(root_fusion) S=6.8 +2.8, wise_uniform(root_fusion) S=5.7 +3.5, fb_uniform(root_raw) S=6.8 +3.5, history_uniform(root_raw) S=5.3 +3.3, libio_uniform(root_raw) S=2.4 +4.7, stack_uniform(root_raw) S=5.6 -0.5, wise_uniform(root_raw) S=2.5 +3.8, books_uniform(root_vf4) S=6.4 +7.7, fb_uniform(root_vf4) S=6.9 +4.9, genome_uniform(root_vf4) S=6.2 +6.5, history_uniform(root_vf4) S=6.8 +6.7, libio_uniform(root_vf4) S=6.8 +4.1, osm_uniform(root_vf4) S=0.8 -13.9, planet_uniform(root_vf4) S=3.8 +1.6, stack_uniform(root_vf4) S=6.8 +3.1, wise_uniform(root_vf4) S=5.7 +0.1, books_uniform(vp10_root_fusion) S=6.4 +7.1, fb_uniform(vp10_root_fusion) S=6.9 +1.0, genome_uniform(vp10_root_fusion) S=6.2 +2.1, history_uniform(vp10_root_fusion) S=6.8 +6.1, libio_uniform(vp10_root_fusion) S=6.8 +5.3, osm_uniform(vp10_root_fusion) S=0.8 +39.9, planet_uniform(vp10_root_fusion) S=3.8 -4.1, stack_uniform(vp10_root_fusion) S=6.8 +2.3, wise_uniform(vp10_root_fusion) S=5.7 +8.4
+     per-dataset ns/probe distribution: min=-45.5 med=+3.5 max=+39.9; per-seed ns/probe (S>0.5): n=111 mean=+2.9 sd=15.0 min=-76.1 p25=+0.5 med=+3.8 p75=+6.9 max=+71.2
+
+== GROUP B: model root WITH flow (T~1), paired vs the flow-free counterpart ==
+  using group-A raw/vf4 fit: a=+1.5 ns fixed, b=4.31 ns/probe (with intercept); b_origin=4.07
+  F(b) = implied flow cost per lookup = dns + b*S (a=0);  F_ab = dns - a_hat + b_hat*S;  per call = /dT
+  packed_rank_root_fusion       books_window    s11 flow+fences S= 6.03 dns=+151.5 ratio=0.706 dT=1.008 | F(b=0)=+151.5 F(4)=+175.6 F(8)=+199.7 F_ab=+176.0 | per call F(4)/dT=+174.2
+  packed_rank_root_fusion       books_window    s29 flow+fences S= 6.03 dns=  +5.9 ratio=0.986 dT=1.008 | F(b=0)=  +5.9 F(4)= +30.0 F(8)= +54.1 F_ab= +30.4 | per call F(4)/dT= +29.7
+  packed_rank_root_fusion       books_window    s47 flow+fences S= 6.03 dns=  +6.8 ratio=0.983 dT=1.008 | F(b=0)=  +6.8 F(4)= +31.0 F(8)= +55.1 F_ab= +31.4 | per call F(4)/dT= +30.7
+  packed_rank_root_fusion       covid_uniform   s11 flow+fences S= 4.62 dns= +11.1 ratio=0.973 dT=1.035 | F(b=0)= +11.1 F(4)= +29.6 F(8)= +48.1 F_ab= +29.6 | per call F(4)/dT= +28.6
+  packed_rank_root_fusion       covid_uniform   s29 flow+fences S= 4.62 dns=+146.7 ratio=0.718 dT=1.035 | F(b=0)=+146.7 F(4)=+165.2 F(8)=+183.7 F_ab=+165.2 | per call F(4)/dT=+159.7
+  packed_rank_root_fusion       covid_uniform   s47 flow+fences S= 4.62 dns= +59.7 ratio=0.872 dT=1.035 | F(b=0)= +59.7 F(4)= +78.2 F(8)= +96.6 F_ab= +78.2 | per call F(4)/dT= +75.5
+  packed_rank_root_fusion       covid_window    s11 flow+fences S= 4.23 dns= +23.0 ratio=0.942 dT=1.002 | F(b=0)= +23.0 F(4)= +39.9 F(8)= +56.8 F_ab= +39.8 | per call F(4)/dT= +39.8
+  packed_rank_root_fusion       covid_window    s29 flow+fences S= 4.23 dns= +67.2 ratio=0.842 dT=1.002 | F(b=0)= +67.2 F(4)= +84.1 F(8)=+101.0 F_ab= +83.9 | per call F(4)/dT= +83.9
+  packed_rank_root_fusion       covid_window    s47 flow+fences S= 4.23 dns= +59.8 ratio=0.862 dT=1.002 | F(b=0)= +59.8 F(4)= +76.7 F(8)= +93.6 F_ab= +76.6 | per call F(4)/dT= +76.6
+  packed_rank_root_fusion       fb_window       s11 flow+fences S= 6.07 dns= +30.2 ratio=0.920 dT=1.025 | F(b=0)= +30.2 F(4)= +54.5 F(8)= +78.8 F_ab= +54.9 | per call F(4)/dT= +53.2
+  packed_rank_root_fusion       fb_window       s29 flow+fences S= 6.07 dns= +76.2 ratio=0.809 dT=1.025 | F(b=0)= +76.2 F(4)=+100.5 F(8)=+124.8 F_ab=+101.0 | per call F(4)/dT= +98.1
+  packed_rank_root_fusion       fb_window       s47 flow+fences S= 6.07 dns= +29.0 ratio=0.920 dT=1.025 | F(b=0)= +29.0 F(4)= +53.3 F(8)= +77.5 F_ab= +53.7 | per call F(4)/dT= +52.0
+  packed_rank_root_fusion       genome_window   s11 flow+fences S= 4.29 dns= +64.9 ratio=0.859 dT=1.018 | F(b=0)= +64.9 F(4)= +82.0 F(8)= +99.2 F_ab= +81.9 | per call F(4)/dT= +80.5
+  packed_rank_root_fusion       genome_window   s29 flow+fences S= 4.29 dns= +72.2 ratio=0.841 dT=1.018 | F(b=0)= +72.2 F(4)= +89.3 F(8)=+106.5 F_ab= +89.2 | per call F(4)/dT= +87.7
+  packed_rank_root_fusion       genome_window   s47 flow+fences S= 4.29 dns= +52.7 ratio=0.884 dT=1.018 | F(b=0)= +52.7 F(4)= +69.8 F(8)= +87.0 F_ab= +69.7 | per call F(4)/dT= +68.6
+  packed_rank_root_fusion       history_window  s11 flow+fences S= 5.05 dns= +35.5 ratio=0.897 dT=1.004 | F(b=0)= +35.5 F(4)= +55.7 F(8)= +75.9 F_ab= +55.9 | per call F(4)/dT= +55.5
+  packed_rank_root_fusion       history_window  s29 flow+fences S= 5.05 dns= +50.2 ratio=0.852 dT=1.004 | F(b=0)= +50.2 F(4)= +70.4 F(8)= +90.6 F_ab= +70.5 | per call F(4)/dT= +70.1
+  packed_rank_root_fusion       history_window  s47 flow+fences S= 5.05 dns= +68.7 ratio=0.817 dT=1.004 | F(b=0)= +68.7 F(4)= +88.9 F(8)=+109.1 F_ab= +89.0 | per call F(4)/dT= +88.5
+  packed_rank_root_fusion       libio_window    s11 flow+fences S= 5.48 dns= +56.2 ratio=0.840 dT=1.010 | F(b=0)= +56.2 F(4)= +78.1 F(8)=+100.0 F_ab= +78.4 | per call F(4)/dT= +77.3
+  packed_rank_root_fusion       libio_window    s29 flow+fences S= 5.48 dns= +30.2 ratio=0.910 dT=1.010 | F(b=0)= +30.2 F(4)= +52.1 F(8)= +74.0 F_ab= +52.4 | per call F(4)/dT= +51.6
+  packed_rank_root_fusion       libio_window    s47 flow+fences S= 5.48 dns= +45.1 ratio=0.865 dT=1.010 | F(b=0)= +45.1 F(4)= +67.0 F(8)= +89.0 F_ab= +67.3 | per call F(4)/dT= +66.4
+  packed_rank_root_fusion       planet_window   s11 flow+fences S= 4.19 dns= +41.9 ratio=0.885 dT=1.035 | F(b=0)= +41.9 F(4)= +58.7 F(8)= +75.4 F_ab= +58.5 | per call F(4)/dT= +56.7
+  packed_rank_root_fusion       planet_window   s29 flow+fences S= 4.19 dns= +47.4 ratio=0.871 dT=1.035 | F(b=0)= +47.4 F(4)= +64.2 F(8)= +80.9 F_ab= +64.0 | per call F(4)/dT= +62.0
+  packed_rank_root_fusion       planet_window   s47 flow+fences S= 4.19 dns= +29.1 ratio=0.918 dT=1.035 | F(b=0)= +29.1 F(4)= +45.9 F(8)= +62.6 F_ab= +45.7 | per call F(4)/dT= +44.3
+  packed_rank_root_fusion       stack_window    s11 flow+fences S= 5.20 dns= +45.3 ratio=0.860 dT=1.000 | F(b=0)= +45.3 F(4)= +66.1 F(8)= +86.9 F_ab= +66.3 | per call F(4)/dT= +66.1
+  packed_rank_root_fusion       stack_window    s29 flow+fences S= 5.20 dns= +16.6 ratio=0.947 dT=1.000 | F(b=0)= +16.6 F(4)= +37.4 F(8)= +58.2 F_ab= +37.6 | per call F(4)/dT= +37.4
+  packed_rank_root_fusion       stack_window    s47 flow+fences S= 5.20 dns= +50.9 ratio=0.848 dT=1.000 | F(b=0)= +50.9 F(4)= +71.7 F(8)= +92.5 F_ab= +71.9 | per call F(4)/dT= +71.7
+  packed_rank_root_fusion       wise_window     s11 flow+fences S= 6.39 dns= +51.8 ratio=0.858 dT=1.002 | F(b=0)= +51.8 F(4)= +77.3 F(8)=+102.9 F_ab= +77.9 | per call F(4)/dT= +77.2
+  packed_rank_root_fusion       wise_window     s29 flow+fences S= 6.39 dns= +43.1 ratio=0.887 dT=1.002 | F(b=0)= +43.1 F(4)= +68.6 F(8)= +94.2 F_ab= +69.2 | per call F(4)/dT= +68.5
+  packed_rank_root_fusion       wise_window     s47 flow+fences S= 6.39 dns= +53.5 ratio=0.858 dT=1.002 | F(b=0)= +53.5 F(4)= +79.1 F(8)=+104.6 F_ab= +79.6 | per call F(4)/dT= +78.9
+  packed_rank_vp10_root_fusion  books_window    s11 flow+fences S= 6.03 dns=  -5.4 ratio=1.013 dT=1.008 | F(b=0)=  -5.4 F(4)= +18.7 F(8)= +42.8 F_ab= +19.2 | per call F(4)/dT= +18.6
+  packed_rank_vp10_root_fusion  books_window    s29 flow+fences S= 6.03 dns=+111.8 ratio=0.776 dT=1.008 | F(b=0)=+111.8 F(4)=+136.0 F(8)=+160.1 F_ab=+136.4 | per call F(4)/dT=+134.9
+  packed_rank_vp10_root_fusion  books_window    s47 flow+fences S= 6.03 dns= +44.9 ratio=0.889 dT=1.008 | F(b=0)= +44.9 F(4)= +69.0 F(8)= +93.2 F_ab= +69.5 | per call F(4)/dT= +68.5
+  packed_rank_vp10_root_fusion  covid_uniform   s11 flow+fences S= 4.62 dns= +11.8 ratio=0.971 dT=1.035 | F(b=0)= +11.8 F(4)= +30.3 F(8)= +48.7 F_ab= +30.3 | per call F(4)/dT= +29.2
+  packed_rank_vp10_root_fusion  covid_uniform   s29 flow+fences S= 4.62 dns= +49.1 ratio=0.892 dT=1.035 | F(b=0)= +49.1 F(4)= +67.5 F(8)= +86.0 F_ab= +67.5 | per call F(4)/dT= +65.3
+  packed_rank_vp10_root_fusion  covid_uniform   s47 flow+fences S= 4.62 dns= +61.6 ratio=0.875 dT=1.035 | F(b=0)= +61.6 F(4)= +80.0 F(8)= +98.5 F_ab= +80.0 | per call F(4)/dT= +77.3
+  packed_rank_vp10_root_fusion  covid_window    s11 flow+fences S= 4.23 dns= +64.8 ratio=0.848 dT=1.002 | F(b=0)= +64.8 F(4)= +81.7 F(8)= +98.6 F_ab= +81.5 | per call F(4)/dT= +81.5
+  packed_rank_vp10_root_fusion  covid_window    s29 flow+fences S= 4.23 dns= +19.9 ratio=0.950 dT=1.002 | F(b=0)= +19.9 F(4)= +36.8 F(8)= +53.7 F_ab= +36.7 | per call F(4)/dT= +36.7
+  packed_rank_vp10_root_fusion  covid_window    s47 flow+fences S= 4.23 dns= +49.3 ratio=0.882 dT=1.002 | F(b=0)= +49.3 F(4)= +66.2 F(8)= +83.1 F_ab= +66.1 | per call F(4)/dT= +66.0
+  packed_rank_vp10_root_fusion  fb_window       s11 flow+fences S= 6.07 dns=  +5.6 ratio=0.985 dT=1.025 | F(b=0)=  +5.6 F(4)= +29.9 F(8)= +54.2 F_ab= +30.4 | per call F(4)/dT= +29.2
+  packed_rank_vp10_root_fusion  fb_window       s29 flow+fences S= 6.07 dns= +33.0 ratio=0.914 dT=1.025 | F(b=0)= +33.0 F(4)= +57.3 F(8)= +81.6 F_ab= +57.7 | per call F(4)/dT= +55.9
+  packed_rank_vp10_root_fusion  fb_window       s47 flow+fences S= 6.07 dns= +47.3 ratio=0.874 dT=1.025 | F(b=0)= +47.3 F(4)= +71.6 F(8)= +95.9 F_ab= +72.0 | per call F(4)/dT= +69.9
+  packed_rank_vp10_root_fusion  genome_window   s11 flow+fences S= 4.29 dns= +64.2 ratio=0.859 dT=1.018 | F(b=0)= +64.2 F(4)= +81.4 F(8)= +98.5 F_ab= +81.3 | per call F(4)/dT= +79.9
+  packed_rank_vp10_root_fusion  genome_window   s29 flow+fences S= 4.29 dns= +52.6 ratio=0.877 dT=1.018 | F(b=0)= +52.6 F(4)= +69.8 F(8)= +86.9 F_ab= +69.6 | per call F(4)/dT= +68.5
+  packed_rank_vp10_root_fusion  genome_window   s47 flow+fences S= 4.29 dns= +68.0 ratio=0.843 dT=1.018 | F(b=0)= +68.0 F(4)= +85.1 F(8)=+102.3 F_ab= +85.0 | per call F(4)/dT= +83.6
+  packed_rank_vp10_root_fusion  history_window  s11 flow+fences S= 5.05 dns= +68.1 ratio=0.811 dT=1.004 | F(b=0)= +68.1 F(4)= +88.3 F(8)=+108.5 F_ab= +88.4 | per call F(4)/dT= +87.9
+  packed_rank_vp10_root_fusion  history_window  s29 flow+fences S= 5.05 dns= +69.6 ratio=0.812 dT=1.004 | F(b=0)= +69.6 F(4)= +89.8 F(8)=+110.0 F_ab= +89.9 | per call F(4)/dT= +89.4
+  packed_rank_vp10_root_fusion  history_window  s47 flow+fences S= 5.05 dns= +66.8 ratio=0.817 dT=1.004 | F(b=0)= +66.8 F(4)= +87.0 F(8)=+107.2 F_ab= +87.1 | per call F(4)/dT= +86.7
+  packed_rank_vp10_root_fusion  libio_window    s11 flow+fences S= 5.48 dns= +32.4 ratio=0.899 dT=1.010 | F(b=0)= +32.4 F(4)= +54.3 F(8)= +76.2 F_ab= +54.6 | per call F(4)/dT= +53.8
+  packed_rank_vp10_root_fusion  libio_window    s29 flow+fences S= 5.48 dns= +16.4 ratio=0.948 dT=1.010 | F(b=0)= +16.4 F(4)= +38.3 F(8)= +60.2 F_ab= +38.5 | per call F(4)/dT= +37.9
+  packed_rank_vp10_root_fusion  libio_window    s47 flow+fences S= 5.48 dns= +40.8 ratio=0.880 dT=1.010 | F(b=0)= +40.8 F(4)= +62.7 F(8)= +84.6 F_ab= +63.0 | per call F(4)/dT= +62.1
+  packed_rank_vp10_root_fusion  planet_window   s11 flow+fences S= 4.19 dns= +17.3 ratio=0.952 dT=1.035 | F(b=0)= +17.3 F(4)= +34.1 F(8)= +50.8 F_ab= +33.9 | per call F(4)/dT= +32.9
+  packed_rank_vp10_root_fusion  planet_window   s29 flow+fences S= 4.19 dns= +27.1 ratio=0.927 dT=1.035 | F(b=0)= +27.1 F(4)= +43.8 F(8)= +60.6 F_ab= +43.7 | per call F(4)/dT= +42.4
+  packed_rank_vp10_root_fusion  planet_window   s47 flow+fences S= 4.19 dns= +67.6 ratio=0.827 dT=1.035 | F(b=0)= +67.6 F(4)= +84.3 F(8)=+101.1 F_ab= +84.2 | per call F(4)/dT= +81.5
+  packed_rank_vp10_root_fusion  stack_window    s11 flow+fences S= 5.20 dns= +30.7 ratio=0.907 dT=1.000 | F(b=0)= +30.7 F(4)= +51.5 F(8)= +72.3 F_ab= +51.7 | per call F(4)/dT= +51.5
+  packed_rank_vp10_root_fusion  stack_window    s29 flow+fences S= 5.20 dns= +11.6 ratio=0.962 dT=1.000 | F(b=0)= +11.6 F(4)= +32.4 F(8)= +53.2 F_ab= +32.5 | per call F(4)/dT= +32.4
+  packed_rank_vp10_root_fusion  stack_window    s47 flow+fences S= 5.20 dns= +14.2 ratio=0.954 dT=1.000 | F(b=0)= +14.2 F(4)= +35.0 F(8)= +55.8 F_ab= +35.2 | per call F(4)/dT= +35.0
+  packed_rank_vp10_root_fusion  wise_window     s11 flow+fences S= 6.39 dns= +73.3 ratio=0.815 dT=1.002 | F(b=0)= +73.3 F(4)= +98.9 F(8)=+124.5 F_ab= +99.5 | per call F(4)/dT= +98.7
+  packed_rank_vp10_root_fusion  wise_window     s29 flow+fences S= 6.39 dns= +69.9 ratio=0.827 dT=1.002 | F(b=0)= +69.9 F(4)= +95.5 F(8)=+121.1 F_ab= +96.0 | per call F(4)/dT= +95.3
+  packed_rank_vp10_root_fusion  wise_window     s47 flow+fences S= 6.39 dns=  -7.5 ratio=1.022 dT=1.002 | F(b=0)=  -7.5 F(4)= +18.1 F(8)= +43.7 F_ab= +18.7 | per call F(4)/dT= +18.1
+  SUMMARY packed_rank_root_fusion (n=30): dns n=30 mean=+50.7 sd=32.2 min=+5.9 p25=+30.2 med=+48.8 p75=+59.8 max=+151.5
+      S n=30 mean=+5.2 sd=0.8 min=+4.2 p25=+4.3 med=+5.1 p75=+6.0 max=+6.4;  ratio% n=30 mean=-12.6 sd=6.3 min=-29.4 p25=-15.2 med=-13.2 p75=-8.2 max=-1.4
+      F(b=0.00) per lookup: n=30 mean=+50.7 sd=32.2 min=+5.9 p25=+30.2 med=+48.8 p75=+59.8 max=+151.5
+      F(b=4.00) per lookup: n=30 mean=+71.4 sd=32.2 min=+29.6 p25=+53.3 med=+69.2 p75=+79.1 max=+175.6
+      F(b=8.00) per lookup: n=30 mean=+92.0 sd=32.4 min=+48.1 p25=+75.4 med=+89.8 p75=+101.0 max=+199.7
+      F(b=4.07) per lookup: n=30 mean=+71.7 sd=32.2 min=+29.9 p25=+53.7 med=+69.6 p75=+79.5 max=+176.0
+      F_ab (a=+1.5, b=4.31): n=30 mean=+71.5 sd=32.2 min=+29.6 p25=+53.7 med=+69.5 p75=+79.6 max=+176.0
+      per dataset mean dns / S / F(4) / F(8): books_window +55/6.0/+79/+103; covid_uniform +73/4.6/+91/+109; covid_window +50/4.2/+67/+84; fb_window +45/6.1/+69/+94; genome_window +63/4.3/+80/+98; history_window +51/5.0/+72/+92; libio_window +44/5.5/+66/+88; planet_window +39/4.2/+56/+73; stack_window +38/5.2/+58/+79; wise_window +49/6.4/+75/+101
+  SUMMARY packed_rank_vp10_root_fusion (n=30): dns n=30 mean=+42.6 sd=27.4 min=-7.5 p25=+17.3 med=+46.1 p75=+66.8 max=+111.8
+      S n=30 mean=+5.2 sd=0.8 min=+4.2 p25=+4.3 med=+5.1 p75=+6.0 max=+6.4;  ratio% n=30 mean=-10.6 sd=6.3 min=-22.4 p25=-15.7 med=-11.5 p75=-5.0 max=+2.2
+      F(b=0.00) per lookup: n=30 mean=+42.6 sd=27.4 min=-7.5 p25=+17.3 med=+46.1 p75=+66.8 max=+111.8
+      F(b=4.00) per lookup: n=30 mean=+63.2 sd=27.3 min=+18.1 p25=+36.8 med=+66.9 p75=+84.3 max=+136.0
+      F(b=8.00) per lookup: n=30 mean=+83.8 sd=27.5 min=+42.8 p25=+55.8 med=+85.3 p75=+101.1 max=+160.1
+      F(b=4.07) per lookup: n=30 mean=+63.5 sd=27.3 min=+18.5 p25=+37.1 med=+67.2 p75=+84.6 max=+136.4
+      F_ab (a=+1.5, b=4.31): n=30 mean=+63.3 sd=27.3 min=+18.7 p25=+36.7 med=+66.8 p75=+84.2 max=+136.4
+      per dataset mean dns / S / F(4) / F(8): books_window +50/6.0/+75/+99; covid_uniform +41/4.6/+59/+78; covid_window +45/4.2/+62/+78; fb_window +29/6.1/+53/+77; genome_window +62/4.3/+79/+96; history_window +68/5.0/+88/+109; libio_window +30/5.5/+52/+74; planet_window +37/4.2/+54/+71; stack_window +19/5.2/+40/+60; wise_window +45/6.4/+71/+96
+  POOLED (root_fusion vs packed_rank and vp10_root_fusion vs vp10, n=60): mean dns = +46.7 [+40.0,+53.2]; mean S=5.15; mean dT=1.014
+     implied ns per flow call at b=0: 46.0 [39.4,52.4]  => probe-equivalents at that b: nan
+     implied ns per flow call at b=4: 66.4 [59.8,72.6]  => probe-equivalents at that b: 16.6
+     implied ns per flow call at b=8: 86.7 [79.8,93.4]  => probe-equivalents at that b: 10.8
+     implied ns per flow call with group-A fit (a=+1.5, b=4.31): 66.5 [60.0,72.8]
+     joint bootstrap (A and B resampled): flow ns/call with intercept model [56.1,77.3]; origin model [56.9,76.8]
+
+== C5: charge thresholds. est_vp_flow and est_flow INCLUDE the +4 charge (index.hpp:389). c* = charge at which every flow candidate stops beating min(binary, raw, vp_raw) ==
+   (a flow candidate is chosen iff probes_flow + c < min(binary, raw, vp_raw); so c* = min(binary,raw,vp_raw) - (est - 4))
+  books_uniform    chosen=raw+fences   est bin=8.96 raw=11.08 flow=14.91 vp_raw=2.73 vp_flow=6.61 -> uncharged vp_flow=2.61; c*= 0.12 (flow+fences:0.12, flow+ranks:-8.18); at charge 10 -> raw+fences; measured root probes fusion=2.60
+  books_window     chosen=flow+fences  est bin=8.96 raw=14.24 flow=13.95 vp_raw=13.90 vp_flow=6.99 -> uncharged vp_flow=2.99; c*= 5.97 (flow+fences:5.97, flow+ranks:-1.00); at charge 10 -> binary; measured root probes fusion=2.93
+  covid_uniform    chosen=flow+fences  est bin=8.96 raw=13.78 flow=13.99 vp_raw=13.04 vp_flow=8.33 -> uncharged vp_flow=4.33; c*= 4.63 (flow+fences:4.63, flow+ranks:-1.04); at charge 10 -> binary; measured root probes fusion=4.34
+  covid_window     chosen=flow+fences  est bin=8.96 raw=14.38 flow=14.02 vp_raw=14.37 vp_flow=8.80 -> uncharged vp_flow=4.80; c*= 4.15 (flow+fences:4.15, flow+ranks:-1.06); at charge 10 -> binary; measured root probes fusion=4.73
+  fb_uniform       chosen=raw+fences   est bin=8.96 raw=2.27 flow=8.14 vp_raw=2.22 vp_flow=6.35 -> uncharged vp_flow=2.35; c*=-0.12 (flow+fences:-0.12, flow+ranks:-1.92); at charge 10 -> raw+fences; measured root probes fusion=2.08
+  fb_window        chosen=flow+fences  est bin=8.96 raw=14.34 flow=14.07 vp_raw=14.23 vp_flow=7.00 -> uncharged vp_flow=3.00; c*= 5.96 (flow+fences:5.96, flow+ranks:-1.11); at charge 10 -> binary; measured root probes fusion=2.88
+  genome_uniform   chosen=raw+fences   est bin=8.96 raw=8.63 flow=12.98 vp_raw=2.91 vp_flow=6.97 -> uncharged vp_flow=2.97; c*=-0.06 (flow+fences:-0.06, flow+ranks:-6.08); at charge 10 -> raw+fences; measured root probes fusion=2.79
+  genome_window    chosen=flow+fences  est bin=8.96 raw=14.37 flow=13.33 vp_raw=14.28 vp_flow=8.73 -> uncharged vp_flow=4.73; c*= 4.22 (flow+fences:4.22, flow+ranks:-0.38); at charge 10 -> binary; measured root probes fusion=4.67
+  history_uniform  chosen=raw+fences   est bin=8.96 raw=3.78 flow=6.71 vp_raw=2.32 vp_flow=6.29 -> uncharged vp_flow=2.29; c*= 0.04 (flow+fences:0.04, flow+ranks:-0.38); at charge 10 -> raw+fences; measured root probes fusion=2.18
+  history_window   chosen=flow+fences  est bin=8.96 raw=14.33 flow=13.79 vp_raw=14.21 vp_flow=8.05 -> uncharged vp_flow=4.05; c*= 4.91 (flow+fences:4.91, flow+ranks:-0.83); at charge 10 -> binary; measured root probes fusion=3.91
+  libio_uniform    chosen=raw+fences   est bin=8.96 raw=6.52 flow=10.89 vp_raw=2.31 vp_flow=6.27 -> uncharged vp_flow=2.27; c*= 0.04 (flow+fences:0.04, flow+ranks:-4.58); at charge 10 -> raw+fences; measured root probes fusion=2.16
+  libio_window     chosen=flow+fences  est bin=8.96 raw=14.35 flow=13.59 vp_raw=14.25 vp_flow=7.55 -> uncharged vp_flow=3.55; c*= 5.40 (flow+fences:5.40, flow+ranks:-0.64); at charge 10 -> binary; measured root probes fusion=3.48
+  osm_uniform      chosen=raw+fences   est bin=8.96 raw=11.66 flow=15.83 vp_raw=8.19 vp_flow=12.19 -> uncharged vp_flow=8.19; c*= 0.00 (flow+fences:0.00, flow+ranks:-3.64); at charge 10 -> raw+fences; measured root probes fusion=8.17
+  osm_window       chosen=binary       est bin=8.96 raw=14.38 flow=15.63 vp_raw=14.36 vp_flow=10.51 -> uncharged vp_flow=6.51; c*= 2.45 (flow+fences:2.45, flow+ranks:-2.68); at charge 10 -> binary; measured root probes fusion=8.96
+  planet_uniform   chosen=raw+fences   est bin=8.96 raw=12.59 flow=14.58 vp_raw=5.24 vp_flow=7.11 -> uncharged vp_flow=3.11; c*= 2.13 (flow+fences:2.13, flow+ranks:-5.34); at charge 10 -> raw+fences; measured root probes fusion=5.14
+  planet_window    chosen=flow+fences  est bin=8.96 raw=14.14 flow=14.80 vp_raw=13.64 vp_flow=8.83 -> uncharged vp_flow=4.83; c*= 4.13 (flow+fences:4.13, flow+ranks:-1.85); at charge 10 -> binary; measured root probes fusion=4.77
+  stack_uniform    chosen=raw+fences   est bin=8.96 raw=3.32 flow=9.05 vp_raw=2.31 vp_flow=6.30 -> uncharged vp_flow=2.30; c*= 0.02 (flow+fences:0.02, flow+ranks:-2.74); at charge 10 -> raw+fences; measured root probes fusion=2.17
+  stack_window     chosen=flow+fences  est bin=8.96 raw=14.34 flow=14.29 vp_raw=14.22 vp_flow=7.86 -> uncharged vp_flow=3.86; c*= 5.10 (flow+fences:5.10, flow+ranks:-1.33); at charge 10 -> binary; measured root probes fusion=3.76
+  wise_uniform     chosen=raw+fences   est bin=8.96 raw=6.54 flow=10.39 vp_raw=3.35 vp_flow=7.46 -> uncharged vp_flow=3.46; c*=-0.11 (flow+fences:-0.11, flow+ranks:-3.03); at charge 10 -> raw+fences; measured root probes fusion=3.29
+  wise_window      chosen=flow+fences  est bin=8.96 raw=14.37 flow=14.13 vp_raw=14.31 vp_flow=6.71 -> uncharged vp_flow=2.71; c*= 6.25 (flow+fences:6.25, flow+ranks:-1.17); at charge 10 -> binary; measured root probes fusion=2.56
+  max c* over datasets where the flow was chosen: 6.25 (wise_window); min: 4.13 (planet_window)
+  => any charge > 6.25 flips every flow selection to the flow-free best; charge 10 is sufficient but not the threshold.
+  max possible root saving at 489 regions = binary 8.96 - ~2.5 probes ~ 6.5 probes < any charge >= 7, so a calibrated charge >= 10 can never select the flow at the root on these 2M samples.
+
+== transform_ns per key at build (learnability.transform_ns / keys), runs with a flow file ==
+  packed_rank_root_flow          n=60 mean=+28.2 sd=2.2 min=+24.3 p25=+26.0 med=+28.6 p75=+29.8 max=+33.1
+  packed_rank_root_fusion        n=60 mean=+28.6 sd=2.5 min=+24.3 p25=+26.3 med=+28.7 p75=+30.2 max=+36.9
+  packed_rank_vp10_root_fusion   n=60 mean=+28.1 sd=1.6 min=+25.9 p25=+27.1 med=+27.8 p75=+28.7 max=+35.8

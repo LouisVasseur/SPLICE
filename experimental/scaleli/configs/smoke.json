@@ -1,0 +1,69 @@
+{
+  "description": "Small correctness/performance smoke suite, not a publication benchmark.",
+  "datasets": [
+    "dense_sparse",
+    "lognormal"
+  ],
+  "profiles": [
+    "read_only",
+    "read_heavy",
+    "scan_heavy"
+  ],
+  "variants": [
+    {
+      "name": "sorted_vector",
+      "index": "sorted_vector"
+    },
+    {
+      "name": "ordered_map",
+      "index": "ordered_map"
+    },
+    {
+      "name": "raw_binary",
+      "policy": "raw",
+      "routing": "binary"
+    },
+    {
+      "name": "raw_rank",
+      "policy": "raw",
+      "routing": "rank"
+    },
+    {
+      "name": "packed_binary",
+      "policy": "min_bytes",
+      "routing": "binary"
+    },
+    {
+      "name": "packed_rank",
+      "policy": "min_bytes",
+      "routing": "rank"
+    },
+    {
+      "name": "packed_byte",
+      "policy": "min_bytes",
+      "routing": "byte"
+    },
+    {
+      "name": "smooth_byte",
+      "policy": "smooth",
+      "routing": "byte"
+    },
+    {
+      "name": "adaptive_byte",
+      "policy": "adaptive",
+      "routing": "byte"
+    }
+  ],
+  "seeds": [
+    11,
+    29
+  ],
+  "repeats": 1,
+  "common": {
+    "n": 20000,
+    "ops": 5000,
+    "verify": 1,
+    "instrument": 1,
+    "warmup": 1024
+  }
+}

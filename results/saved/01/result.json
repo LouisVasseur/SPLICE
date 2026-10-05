@@ -1,0 +1,1583 @@
+{
+  "status": "TEACHING DEMO, not original RMI",
+  "dataset": "bundled synthetic dense/sparse fixture",
+  "keys": 16384,
+  "single_model_mae_rank": 34.51647451587729,
+  "two_stage_mae_rank": 33.95253390549631,
+  "single_model_max_rank_error": 89.04459869969833,
+  "two_stage_max_rank_error": 80.4600817200635,
+  "capacity_sweep": [
+    {
+      "leaf_models": 1,
+      "mae_rank": 34.51647451587729,
+      "max_error_rank": 89.04459869969833
+    },
+    {
+      "leaf_models": 16,
+      "mae_rank": 33.95253390549631,
+      "max_error_rank": 80.4600817200635
+    },
+    {
+      "leaf_models": 128,
+      "mae_rank": 24.588955048151202,
+      "max_error_rank": 75.04219084121678
+    },
+    {
+      "leaf_models": 512,
+      "mae_rank": 18.54514457435211,
+      "max_error_rank": 68.09786414219707
+    }
+  ],
+  "root_models": 1,
+  "leaf_models": 16,
+  "exact_query_checks": 20482,
+  "verified": true,
+  "samples": [
+    {
+      "key": 1025,
+      "rank": 0,
+      "single_prediction": 68.98615349251122,
+      "two_stage_prediction": 69.33342000153539
+    },
+    {
+      "key": 1153,
+      "rank": 64,
+      "single_prediction": 68.99042259687285,
+      "two_stage_prediction": 69.33764948071084
+    },
+    {
+      "key": 38895,
+      "rank": 128,
+      "single_prediction": 70.24920804075313,
+      "two_stage_prediction": 70.58475106695823
+    },
+    {
+      "key": 4520079,
+      "rank": 192,
+      "single_prediction": 219.7073499131819,
+      "two_stage_prediction": 218.65564488992712
+    },
+    {
+      "key": 7419745,
+      "rank": 256,
+      "single_prediction": 316.41810591218973,
+      "two_stage_prediction": 314.468746161393
+    },
+    {
+      "key": 7419874,
+      "rank": 320,
+      "single_prediction": 316.4224083689292,
+      "two_stage_prediction": 314.4730086833746
+    },
+    {
+      "key": 7512848,
+      "rank": 384,
+      "single_prediction": 319.52331234485325,
+      "two_stage_prediction": 317.54513053382675
+    },
+    {
+      "key": 10828880,
+      "rank": 448,
+      "single_prediction": 430.1208644894458,
+      "two_stage_prediction": 427.11613279250815
+    },
+    {
+      "key": 15408163,
+      "rank": 512,
+      "single_prediction": 582.850841274153,
+      "two_stage_prediction": 578.4284928469774
+    },
+    {
+      "key": 15408290,
+      "rank": 576,
+      "single_prediction": 582.8550770261368,
+      "two_stage_prediction": 578.4326892833467
+    },
+    {
+      "key": 15456496,
+      "rank": 640,
+      "single_prediction": 584.4628617515804,
+      "two_stage_prediction": 580.0255507921869
+    },
+    {
+      "key": 20407376,
+      "rank": 704,
+      "single_prediction": 749.586482079014,
+      "two_stage_prediction": 743.6165184494533
+    },
+    {
+      "key": 23166273,
+      "rank": 768,
+      "single_prediction": 841.6022572039404,
+      "two_stage_prediction": 834.778216954917
+    },
+    {
+      "key": 23166401,
+      "rank": 832,
+      "single_prediction": 841.606526308302,
+      "two_stage_prediction": 834.7824464340924
+    },
+    {
+      "key": 23269839,
+      "rank": 896,
+      "single_prediction": 845.0564295657894,
+      "two_stage_prediction": 838.2003282071373
+    },
+    {
+      "key": 26155567,
+      "rank": 960,
+      "single_prediction": 941.3023201226689,
+      "two_stage_prediction": 933.5528788477644
+    },
+    {
+      "key": 30394081,
+      "rank": 1024,
+      "single_prediction": 1082.6668404682464,
+      "two_stage_prediction": 1081.4074909658755
+    },
+    {
+      "key": 30394210,
+      "rank": 1088,
+      "single_prediction": 1082.6711429249858,
+      "two_stage_prediction": 1081.4118733256864
+    },
+    {
+      "key": 30452880,
+      "rank": 1152,
+      "single_prediction": 1084.6279269319928,
+      "two_stage_prediction": 1083.40499774506
+    },
+    {
+      "key": 34973456,
+      "rank": 1216,
+      "single_prediction": 1235.3998856717135,
+      "two_stage_prediction": 1236.9770177763173
+    },
+    {
+      "key": 38391587,
+      "rank": 1280,
+      "single_prediction": 1349.4026822398853,
+      "two_stage_prediction": 1353.0970171749477
+    },
+    {
+      "key": 38391714,
+      "rank": 1344,
+      "single_prediction": 1349.406917991869,
+      "two_stage_prediction": 1353.1013315911955
+    },
+    {
+      "key": 38405616,
+      "rank": 1408,
+      "single_prediction": 1349.8705827483957,
+      "two_stage_prediction": 1353.5736072973166
+    },
+    {
+      "key": 41361040,
+      "rank": 1472,
+      "single_prediction": 1448.4410006301835,
+      "two_stage_prediction": 1453.9746256031385
+    },
+    {
+      "key": 45158785,
+      "rank": 1536,
+      "single_prediction": 1575.1048267541066,
+      "two_stage_prediction": 1582.9907888561418
+    },
+    {
+      "key": 45158913,
+      "rank": 1600,
+      "single_prediction": 1575.1090958584682,
+      "two_stage_prediction": 1582.995137244171
+    },
+    {
+      "key": 45228047,
+      "rank": 1664,
+      "single_prediction": 1577.4148791470386,
+      "two_stage_prediction": 1585.343742384941
+    },
+    {
+      "key": 49418319,
+      "rank": 1728,
+      "single_prediction": 1717.1704140815705,
+      "two_stage_prediction": 1727.6947471065555
+    },
+    {
+      "key": 53495681,
+      "rank": 1792,
+      "single_prediction": 1853.1601320358545,
+      "two_stage_prediction": 1866.2099979813752
+    },
+    {
+      "key": 53495810,
+      "rank": 1856,
+      "single_prediction": 1853.164434492594,
+      "two_stage_prediction": 1866.214380341186
+    },
+    {
+      "key": 53520176,
+      "rank": 1920,
+      "single_prediction": 1853.9770985306836,
+      "two_stage_prediction": 1867.0421367687034
+    },
+    {
+      "key": 57145296,
+      "rank": 1984,
+      "single_prediction": 1974.8834704325245,
+      "two_stage_prediction": 1990.1939212438924
+    },
+    {
+      "key": 60602275,
+      "rank": 2048,
+      "single_prediction": 2090.1819401744515,
+      "two_stage_prediction": 2101.5139889352977
+    },
+    {
+      "key": 60602402,
+      "rank": 2112,
+      "single_prediction": 2090.1861759264357,
+      "two_stage_prediction": 2101.518091935067
+    },
+    {
+      "key": 60682000,
+      "rank": 2176,
+      "single_prediction": 2092.8409584965693,
+      "two_stage_prediction": 2104.0896712707295
+    },
+    {
+      "key": 64441968,
+      "rank": 2240,
+      "single_prediction": 2218.244831843388,
+      "two_stage_prediction": 2225.563276280304
+    },
+    {
+      "key": 69178561,
+      "rank": 2304,
+      "single_prediction": 2376.221471183784,
+      "two_stage_prediction": 2378.5887879796364
+    },
+    {
+      "key": 69178689,
+      "rank": 2368,
+      "single_prediction": 2376.2257402881455,
+      "two_stage_prediction": 2378.5929232864905
+    },
+    {
+      "key": 69213519,
+      "rank": 2432,
+      "single_prediction": 2377.3874036077987,
+      "two_stage_prediction": 2379.718179049966
+    },
+    {
+      "key": 73508335,
+      "rank": 2496,
+      "single_prediction": 2520.629729529693,
+      "two_stage_prediction": 2518.471163748985
+    },
+    {
+      "key": 76524545,
+      "rank": 2560,
+      "single_prediction": 2621.227505049966,
+      "two_stage_prediction": 2615.916115984198
+    },
+    {
+      "key": 76524674,
+      "rank": 2624,
+      "single_prediction": 2621.231807506705,
+      "two_stage_prediction": 2615.9202835981364
+    },
+    {
+      "key": 76614736,
+      "rank": 2688,
+      "single_prediction": 2624.235589358402,
+      "two_stage_prediction": 2618.8299242691137
+    },
+    {
+      "key": 80044400,
+      "rank": 2752,
+      "single_prediction": 2738.6230389000325,
+      "two_stage_prediction": 2729.6323699419377
+    },
+    {
+      "key": 84740227,
+      "rank": 2816,
+      "single_prediction": 2895.240035206005,
+      "two_stage_prediction": 2881.3408510224403
+    },
+    {
+      "key": 84740354,
+      "rank": 2880,
+      "single_prediction": 2895.2442709579886,
+      "two_stage_prediction": 2881.3449540222095
+    },
+    {
+      "key": 84785648,
+      "rank": 2944,
+      "single_prediction": 2896.7549335592053,
+      "two_stage_prediction": 2882.8082711209995
+    },
+    {
+      "key": 89750160,
+      "rank": 3008,
+      "single_prediction": 3062.3332135011524,
+      "two_stage_prediction": 3043.1971812801535
+    },
+    {
+      "key": 92425601,
+      "rank": 3072,
+      "single_prediction": 3151.5655325822954,
+      "two_stage_prediction": 3133.4310134377415
+    },
+    {
+      "key": 92425729,
+      "rank": 3136,
+      "single_prediction": 3151.5698016866572,
+      "two_stage_prediction": 3133.435423215111
+    },
+    {
+      "key": 92526255,
+      "rank": 3200,
+      "single_prediction": 3154.9225828199174,
+      "two_stage_prediction": 3136.898683213634
+    },
+    {
+      "key": 95525615,
+      "rank": 3264,
+      "single_prediction": 3254.9583707738348,
+      "two_stage_prediction": 3240.2307914161865
+    },
+    {
+      "key": 99780673,
+      "rank": 3328,
+      "single_prediction": 3396.874672858153,
+      "two_stage_prediction": 3386.823435735021
+    },
+    {
+      "key": 99780802,
+      "rank": 3392,
+      "single_prediction": 3396.878975314892,
+      "two_stage_prediction": 3386.827879963776
+    },
+    {
+      "key": 99836560,
+      "rank": 3456,
+      "single_prediction": 3398.738637197672,
+      "two_stage_prediction": 3388.7488203274397
+    },
+    {
+      "key": 104470768,
+      "rank": 3520,
+      "single_prediction": 3553.3004933344305,
+      "two_stage_prediction": 3548.403707533089
+    },
+    {
+      "key": 107705443,
+      "rank": 3584,
+      "single_prediction": 3661.1845960762953,
+      "two_stage_prediction": 3659.842743560806
+    },
+    {
+      "key": 107705570,
+      "rank": 3648,
+      "single_prediction": 3661.188831828279,
+      "two_stage_prediction": 3659.8471188867898
+    },
+    {
+      "key": 107716560,
+      "rank": 3712,
+      "single_prediction": 3661.555374460578,
+      "two_stage_prediction": 3660.2257396155937
+    },
+    {
+      "key": 110485616,
+      "rank": 3776,
+      "single_prediction": 3753.9099763918316,
+      "two_stage_prediction": 3755.623555886708
+    },
+    {
+      "key": 114399905,
+      "rank": 3840,
+      "single_prediction": 3884.4608220370196,
+      "two_stage_prediction": 3890.4762359531433
+    },
+    {
+      "key": 114400033,
+      "rank": 3904,
+      "single_prediction": 3884.4650911413814,
+      "two_stage_prediction": 3890.480645730512
+    },
+    {
+      "key": 114466255,
+      "rank": 3968,
+      "single_prediction": 3886.6737523057245,
+      "two_stage_prediction": 3892.7620853941035
+    },
+    {
+      "key": 118770159,
+      "rank": 4032,
+      "single_prediction": 4030.2191846372943,
+      "two_stage_prediction": 4041.0375420986675
+    },
+    {
+      "key": 122664065,
+      "rank": 4096,
+      "single_prediction": 4160.09020876527,
+      "two_stage_prediction": 4170.322773320587
+    },
+    {
+      "key": 122664194,
+      "rank": 4160,
+      "single_prediction": 4160.094511222011,
+      "two_stage_prediction": 4170.327045581514
+    },
+    {
+      "key": 122685648,
+      "rank": 4224,
+      "single_prediction": 4160.810053135872,
+      "two_stage_prediction": 4171.037565627435
+    },
+    {
+      "key": 126124400,
+      "rank": 4288,
+      "single_prediction": 4275.500609087178,
+      "two_stage_prediction": 4284.923192035023
+    },
+    {
+      "key": 129597923,
+      "rank": 4352,
+      "single_prediction": 4391.350860567847,
+      "two_stage_prediction": 4399.960374913046
+    },
+    {
+      "key": 129598050,
+      "rank": 4416,
+      "single_prediction": 4391.355096319831,
+      "two_stage_prediction": 4399.964580937369
+    },
+    {
+      "key": 129674736,
+      "rank": 4480,
+      "single_prediction": 4393.912756765737,
+      "two_stage_prediction": 4402.504291025997
+    },
+    {
+      "key": 133548336,
+      "rank": 4544,
+      "single_prediction": 4523.106527509594,
+      "two_stage_prediction": 4530.791344716532
+    },
+    {
+      "key": 138101473,
+      "rank": 4608,
+      "single_prediction": 4674.964473023682,
+      "two_stage_prediction": 4681.583509828924
+    },
+    {
+      "key": 138101601,
+      "rank": 4672,
+      "single_prediction": 4674.968742128043,
+      "two_stage_prediction": 4681.587748971549
+    },
+    {
+      "key": 138133519,
+      "rank": 4736,
+      "single_prediction": 4676.033283323471,
+      "two_stage_prediction": 4682.644818927068
+    },
+    {
+      "key": 142241967,
+      "rank": 4800,
+      "single_prediction": 4813.059793294829,
+      "two_stage_prediction": 4818.709639548911
+    },
+    {
+      "key": 145374721,
+      "rank": 4864,
+      "single_prediction": 4917.544588336367,
+      "two_stage_prediction": 4922.461131855096
+    },
+    {
+      "key": 145374850,
+      "rank": 4928,
+      "single_prediction": 4917.548890793107,
+      "two_stage_prediction": 4922.465404116023
+    },
+    {
+      "key": 145462000,
+      "rank": 4992,
+      "single_prediction": 4920.455550520577,
+      "two_stage_prediction": 4925.351664114249
+    },
+    {
+      "key": 149005296,
+      "rank": 5056,
+      "single_prediction": 5038.632897459245,
+      "two_stage_prediction": 5042.699610260846
+    },
+    {
+      "key": 153817667,
+      "rank": 5120,
+      "single_prediction": 5199.136913286482,
+      "two_stage_prediction": 5182.542887505712
+    },
+    {
+      "key": 153817794,
+      "rank": 5184,
+      "single_prediction": 5199.141149038466,
+      "two_stage_prediction": 5182.547183999684
+    },
+    {
+      "key": 153860176,
+      "rank": 5248,
+      "single_prediction": 5200.554689515455,
+      "two_stage_prediction": 5183.980995082443
+    },
+    {
+      "key": 158638320,
+      "rank": 5312,
+      "single_prediction": 5359.917153506868,
+      "two_stage_prediction": 5345.628765886536
+    },
+    {
+      "key": 161330305,
+      "rank": 5376,
+      "single_prediction": 5449.701254326752,
+      "two_stage_prediction": 5436.70039836309
+    },
+    {
+      "key": 161330433,
+      "rank": 5440,
+      "single_prediction": 5449.705523431113,
+      "two_stage_prediction": 5436.704728687723
+    },
+    {
+      "key": 161428047,
+      "rank": 5504,
+      "single_prediction": 5452.961182440146,
+      "two_stage_prediction": 5440.007074849595
+    },
+    {
+      "key": 164541039,
+      "rank": 5568,
+      "single_prediction": 5556.786867791102,
+      "two_stage_prediction": 5545.3216525038
+    },
+    {
+      "key": 168912641,
+      "rank": 5632,
+      "single_prediction": 5702.590189396685,
+      "two_stage_prediction": 5693.215838644424
+    },
+    {
+      "key": 168912770,
+      "rank": 5696,
+      "single_prediction": 5702.594491853425,
+      "two_stage_prediction": 5693.220202799719
+    },
+    {
+      "key": 168965616,
+      "rank": 5760,
+      "single_prediction": 5704.357031611977,
+      "two_stage_prediction": 5695.008017921221
+    },
+    {
+      "key": 173713456,
+      "rank": 5824,
+      "single_prediction": 5862.7087851457745,
+      "two_stage_prediction": 5855.630584368465
+    },
+    {
+      "key": 176764675,
+      "rank": 5888,
+      "single_prediction": 5964.474194061331,
+      "two_stage_prediction": 5958.855340588681
+    },
+    {
+      "key": 176764802,
+      "rank": 5952,
+      "single_prediction": 5964.4784298133145,
+      "two_stage_prediction": 5958.8596370826535
+    },
+    {
+      "key": 176872880,
+      "rank": 6016,
+      "single_prediction": 5968.083088103911,
+      "two_stage_prediction": 5962.515987283268
+    },
+    {
+      "key": 179655568,
+      "rank": 6080,
+      "single_prediction": 6060.892349649677,
+      "two_stage_prediction": 6056.656162222177
+    },
+    {
+      "key": 183686401,
+      "rank": 6144,
+      "single_prediction": 6195.330214816131,
+      "two_stage_prediction": 6201.259804627302
+    },
+    {
+      "key": 183686529,
+      "rank": 6208,
+      "single_prediction": 6195.334483920492,
+      "two_stage_prediction": 6201.264095720531
+    },
+    {
+      "key": 183749839,
+      "rank": 6272,
+      "single_prediction": 6197.446022960608,
+      "two_stage_prediction": 6203.386510660727
+    },
+    {
+      "key": 188067375,
+      "rank": 6336,
+      "single_prediction": 6341.446114906693,
+      "two_stage_prediction": 6348.128303603931
+    },
+    {
+      "key": 191777825,
+      "rank": 6400,
+      "single_prediction": 6465.198445208361,
+      "two_stage_prediction": 6472.518044795692
+    },
+    {
+      "key": 191777954,
+      "rank": 6464,
+      "single_prediction": 6465.2027476651,
+      "two_stage_prediction": 6472.522369413086
+    },
+    {
+      "key": 191796496,
+      "rank": 6528,
+      "single_prediction": 6465.8211674547365,
+      "two_stage_prediction": 6473.143974496345
+    },
+    {
+      "key": 195048880,
+      "rank": 6592,
+      "single_prediction": 6574.295907455507,
+      "two_stage_prediction": 6582.177435132177
+    },
+    {
+      "key": 198638947,
+      "rank": 6656,
+      "single_prediction": 6694.03317845744,
+      "two_stage_prediction": 6702.531436665975
+    },
+    {
+      "key": 198639074,
+      "rank": 6720,
+      "single_prediction": 6694.037414209424,
+      "two_stage_prediction": 6702.535694235039
+    },
+    {
+      "key": 198712848,
+      "rank": 6784,
+      "single_prediction": 6696.497952531104,
+      "two_stage_prediction": 6705.008906046727
+    },
+    {
+      "key": 202700080,
+      "rank": 6848,
+      "single_prediction": 6829.481620671999,
+      "two_stage_prediction": 6838.677532911799
+    },
+    {
+      "key": 207069761,
+      "rank": 6912,
+      "single_prediction": 6975.22087235978,
+      "two_stage_prediction": 6985.167443483442
+    },
+    {
+      "key": 207069889,
+      "rank": 6976,
+      "single_prediction": 6975.2251414641405,
+      "two_stage_prediction": 6985.171734576672
+    },
+    {
+      "key": 207098895,
+      "rank": 7040,
+      "single_prediction": 6976.19256053534,
+      "two_stage_prediction": 6986.144136531424
+    },
+    {
+      "key": 211020975,
+      "rank": 7104,
+      "single_prediction": 7107.003254556164,
+      "two_stage_prediction": 7117.628596942797
+    },
+    {
+      "key": 214270273,
+      "rank": 7168,
+      "single_prediction": 7215.375069118967,
+      "two_stage_prediction": 7221.209128336231
+    },
+    {
+      "key": 214270402,
+      "rank": 7232,
+      "single_prediction": 7215.379371575707,
+      "two_stage_prediction": 7221.213318684858
+    },
+    {
+      "key": 214354640,
+      "rank": 7296,
+      "single_prediction": 7218.188909178949,
+      "two_stage_prediction": 7223.949648821775
+    },
+    {
+      "key": 217911568,
+      "rank": 7360,
+      "single_prediction": 7336.820915732132,
+      "two_stage_prediction": 7339.490488837497
+    },
+    {
+      "key": 222840483,
+      "rank": 7424,
+      "single_prediction": 7501.211951080633,
+      "two_stage_prediction": 7499.598025303259
+    },
+    {
+      "key": 222840610,
+      "rank": 7488,
+      "single_prediction": 7501.2161868326175,
+      "two_stage_prediction": 7499.602150685241
+    },
+    {
+      "key": 222880080,
+      "rank": 7552,
+      "single_prediction": 7502.53260518538,
+      "two_stage_prediction": 7500.884267431889
+    },
+    {
+      "key": 227471856,
+      "rank": 7616,
+      "single_prediction": 7655.679253226258,
+      "two_stage_prediction": 7650.04040896864
+    },
+    {
+      "key": 230280385,
+      "rank": 7680,
+      "single_prediction": 7749.350373567407,
+      "two_stage_prediction": 7741.270762765094
+    },
+    {
+      "key": 230280513,
+      "rank": 7744,
+      "single_prediction": 7749.3546426717685,
+      "two_stage_prediction": 7741.274920630399
+    },
+    {
+      "key": 230375215,
+      "rank": 7808,
+      "single_prediction": 7752.513179556575,
+      "two_stage_prediction": 7744.351156255964
+    },
+    {
+      "key": 233601839,
+      "rank": 7872,
+      "single_prediction": 7860.128762304567,
+      "two_stage_prediction": 7849.162624853273
+    },
+    {
+      "key": 238089985,
+      "rank": 7936,
+      "single_prediction": 8009.819103431416,
+      "two_stage_prediction": 7994.952519659466
+    },
+    {
+      "key": 238090114,
+      "rank": 8000,
+      "single_prediction": 8009.823405888155,
+      "two_stage_prediction": 7994.956710008093
+    },
+    {
+      "key": 238140048,
+      "rank": 8064,
+      "single_prediction": 8011.48882352248,
+      "two_stage_prediction": 7996.578732243389
+    },
+    {
+      "key": 243001520,
+      "rank": 8128,
+      "single_prediction": 8173.6304744533145,
+      "two_stage_prediction": 8154.495495976844
+    },
+    {
+      "key": 245869283,
+      "rank": 8192,
+      "single_prediction": 8269.277189542565,
+      "two_stage_prediction": 8260.342933241693
+    },
+    {
+      "key": 245869410,
+      "rank": 8256,
+      "single_prediction": 8269.281425294548,
+      "two_stage_prediction": 8260.34729885342
+    },
+    {
+      "key": 245974576,
+      "rank": 8320,
+      "single_prediction": 8272.788961460918,
+      "two_stage_prediction": 8263.96236911134
+    },
+    {
+      "key": 248770896,
+      "rank": 8384,
+      "single_prediction": 8366.052882621198,
+      "two_stage_prediction": 8360.085576836505
+    },
+    {
+      "key": 252918273,
+      "rank": 8448,
+      "single_prediction": 8504.377767308917,
+      "two_stage_prediction": 8502.651227722521
+    },
+    {
+      "key": 252918401,
+      "rank": 8512,
+      "single_prediction": 8504.382036413277,
+      "two_stage_prediction": 8502.655627709144
+    },
+    {
+      "key": 252978799,
+      "rank": 8576,
+      "single_prediction": 8506.396453329167,
+      "two_stage_prediction": 8504.731802646269
+    },
+    {
+      "key": 257409967,
+      "rank": 8640,
+      "single_prediction": 8654.186442672288,
+      "two_stage_prediction": 8657.052739495099
+    },
+    {
+      "key": 260936961,
+      "rank": 8704,
+      "single_prediction": 8771.82007914765,
+      "two_stage_prediction": 8778.292789599314
+    },
+    {
+      "key": 260937090,
+      "rank": 8768,
+      "single_prediction": 8771.824381604389,
+      "two_stage_prediction": 8778.29722396083
+    },
+    {
+      "key": 260952720,
+      "rank": 8832,
+      "single_prediction": 8772.345679269796,
+      "two_stage_prediction": 8778.834503577164
+    },
+    {
+      "key": 264018736,
+      "rank": 8896,
+      "single_prediction": 8874.604603320035,
+      "two_stage_prediction": 8884.228483113371
+    },
+    {
+      "key": 267725347,
+      "rank": 8960,
+      "single_prediction": 8998.228893843232,
+      "two_stage_prediction": 9011.642848818796
+    },
+    {
+      "key": 267725474,
+      "rank": 9024,
+      "single_prediction": 8998.233129595215,
+      "two_stage_prediction": 9011.64721443052
+    },
+    {
+      "key": 267796336,
+      "rank": 9088,
+      "single_prediction": 9000.596545792667,
+      "two_stage_prediction": 9014.083088273937
+    },
+    {
+      "key": 271897200,
+      "rank": 9152,
+      "single_prediction": 9137.370111330602,
+      "two_stage_prediction": 9155.04985964655
+    },
+    {
+      "key": 276083425,
+      "rank": 9216,
+      "single_prediction": 9276.990669192073,
+      "two_stage_prediction": 9288.220044548152
+    },
+    {
+      "key": 276083553,
+      "rank": 9280,
+      "single_prediction": 9276.994938296437,
+      "two_stage_prediction": 9288.224235441427
+    },
+    {
+      "key": 276109647,
+      "rank": 9344,
+      "single_prediction": 9277.865235243407,
+      "two_stage_prediction": 9289.078588324877
+    },
+    {
+      "key": 279845359,
+      "rank": 9408,
+      "single_prediction": 9402.460113313698,
+      "two_stage_prediction": 9411.39085623868
+    },
+    {
+      "key": 283211201,
+      "rank": 9472,
+      "single_prediction": 9514.718947397765,
+      "two_stage_prediction": 9521.593079659418
+    },
+    {
+      "key": 283211330,
+      "rank": 9536,
+      "single_prediction": 9514.723249854505,
+      "two_stage_prediction": 9521.597303294046
+    },
+    {
+      "key": 283292656,
+      "rank": 9600,
+      "single_prediction": 9517.43566533352,
+      "two_stage_prediction": 9524.260026625061
+    },
+    {
+      "key": 286963216,
+      "rank": 9664,
+      "single_prediction": 9639.85756928374,
+      "two_stage_prediction": 9644.439129862594
+    },
+    {
+      "key": 291808675,
+      "rank": 9728,
+      "single_prediction": 9801.465148588459,
+      "two_stage_prediction": 9803.08601682105
+    },
+    {
+      "key": 291808802,
+      "rank": 9792,
+      "single_prediction": 9801.469384340442,
+      "two_stage_prediction": 9803.09017497297
+    },
+    {
+      "key": 291845360,
+      "rank": 9856,
+      "single_prediction": 9802.688680568977,
+      "two_stage_prediction": 9804.287133381538
+    },
+    {
+      "key": 296250768,
+      "rank": 9920,
+      "single_prediction": 9949.619512659321,
+      "two_stage_prediction": 9948.5261549029
+    },
+    {
+      "key": 299175841,
+      "rank": 9984,
+      "single_prediction": 10047.177652521736,
+      "two_stage_prediction": 10044.297004594588
+    },
+    {
+      "key": 299175969,
+      "rank": 10048,
+      "single_prediction": 10047.181921626096,
+      "two_stage_prediction": 10044.301195487862
+    },
+    {
+      "key": 299267759,
+      "rank": 10112,
+      "single_prediction": 10050.243336386675,
+      "two_stage_prediction": 10047.306524343996
+    },
+    {
+      "key": 302608015,
+      "rank": 10176,
+      "single_prediction": 10161.648816531706,
+      "two_stage_prediction": 10156.671027488963
+    },
+    {
+      "key": 307212705,
+      "rank": 10240,
+      "single_prediction": 10315.22617717982,
+      "two_stage_prediction": 10298.99614797996
+    },
+    {
+      "key": 307212834,
+      "rank": 10304,
+      "single_prediction": 10315.230479636559,
+      "two_stage_prediction": 10299.000546687204
+    },
+    {
+      "key": 307259856,
+      "rank": 10368,
+      "single_prediction": 10316.798775146659,
+      "two_stage_prediction": 10300.603926625292
+    },
+    {
+      "key": 312234960,
+      "rank": 10432,
+      "single_prediction": 10482.73032347453,
+      "two_stage_prediction": 10470.247539051263
+    },
+    {
+      "key": 314919267,
+      "rank": 10496,
+      "single_prediction": 10572.25834473747,
+      "two_stage_prediction": 10561.778396766062
+    },
+    {
+      "key": 314919394,
+      "rank": 10560,
+      "single_prediction": 10572.262580489456,
+      "two_stage_prediction": 10561.782727276293
+    },
+    {
+      "key": 315021648,
+      "rank": 10624,
+      "single_prediction": 10575.672994531598,
+      "two_stage_prediction": 10565.269435884798
+    },
+    {
+      "key": 317931600,
+      "rank": 10688,
+      "single_prediction": 10672.726813088915,
+      "two_stage_prediction": 10664.494450932962
+    },
+    {
+      "key": 322195521,
+      "rank": 10752,
+      "single_prediction": 10814.938717297899,
+      "two_stage_prediction": 10809.887785733392
+    },
+    {
+      "key": 322195649,
+      "rank": 10816,
+      "single_prediction": 10814.942986402262,
+      "two_stage_prediction": 10809.89215034213
+    },
+    {
+      "key": 322253135,
+      "rank": 10880,
+      "single_prediction": 10816.860281193924,
+      "two_stage_prediction": 10811.852337044544
+    },
+    {
+      "key": 326797935,
+      "rank": 10944,
+      "single_prediction": 10968.440167934083,
+      "two_stage_prediction": 10966.82322604577
+    },
+    {
+      "key": 330141473,
+      "rank": 11008,
+      "single_prediction": 11079.955110583136,
+      "two_stage_prediction": 11080.8328758146
+    },
+    {
+      "key": 330141602,
+      "rank": 11072,
+      "single_prediction": 11079.959413039875,
+      "two_stage_prediction": 11080.837274521844
+    },
+    {
+      "key": 330154320,
+      "rank": 11136,
+      "single_prediction": 11080.383588581057,
+      "two_stage_prediction": 11081.270939318163
+    },
+    {
+      "key": 333033968,
+      "rank": 11200,
+      "single_prediction": 11176.426696680759,
+      "two_stage_prediction": 11179.462633247622
+    },
+    {
+      "key": 336857123,
+      "rank": 11264,
+      "single_prediction": 11303.93800672522,
+      "two_stage_prediction": 11320.426342153169
+    },
+    {
+      "key": 336857250,
+      "rank": 11328,
+      "single_prediction": 11303.942242477206,
+      "two_stage_prediction": 11320.430515226355
+    },
+    {
+      "key": 336925200,
+      "rank": 11392,
+      "single_prediction": 11306.20853655043,
+      "two_stage_prediction": 11322.663273675329
+    },
+    {
+      "key": 341139696,
+      "rank": 11456,
+      "single_prediction": 11446.771999485401,
+      "two_stage_prediction": 11461.146740226679
+    },
+    {
+      "key": 345142465,
+      "rank": 11520,
+      "single_prediction": 11580.273863520568,
+      "two_stage_prediction": 11592.673102317016
+    },
+    {
+      "key": 345142593,
+      "rank": 11584,
+      "single_prediction": 11580.278132624928,
+      "two_stage_prediction": 11592.677308249047
+    },
+    {
+      "key": 345165775,
+      "rank": 11648,
+      "single_prediction": 11581.051307447673,
+      "two_stage_prediction": 11593.439041970372
+    },
+    {
+      "key": 348715119,
+      "rank": 11712,
+      "single_prediction": 11699.430369567428,
+      "two_stage_prediction": 11710.066382725527
+    },
+    {
+      "key": 352197505,
+      "rank": 11776,
+      "single_prediction": 11815.57622317276,
+      "two_stage_prediction": 11824.493561004945
+    },
+    {
+      "key": 352197634,
+      "rank": 11840,
+      "single_prediction": 11815.5805256295,
+      "two_stage_prediction": 11824.49779979582
+    },
+    {
+      "key": 352276048,
+      "rank": 11904,
+      "single_prediction": 11818.195818984288,
+      "two_stage_prediction": 11827.07439318828
+    },
+    {
+      "key": 356060240,
+      "rank": 11968,
+      "single_prediction": 11944.407620331547,
+      "two_stage_prediction": 11951.41856773629
+    },
+    {
+      "key": 360722243,
+      "rank": 12032,
+      "single_prediction": 12099.896505809958,
+      "two_stage_prediction": 12104.606596984104
+    },
+    {
+      "key": 360722370,
+      "rank": 12096,
+      "single_prediction": 12099.900741561942,
+      "two_stage_prediction": 12104.61077005729
+    },
+    {
+      "key": 360756016,
+      "rank": 12160,
+      "single_prediction": 12101.02291566625,
+      "two_stage_prediction": 12105.716338722104
+    },
+    {
+      "key": 364975056,
+      "rank": 12224,
+      "single_prediction": 12241.73793180606,
+      "two_stage_prediction": 12244.349115860536
+    },
+    {
+      "key": 368016673,
+      "rank": 12288,
+      "single_prediction": 12343.183091189736,
+      "two_stage_prediction": 12342.416547124256
+    },
+    {
+      "key": 368016801,
+      "rank": 12352,
+      "single_prediction": 12343.1873602941,
+      "two_stage_prediction": 12342.420758563325
+    },
+    {
+      "key": 368105679,
+      "rank": 12416,
+      "single_prediction": 12346.151652930452,
+      "two_stage_prediction": 12345.345010763058
+    },
+    {
+      "key": 371559567,
+      "rank": 12480,
+      "single_prediction": 12461.347030472522,
+      "two_stage_prediction": 12458.984376878763
+    },
+    {
+      "key": 376280801,
+      "rank": 12544,
+      "single_prediction": 12618.811410641898,
+      "two_stage_prediction": 12614.321793449279
+    },
+    {
+      "key": 376280930,
+      "rank": 12608,
+      "single_prediction": 12618.815713098636,
+      "two_stage_prediction": 12614.326037790215
+    },
+    {
+      "key": 376325040,
+      "rank": 12672,
+      "single_prediction": 12620.28688648451,
+      "two_stage_prediction": 12615.7773391756
+    },
+    {
+      "key": 381213776,
+      "rank": 12736,
+      "single_prediction": 12783.337856644372,
+      "two_stage_prediction": 12776.625884393923
+    },
+    {
+      "key": 383914627,
+      "rank": 12800,
+      "single_prediction": 12873.417659646053,
+      "two_stage_prediction": 12865.488926742999
+    },
+    {
+      "key": 383914754,
+      "rank": 12864,
+      "single_prediction": 12873.421895398036,
+      "two_stage_prediction": 12865.4931052802
+    },
+    {
+      "key": 384014096,
+      "rank": 12928,
+      "single_prediction": 12876.735187315951,
+      "two_stage_prediction": 12868.761642623816
+    },
+    {
+      "key": 387037680,
+      "rank": 12992,
+      "single_prediction": 12977.578903270309,
+      "two_stage_prediction": 12968.243203449641
+    },
+    {
+      "key": 391418145,
+      "rank": 13056,
+      "single_prediction": 13123.677827000558,
+      "two_stage_prediction": 13112.368683457107
+    },
+    {
+      "key": 391418273,
+      "rank": 13120,
+      "single_prediction": 13123.682096104918,
+      "two_stage_prediction": 13112.372894896176
+    },
+    {
+      "key": 391472847,
+      "rank": 13184,
+      "single_prediction": 13125.502268772352,
+      "two_stage_prediction": 13114.168481425442
+    },
+    {
+      "key": 396131279,
+      "rank": 13248,
+      "single_prediction": 13280.87205290955,
+      "two_stage_prediction": 13267.439594899044
+    },
+    {
+      "key": 399291361,
+      "rank": 13312,
+      "single_prediction": 13386.268301732296,
+      "two_stage_prediction": 13387.386112814165
+    },
+    {
+      "key": 399291490,
+      "rank": 13376,
+      "single_prediction": 13386.272604189036,
+      "two_stage_prediction": 13387.390506796988
+    },
+    {
+      "key": 399401296,
+      "rank": 13440,
+      "single_prediction": 13389.934895388515,
+      "two_stage_prediction": 13391.13070584928
+    },
+    {
+      "key": 402094576,
+      "rank": 13504,
+      "single_prediction": 13479.762187537683,
+      "two_stage_prediction": 13482.868892319575
+    },
+    {
+      "key": 406034275,
+      "rank": 13568,
+      "single_prediction": 13611.160517103408,
+      "two_stage_prediction": 13617.062456114962
+    },
+    {
+      "key": 406034402,
+      "rank": 13632,
+      "single_prediction": 13611.164752855395,
+      "two_stage_prediction": 13617.06678197402
+    },
+    {
+      "key": 406099440,
+      "rank": 13696,
+      "single_prediction": 13613.33392480439,
+      "two_stage_prediction": 13619.282098677688
+    },
+    {
+      "key": 410427568,
+      "rank": 13760,
+      "single_prediction": 13757.6872851364,
+      "two_stage_prediction": 13766.706285368751
+    },
+    {
+      "key": 414246881,
+      "rank": 13824,
+      "single_prediction": 13885.070455345258,
+      "two_stage_prediction": 13896.799275396683
+    },
+    {
+      "key": 414247009,
+      "rank": 13888,
+      "single_prediction": 13885.07472444962,
+      "two_stage_prediction": 13896.803635317623
+    },
+    {
+      "key": 414267279,
+      "rank": 13952,
+      "single_prediction": 13885.750777148136,
+      "two_stage_prediction": 13897.494069672666
+    },
+    {
+      "key": 417630255,
+      "rank": 14016,
+      "single_prediction": 13997.914023317358,
+      "two_stage_prediction": 14012.043362498935
+    },
+    {
+      "key": 421229185,
+      "rank": 14080,
+      "single_prediction": 14117.946896443955,
+      "two_stage_prediction": 14134.629692710996
+    },
+    {
+      "key": 421229314,
+      "rank": 14144,
+      "single_prediction": 14117.951198900695,
+      "two_stage_prediction": 14134.634086693819
+    },
+    {
+      "key": 421304816,
+      "rank": 14208,
+      "single_prediction": 14120.469370131257,
+      "two_stage_prediction": 14137.205826934298
+    },
+    {
+      "key": 425202640,
+      "rank": 14272,
+      "single_prediction": 14250.471068875551,
+      "two_stage_prediction": 14269.973049406672
+    },
+    {
+      "key": 429681187,
+      "rank": 14336,
+      "single_prediction": 14399.841260527655,
+      "two_stage_prediction": 14406.583945392962
+    },
+    {
+      "key": 429681314,
+      "rank": 14400,
+      "single_prediction": 14399.845496279639,
+      "two_stage_prediction": 14406.588097609509
+    },
+    {
+      "key": 429712048,
+      "rank": 14464,
+      "single_prediction": 14400.87054825972,
+      "two_stage_prediction": 14407.592934014086
+    },
+    {
+      "key": 433744720,
+      "rank": 14528,
+      "single_prediction": 14535.369748448993,
+      "two_stage_prediction": 14539.439606536964
+    },
+    {
+      "key": 436902881,
+      "rank": 14592,
+      "single_prediction": 14640.701927353939,
+      "two_stage_prediction": 14642.694475552227
+    },
+    {
+      "key": 436903009,
+      "rank": 14656,
+      "single_prediction": 14640.706196458299,
+      "two_stage_prediction": 14642.698660463393
+    },
+    {
+      "key": 436988975,
+      "rank": 14720,
+      "single_prediction": 14643.573366970424,
+      "two_stage_prediction": 14645.50928603624
+    },
+    {
+      "key": 440556495,
+      "rank": 14784,
+      "single_prediction": 14762.558641909533,
+      "two_stage_prediction": 14762.14799138069
+    },
+    {
+      "key": 445394273,
+      "rank": 14848,
+      "single_prediction": 14923.910041600175,
+      "two_stage_prediction": 14920.317297415095
+    },
+    {
+      "key": 445394402,
+      "rank": 14912,
+      "single_prediction": 14923.914344056913,
+      "two_stage_prediction": 14920.32151502088
+    },
+    {
+      "key": 445435600,
+      "rank": 14976,
+      "single_prediction": 14925.28839531856,
+      "two_stage_prediction": 14921.668467913305
+    },
+    {
+      "key": 450137968,
+      "rank": 15040,
+      "single_prediction": 15082.123549527885,
+      "two_stage_prediction": 15075.410595658397
+    },
+    {
+      "key": 452955363,
+      "rank": 15104,
+      "single_prediction": 15176.090372050832,
+      "two_stage_prediction": 15167.524250310347
+    },
+    {
+      "key": 452955490,
+      "rank": 15168,
+      "single_prediction": 15176.094607802816,
+      "two_stage_prediction": 15167.528402526896
+    },
+    {
+      "key": 453051920,
+      "rank": 15232,
+      "single_prediction": 15179.310777596505,
+      "two_stage_prediction": 15170.681144587588
+    },
+    {
+      "key": 456189136,
+      "rank": 15296,
+      "single_prediction": 15283.9443909479,
+      "two_stage_prediction": 15273.251224818643
+    },
+    {
+      "key": 460686145,
+      "rank": 15360,
+      "single_prediction": 15433.930334199413,
+      "two_stage_prediction": 15421.542378011001
+    },
+    {
+      "key": 460686273,
+      "rank": 15424,
+      "single_prediction": 15433.934603303775,
+      "two_stage_prediction": 15421.546705819572
+    },
+    {
+      "key": 460737935,
+      "rank": 15488,
+      "single_prediction": 15435.657653846982,
+      "two_stage_prediction": 15423.293449931843
+    },
+    {
+      "key": 465509999,
+      "rank": 15552,
+      "single_prediction": 15594.817335381216,
+      "two_stage_prediction": 15584.641727106302
+    },
+    {
+      "key": 468486625,
+      "rank": 15616,
+      "single_prediction": 15694.094890377655,
+      "two_stage_prediction": 15685.284442059976
+    },
+    {
+      "key": 468486754,
+      "rank": 15680,
+      "single_prediction": 15694.099192834394,
+      "two_stage_prediction": 15685.288803679552
+    },
+    {
+      "key": 468593648,
+      "rank": 15744,
+      "single_prediction": 15697.664361909645,
+      "two_stage_prediction": 15688.902997190009
+    },
+    {
+      "key": 471400560,
+      "rank": 15808,
+      "single_prediction": 15791.28155145585,
+      "two_stage_prediction": 15783.80751133322
+    },
+    {
+      "key": 475456803,
+      "rank": 15872,
+      "single_prediction": 15926.566900542844,
+      "two_stage_prediction": 15920.953161486057
+    },
+    {
+      "key": 475456930,
+      "rank": 15936,
+      "single_prediction": 15926.571136294828,
+      "two_stage_prediction": 15920.957455483624
+    },
+    {
+      "key": 475519056,
+      "rank": 16000,
+      "single_prediction": 15928.6431861196,
+      "two_stage_prediction": 15923.057997946536
+    },
+    {
+      "key": 479960816,
+      "rank": 16064,
+      "single_prediction": 16076.786443848645,
+      "two_stage_prediction": 16073.238365104735
+    },
+    {
+      "key": 483596673,
+      "rank": 16128,
+      "single_prediction": 16198.050920231197,
+      "two_stage_prediction": 16196.170342337791
+    },
+    {
+      "key": 483596801,
+      "rank": 16192,
+      "single_prediction": 16198.055189335557,
+      "two_stage_prediction": 16196.174670146362
+    },
+    {
+      "key": 483614159,
+      "rank": 16256,
+      "single_prediction": 16198.634119909848,
+      "two_stage_prediction": 16196.761561561732
+    },
+    {
+      "key": 486790767,
+      "rank": 16320,
+      "single_prediction": 16304.581550128534,
+      "two_stage_prediction": 16304.165868808785
+    }
+  ],
+  "interpretation": "More local models can reduce fitting error. This does not measure native throughput or reproduce the published RMI architecture/training.",
+  "lesson": "01",
+  "title": "2018: rank prediction and a two-stage teaching model",
+  "environment": {
+    "system": "Linux-6.18.35-x86_64-with-glibc2.41",
+    "python": "3.13.5",
+    "fixture_sha256": "621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca",
+    "radix_binary_sha256": "bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863",
+    "experimental_binary_sha256": "6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884"
+  }
+}

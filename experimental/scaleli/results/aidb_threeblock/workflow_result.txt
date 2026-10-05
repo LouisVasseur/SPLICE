@@ -1,0 +1,312 @@
+{
+  "summary": "Gap removal + monotone transform + CSV virtual fences at the root: back-and-forth alternation vs a single pass, run in parallel on one scorer",
+  "agentCount": 5,
+  "logs": [
+    "[stall] agent \"arm B: single pass\" stalled (no progress) after 687s — retrying (1/5)",
+    "[stall] agent \"arm A: back-and-forth\" stalled (no progress) after 2278s — retrying (1/5)",
+    "[stall] agent \"arm A: back-and-forth\" stalled (no progress) after 958s — retrying (2/5)",
+    "[stall] agent \"arm B: single pass\" stalled (no progress) after 2548s — retrying (2/5)",
+    "[stall] agent \"arm A: back-and-forth\" stalled (no progress) after 231s — retrying (3/5)",
+    "[stall] agent \"arm B: single pass\" stalled (no progress) after 231s — retrying (3/5)",
+    "arm A done, arm B done"
+  ],
+  "result": {
+    "harness": {
+      "summary": "I built the shared module at /private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/threeblock.py. It is standard library only. It imports last week's joint.py and probe_metric.py and reuses their code (WarpBasis.fit, make_flow_fn, smooth_cdf_fast, score, ols_sse) rather than rewriting it. The only new code is block G: a piecewise-linear gap map that is strictly monotone and exactly invertible, renormalised to [0,1], and charged ceil(log2(k+1)) probes. It also adds a State object and composable apply_G, apply_T and apply_V helpers (each returns a new State), plus score(state). The composed feature is f(g(x)).\n\nThe scorer has not drifted. With G off, every number reproduces joint_results.json exactly (difference 0.0e+00, which is well inside the 0.001 tolerance). That covers baseline_linear, flow_only, csv_only at 4x and sequential at 4x on all 10 uniform datasets, not just books and planet. Rebuilding last week's 'joint' (block coordinate descent with the keep-previous-slots guard) from the module's blocks also reproduces it exactly, with the same selected round, on the 9 datasets I ran. osm was skipped for time.\n\nThe gap distribution says G has very little room before any arm runs:\n- Only osm-uniform (top 64 gaps cover 89% of the key range; 82 gaps are over 10x the median) and planet-uniform (133 gaps over 10x the median) are gap-dominated. books-uniform has one 38x gap plus a sparse tail.\n- Window samples are smoother than uniform, not gappier. Their largest gap is at most 9.4x the median, and none has a gap over 10x the median. The brief expected windows to be where gaps live; on these samples the opposite is true.\n- With the gap-table charge, G alone (no T, no V) never beats k=0 on total_uncharged on any of the 20 samples.",
+      "findings": [
+        "REGRESSION PASSES EXACTLY. With G off: baseline_linear, flow_only, csv_only@4x and sequential@4x match joint_results.json with difference 0.0e+00 on all 10 uniform datasets (40 cells, not just books and planet). Rebuilding 'joint' from the blocks as T -> (V with guard -> T)* also matches exactly, with the same selected round, on books, planet, covid, wise, genome, libio, history, stack and fb. osm was not run because it is slow. So the arms are built on a scorer that has not drifted.",
+        "Exactness depends on one detail: with G off and T on, the feature must be joint.make_flow_fn, which computes x as float(k-o)*(1/span), while WarpBasis fits on float(k-o)/span. The module keeps that path unchanged. With G on it uses division in both places, so fit and evaluation agree.",
+        "G definition, written so it can depend on T: rank gaps by width in the CURRENT coordinate z=f(g(x)). A gap that is already shrunk is measured unshrunk (z-width / s_old) so it does not oscillate in and out. Shrink each selected gap linearly inside its own interval, on the input axis, by s_i = W_med/W_i (W_med is the median current-coordinate width), and only if W_i > W_med. With T off this is exactly 'shrink to the median raw gap'. Because s_i > 0, no fences collide. Strict monotonicity is checked on fences and on all 2n-1 floor midpoints, and the inverse round-trips to under 1e-12. Charge: ceil(log2(k_eff+1)) probes, where k_eff counts only the gaps actually shrunk; the clamp inside a gap is arithmetic on the entry already loaded.",
+        "The G-T coupling can be measured at k=16, uniform. The overlap between gaps chosen in raw x and gaps chosen after T is books 12/16, planet 4/16, osm 15/16, wise 12/16. With the warp held fixed, re-applying G is not idempotent (books changes 8 gaps, planet 4, osm 0, wise 0). The cause is that G renormalises u and moves fences under a nonlinear warp, which is exactly the coupling under test. With T off, G is idempotent. Arms that cycle should refit T after every G.",
+        "The V block is bit-identical to verify/indep.smooth_cdf on G-transformed coordinates (books-uniform G16: 383 virtual fences; genome-uniform G4: 329; covid-window G64: 58). On a G+T+V state, the composed scorer agrees with indep.root_probes to 1e-12.",
+        "GAP DISTRIBUTION (fences, 489 per sample). Gap-dominated: osm-uniform (largest gap 729x the median; top 1/4/16/64 gaps cover 10.1/34.2/60.3/88.7% of the key range) and planet-uniform (19.5x; 133 gaps over 10x the median; top 64 cover 43.1%). books-uniform has one 37.8x gap and a sparse tail (top 64 cover 46.0%). Everything else is near-uniform. For reference, a perfectly even spacing puts about 0.2% of the range in each gap and 13.1% in the top 64. Window samples are smoother than uniform: the maximum is osm-window at 9.4x, and no window sample has any gap over 10x the median.",
+        "HEADROOM, known before any arm runs. The metric's floor is about 2.0 probes (a perfect prediction costs 2). Last week's best uniform result (min of csv_only, sequential, joint at 4x) leaves this headroom above the floor: books 0.35, fb 0.22, covid 0.42, genome 0.77, history 0.25, libio 0.31, planet 0.84, stack 0.31, wise 0.67, osm 6.18. Any k >= 1 costs at least 1 probe (k=16 costs 5). So on total_uncharged, G can beat the existing best only on osm-uniform among the uniform samples. Window samples have no V or T results yet, so their headroom is not known.",
+        "G ALONE (no T, no V, k in {1,4,16,64}, all 20 samples) never beats k=0 once the table is charged. Its largest model-only savings are genome-window k=64 (7.29 -> 4.54), osm-uniform k=64 (11.67 -> 10.66), history-window k=4 (3.85 -> 2.81) and libio-window k=16 (3.62 -> 2.68). Each is smaller than its table charge (7, 7, 3, 4). Model probes are not monotone in k: osm-uniform k=16 gives 12.12, worse than k=0 at 11.67. This is a clean negative for G alone.",
+        "One composed data point, not an arm result: books-uniform G16 -> T -> V gives model_probes 2.364 against sequential 2.421, a difference of -0.057. That is inside books' chaos band of 0.36 and much smaller than G's 5-probe table charge.",
+        "CHAOS-BAND HELPER perturbed_V_spread(state) re-runs V in z' = z +/- eps*z^2 or z^3 and returns max_dev and spread. With the verify/c4.py family (eps in {1e-6, 3.33e-5, 1e-4, 1e-3}) it reproduces last week's quoted bands for wise 0.263, genome 0.197, libio 0.175, covid 0.086, history 0.050 and stack 0.045. books 0.361 reproduces only with eps in {1e-6, 1e-4}; the c4 family gives 0.435. fb's quoted 0.000 is the eps=1e-6-only figure; the c4 family gives 0.058. Last week's quoted bands therefore came from mixed perturbation families. The arms should use one family consistently."
+      ],
+      "table": "REGRESSION (G off, budget 4x, uniform samples; module result vs joint_results.json)\ndataset method            new        old        diff\nbooks   baseline_linear   11.075742  11.075742  +0.0e+00\nbooks   flow_only          3.728762   3.728762  +0.0e+00\nbooks   csv_only           2.727738   2.727738  +0.0e+00  (662 virtual)\nbooks   sequential         2.420676   2.420676  +0.0e+00  (41 virtual)\nbooks   joint (BCD)        2.349028   2.349028  +0.0e+00  (round 4 = 4)\nplanet  baseline_linear   12.594678  12.594678  +0.0e+00\nplanet  flow_only          6.229273   6.229273  +0.0e+00\nplanet  csv_only           5.242579   5.242579  +0.0e+00  (1956 virtual, budget-bound)\nplanet  sequential         2.836233   2.836233  +0.0e+00  (326 virtual)\nplanet  joint (BCD)        2.835210   2.835210  +0.0e+00  (round 2 = 2)\nThe other 8 datasets also match with 0.0 difference on all four methods (log: regress_all.log). joint also matches on covid, wise, genome, libio, history, stack, fb.\n\nFENCE-GAP DISTRIBUTION (489 fences; topN = share of key range f[-1]-f[0] in the N largest gaps; even spacing gives top1 0.0020, top64 0.131)\ndataset  mode     max/med   top1    top4    top16   top64   #gaps>10x med\nbooks    uniform    37.8   0.0386  0.1342  0.2667  0.4599   10\nbooks    window      1.2   0.0025  0.0098  0.0378  0.1457    0\nfb       uniform     1.2   0.0024  0.0092  0.0360  0.1403    0\nfb       window      3.0   0.0059  0.0194  0.0664  0.2175    0\nosm      uniform   728.8   0.1010  0.3415  0.6030  0.8865   82\nosm      window      9.4   0.0123  0.0412  0.1393  0.3969    0\ncovid    uniform     3.7   0.0073  0.0273  0.0693  0.1976    0\ncovid    window      1.6   0.0031  0.0121  0.0471  0.1756    0\ngenome   uniform     9.2   0.0175  0.0416  0.0959  0.2536    0\ngenome   window      3.1   0.0055  0.0194  0.0671  0.2301    0\nhistory  uniform     1.4   0.0028  0.0108  0.0404  0.1474    0\nhistory  window      4.7   0.0091  0.0268  0.0638  0.1694    0\nlibio    uniform     4.6   0.0085  0.0296  0.0766  0.2112    0\nlibio    window      4.8   0.0089  0.0239  0.0634  0.1915    0\nplanet   uniform    19.5   0.0081  0.0314  0.1211  0.4314  133\nplanet   window      4.4   0.0090  0.0278  0.0839  0.2674    0\nstack    uniform     1.8   0.0034  0.0115  0.0431  0.1632    0\nstack    window      1.3   0.0024  0.0095  0.0380  0.1505    0\nwise     uniform     1.8   0.0035  0.0140  0.0536  0.1948    0\nwise     window      1.2   0.0024  0.0093  0.0366  0.1420    0\n\nG-ONLY PREVIEW (no T, no V): model_probes / total_uncharged\ndataset  mode     k=0            k=1            k=4            k=16           k=64\nbooks    uniform  11.076/11.076  11.061/12.061  11.040/14.040  11.003/16.003  10.488/17.488\nosm      uniform  11.668/11.668  11.829/12.829  11.665/14.665  12.120/17.120  10.655/17.655\nplanet   uniform  12.595/12.595  12.601/13.601  12.586/15.586  12.580/17.580  11.882/18.882\ngenome   window    7.291/ 7.291   7.321/ 8.321   7.474/10.474   6.837/11.837   4.538/11.538\nhistory  window    3.849/ 3.849   3.846/ 4.846   2.806/ 5.806   2.388/ 7.388   2.276/ 9.276\nlibio    window    3.624/ 3.624   3.140/ 4.140   2.810/ 5.810   2.682/ 7.682   2.846/ 9.846\n(all 20 samples in g_only_sweep.json; k=0 has the lowest total_uncharged on every sample)",
+      "files": [
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/threeblock.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/regress.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/regress_all.log",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/regression_books_planet.json",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/regression_books_fb_osm_covid_genome_history_libio_planet_stack_wise.json",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/regress_joint.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/selftest.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/selftest.json",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/gapstats.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/gap_stats.json",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/g_only_sweep.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/g_only_sweep.json",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/band_check.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/band_check.json"
+      ],
+      "caveats": [
+        "Last week's regression reference covers uniform samples only. Window samples have no prior T or V numbers to check against; their baseline_linear values in g_only_sweep.json are new.",
+        "The G selection rule after T (the 'current-coordinate width', unshrunk by 1/s_old, with the shrink factor W_med/W_i applied on the input axis) is my reading of 'k largest gaps in the current coordinate'. It is a first-order rule. apply_G(select='input') ignores T, if an arm wants the T-independent variant. Results may depend on this choice, so both arms should use the same select= value.",
+        "The gap-table charge is ceil(log2(k_eff+1)) comparisons. Telling whether a key is inside or past a gap is treated as arithmetic on the loaded entry. A stricter accounting that binary-searches all 2k gap endpoints would add up to 1 probe. The slot-to-region table lookup for V is not charged, consistent with fit_root and last week.",
+        "T is the joint.py family exactly as published last week: centre 0 only, the 64-gain grid, least squares. apply_T rejects a warp that is not strict on midpoints and keeps the previous one; this never fired in the regression runs. T fitted in the G coordinate uses the same gain grid because u is renormalised to [0,1].",
+        "The joint-BCD reproduction was not run on osm (about 1 minute per V call at the full 1956-fence budget). The four single-pass methods were reproduced on osm.",
+        "The quoted chaos bands from last week mix perturbation families (see findings). perturbed_V_spread takes about 10-20 s per state on small-V datasets and much longer on osm or planet. Use it selectively.",
+        "Nothing under /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli was modified. Importing joint.py and probe_metric.py may write __pycache__ there; it already existed."
+      ]
+    },
+    "armA": {
+      "summary": "Arm A ran on all 20 samples, for k in {1,4,16,64}, in both orders (G->T->V and T->G->V), with k=0 as a control. That is 180 cells. Each cell has a guarded cycle (up to 6 rounds) and a diagnostic run without the guard, and every cell has its chaos band measured at the round-1 state. The answer is a clean negative: adding G does not change the verdict on back-and-forth. Rounds 2 and later beat the round-1 chaos spread in 11 of 160 G cells (6.9%); the no-G control does so in 1 of 20 (5.0%). Against a 'lucky re-roll' null (round-1 model probes minus the best of 16 perturbed greedy re-runs, with G and T unchanged), the rates are 26/160 with G and 2/20 without. Where the gain does clear every yardstick (8 cells), the cycle is mostly repairing a weak round 1. The largest case is books-uniform k=64 G->T->V, which gains 0.537: round 1 left the model 0.47 probes worse than no G, and the cycle replaced 53 of the 64 gaps to land at model 2.353, about the no-G joint result (2.349). No G configuration beats its sample's no-G optimum on total_uncharged in any of the 160 cells, at any k, in either order, after any number of rounds. The closest is osm-uniform k=1 T->G->V at +0.711 probes. The gap-set coupling is real but rare: the set changed in an accepted round in 16 of 160 cells, and in some candidate round in 45. I imported threeblock.py and did not modify it; I found no bug in it.",
+      "findings": [
+        "VERDICT: G does not change last week's back-and-forth verdict. Mean gain from rounds >= 2 is 0.025 probes with G and 0.016 at k=0; the median is 0.000 in both. The rate at which the gain clears the noise is only slightly higher with G: above the round-1 spread in 11/160 cells vs 1/20 at k=0, and above the lucky re-roll null in 26/160 vs 2/20. These are one-sided comparisons over 160 cells, so a few exceedances are expected by chance.",
+        "THE 8 CELLS THAT CLEAR EVERY YARDSTICK (spread, lucky, and the listed band where one exists), as gain / spread@r1: books-u k64 G->T->V 0.537/0.139; planet-u k64 G->T->V 0.230/0.199; genome-w k16 T->G->V 0.193/0.124; fb-w k1 T->G->V 0.101/0.045; covid-u k64 G->T->V 0.094/0.070; fb-w k4 T->G->V 0.091/0.063; osm-u k1 G->T->V 0.087/0.083; wise-w k64 G->T->V 0.019/0.016. Each ends 0.77 to 7.00 probes above its sample's no-G optimum on total. Model-only (gap table ignored), 5 of the 8 end within their own spread of the no-G optimum. The other three are osm-u k1 at -0.231, covid-u k64 at -0.089 and wise-w k64 at -0.053.",
+        "WHY THE CYCLE GAINS, IN THE LARGEST CASE: books-uniform k=64 G->T->V. Round 1 picks gaps in raw x, then fits T on top, and model probes come out at 2.890, against 2.421 for no G. Rounds 2 to 4 re-select gaps in the warped coordinate (sets differing by 2, 58 and 74 entries between consecutive rounds), and the model improves from 2.890 to 2.573, 2.452, then 2.353. That is back to about last week's no-G joint (2.349). The G<->T coupling does exist; what it buys is undoing a poor round-1 selection.",
+        "GAP SET AFTER ROUND 1 (k>0, 160 cells): changed in an accepted round in 16, in any candidate round in 45, and in the runs without the guard in 47. Changes cluster at k=64 (22 cells with a changed candidate) and k=16 (14), against 3 at k=1 and 6 at k=4. Cells whose set changed gained 0.116 on average, against 0.015 for cells whose set did not. Three of the 8 cells that clear every yardstick (fb-w k1 and k4, genome-w k16, all T->G->V) never changed their gap set. Their gain is the T<->V coupling of last week's joint, acting in the G coordinate.",
+        "G NEVER PAYS ON TOTAL: 0 of 160 cells beat their sample's k=0 best on total_uncharged. The only large model-only saving is on osm-uniform: at k=64 G->T->V, model probes are 4.670 against 8.219 at k=0. The 7-probe gap table outweighs that saving.",
+        "CONTROL REPRODUCES LAST WEEK: k=0 round 1 equals last week's sequential exactly on all 10 uniform samples. The guarded best equals last week's joint on 8 of 10. On osm (8.219 vs 8.236) and genome (2.774 vs 2.786) it is better, because the probe-based round guard keeps round 1 where last week's loss-based selection moved off it.",
+        "ORDER: T->G->V has the better round-1 total in 27 of 80 cells and the better final total in 25 of 80. The two orders' finals differ by 0.044 probes on average, with a maximum of 0.343.",
+        "STOP RULE AND SELECTION: in 22 of 180 cells, the run without the guard (best round picked afterwards by probes, which is optimistic) does better than the guarded stop. The largest case is osm-u k64 T->G->V, at 0.236. Picking the round by least-squares loss instead (last week's rule) gives a total worse than round 1 in 39 of 180 cells.",
+        "ROUND CAP: the 6-round cap bound only once, on genome-w k64 T->G->V. Re-run with a cap of 12, it stops at round 7 with no further gain. Re-running 3 cells reproduced every stored round bit for bit."
+      ],
+      "table": "Per sample and k. Each order's entry is: total_uncharged at round 1 -> best guarded total (gain from rounds >= 2) [Y/n = gap set changed in an accepted round]. GTV = G->T->V, TGV = T->G->V; u = uniform, w = window. The last column is spread@r1 for GTV/TGV.\nsample      k | GTV                          | TGV                          | spread GTV/TGV\nbooks-u   k=0  T<->V 2.421->2.349 (0.072)  spread 0.042\nbooks-u   k=1  3.395->3.376 (0.019) n | 3.414->3.414 (0.000) n | 0.081/0.100\nbooks-u   k=4  5.393->5.364 (0.029) n | 5.496->5.399 (0.097) Y | 0.066/0.106\nbooks-u   k=16 7.364->7.270 (0.094) n | 7.437->7.394 (0.043) Y | 0.076/0.140\nbooks-u   k=64 9.890->9.353 (0.537) Y | 9.594->9.430 (0.164) Y | 0.139/0.155\nbooks-w   k=0  2.299->2.296 (0.003); k=1..64 all gains <= 0.007, gap set never changed in an accepted round\nfb-u      k=0  2.224->2.222 (0.002); k=1..64 gains <= 0.012, no changes\nfb-w      k=0  2.412->2.412 (0.000)\nfb-w      k=1  3.477->3.477 (0.000) n | 3.492->3.391 (0.101) n | 0.021/0.045\nfb-w      k=4  5.503->5.496 (0.006) n | 5.471->5.380 (0.091) n | 0.089/0.063\nfb-w      k=16,64 no gain in either order\nosm-u     k=0  8.219->8.219 (0.000)  spread 0.068\nosm-u     k=1  9.075->8.988 (0.087) n | 8.930->8.930 (0.000) n | 0.083/0.075\nosm-u     k=4  10.092->10.092 (0) n | 10.259->10.222 (0.037) n | 0.084/0.115\nosm-u     k=16 11.558->11.558 (0) n | 11.222->11.215 (0.007) n | 0.059/0.059\nosm-u     k=64 11.670->11.670 (0) n | 11.778->11.778 (0) n | 0.264/0.337\nosm-w     k=0  3.649->3.512 (0.137)  spread 0.240\nosm-w     k=1  4.591->4.492 (0.098) n | 4.612->4.459 (0.154) n | 0.157/0.167\nosm-w     k=4,16,64 gains <= 0.005\ncovid-u   k=1  3.473->3.411 (0.061) Y | 3.417->3.374 (0.043) n | 0.103/0.099\ncovid-u   k=64 9.421->9.327 (0.094) Y | 9.381->9.381 (0) n | 0.070/0.060\ncovid-u/w other k: gains <= 0.008\ngenome-u  all k: gains <= 0.004\ngenome-w  k=1  3.685->3.573 (0.112) n | 3.687->3.682 (0.005) n | 0.126/0.157\ngenome-w  k=4  5.669->5.525 (0.144) n | 5.662->5.662 (0) n | 0.216/0.255\ngenome-w  k=16 7.448->7.448 (0) n | 7.707->7.514 (0.193) n | 0.305/0.124\ngenome-w  k=64 9.596->9.403 (0.192) n | 9.639->9.471 (0.168) Y | 0.205/0.177\nhistory-u/w all k: gains <= 0.024 (k=0 history-u 0.024 vs spread 0.031)\nlibio-u   k=4  5.374->5.295 (0.079) n | 5.363->5.363 (0) n | 0.115/0.146\nlibio-u   k=64 9.330->9.293 (0.037) n | 9.330->9.285 (0.045) n | 0.082/0.082\nlibio-w   k=0  2.441->2.382 (0.059); k=64 GTV 0.044 Y (spread 0.052); others <= 0.032\nplanet-u  k=0  2.836->2.835 (0.001)  spread 0.202\nplanet-u  k=1  4.040->3.829 (0.211) n | 3.936->3.868 (0.068) n | 0.243/0.149\nplanet-u  k=4  5.826->5.820 (0.006) Y | 5.927->5.927 (0) n | 0.176/0.171\nplanet-u  k=16 7.780->7.780 (0) n | 7.893->7.827 (0.066) Y | 0.178/0.329\nplanet-u  k=64 9.901->9.670 (0.230) Y | 9.846->9.846 (0) n | 0.199/0.213\nplanet-w  all k: 0.000\nstack-u/w all k: gains <= 0.002\nwise-u    k=4  5.800->5.712 (0.088) Y | 5.885->5.885 (0) n | 0.238/0.220\nwise-u    k=16 7.767->7.767 (0) n | 7.755->7.700 (0.055) n | 0.138/0.270\nwise-u    k=64 9.684->9.684 (0) n | 9.780->9.564 (0.216) Y | 0.116/0.123\nwise-w    k=64 9.321->9.302 (0.019) Y | 9.315->9.315 (0) n | 0.016/0.017; others <= 0.001\n\nAGGREGATE                cells  gain>spread  gain>lucky  gain>listed  gapset chg (accepted/any cand)\nk=0 control                20      1/20        2/20        1/8            0/0\nall k>0                   160     11/160      26/160       8/64          16/45\nk=1 / 4 / 16 / 64      40 each   2/1/2/6     6/8/3/9     2/2/2/2     1/4/2/9 accepted\nFull 180-row table (r1 model, gapT, totals, virtual counts, nostop gains, and best minus k0 best in total and model-only): armA.md / armA_table.md",
+      "files": [
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA.json",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA.md",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA_table.md",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA_band.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA_report.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA_md.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA_stats.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA_extend.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA_runs",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA_band",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armA_extend"
+      ],
+      "caveats": [
+        "The noise band is measured once per cell, at the round-1 state, with one perturbation family: the c4 family (eps in {1e-6, 3.33e-5, 1e-4, 1e-3}, x^2 and x^3, both signs). Later rounds' states have their own bands, which I did not measure. Last week's listed bands exist only for uniform samples (not for osm or planet), and they came from mixed perturbation families (see the harness report). The spread and lucky columns are the consistent yardsticks.",
+        "The round guard selects on the evaluation metric itself (total_uncharged), as the brief asked. Gains are therefore optimistically selected, which makes the negative verdict conservative. The runs without the guard (best round picked afterwards by probes) are more optimistic still, and are reported separately.",
+        "MAX_ROUNDS=6 counts round 1, so a cell gets at most 5 cycles after the initial pass. Only one cell (genome-w k64 T->G->V) hit the cap. Extending it to 12 rounds added nothing.",
+        "G uses threeblock's select='current' rule: gaps are ranked by width in f(g(x)), and selected gaps are shrunk to the median on the input axis. A different 'current coordinate' rule could couple G and T differently. In T->G->V round 1, the warp fitted on raw x is evaluated on g(x) before it is refit; that is the literal order asked for, and the refit happens at the start of round 2.",
+        "Gap-table charge is ceil(log2(k_eff+1)), as in threeblock.py. The back-and-forth verdict does not depend on it, because the charge is constant across rounds. The 'G never pays on total' verdict does depend on it: with a free table, G would win on osm-uniform (model-only -3.55 at k=64).",
+        "Process note: this run picked up artifacts from an earlier Arm A attempt in the same directory (armA.py, armA_runs, and a partly finished armA_band). I checked them for determinism by re-running 3 cells bit for bit, and checked them against last week's numbers via the k=0 control. Around 13:08 the band job's worker processes were killed by something outside this run, and the pool lost its in-flight osm jobs. I restarted the band job for osm only; the script skips completed files and its results are deterministic, so all 180 band files are now complete and consistent.",
+        "threeblock.py was not modified (md5 b5e54ab83d89b40b6616598906aa16ba), and nothing under experimental/scaleli was written. I found no bug in threeblock.py."
+      ]
+    },
+    "armB": {
+      "summary": "Arm B (single pass) ran on all 20 samples for k in {1, 4, 16, 64}. **Verdict: G does not help in any of the 80 cells once its table is charged.** This holds under total_uncharged, total_charged_pwl and total_charged, for all eight fixed orders and for the priced simultaneous pool. G does lower model probes alone in 35 of 80 cells. The largest drop is osm-uniform at k=64: 8.181 down to 4.670, which saves 3.51 probes against a 7-probe table. The best net result is osm-uniform at k=1, which still loses 0.75 probes (0.251 saved against a 1-probe table). Every other cell loses by more than 0.98. Under total_charged, the fixed-order winner is V (CSV alone) in 80/80 cells. Under total_uncharged it is T->V in 40 cells and V in 40. The priced pool almost never buys a gap: 2 purchases in 160 non-pwl runs (planet-uniform poolV at k=16 and k=64). Both lose once the true ceil(log2(k_eff+1)) is charged: 5.243 becomes 5.864 and 6.699. Among the G orders, none wins consistently on model probes, and the differences are mostly inside the chaos bands. threeblock.py was used unchanged. With G off, the results reproduce joint_results.json with a difference of 0.0 on 40 cells. I found no bugs in threeblock.py.",
+      "findings": [
+        "G NEVER HELPS ONCE CHARGED: 0 of 80 cells under total_uncharged, total_charged_pwl and total_charged. This counts the best variant with G against the best variant without G, over all 8 fixed orders plus the 4 pool variants. Fixed-order winners: total_charged V 80/80; total_charged_pwl V 76, T->V 4; total_uncharged T->V 40, V 40. Overall winners including the pool: total_charged poolV 64, pool 8, V 8. None of these uses G.",
+        "MODEL-ONLY, G DOES SOMETHING, BUT LESS THAN ITS TABLE COST: G lowers model probes in 35 of 80 cells. The large gains are all on osm-uniform: best G variant vs V at 8.181 gives k=1 7.930 (saves 0.251, table 1), k=4 7.092 (1.089, table 3), k=16 6.222 (1.959, table 5), k=64 4.670 (3.511, table 7). Everywhere else the gain is at most about 0.11 (books-window k=64 0.005; wise-window k=4 0.045; planet-window k=64 0.104). The best net margin anywhere is -0.749 (osm-uniform, k=1).",
+        "THE PRICED POOL BUYS ALMOST NOTHING: At the exact single-gap price, the best stalled G candidate's net change is about -0.99 at k=1 and -0.10 at k=64, so one shrunk gap saves at most about 0.01 model probes. G was bought in 2 of 160 non-pwl pool runs (planet-uniform poolV: k=16 1 gap, k=64 2 gaps). In both, the true table charge leaves total_charged worse than not buying (5.243 -> 5.864 and 6.699); the amortised share makes them look profitable inside the greedy. The 6.9 T was never bought. The 0.45 piecewise-linear T was bought in 12 of 160 pwl runs (books-uniform and planet-uniform). A one-at-a-time greedy cannot see the joint value of 16 to 64 gaps, but the fixed orders measure that joint value directly, and they lose too.",
+        "WHICH ORDER WINS: On charged totals, G->V beats the other G orders in 80/80 cells, simply because it carries no T charge. On model probes the winning G order is G->T->V in 36 cells, G->V in 27 and T->G->V in 17. It flips with k even within one sample (osm-uniform: T->G->V at k=1 and 16, G->T->V at k=4 and 64). The median spread among the three G orders is 0.05 probes. Of 32 uniform cells with a known chaos band, only 7 have a spread larger than the band: books k=64 (0.637 vs 0.361), history k=4 (0.077 vs 0.050), and fb k=1-64 (0.002 vs the eps=1e-6 band of 0.000; the c4-family band is 0.058). So there is no robust coarse-to-fine versus transform-first effect.",
+        "T VERSUS G AS STRAIGHTENERS: On planet-uniform, G->V at k=64 reaches model 3.760 for a 7-probe table, while T->V reaches 2.836 for 6.9, or 0.45 as a piecewise-linear table. T is the better and cheaper straightener there. osm-uniform is the only sample where G straightens the root a lot, and V alone (8.181) still beats every charged G combination (best 9.014, G->V at k=1).",
+        "THE G-T COUPLING IS REAL BUT DOES NOT PAY: Gap-set overlap between G and T->G: books-uniform k=64 12/64, planet-uniform k=64 25/64 (k=16 4/16), wise-uniform k=1 0/1, covid-uniform k=1 0/1, covid-window k=4 0/4. T does change which gaps are largest. That never turns into a charged gain.",
+        "SIDE RESULT WITHOUT G, A PROBE-DIRECT V POLISH: poolV takes the CSV slots and greedily adds virtual fences that reduce the probe metric itself. It lowers model probes on 18/20 samples: books-uniform 2.728 -> 2.359 (-0.368, at the edge of books' band of 0.361, or 0.435 under the c4 family), genome-uniform -0.174, libio-uniform -0.133, osm-window -0.097, and 0.002 to 0.072 elsewhere. osm-uniform and planet-uniform are budget-bound at 1956 fences, so they are unchanged. This is in-sample by construction: it optimises the same probe keys it is scored on. Started from empty, the same probe greedy is much worse than CSV on gap-heavy samples (osm-uniform 11.58 with 8 fences; books-uniform 9.67 with 94), because a single fence rarely changes the probe count.",
+        "INTEGRITY CHECKS: With G off, the results match joint_results.json at 0.0e+00 on 40 cells. Every one of the 320 pool rows has its fast evaluator asserted equal to threeblock.score within 1e-12. Six of the cached fixed-order parts were recomputed in this session and matched bit for bit. All 40 pool parts were rerun in this session, and the 16 surviving earlier pool parts match the rerun exactly (only two diagnostic fields were added)."
+      ],
+      "table": "Selected cells, model_probes / total_charged (gN = gaps shrunk, vN = virtual fences). Full 80-row table in armB.md; all fields in armB.json.\nsample      k   V              T->V           G->V                 G->T->V               T->G->V               poolV                 charged winner\nosm-u       1   8.181/8.181    8.219/15.119   8.014/9.014 g1       8.075/15.975 g1       7.930/15.830 g1       8.181/8.181           V\nosm-u       4   8.181/8.181    8.219/15.119   7.119/10.119 g4      7.092/16.992 g4       7.259/17.159 g4       8.181/8.181           V\nosm-u      16   8.181/8.181    8.219/15.119   6.576/11.576 g16     6.558/18.458 g16      6.222/18.122 g16      8.181/8.181           V\nosm-u      64   8.181/8.181    8.219/15.119   4.874/11.874 g64     4.670/18.570 g64      4.778/18.678 g64      8.181/8.181           V\nplanet-u    1   5.243/5.243    2.836/9.736    5.147/6.147 g1       3.040/10.940 g1       2.936/10.836 g1       5.243/5.243           V\nplanet-u   16   5.243/5.243    2.836/9.736    4.128/9.128 g16      2.780/14.680 g16      2.893/14.793 g16      4.864/5.864 g1        V\nplanet-u   64   5.243/5.243    2.836/9.736    3.760/10.760 g64     2.901/16.801 g64      2.846/16.746 g64      4.699/6.699 g2        V\nbooks-u     1   2.728/2.728    2.421/9.321    2.747/3.747 g1       2.395/10.295 g1       2.414/10.314 g1       2.359/2.359           poolV\nbooks-u    64   2.728/2.728    2.421/9.321    2.254/9.254 g64      2.890/16.790 g64      2.594/16.494 g64      2.359/2.359           poolV\nosm-w      64   3.559/3.559    3.649/10.549   3.367/10.367 g64     3.164/17.064 g64      3.036/16.936 g64      3.462/3.462           poolV\ngenome-w   64   2.488/2.488    2.619/9.519    2.428/9.428 g64      2.596/16.496 g64      2.639/16.539 g64      2.417/2.417           poolV\n\nCounts over 80 cells:\nG helps (best-with-G < best-without-G): model_probes 35 | total_uncharged 0 | total_charged_pwl 0 | total_charged 0\nFixed-order winner, total_charged: V 80 | total_uncharged: T->V 40, V 40 | total_charged_pwl: V 76, T->V 4\nOverall winner incl. pool, total_charged: poolV 64, pool 8, V 8\nG-order winner on model probes: G->T->V 36, G->V 27, T->G->V 17 | on total_charged: G->V 80\nBest net G margin (model saving minus table): -0.749 (osm-uniform k=1); largest model saving 3.511 (osm-uniform k=64, table 7)\nPool purchases: G 2/160 non-pwl runs (both lose under the true charge); T@6.9 0/160; T@0.45 12/160",
+      "files": [
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armB.json",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armB.md",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armB.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armB_report.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armB_analyze.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armB_analysis.json",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armB_tables.txt",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armB_run_pool.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armB_spotcheck.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/armB_parts"
+      ],
+      "caveats": [
+        "The pool prices a gap at the brief's amortised share, ceil(log2(k+1))/k: 1, 0.75, 0.3125 and 0.109 for k = 1, 4, 16 and 64. The final rows charge the true ceil(log2(k_eff+1)), so the 2 G purchases look profitable inside the pool and lose when re-scored. The pool fits T at most once and never refits it after later G or V steps. Its V moves optimise the probe metric directly, not CSV's SSE, so pool V and CSV V are different greedies.",
+        "The probe-direct V polish (poolV's gains without G) is in-sample by construction: it is scored on the same 2n-1 probe keys it optimises. books-uniform's -0.368 sits at the edge of the chaos band, so it should not be read as a deployable gain without a held-out check.",
+        "Order comparisons use last week's chaos bands, which exist only for 8 uniform datasets and come from mixed perturbation families. I did not re-measure bands at each G state, and window samples have no band at all.",
+        "Window samples have no reference from last week. Their T, V and T->V numbers are new and were not regression-checked. Uniform G-off cells were regression-checked exactly.",
+        "Provenance: the fixed-order parts (indep_* and k_*) came from an earlier run of the same armB.py in this workspace. Six of them were recomputed in this session and matched bit for bit. All 40 pool parts were rerun in this session. The pre-rerun copies are kept in armB_parts_oldpool and match on every number. armB_run_first.log is the earlier run's log; armB_run_pool.log is this session's.",
+        "G uses threeblock's select='current' rule throughout. Results with select='input' (G ignores T) were not run in this arm. Nothing under experimental/scaleli was modified."
+      ]
+    },
+    "verdict": {
+      "verdict": "PARTIAL",
+      "reasons": [
+        "FAIRNESS CONFIRMED. Both arms use the same threeblock.score, the same budget (alpha=4) and the same charge, ceil(log2(k_eff+1)). Arm A's round 1 equals arm B's G->T->V and T->G->V exactly in all 160 cells (model probes, gap set, virtual count and charge). Arm A's k=0 round 1 equals arm B's T->V and last week's sequential, with a difference of 0.0. Independent rescoring with verify/indep.py (my own gap map and tanh evaluation, indep.smooth_cdf, indep.LM, indep.root_probes) matches to the last bit on 4 arm-A cells: books-u k64 GTV round 1 2.890481 and best 2.353122, fb-w k1 TGV, genome-w k16 TGV and planet-u k64 GTV. It also matches on 5 arm-B cells: books-u k64 G->V 2.253838, planet-u k64 T->G->V, osm-w k64 G->V, osm-u k64 G->T->V 4.670420, and osm-u k1 G->V.",
+        "MONOTONICITY CONFIRMED. I recomputed f(g(x)) on fences plus floor midpoints with independent code for all 1,560 stored arm-A round states and all 480 arm-B fixed-order states with G: 0 violations and no failed rounds. The smallest step is 1.4e-6 (osm-u). Independently re-derived gap sets match all 480 arm-B states. The 2 pool cells that bought G were not re-derived independently.",
+        "GAP CHARGE. G wins nowhere at 1x or 2x the charge in either arm, so its ranking does not come from under-charging. Lowering the charge is what matters: arm B's break-even charge factor is at most 0.50 (osm-u k64 saves 3.51 probes against 7). Arm A has G beating the k=0 best in 1 cell at 0.5x, 7 at 0.25x and 96 at 0x. k_eff never changes between round 1 and the best round, so the round>=2 gains do not depend on the charge.",
+        "INSTABILITY BAND, WHOLE PASS. I perturbed raw x before G and reran the guarded cycle: 45 cells (41 with G, 4 at k=0), 17 variants each, and the identity reproduces armA_runs bit for bit. With eps=1e-6 as the brief specifies, the band is exactly 0 in 34 of 41 G cells, because the T refit and G's renormalisation absorb the perturbation. That makes 40 of 41 gains 'exceed the band', so this null is useless for passes that contain T. With the c4 family on the whole pass, 11 of 41 gains exceed the band.",
+        "ARM A's 'CLEAN NEGATIVE' IS TOO STRONG. Some gains are positive under all 17 whole-pass perturbations: books-u k64 G->T->V gains 0.537 (minimum over perturbations 0.426, band 0.133), planet-u k64 G->T->V 0.230 (minimum 0.225), and books-u k16 G->T->V, libio-w k64 G->T->V, books-u k16 T->G->V and books-u k4 G->T->V by smaller amounts. In the three k=64 G->T->V cells the gap set changes in all 17 perturbed runs. The back-and-forth result also beats the best of the 17 re-rolled single passes clearly there (books 9.353 vs 9.847, planet 9.670 vs 9.901). So the G<->T coupling does occur and does pay over a single pass in a few cells. It only repairs a poor raw-x round-1 gap choice, and no cell beats the no-G optimum.",
+        "Arm A's yardstick misclassifies some cells. Of its 8 cells that clear every yardstick, 4 have a minimum gain of 0 under whole-pass perturbation: osm-u k1 GTV (positive in 8 of 17, median 0), genome-w k16 TGV, fb-w k1 TGV and fb-w k4 TGV. Meanwhile libio-w k64 GTV, books-u k16 TGV and books-u k4 GTV are robust but were not flagged.",
+        "COUPLING CONFIRMED. Recounted from the raw runs: the gap set changed in an accepted round in 16 of 160 cells, in some candidate round in 45, and in the runs without the guard in 47. books-u k64 G->T->V swapped 53 of 64 gaps. In 5 of the 11 robust-gain cells the gap set never changed; there the gain comes from the T<->V coupling.",
+        "Arm B's G-off regression, the 0/80 count on totals and the pool claims all check out. Its model-only framing ('large gains only on osm-uniform') depends on including the in-sample poolV in the no-G baseline. Against the fixed-order no-G baselines, G lowers model probes in 52 of 80 cells, including osm-w k64 by 0.523 and books-u k64 G->V vs V by 0.474. All of these are still below the table charge."
+      ],
+      "corrections": [
+        "Arm A: replace the 'clean negative' with this: with G added, back-and-forth gives robust gains over the single pass in a few k=64 cells, positive under all 17 whole-pass perturbations: books-u G->T->V by 0.537 and planet-u G->T->V by 0.230, plus smaller ones on wise-u T->G->V and libio-w G->T->V. These gains come from real gap-set changes (the G<->T coupling working), they repair a poor raw-x round-1 selection, and they end at about the no-G joint level, never below it on total.",
+        "Arm A: drop osm-u k1 GTV, genome-w k16 TGV, fb-w k1 TGV and fb-w k4 TGV from the list of cells that clear every yardstick, because each has a minimum gain of 0 under whole-pass perturbation. Add libio-w k64 GTV, books-u k16 TGV and books-u k4 GTV as robust.",
+        "Report that the brief's 1e-6 band is 0 for 34 of 41 passes that contain T, because the T refit absorbs the perturbation. Use the c4 family on the whole pass, with the perturbation applied before G, as the chaos null rather than a band that re-runs V alone.",
+        "Both arms: 'G never pays on total' holds at 1x and 2x the gap-table charge, but not at about 0.5x. The break-even is 0.50 on osm-u k64, and arm A has G winning in 7 osm-uniform cells at 0.25x. State that the conclusion depends on the table costing at least about half of ceil(log2(k+1)) root probes.",
+        "Arm B: also report model-only G savings against the fixed-order no-G baselines: 52 of 80 cells; osm-w k64 -0.523, books-u k64 G->V vs V -0.474, planet-w k64 -0.158. Do not report them only against the in-sample poolV. Its count of 35 rather than 36 excludes the V-less T->G variant, which is fine.",
+        "Report written to /private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/verify.md. Scripts and data are under .../threeblock/verify/ (v_band.py, v_band.json, band_runs2/, v_indep.py, v_indep_*.json, v_mono.py, v_mono.json, v_consist.py, v_consist.json)."
+      ]
+    },
+    "result": {
+      "summary": "I wrote RESULT.md. Its headline answer is no: adding gap removal (G) does not change the back-and-forth verdict. On all 20 samples the best back-and-forth configuration is the one without G (k=0). It beats the best single pass by more than its instability band on only 2 samples: books-u by 0.072 (band 0.004) and history-u by 0.024 (band 0.021, marginal). Both gains come from last week's T<->V effect, not from G. On total_charged, back-and-forth loses to CSV alone (V) on 20 of 20 samples, because every cycle carries T's 6.9-probe charge. G never pays once its gap table is charged: 0 of 160 cells in arm A and 0 of 80 in arm B. The nearest miss is osm-u k=1 at +0.711 to +0.749. Inside configurations that use G, the verifier's correction applies: cycling gives robust gains in a few cells, the largest being books-u k=64 G->T->V at 0.537. The G<->T coupling is real there, with 53 of 64 gaps swapped. But it only repairs a poor round-1 gap choice made on raw x, and it never reaches the no-G optimum. The verifier listed five corrections; all are applied in section 4. The per-sample numbers come from armA.json, armB.json and verify/v_band.json, using a small read-only script (comparer/build_table.py). It only takes minima over the stored numbers.",
+      "findings": [
+        "Back-and-forth vs single pass (per sample, total_uncharged): the best back-and-forth cell is k=0 on 20/20 samples. It beats the best single pass by more than the band on only books-u (2.349 vs 2.421; gain 0.072, whole-pass c4 band 0.004) and history-u (2.251 vs 2.274; gain 0.024, band 0.021). On 10 samples the best single pass is V alone (fb-u/w, osm-u/w, genome-w, libio-w, planet-w, stack-u/w, wise-w). Cycling needs T, and on 7 of those 10 it never catches up (genome-w is the worst, +0.131). On total_charged, V alone wins 20/20.",
+        "G after its table charge: it helps on no total in either arm (0/160 in A, 0/80 in B). The best G cell is at least +0.947 over the no-G optimum on every sample except osm-u, where it is +0.749 (8.930 vs 8.181). Model probes alone (table ignored), against fixed-order no-G baselines: G lowers them in 52/80 cells. Largest: osm-u k=64 8.181 -> 4.670 (table 7), osm-w k=64 -0.523, books-u k=64 G->V vs V -0.474. Every one is below its charge.",
+        "Charge dependence (verifier): the 'G never pays' conclusion holds at 1x and 2x the charge but not at about 0.5x. The break-even factor is at most 0.50 (osm-u k=64). In arm A, G wins in 1 cell at 0.5x, in 7 at 0.25x (all osm-u) and in 96 at 0x.",
+        "Robust gains from cycling inside G configurations (positive under all 17 whole-pass perturbations and above the c4 band), given as gain / min / band: books-u k64 G->T->V 0.537/0.426/0.133; planet-u k64 G->T->V 0.230/0.225/0.219; wise-u k64 T->G->V 0.216/0.004/0.032; books-u k16 G->T->V 0.094/0.066/0.051; libio-w k64 G->T->V 0.044/0.037/0.006; books-u k4 G->T->V 0.029/0.027/0.017. Positive under every perturbation but inside the band: books-u k16 T->G->V, books-u k1 G->T->V and fb-u k16 G->T->V. Back-and-forth also beats the best of 17 re-rolled single passes: books-u 9.353 vs 9.847, planet-u 9.670 vs 9.901, wise-u 9.564 vs 9.755. None of these reaches the no-G optimum on total.",
+        "Order: no consistent effect. In arm A, T->G->V has the better round-1 total in 27/80 cells and the better final total in 25/80; the mean difference is 0.044 and the max 0.343. In arm B (model probes), G->T->V wins 36, G->V 27 and T->G->V 17; the winner flips with k and the median spread is 0.05. Five of the six robust cycle gains are G->T->V, the order whose round 1 picks gaps in raw x.",
+        "Priced pool: on total_charged it beats the best fixed order on 18/20 samples and ties on osm-u and planet-u (both budget-bound). On total_uncharged it wins 13, ties 1 and loses 6 (worst: planet-u, +0.581). The wins come from poolV's probe-direct V polish without G, which is in-sample; books-u's -0.368 sits at the edge of its band. G was bought in only 2 of 160 runs, and both lose under the true charge (5.243 -> 5.864 and 6.699). The 6.9 T was never bought.",
+        "All five verifier corrections are applied: arm A's 'clean negative' is replaced with the robust-cell list; osm-u k1 GTV, genome-w k16 TGV, fb-w k1 TGV and fb-w k4 TGV are dropped from the yardstick list, and libio-w k64 GTV, books-u k16 TGV and books-u k4 GTV are added; the c4 whole-pass band replaces the 1e-6 band, which is 0 in 34 of 41 passes that contain T; the charge-dependence statement is added; arm B's model-only framing is now reported against the fixed-order baselines (52/80)."
+      ],
+      "table": "sample | baseline | best single (unch/chg, order) | B&F best (unch/chg, cell) | B&F-single | gain r>=2 | band | >band | best G cell vs no-G\nbooks-u | 11.076 | 2.421/9.321 T->V | 2.349/9.249 k0 r3 | -0.072 | 0.072 | 0.004 wp | yes | +1.027\nbooks-w | 2.320 | 2.299/9.199 T->V | 2.296/9.196 k0 r2 | -0.003 | 0.003 | 0.025 V | no | +0.991\nfb-u | 2.266 | 2.224/2.224 V | 2.222/9.122 k0 r2 | -0.002 | 0.002 | 0.057 V | no | +1.026\nfb-w | 3.584 | 2.409/2.409 V | 2.412/9.312 k0 r1 | +0.003 | 0.000 | 0.095 V | no | +0.982\nosm-u | 11.668 | 8.181/8.181 V | 8.219/15.119 k0 r1 | +0.038 | 0.000 | 0.068 V | no | +0.749\nosm-w | 10.555 | 3.559/3.559 V | 3.512/10.412 k0 r3 | -0.047 | 0.137 | 0.165 wp | no | +0.947\ncovid-u | 4.642 | 2.416/9.316 T->V | 2.416/9.316 k0 r1 | +0.000 | 0.000 | 0.147 V | no | +0.958\ncovid-w | 6.151 | 2.424/9.324 T->V | 2.416/9.316 k0 r2 | -0.008 | 0.008 | 0.149 V | no | +0.984\ngenome-u | 8.635 | 2.774/9.674 T->V | 2.774/9.674 k0 r1 | +0.000 | 0.000 | 0.198 V | no | +1.165\ngenome-w | 7.291 | 2.488/2.488 V | 2.619/9.519 k0 r1 | +0.131 | 0.000 | 0.276 V | no | +1.085\nhistory-u | 3.781 | 2.274/9.174 T->V | 2.251/9.151 k0 r2 | -0.024 | 0.024 | 0.021 wp | yes (marginal) | +1.005\nhistory-w | 3.849 | 2.250/9.150 T->V | 2.244/9.144 k0 r2 | -0.006 | 0.006 | 0.041 V | no | +0.994\nlibio-u | 6.520 | 2.310/9.210 T->V | 2.310/9.210 k0 r1 | +0.000 | 0.000 | 0.174 V | no | +1.155\nlibio-w | 3.624 | 2.409/2.409 V | 2.382/9.282 k0 r2 | -0.028 | 0.059 | 0.095 wp | no | +1.044\nplanet-u | 12.595 | 2.836/9.736 T->V | 2.835/9.735 k0 r2 | -0.001 | 0.001 | 0.202 V | no | +0.994\nplanet-w | 7.585 | 3.264/3.264 V | 3.275/10.175 k0 r1 | +0.011 | 0.000 | 0.141 V | no | +0.974\nstack-u | 3.316 | 2.314/2.314 V | 2.316/9.216 k0 r1 | +0.002 | 0.000 | 0.044 V | no | +0.999\nstack-w | 6.294 | 2.250/2.250 V | 2.265/9.165 k0 r2 | +0.015 | 0.001 | 0.078 V | no | +1.078\nwise-u | 5.745 | 2.667/9.567 T->V | 2.667/9.567 k0 r1 | +0.000 | 0.000 | 0.252 V | no | +1.034\nwise-w | 2.989 | 2.345/2.345 V | 2.355/9.255 k0 r1 | +0.010 | 0.000 | 0.009 V | no | +0.998\n(band: wp = whole-pass c4 from the verifier; V = arm A's V-only c4 spread at round 1)",
+      "files": [
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/RESULT.md",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/comparer/build_table.py",
+        "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/comparer/per_sample.json"
+      ],
+      "caveats": [
+        "The per-sample 'best single pass' covers arm B's fixed orders only. The priced pool (poolV) is reported separately in section 3, because it is a probe-direct, in-sample greedy and would otherwise dominate the column.",
+        "The band column mixes two sources. The whole-pass c4 band (verifier) exists only for back-and-forth cells with gain >= 0.01; that is 4 of the 20 k=0 cells (books-u, history-u, osm-w, libio-w). The other 16 use arm A's V-only c4 spread at round 1. All 16 have gains <= 0.008, so the verdict does not depend on which band is used.",
+        "history-u exceeds its band only marginally: gain 0.024 against band 0.021, with a minimum gain over perturbations of 0.012.",
+        "RESULT.md is about 2,000 words including the 20-row table. It should fit in roughly two pages at a small table font, but may run slightly over at default markdown rendering.",
+        "Window samples have no last-week reference. Their single-pass and back-and-forth numbers are new and were not regression-checked.",
+        "Arm A's round guard and poolV both select on the evaluation metric, so their numbers are optimistic. The verdict is negative even with that optimism.",
+        "Nothing outside the threeblock scratchpad was written. The arm outputs and threeblock.py were only read."
+      ]
+    }
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Harness"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Run"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 3,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 4,
+      "title": "Compare"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "harness",
+      "phaseIndex": 1,
+      "phaseTitle": "Harness",
+      "agentId": "a26e784a08536d41d",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1790934110389,
+      "queuedAt": 1790934110377,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I built the shared module at /private/tmp/claude-501/-Users…",
+      "promptPreview": "Context. Louis studies learned indexes. A lookup's position should be an affine function of a feature.\nThree correctors can straighten it, at the ROOT of the SCALE-LI index, which fits one model over the\nregion FENCES (the first key of each 4,096-key region: keys[0], keys[4096], ...; 489 fences for a\n2M-key sample):\n  G  GAP REMOVAL on the INPUT axis: pick the k largest gaps between consecutive fe…",
+      "promptFramed": true,
+      "lastProgressAt": 1790935631308,
+      "tokens": 134958,
+      "toolCalls": 31,
+      "durationMs": 1520918,
+      "resultPreview": "{\"summary\":\"I built the shared module at /private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/threeblock/threeblock.py. It is standard library only. It imports last week's joint.py and probe_metric.py and reuses their code (WarpBasis.fit, make_flow_fn, smooth_cdf_fast, score, ols_sse) rather than rewriting it. The only new code is block…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "arm A: back-and-forth (retry 3)",
+      "phaseIndex": 2,
+      "phaseTitle": "Run",
+      "agentId": "a0e689a4bdaa5f814",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1790935632897,
+      "queuedAt": 1790935632895,
+      "attempt": 4,
+      "lastAttemptReason": "stalled",
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Arm A ran on all 20 samples, for k in {1,4,16,64}, in both …",
+      "promptPreview": "Context. Louis studies learned indexes. A lookup's position should be an affine function of a feature.\nThree correctors can straighten it, at the ROOT of the SCALE-LI index, which fits one model over the\nregion FENCES (the first key of each 4,096-key region: keys[0], keys[4096], ...; 489 fences for a\n2M-key sample):\n  G  GAP REMOVAL on the INPUT axis: pick the k largest gaps between consecutive fe…",
+      "promptFramed": true,
+      "lastProgressAt": 1790940166925,
+      "tokens": 411780,
+      "toolCalls": 64,
+      "durationMs": 4534024,
+      "resultPreview": "{\"summary\":\"Arm A ran on all 20 samples, for k in {1,4,16,64}, in both orders (G->T->V and T->G->V), with k=0 as a control. That is 180 cells. Each cell has a guarded cycle (up to 6 rounds) and a diagnostic run without the guard, and every cell has its chaos band measured at the round-1 state. The answer is a clean negative: adding G does not change the verdict on back-and-forth. Rounds 2 and late…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "arm B: single pass (retry 3)",
+      "phaseIndex": 2,
+      "phaseTitle": "Run",
+      "agentId": "af14a8d31b122ed4d",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1790935632898,
+      "queuedAt": 1790935632895,
+      "attempt": 4,
+      "lastAttemptReason": "stalled",
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Arm B (single pass) ran on all 20 samples for k in {1, 4, 1…",
+      "promptPreview": "Context. Louis studies learned indexes. A lookup's position should be an affine function of a feature.\nThree correctors can straighten it, at the ROOT of the SCALE-LI index, which fits one model over the\nregion FENCES (the first key of each 4,096-key region: keys[0], keys[4096], ...; 489 fences for a\n2M-key sample):\n  G  GAP REMOVAL on the INPUT axis: pick the k largest gaps between consecutive fe…",
+      "promptFramed": true,
+      "lastProgressAt": 1790940313249,
+      "tokens": 444323,
+      "toolCalls": 69,
+      "durationMs": 4680344,
+      "resultPreview": "{\"summary\":\"Arm B (single pass) ran on all 20 samples for k in {1, 4, 16, 64}. **Verdict: G does not help in any of the 80 cells once its table is charged.** This holds under total_uncharged, total_charged_pwl and total_charged, for all eight fixed orders and for the priced simultaneous pool. G does lower model probes alone in 35 of 80 cells. The largest drop is osm-uniform at k=64: 8.181 down to …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "verify",
+      "phaseIndex": 3,
+      "phaseTitle": "Verify",
+      "agentId": "a8c64a7a5072fce41",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1790940314861,
+      "queuedAt": 1790940314847,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "PARTIAL",
+      "promptPreview": "Context. Louis studies learned indexes. A lookup's position should be an affine function of a feature.\nThree correctors can straighten it, at the ROOT of the SCALE-LI index, which fits one model over the\nregion FENCES (the first key of each 4,096-key region: keys[0], keys[4096], ...; 489 fences for a\n2M-key sample):\n  G  GAP REMOVAL on the INPUT axis: pick the k largest gaps between consecutive fe…",
+      "promptFramed": true,
+      "lastProgressAt": 1790941069495,
+      "tokens": 170355,
+      "toolCalls": 37,
+      "durationMs": 754633,
+      "resultPreview": "{\"verdict\":\"PARTIAL\",\"reasons\":[\"FAIRNESS CONFIRMED. Both arms use the same threeblock.score, the same budget (alpha=4) and the same charge, ceil(log2(k_eff+1)). Arm A's round 1 equals arm B's G->T->V and T->G->V exactly in all 160 cells (model probes, gap set, virtual count and charge). Arm A's k=0 round 1 equals arm B's T->V and last week's sequential, with a difference of 0.0. Independent resco…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "compare",
+      "phaseIndex": 4,
+      "phaseTitle": "Compare",
+      "agentId": "adc0b365b3d4c4207",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1790941072621,
+      "queuedAt": 1790941072618,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I wrote RESULT.md. Its headline answer is no: adding gap re…",
+      "promptPreview": "Context. Louis studies learned indexes. A lookup's position should be an affine function of a feature.\nThree correctors can straighten it, at the ROOT of the SCALE-LI index, which fits one model over the\nregion FENCES (the first key of each 4,096-key region: keys[0], keys[4096], ...; 489 fences for a\n2M-key sample):\n  G  GAP REMOVAL on the INPUT axis: pick the k largest gaps between consecutive fe…",
+      "promptFramed": true,
+      "lastProgressAt": 1790941285291,
+      "tokens": 118702,
+      "toolCalls": 11,
+      "durationMs": 212670,
+      "resultPreview": "{\"summary\":\"I wrote RESULT.md. Its headline answer is no: adding gap removal (G) does not change the back-and-forth verdict. On all 20 samples the best back-and-forth configuration is the one without G (k=0). It beats the best single pass by more than its instability band on only 2 samples: books-u by 0.072 (band 0.004) and history-u by 0.024 (band 0.021, marginal). Both gains come from last week'…"
+    }
+  ],
+  "totalTokens": 1280118,
+  "totalToolCalls": 212
+}

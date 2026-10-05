@@ -1,0 +1,132 @@
+{
+  "timestamp_utc": "2026-09-22T13:32:31.080468+00:00",
+  "platform": "macOS-15.7.5-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "python": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 17.0.0 (clang-1700.6.4.2)]",
+  "cpu": "unavailable",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin",
+  "affinity": null,
+  "binary_sha256": "c63ceab046fe50b2074b95f5b9aaffe2391b023a51bd9b48c19f143d47c258af",
+  "git_commit": "HEAD",
+  "warning": "Shared-host exploratory results; CPU governor, NUMA binding and isolation not controlled by this script.",
+  "config": {
+    "description": "Measured throughput for the JOINT DESIGN at the root: the warp learned by the joint prototype, exported to the NFL weight format, run through the deployed fit_root as a flow+virtual-fences candidate. flow-cost 0 so the selector chooses on probes and the real transform cost shows up in the measured time.",
+    "profiles": [
+      "read_only"
+    ],
+    "seeds": [
+      11,
+      29,
+      47
+    ],
+    "repeats": 1,
+    "common": {
+      "load-ratio": 1,
+      "miss": 0,
+      "query-distribution": "uniform",
+      "ops": 5000000,
+      "warmup": 500000,
+      "verify": 0,
+      "instrument": 1,
+      "latency": 0,
+      "build-threads": 16,
+      "qos": 1
+    },
+    "datasets": [
+      {
+        "name": "books",
+        "data": "data/samples/books_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_joint/flows_root/books_joint.txt"
+      },
+      {
+        "name": "fb",
+        "data": "data/samples/fb_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_joint/flows_root/fb_joint.txt"
+      },
+      {
+        "name": "osm",
+        "data": "data/samples/osm_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_joint/flows_root/osm_joint.txt"
+      },
+      {
+        "name": "covid",
+        "data": "data/samples/covid_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_joint/flows_root/covid_joint.txt"
+      },
+      {
+        "name": "genome",
+        "data": "data/samples/genome_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_joint/flows_root/genome_joint.txt"
+      },
+      {
+        "name": "history",
+        "data": "data/samples/history_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_joint/flows_root/history_joint.txt"
+      },
+      {
+        "name": "libio",
+        "data": "data/samples/libio_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_joint/flows_root/libio_joint.txt"
+      },
+      {
+        "name": "planet",
+        "data": "data/samples/planet_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_joint/flows_root/planet_joint.txt"
+      },
+      {
+        "name": "stack",
+        "data": "data/samples/stack_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_joint/flows_root/stack_joint.txt"
+      },
+      {
+        "name": "wise",
+        "data": "data/samples/wise_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_joint/flows_root/wise_joint.txt"
+      }
+    ],
+    "variants": [
+      {
+        "name": "packed_rank",
+        "policy": "min_bytes",
+        "routing": "rank"
+      },
+      {
+        "name": "packed_rank_root_vf4",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model",
+        "root-alpha": 4
+      },
+      {
+        "name": "packed_rank_root_joint",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model",
+        "root-alpha": 4,
+        "flow": "$flow",
+        "flow-cost": 0
+      }
+    ]
+  },
+  "requested_cpu": null
+}

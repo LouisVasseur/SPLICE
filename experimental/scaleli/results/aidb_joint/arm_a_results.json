@@ -1,0 +1,102 @@
+[
+ {
+  "dataset": "books",
+  "strictly_increasing": true,
+  "sorted": true,
+  "flow_only": 11.015353121801432,
+  "sse": 909003.4058146961,
+  "sequential_4x": 2.331627430910952,
+  "virtual": 642,
+  "greedy_rounds": 642
+ },
+ {
+  "dataset": "fb",
+  "strictly_increasing": true,
+  "sorted": true,
+  "flow_only": 2.525076765609007,
+  "sse": 265.12068331614137,
+  "sequential_4x": 2.262026612077789,
+  "virtual": 3,
+  "greedy_rounds": 3
+ },
+ {
+  "dataset": "osm",
+  "strictly_increasing": true,
+  "sorted": true,
+  "flow_only": 11.689866939611054,
+  "sse": 1696254.7281957222,
+  "sequential_4x": 8.182190378710338,
+  "virtual": 1956,
+  "greedy_rounds": 1956
+ },
+ {
+  "dataset": "covid",
+  "strictly_increasing": true,
+  "sorted": true,
+  "flow_only": 4.623336745138178,
+  "sse": 8384.894252223894,
+  "sequential_4x": 2.4616171954964177,
+  "virtual": 63,
+  "greedy_rounds": 63
+ },
+ {
+  "dataset": "genome",
+  "strictly_increasing": true,
+  "sorted": true,
+  "flow_only": 8.694984646878199,
+  "sse": 172522.76345788315,
+  "sequential_4x": 2.8853633572159674,
+  "virtual": 315,
+  "greedy_rounds": 315
+ },
+ {
+  "dataset": "history",
+  "strictly_increasing": true,
+  "sorted": true,
+  "flow_only": 3.31525076765609,
+  "sse": 1250.1161358747631,
+  "sequential_4x": 2.3183213920163768,
+  "virtual": 15,
+  "greedy_rounds": 15
+ },
+ {
+  "dataset": "libio",
+  "strictly_increasing": true,
+  "sorted": true,
+  "flow_only": 6.58546571136131,
+  "sse": 36872.29250129126,
+  "sequential_4x": 2.439099283520983,
+  "virtual": 118,
+  "greedy_rounds": 118
+ },
+ {
+  "dataset": "planet",
+  "strictly_increasing": true,
+  "sorted": true,
+  "flow_only": 10.861821903787103,
+  "sse": 750647.931610845,
+  "sequential_4x": 3.283520982599795,
+  "virtual": 644,
+  "greedy_rounds": 644
+ },
+ {
+  "dataset": "stack",
+  "strictly_increasing": true,
+  "sorted": true,
+  "flow_only": 3.53121801432958,
+  "sse": 2808.006315842271,
+  "sequential_4x": 2.2906857727737973,
+  "virtual": 16,
+  "greedy_rounds": 16
+ },
+ {
+  "dataset": "wise",
+  "strictly_increasing": true,
+  "sorted": true,
+  "flow_only": 5.555783009211873,
+  "sse": 12336.919771762565,
+  "sequential_4x": 2.8014329580348005,
+  "virtual": 80,
+  "greedy_rounds": 80
+ }
+]

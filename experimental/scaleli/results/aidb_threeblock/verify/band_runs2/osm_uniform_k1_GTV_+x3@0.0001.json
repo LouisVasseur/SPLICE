@@ -1,0 +1,46 @@
+{
+ "dataset": "osm",
+ "mode": "uniform",
+ "k": 1,
+ "order": "GTV",
+ "pert": "+x3@0.0001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 8.093142272262027,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 9.093142272262027,
+   "virt": 1956,
+   "gaps": [
+    395
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model": 7.995905834186285,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 8.995905834186285,
+   "virt": 1956,
+   "gaps": [
+    395
+   ]
+  },
+  {
+   "round": 3,
+   "accepted": false,
+   "model": 8.055271238485158,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 9.055271238485158,
+   "virt": 1956,
+   "gaps": [
+    395
+   ]
+  }
+ ],
+ "seconds": 99.56316590309143
+}

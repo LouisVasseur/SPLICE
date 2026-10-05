@@ -1,0 +1,21 @@
+covid {"sample": 4096, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": true, "tag": "baseline-pipeline", "nll": 4.127896036312683, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 2.37, "unordered": 0}
+covid {"sample": 4096, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "baseline-nomono", "nll": -0.4250842656254286, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 2.39, "unordered": 65}
+covid {"sample": 4096, "steps": 2000, "shifts": 8, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 2.000777757059306, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 23.71, "unordered": 0}
+covid {"sample": 4096, "steps": 2000, "shifts": 8, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.40631414816859596, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 23.84, "unordered": 9}
+covid {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 4.111194721198254, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 23.86, "unordered": 0}
+covid {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.4445524319012525, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 23.83, "unordered": 65}
+covid {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 6.42419063195446, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 23.94, "unordered": 0}
+covid {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.45732115845710664, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 23.93, "unordered": 513}
+covid {"sample": 4096, "steps": 2000, "shifts": 65536, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 25.85150027240789, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 23.93, "unordered": 0}
+covid {"sample": 4096, "steps": 2000, "shifts": 65536, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.4523051321650831, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 27.74, "unordered": 57438}
+covid {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.3, "monotone": true, "tag": "grid-bigLR", "nll": 4.110615804387236, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 46.8, "unordered": 0}
+covid {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.3, "monotone": false, "tag": "grid-bigLR", "nll": -0.4448980948701912, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 46.83, "unordered": 65}
+covid {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.3, "monotone": true, "tag": "grid-bigLR", "nll": 6.333564796381667, "tcd_raw": 3, "tcd_flow": 4, "ratio": 1.25, "seconds": 47.36, "unordered": 0}
+covid {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "grid-bigLR", "nll": -0.4577535133174233, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 48.26, "unordered": 513}
+covid {"sample": 4096, "steps": 10000, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "long", "nll": -0.4463525461493133, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 145.82, "unordered": 65}
+covid {"sample": 4096, "steps": 10000, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "long", "nll": -0.4581522177183271, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 209.65, "unordered": 513}
+covid {"sample": 65536, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "data65k", "nll": -0.41582544037843355, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 54.66, "unordered": 64}
+covid {"sample": 65536, "steps": 200, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "data65k", "nll": -0.4455647374502334, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 46.91, "unordered": 512}
+covid {"sample": 200000, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "data200k", "nll": -0.42051793059333165, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 151.23, "unordered": 64}
+covid {"sample": 200000, "steps": 200, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "data200k", "nll": -0.4450015789000031, "tcd_raw": 3, "tcd_flow": 3, "ratio": 1.0, "seconds": 143.66, "unordered": 512}
+DONE covid best long 3 raw 3

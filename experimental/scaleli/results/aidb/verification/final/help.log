@@ -1,0 +1,24 @@
+SCALE-LI research benchmark (C++20)
+  --index scaleli|sorted_vector|ordered_map [alex|pgm with optional upstream build]
+  --distribution linear|uniform|lognormal|dense_sparse|staircase|locally_hard|clustered|near_u64|duplicates
+  --n 50000 --ops 20000 --seed 42
+  --profile read_only|read_heavy|scan_heavy|write_heavy|churn|append|shift
+  --policy raw|min_bytes|smooth|adaptive|forced --codec raw|for|delta|linear
+  --routing binary|rank|byte --region-keys 4096 --block-keys 128 --delta-limit 64 --restart 16
+  --data path --format sosd|raw --dtype uint64|uint32 [--limit N (PREFIX ONLY)]
+  --query-distribution uniform|hotspot|moving_hotspot|zipf --zipf-theta 0.99
+  --insert-mode random|append|hotspot|shift --miss 0.1 --load-ratio 0.75 --scan-length 100
+  --bulk-sampling uniform|prefix --insert-order shuffled|sorted
+  --read R --insert I --update U --erase D --scan S (must sum to 1)
+  --flow weights.txt (NFL-format key transform) --flow-bypass 1 --flow-min-gain 0.1
+  --virtual-alpha 0.1 (CSV-style virtual-point smoothing budget per region; 0 = off)
+  --relearn 0|1 (1 = rerun flow decision and smoothing search on every compaction; default reuses bulk-load results)
+  --fusion manual|auto (auto = per-region cost-based choice among none/flow/virtual points/both) --flow-cost 4 (probe-equivalents per lookup charged to the flow)
+  --qos 1|0 (macOS: 1 requests the user-interactive QoS class so timed passes prefer performance cores)
+  --root binary|model (model = one global linear model routes to regions, raw or flow feature chosen by measured probes; binary = fence binary search)
+  --root-alpha 2 (with --root model: CSV-style virtual fences, budget = alpha * regions, alpha < 64; slots map to regions in O(1); chosen only if it lowers root probes)
+  --build-threads 1 (bulk load builds regions concurrently; build_ns becomes wall-clock of the parallel build; queries are always single-threaded)
+  --verify 1 --instrument 1 --latency 1 (0 skips the per-operation latency replay; latency blocks are emitted with count 0)
+  --warmup 4096 --dump-layout layout.csv --dump-trace trace.csv --dump-keys keys.sosd
+Output: one JSON object. Timing, validation, and instrumentation use separate fresh replays;
+the learnability block is read from the throughput pass's bulk-loaded index.

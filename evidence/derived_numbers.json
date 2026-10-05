@@ -1,0 +1,10 @@
+{
+  "nfl_FB_ratio": 2.2179176755447942,
+  "archived_memory_reduction_percent": 32.349368123937516,
+  "archived_throughput_reduction_percent": 37.55314992582656,
+  "mac_initial_accounted_bytes_per_record": 11.2444,
+  "mac_throughput_with_final_drain_ops_s": 810430.269992008,
+  "mac_mutations": 3373,
+  "mac_compactions_per_mutation_percent": 1.3934183219685738,
+  "mac_mean_correction_distance": 0.19637112987535182
+}

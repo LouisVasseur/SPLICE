@@ -1,0 +1,21 @@
+fb {"sample": 4096, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": true, "tag": "baseline-pipeline", "nll": 4.182016254972711, "tcd_raw": 5, "tcd_flow": 5, "ratio": 1.0, "seconds": 2.37, "unordered": 0}
+fb {"sample": 4096, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "baseline-nomono", "nll": -0.43445390225149766, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 2.39, "unordered": 65}
+fb {"sample": 4096, "steps": 2000, "shifts": 8, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 2.0522027980049184, "tcd_raw": 5, "tcd_flow": 5, "ratio": 1.0, "seconds": 23.8, "unordered": 0}
+fb {"sample": 4096, "steps": 2000, "shifts": 8, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.43082735083779067, "tcd_raw": 5, "tcd_flow": 4, "ratio": 0.8333333333333334, "seconds": 23.93, "unordered": 9}
+fb {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 4.164198901744906, "tcd_raw": 5, "tcd_flow": 5, "ratio": 1.0, "seconds": 23.98, "unordered": 0}
+fb {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.45357601421192284, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 23.9, "unordered": 65}
+fb {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 6.488706988455391, "tcd_raw": 5, "tcd_flow": 5, "ratio": 1.0, "seconds": 24.0, "unordered": 0}
+fb {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.4632403538668872, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 24.0, "unordered": 513}
+fb {"sample": 4096, "steps": 2000, "shifts": 65536, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 26.462321034702132, "tcd_raw": 5, "tcd_flow": 5, "ratio": 1.0, "seconds": 24.01, "unordered": 0}
+fb {"sample": 4096, "steps": 2000, "shifts": 65536, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.46345910932930406, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 27.96, "unordered": 53872}
+fb {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.3, "monotone": true, "tag": "grid-bigLR", "nll": 4.06612722850054, "tcd_raw": 5, "tcd_flow": 5, "ratio": 1.0, "seconds": 46.91, "unordered": 0}
+fb {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.3, "monotone": false, "tag": "grid-bigLR", "nll": -0.45383594020008733, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 46.69, "unordered": 65}
+fb {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.3, "monotone": true, "tag": "grid-bigLR", "nll": 6.488451599066286, "tcd_raw": 5, "tcd_flow": 5, "ratio": 1.0, "seconds": 47.7, "unordered": 0}
+fb {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "grid-bigLR", "nll": -0.46354685733569473, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 47.94, "unordered": 513}
+fb {"sample": 4096, "steps": 10000, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "long", "nll": -0.45530054678942294, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 146.24, "unordered": 65}
+fb {"sample": 4096, "steps": 10000, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "long", "nll": -0.7286905680775945, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 209.9, "unordered": 513}
+fb {"sample": 65536, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "data65k", "nll": -0.43587645235302636, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 55.21, "unordered": 64}
+fb {"sample": 65536, "steps": 200, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "data65k", "nll": -0.4542565564489314, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 47.05, "unordered": 512}
+fb {"sample": 200000, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "data200k", "nll": -0.4338347987915848, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 152.27, "unordered": 64}
+fb {"sample": 200000, "steps": 200, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "data200k", "nll": -0.4502380915320749, "tcd_raw": 5, "tcd_flow": 3, "ratio": 0.6666666666666666, "seconds": 143.51, "unordered": 512}
+DONE fb best long 3 raw 5

@@ -1,0 +1,5 @@
+[hardness] read 200000000 keys
+[hardness] sorted=true duplicates=0
+[hardness] original metrics done
+[hardness] smoothing done: virtual_points=18081013
+[hardness] smoothed metrics done

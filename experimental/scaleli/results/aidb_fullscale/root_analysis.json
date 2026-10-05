@@ -1,0 +1,380 @@
+{
+ "per_dataset": {
+  "fb": {
+   "packed_rank": {
+    "runs": 1,
+    "mops": 0.64750504973,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 15.6578005,
+    "fence_probes": 5.1369175,
+    "total_probes": 25.823977499999998,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 6.628667917,
+    "meta_bytes_per_key": 0.57031544
+   },
+   "packed_rank_root_raw": {
+    "runs": 1,
+    "mops": 0.610983466482,
+    "speedup": 0.9435964503084123,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 10.8067035,
+    "fence_probes": 5.1369175,
+    "total_probes": 20.972880500000002,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     15.6578739875,
+     10.8020623202,
+     0,
+     0,
+     0
+    ],
+    "build_s": 6.423819459,
+    "meta_bytes_per_key": 0.57031544
+   },
+   "packed_rank_root_flow": {
+    "runs": 1,
+    "mops": 0.597261065216,
+    "speedup": 0.922403717878415,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 10.8067035,
+    "fence_probes": 5.1369175,
+    "total_probes": 20.972880500000002,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     15.6578739875,
+     10.8020623202,
+     21.0156773196,
+     0,
+     0
+    ],
+    "build_s": 7.003185291,
+    "meta_bytes_per_key": 0.57031544
+   },
+   "packed_rank_root_vf4": {
+    "runs": 1,
+    "mops": 0.811624574125,
+    "speedup": 1.2534644702206346,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 3.419053,
+    "fence_probes": 5.1369175,
+    "total_probes": 13.585230000000001,
+    "chosen": "raw+fences",
+    "root_virtual": 973,
+    "est": [
+     15.6578739875,
+     10.8020623202,
+     0,
+     3.49747585939,
+     0
+    ],
+    "build_s": 9.984100125,
+    "meta_bytes_per_key": 0.57131148
+   },
+   "packed_rank_root_fusion": {
+    "runs": 1,
+    "mops": 0.723499992887,
+    "speedup": 1.1173657922647688,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 3.419053,
+    "fence_probes": 5.1369175,
+    "total_probes": 13.585230000000001,
+    "chosen": "raw+fences",
+    "root_virtual": 973,
+    "est": [
+     15.6578739875,
+     10.8020623202,
+     21.0156773196,
+     3.49747585939,
+     6.93150516604
+    ],
+    "build_s": 26.7049545,
+    "meta_bytes_per_key": 0.57131148
+   },
+   "packed_rank_root_vf004": {
+    "runs": 1,
+    "mops": 0.650765403831,
+    "speedup": 1.0050352566398664,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 3.419053,
+    "fence_probes": 5.1369175,
+    "total_probes": 13.585230000000001,
+    "chosen": "raw+fences",
+    "root_virtual": 973,
+    "est": [
+     15.6578739875,
+     10.8020623202,
+     0,
+     3.49747585939,
+     0
+    ],
+    "build_s": 9.985308208,
+    "meta_bytes_per_key": 0.57131148
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 1,
+    "mops": 0.727222802237,
+    "speedup": 1.1231152599354108,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 3.419053,
+    "fence_probes": 4.74188,
+    "total_probes": 13.1875945,
+    "chosen": "raw+fences",
+    "root_virtual": 973,
+    "est": [
+     15.6578739875,
+     10.8020623202,
+     21.0156773196,
+     3.49747585939,
+     6.93150516604
+    ],
+    "build_s": 183.12433875,
+    "meta_bytes_per_key": 1.3701396
+   },
+   "packed_rank_vp10_root_vf004": {
+    "runs": 1,
+    "mops": 0.7208078670410001,
+    "speedup": 1.113208101375528,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 3.419053,
+    "fence_probes": 4.741878,
+    "total_probes": 13.187592500000001,
+    "chosen": "raw+fences",
+    "root_virtual": 973,
+    "est": [
+     15.6578739875,
+     10.8020623202,
+     0,
+     3.49747585939,
+     0
+    ],
+    "build_s": 161.020031583,
+    "meta_bytes_per_key": 1.3701396
+   }
+  },
+  "planet": {
+   "packed_rank": {
+    "runs": 1,
+    "mops": 0.579720387999,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 15.6578005,
+    "fence_probes": 3.9893035,
+    "total_probes": 24.677321999999997,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 6.260740583,
+    "meta_bytes_per_key": 0.57031544
+   },
+   "packed_rank_root_raw": {
+    "runs": 1,
+    "mops": 0.533024895564,
+    "speedup": 0.9194516987815847,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 15.6578005,
+    "fence_probes": 3.9893035,
+    "total_probes": 24.677321999999997,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     15.6578739875,
+     25.8009564087,
+     0,
+     0,
+     0
+    ],
+    "build_s": 6.40208575,
+    "meta_bytes_per_key": 0.57031544
+   },
+   "packed_rank_root_flow": {
+    "runs": 1,
+    "mops": 0.570887587422,
+    "speedup": 0.9847636882196125,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 15.6578005,
+    "fence_probes": 3.9893035,
+    "total_probes": 24.677321999999997,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     15.6578739875,
+     25.8009564087,
+     27.8657853508,
+     0,
+     0
+    ],
+    "build_s": 7.03708275,
+    "meta_bytes_per_key": 0.57031544
+   },
+   "packed_rank_root_vf4": {
+    "runs": 1,
+    "mops": 0.643260852288,
+    "speedup": 1.1096053642486516,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 13.6851685,
+    "fence_probes": 3.9893035,
+    "total_probes": 22.70469,
+    "chosen": "raw+fences",
+    "root_virtual": 195316,
+    "est": [
+     15.6578739875,
+     25.8009564087,
+     0,
+     13.7480364951,
+     0
+    ],
+    "build_s": 2067.78087704,
+    "meta_bytes_per_key": 0.57519834
+   },
+   "packed_rank_root_fusion": {
+    "runs": 1,
+    "mops": 0.681290520452,
+    "speedup": 1.1752053827252582,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 3.3183975,
+    "fence_probes": 3.9893035,
+    "total_probes": 12.337919,
+    "chosen": "flow+fences",
+    "root_virtual": 111688,
+    "est": [
+     15.6578739875,
+     25.8009564087,
+     27.8657853508,
+     13.7480364951,
+     7.45645473443
+    ],
+    "build_s": 2973.14254962,
+    "meta_bytes_per_key": 0.57352578
+   },
+   "packed_rank_root_vf004": {
+    "runs": 1,
+    "mops": 0.555787648309,
+    "speedup": 0.9587167534807464,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 15.6578005,
+    "fence_probes": 3.9893035,
+    "total_probes": 24.677321999999997,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     15.6578739875,
+     25.8009564087,
+     0,
+     25.178123432,
+     0
+    ],
+    "build_s": 7.922749917,
+    "meta_bytes_per_key": 0.57031544
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 1,
+    "mops": 0.6665992568169999,
+    "speedup": 1.149863400729922,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 3.3183975,
+    "fence_probes": 3.4156905,
+    "total_probes": 11.762531,
+    "chosen": "flow+fences",
+    "root_virtual": 111688,
+    "est": [
+     15.6578739875,
+     25.8009564087,
+     27.8657853508,
+     13.7480364951,
+     7.45645473443
+    ],
+    "build_s": 5757.60156404,
+    "meta_bytes_per_key": 1.3672619
+   },
+   "packed_rank_vp10_root_vf004": {
+    "runs": 1,
+    "mops": 0.5300604222499999,
+    "speedup": 0.9143380726691197,
+    "lo": NaN,
+    "hi": NaN,
+    "root_probes": 15.6578005,
+    "fence_probes": 3.4155875,
+    "total_probes": 24.101831500000003,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     15.6578739875,
+     25.8009564087,
+     0,
+     25.178123432,
+     0
+    ],
+    "build_s": 190.303129208,
+    "meta_bytes_per_key": 1.36419568
+   }
+  }
+ },
+ "verdicts": {
+  "fb": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    15.6578005,
+    3.419053
+   ],
+   "total_probes": [
+    25.823977499999998,
+    13.585230000000001
+   ],
+   "speedup": [
+    1.1173657922647688,
+    NaN,
+    NaN
+   ],
+   "chosen": "raw+fences"
+  },
+  "planet": {
+   "synergy_on_estimate": true,
+   "measured_root_probes": [
+    15.6578005,
+    3.3183975
+   ],
+   "total_probes": [
+    24.677321999999997,
+    12.337919
+   ],
+   "speedup": [
+    1.1752053827252582,
+    NaN,
+    NaN
+   ],
+   "chosen": "flow+fences"
+  }
+ }
+}

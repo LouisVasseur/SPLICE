@@ -1,0 +1,11 @@
+{
+  "source": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/planet.sorted",
+  "source_count": 200000000,
+  "source_sha256": "d6680d134075890173d5a9d5f2af991eb13ed794da153b5a67d90cec98a4628b",
+  "mode": "uniform",
+  "seed": 42,
+  "sample_count": 2000000,
+  "dtype": "uint64",
+  "sample_sha256": "3a0fcf47ba903c33e9f6c6ed9bdc233918489751dbc0b9a41b0f5e205125c045",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

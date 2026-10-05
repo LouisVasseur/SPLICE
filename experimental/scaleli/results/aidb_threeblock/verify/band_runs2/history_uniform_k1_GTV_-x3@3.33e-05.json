@@ -1,0 +1,34 @@
+{
+ "dataset": "history",
+ "mode": "uniform",
+ "k": 1,
+ "order": "GTV",
+ "pert": "-x3@3.33e-05",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.247697031729785,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.247697031729785,
+   "virt": 4,
+   "gaps": [
+    452
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": false,
+   "model": 2.264073694984647,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.264073694984647,
+   "virt": 6,
+   "gaps": [
+    452
+   ]
+  }
+ ],
+ "seconds": 0.23892974853515625
+}

@@ -1,0 +1,39 @@
+{
+ "gapmap_ok": [
+  "osm_uniform",
+  "planet_uniform",
+  "books_uniform",
+  "genome_uniform",
+  "osm_window",
+  "fb_uniform"
+ ],
+ "k16_overlap_input_vs_afterT": {
+  "books": 12,
+  "planet": 4,
+  "osm": 15,
+  "wise": 12
+ },
+ "k16_churn_reapply_G_fixed_warp": {
+  "books": 8,
+  "planet": 4,
+  "osm": 0,
+  "wise": 0
+ },
+ "V_vs_indep": [
+  "books_uniform_G16 virt=383 identical",
+  "genome_uniform_G4 virt=329 identical",
+  "covid_window_G64 virt=58 identical"
+ ],
+ "books_uniform_G16_T_V": {
+  "model_probes": 2.3643807574206757,
+  "gap_table_probes": 5.0,
+  "gap_k": 16,
+  "transform_charge_probes": 6.9,
+  "total_uncharged": 7.364380757420676,
+  "total_charged": 14.264380757420676,
+  "total_charged_pwl": 7.814380757420676,
+  "virtual_count": 37,
+  "sse": 424.9514786750078,
+  "binary": 8.955987717502559
+ }
+}

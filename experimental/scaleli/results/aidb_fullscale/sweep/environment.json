@@ -1,0 +1,95 @@
+{
+  "timestamp_utc": "2026-09-21T19:17:20.997226+00:00",
+  "platform": "macOS-15.7.5-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "python": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 17.0.0 (clang-1700.6.4.2)]",
+  "cpu": "unavailable",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin",
+  "affinity": null,
+  "binary_sha256": "c63ceab046fe50b2074b95f5b9aaffe2391b023a51bd9b48c19f143d47c258af",
+  "git_commit": "HEAD",
+  "warning": "Shared-host exploratory results; CPU governor, NUMA binding and isolation not controlled by this script.",
+  "config": {
+    "description": "Full scale (200M keys, paper protocol scale): control, root ablation and region virtual points on fb and planet; single seed, 2M measured lookups, 16 build threads.",
+    "datasets": [
+      {
+        "name": "fb",
+        "data": "data/external/gre/fb",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/fb_2D2H2L.txt"
+      },
+      {
+        "name": "planet",
+        "data": "data/external/gre/planet.sorted",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/planet_2D2H2L.txt"
+      }
+    ],
+    "profiles": [
+      "read_only"
+    ],
+    "variants": [
+      {
+        "name": "packed_rank",
+        "policy": "min_bytes",
+        "routing": "rank"
+      },
+      {
+        "name": "packed_rank_root_raw",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model"
+      },
+      {
+        "name": "packed_rank_root_flow",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model",
+        "flow": "$flow"
+      },
+      {
+        "name": "packed_rank_root_vf4",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model",
+        "root-alpha": 4
+      },
+      {
+        "name": "packed_rank_root_fusion",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model",
+        "root-alpha": 4,
+        "flow": "$flow"
+      },
+      {
+        "name": "packed_rank_vp10_root_fusion",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "virtual-alpha": 0.1,
+        "root": "model",
+        "root-alpha": 4,
+        "flow": "$flow"
+      }
+    ],
+    "seeds": [
+      11
+    ],
+    "repeats": 1,
+    "common": {
+      "load-ratio": 1,
+      "miss": 0,
+      "query-distribution": "uniform",
+      "ops": 2000000,
+      "warmup": 200000,
+      "verify": 0,
+      "instrument": 1,
+      "latency": 0,
+      "build-threads": 16,
+      "qos": 1
+    }
+  },
+  "requested_cpu": null
+}

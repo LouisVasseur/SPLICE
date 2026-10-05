@@ -1,0 +1,68 @@
+2026-09-21T15:17:17+00:00 [pipeline] start steps=['verify-downloads', 'sort'] datasets=['books', 'fb', 'osm', 'covid', 'genome', 'history', 'libio', 'planet', 'stack', 'wise'] results=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb dry_run=False
+2026-09-21T15:17:17+00:00 [verify-downloads] begin
+2026-09-21T15:17:18+00:00 [verify-downloads] books: 200,000,000 keys, 1,600,000,008 bytes, sha256 c71eb78eebb746f0… (1.0 s)
+2026-09-21T15:17:19+00:00 [verify-downloads] fb: 200,000,000 keys, 1,600,000,008 bytes, sha256 22d5fd6f608e528c… (1.0 s)
+2026-09-21T15:17:20+00:00 [verify-downloads] osm: 200,000,000 keys, 1,600,000,008 bytes, sha256 1d1f5681cbfcd377… (1.0 s)
+2026-09-21T15:17:21+00:00 [verify-downloads] covid: 200,000,000 keys, 1,600,000,008 bytes, sha256 96834e0f0a9a697a… (1.1 s)
+2026-09-21T15:17:22+00:00 [verify-downloads] genome: 200,000,000 keys, 1,600,000,008 bytes, sha256 6862bff81727ec2b… (1.0 s)
+2026-09-21T15:17:23+00:00 [verify-downloads] history: 200,000,000 keys, 1,600,000,008 bytes, sha256 2556096e02969666… (1.0 s)
+2026-09-21T15:17:24+00:00 [verify-downloads] libio: 200,000,000 keys, 1,600,000,008 bytes, sha256 0d0c99a064a1142c… (1.0 s)
+2026-09-21T15:17:25+00:00 [verify-downloads] planet: 200,000,000 keys, 1,600,000,008 bytes, sha256 0e4a90c81e6e36f1… (1.0 s)
+2026-09-21T15:17:26+00:00 [verify-downloads] stack: 200,000,000 keys, 1,600,000,008 bytes, sha256 34f9a3ae69ac17ed… (1.0 s)
+2026-09-21T15:17:27+00:00 [verify-downloads] wise: 200,000,000 keys, 1,600,000,008 bytes, sha256 87e34fb1503881b1… (1.0 s)
+2026-09-21T15:17:27+00:00 [verify-downloads] done in 10.2 s
+2026-09-21T15:17:27+00:00 [sort] begin
+2026-09-21T15:17:27+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books.sorted
+2026-09-21T15:17:28+00:00 [sort] ok 1.4 s: scaleli_hardness
+2026-09-21T15:17:28+00:00 [sort] books: sorted=True duplicates=0
+2026-09-21T15:17:28+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb.sorted
+2026-09-21T15:17:29+00:00 [sort] ok 0.7 s: scaleli_hardness
+2026-09-21T15:17:29+00:00 [sort] fb: sorted=True duplicates=0
+2026-09-21T15:17:29+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm.sorted
+2026-09-21T15:17:30+00:00 [sort] ok 0.8 s: scaleli_hardness
+2026-09-21T15:17:30+00:00 [sort] osm: sorted=True duplicates=0
+2026-09-21T15:17:30+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/covid --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/covid.sorted
+2026-09-21T15:17:51+00:00 [sort] ok 21.1 s: scaleli_hardness
+2026-09-21T15:17:51+00:00 [sort] covid: sorted=False duplicates=0 -> wrote covid.sorted (200,000,000 keys)
+2026-09-21T15:17:51+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/genome --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/genome.sorted
+2026-09-21T15:18:12+00:00 [sort] ok 21.5 s: scaleli_hardness
+2026-09-21T15:18:12+00:00 [sort] genome: sorted=False duplicates=0 -> wrote genome.sorted (200,000,000 keys)
+2026-09-21T15:18:12+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/history --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/history.sorted
+2026-09-21T15:18:33+00:00 [sort] ok 21.1 s: scaleli_hardness
+2026-09-21T15:18:33+00:00 [sort] history: sorted=False duplicates=0 -> wrote history.sorted (200,000,000 keys)
+2026-09-21T15:18:33+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/libio --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/libio.sorted
+2026-09-21T15:18:54+00:00 [sort] ok 21.2 s: scaleli_hardness
+2026-09-21T15:18:54+00:00 [sort] libio: sorted=False duplicates=0 -> wrote libio.sorted (200,000,000 keys)
+2026-09-21T15:18:54+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/planet --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/planet.sorted
+2026-09-21T15:19:18+00:00 [sort] ok 23.1 s: scaleli_hardness
+2026-09-21T15:19:18+00:00 [sort] planet: sorted=False duplicates=0 -> wrote planet.sorted (200,000,000 keys)
+2026-09-21T15:19:18+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/stack --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/stack.sorted
+2026-09-21T15:19:37+00:00 [sort] ok 19.8 s: scaleli_hardness
+2026-09-21T15:19:37+00:00 [sort] stack: sorted=False duplicates=0 -> wrote stack.sorted (200,000,000 keys)
+2026-09-21T15:19:37+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/wise --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/wise.sorted
+2026-09-21T15:19:58+00:00 [sort] ok 20.9 s: scaleli_hardness
+2026-09-21T15:19:58+00:00 [sort] wise: sorted=False duplicates=0 -> wrote wise.sorted (200,000,000 keys)
+2026-09-21T15:19:58+00:00 [sort] done in 151.5 s
+2026-09-21T15:19:58+00:00 [pipeline] finished
+{
+  "results": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb",
+  "steps": [
+    "verify-downloads",
+    "sort"
+  ],
+  "datasets": [
+    "books",
+    "fb",
+    "osm",
+    "covid",
+    "genome",
+    "history",
+    "libio",
+    "planet",
+    "stack",
+    "wise"
+  ],
+  "report": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb/report.html",
+  "log": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb/pipeline.log",
+  "label": "Reduced-scale, single-host, clean-room controls of this repository's NFL-style transform and CSV-style virtual points under the AIDB 2026 hardness protocol. Not a reproduction of the paper, NFL/AFLI or CSV."
+}

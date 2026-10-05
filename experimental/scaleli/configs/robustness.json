@@ -1,0 +1,153 @@
+{
+  "description": "RoBin-inspired factor grid; not upstream RoBin reproduction. All runs retain the same local API and protocol.",
+  "datasets": [
+    {
+      "name": "linear_uniform_shuffled_load0.1",
+      "distribution": "linear",
+      "bulk-sampling": "uniform",
+      "insert-order": "shuffled",
+      "load-ratio": 0.1
+    },
+    {
+      "name": "linear_uniform_shuffled_load0.75",
+      "distribution": "linear",
+      "bulk-sampling": "uniform",
+      "insert-order": "shuffled",
+      "load-ratio": 0.75
+    },
+    {
+      "name": "linear_uniform_sorted_load0.1",
+      "distribution": "linear",
+      "bulk-sampling": "uniform",
+      "insert-order": "sorted",
+      "load-ratio": 0.1
+    },
+    {
+      "name": "linear_uniform_sorted_load0.75",
+      "distribution": "linear",
+      "bulk-sampling": "uniform",
+      "insert-order": "sorted",
+      "load-ratio": 0.75
+    },
+    {
+      "name": "linear_prefix_shuffled_load0.1",
+      "distribution": "linear",
+      "bulk-sampling": "prefix",
+      "insert-order": "shuffled",
+      "load-ratio": 0.1
+    },
+    {
+      "name": "linear_prefix_shuffled_load0.75",
+      "distribution": "linear",
+      "bulk-sampling": "prefix",
+      "insert-order": "shuffled",
+      "load-ratio": 0.75
+    },
+    {
+      "name": "linear_prefix_sorted_load0.1",
+      "distribution": "linear",
+      "bulk-sampling": "prefix",
+      "insert-order": "sorted",
+      "load-ratio": 0.1
+    },
+    {
+      "name": "linear_prefix_sorted_load0.75",
+      "distribution": "linear",
+      "bulk-sampling": "prefix",
+      "insert-order": "sorted",
+      "load-ratio": 0.75
+    },
+    {
+      "name": "dense_sparse_uniform_shuffled_load0.1",
+      "distribution": "dense_sparse",
+      "bulk-sampling": "uniform",
+      "insert-order": "shuffled",
+      "load-ratio": 0.1
+    },
+    {
+      "name": "dense_sparse_uniform_shuffled_load0.75",
+      "distribution": "dense_sparse",
+      "bulk-sampling": "uniform",
+      "insert-order": "shuffled",
+      "load-ratio": 0.75
+    },
+    {
+      "name": "dense_sparse_uniform_sorted_load0.1",
+      "distribution": "dense_sparse",
+      "bulk-sampling": "uniform",
+      "insert-order": "sorted",
+      "load-ratio": 0.1
+    },
+    {
+      "name": "dense_sparse_uniform_sorted_load0.75",
+      "distribution": "dense_sparse",
+      "bulk-sampling": "uniform",
+      "insert-order": "sorted",
+      "load-ratio": 0.75
+    },
+    {
+      "name": "dense_sparse_prefix_shuffled_load0.1",
+      "distribution": "dense_sparse",
+      "bulk-sampling": "prefix",
+      "insert-order": "shuffled",
+      "load-ratio": 0.1
+    },
+    {
+      "name": "dense_sparse_prefix_shuffled_load0.75",
+      "distribution": "dense_sparse",
+      "bulk-sampling": "prefix",
+      "insert-order": "shuffled",
+      "load-ratio": 0.75
+    },
+    {
+      "name": "dense_sparse_prefix_sorted_load0.1",
+      "distribution": "dense_sparse",
+      "bulk-sampling": "prefix",
+      "insert-order": "sorted",
+      "load-ratio": 0.1
+    },
+    {
+      "name": "dense_sparse_prefix_sorted_load0.75",
+      "distribution": "dense_sparse",
+      "bulk-sampling": "prefix",
+      "insert-order": "sorted",
+      "load-ratio": 0.75
+    }
+  ],
+  "profiles": [
+    "write_heavy"
+  ],
+  "variants": [
+    {
+      "name": "ordered_map",
+      "index": "ordered_map"
+    },
+    {
+      "name": "raw_rank",
+      "policy": "raw",
+      "routing": "rank"
+    },
+    {
+      "name": "packed_byte",
+      "policy": "min_bytes",
+      "routing": "byte"
+    },
+    {
+      "name": "adaptive_byte",
+      "policy": "adaptive",
+      "routing": "byte"
+    }
+  ],
+  "seeds": [
+    11,
+    29
+  ],
+  "repeats": 1,
+  "common": {
+    "n": 20000,
+    "ops": 10000,
+    "verify": 1,
+    "instrument": 1,
+    "warmup": 512
+  }
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "id": "01",
+    "title": "Changing the distribution can help",
+    "evidence_class": "PAPER-REPORTED",
+    "headline": "4.13 \u2192 9.16 Mops/s",
+    "meaning": "In NFL\u2019s Table 1, ALEX on Facebook has lower tree height and higher throughput after applying NF."
+  },
+  {
+    "id": "02",
+    "title": "The transform has a query-time price",
+    "evidence_class": "PAPER-REPORTED",
+    "headline": "169.53 ns/key \u2192 8.38 ns/key",
+    "meaning": "The same 2H2L NF\u2019s average transformation cost per key changes sharply with batching: size 1 versus size 256."
+  },
+  {
+    "id": "03",
+    "title": "Virtual points trade preprocessing for better queries",
+    "evidence_class": "PAPER-REPORTED",
+    "headline": "Up to 34% lower query time",
+    "meaning": "CSV reports this maximum for promoted keys, not an unconditional query sample over the entire index."
+  },
+  {
+    "id": "04",
+    "title": "Learned compression is already prior art",
+    "evidence_class": "PAPER-REPORTED",
+    "headline": "Up to 16% higher throughput",
+    "meaning": "LeCo reports this RocksDB Seek result versus the second-best tested configuration (\u00a75.2), not for our in-memory map."
+  },
+  {
+    "id": "05",
+    "title": "Our existing pilot exposes a memory / speed trade-off",
+    "evidence_class": "ARCHIVED PROTOTYPE",
+    "headline": "16.628 \u2192 11.249 bytes/record",
+    "meaning": "Raw/rank versus packed/byte uses less accounted memory, but throughput falls from 7.402 to 4.622 million ops/s in this small archived experiment."
+  },
+  {
+    "id": "06",
+    "title": "A straighter curve is not automatically a better search",
+    "evidence_class": "ARCHIVED PROTOTYPE",
+    "headline": "Lower MSE; higher block error",
+    "meaning": "Density-target smoothing beats minimum-byte layout on normalized byte MSE, but loses on initial block displacement and encoded size."
+  },
+  {
+    "id": "07",
+    "title": "The Mac run is a successful pilot, not a SOTA score",
+    "evidence_class": "USER-REPORTED PILOT",
+    "headline": "0.458 \u00b5s median insert; 253.958 \u00b5s P99",
+    "meaning": "The supplied run passed verification and recorded 47 synchronous compactions. Ordinary writes and rebuild-triggering writes have very different costs."
+  }
+]

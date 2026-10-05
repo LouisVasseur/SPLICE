@@ -1,0 +1,228 @@
+{
+ "dataset": "books",
+ "mode": "window",
+ "k": 1,
+ "order": "TGV",
+ "nostop": true,
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model_probes": 2.2896622313203685,
+   "gap_table_probes": 1.0,
+   "gap_k_eff": 1,
+   "total_uncharged": 3.2896622313203685,
+   "total_charged": 10.18966223132037,
+   "total_charged_pwl": 3.7396622313203687,
+   "virtual_count": 1,
+   "sse": 24.334725700318813,
+   "gaps": [
+    161
+   ],
+   "gap_factors": [
+    0.8263647149133001
+   ],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     48620.44417741239
+    ],
+    [
+     35.485955562003575,
+     0.0,
+     0.8839973184610072
+    ]
+   ],
+   "warp_sse": 81.44531427696347,
+   "notes": [
+    "ok",
+    "V kept_previous=False"
+   ],
+   "seconds": 0.026491880416870117
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model_probes": 2.286591606960082,
+   "gap_table_probes": 1.0,
+   "gap_k_eff": 1,
+   "total_uncharged": 3.286591606960082,
+   "total_charged": 10.186591606960082,
+   "total_charged_pwl": 3.736591606960082,
+   "virtual_count": 1,
+   "sse": 24.287412270903587,
+   "gaps": [
+    161
+   ],
+   "gap_factors": [
+    0.8263647240620783
+   ],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     48768.324937522026
+    ],
+    [
+     35.485955562003575,
+     0.0,
+     0.7916517094453245
+    ]
+   ],
+   "warp_sse": 24.287412077188492,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.1656351089477539
+  },
+  {
+   "round": 3,
+   "accepted": false,
+   "model_probes": 2.286591606960082,
+   "gap_table_probes": 1.0,
+   "gap_k_eff": 1,
+   "total_uncharged": 3.286591606960082,
+   "total_charged": 10.186591606960082,
+   "total_charged_pwl": 3.736591606960082,
+   "virtual_count": 1,
+   "sse": 24.28741232305765,
+   "gaps": [
+    161
+   ],
+   "gap_factors": [
+    0.8263647240621254
+   ],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     48768.32493717189
+    ],
+    [
+     35.485955562003575,
+     0.0,
+     0.7916517088267702
+    ]
+   ],
+   "warp_sse": 24.287412306293845,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.1125800609588623
+  },
+  {
+   "round": 4,
+   "accepted": false,
+   "model_probes": 2.286591606960082,
+   "gap_table_probes": 1.0,
+   "gap_k_eff": 1,
+   "total_uncharged": 3.286591606960082,
+   "total_charged": 10.186591606960082,
+   "total_charged_pwl": 3.736591606960082,
+   "virtual_count": 1,
+   "sse": 24.28741230815649,
+   "gaps": [
+    161
+   ],
+   "gap_factors": [
+    0.8263647240621254
+   ],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     48768.32493717187
+    ],
+    [
+     35.485955562003575,
+     0.0,
+     0.7916517088267787
+    ]
+   ],
+   "warp_sse": 24.287412310019135,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.0283660888671875
+  },
+  {
+   "round": 5,
+   "accepted": false,
+   "model_probes": 2.286591606960082,
+   "gap_table_probes": 1.0,
+   "gap_k_eff": 1,
+   "total_uncharged": 3.286591606960082,
+   "total_charged": 10.186591606960082,
+   "total_charged_pwl": 3.736591606960082,
+   "virtual_count": 1,
+   "sse": 24.28741230815649,
+   "gaps": [
+    161
+   ],
+   "gap_factors": [
+    0.8263647240621254
+   ],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     48768.32493717187
+    ],
+    [
+     35.485955562003575,
+     0.0,
+     0.7916517088267787
+    ]
+   ],
+   "warp_sse": 24.287412310019135,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.057227134704589844
+  },
+  {
+   "round": 6,
+   "accepted": false,
+   "model_probes": 2.286591606960082,
+   "gap_table_probes": 1.0,
+   "gap_k_eff": 1,
+   "total_uncharged": 3.286591606960082,
+   "total_charged": 10.186591606960082,
+   "total_charged_pwl": 3.736591606960082,
+   "virtual_count": 1,
+   "sse": 24.28741230815649,
+   "gaps": [
+    161
+   ],
+   "gap_factors": [
+    0.8263647240621254
+   ],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     48768.32493717187
+    ],
+    [
+     35.485955562003575,
+     0.0,
+     0.7916517088267787
+    ]
+   ],
+   "warp_sse": 24.287412310019135,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.0267488956451416
+  }
+ ],
+ "error": null,
+ "baseline_linear": 2.3203684749232343,
+ "seconds": 0.4200770854949951
+}

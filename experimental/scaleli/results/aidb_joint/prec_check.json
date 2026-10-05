@@ -1,0 +1,30 @@
+[
+ {
+  "dataset": "books",
+  "double": 2.727737973387922,
+  "double_rounds": 662,
+  "dd": 2.727737973387922,
+  "dd_rounds": 662
+ },
+ {
+  "dataset": "planet",
+  "double": 5.242579324462641,
+  "double_rounds": 1956,
+  "dd": 5.242579324462641,
+  "dd_rounds": 1956
+ },
+ {
+  "dataset": "fb",
+  "double": 2.224155578300921,
+  "double_rounds": 1,
+  "dd": 2.224155578300921,
+  "dd_rounds": 1
+ },
+ {
+  "dataset": "history",
+  "double": 2.323439099283521,
+  "double_rounds": 20,
+  "dd": 2.323439099283521,
+  "dd_rounds": 20
+ }
+]

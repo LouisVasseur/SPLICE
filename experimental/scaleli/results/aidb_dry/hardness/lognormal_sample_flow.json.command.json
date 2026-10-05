@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness",
+    "--data",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/lognormal_20K_uniform_s42",
+    "--flow",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/lognormal_2D2H2L.txt",
+    "--virtual-alpha",
+    "0.1",
+    "--dtype",
+    "uint64",
+    "--region-keys",
+    "4096",
+    "--pla-eps",
+    "32,4096",
+    "--check-sorted",
+    "1"
+  ],
+  "sha256": {
+    "/Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness": "c5fb742016a6ff1d750efc6168072dd532be0342e603e13876dfa773977562f8"
+  }
+}

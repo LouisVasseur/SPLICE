@@ -1,0 +1,63 @@
+22:21:05 CHAIN3 start
+22:21:05 FULLSCALE A start (fb, planet: control, root raw, root flow, root fences a=0.04, vp10 + root fences a=0.04)
+[9/10] fb / read_only / packed_rank_root_flow seed=11 repeat=0
+[10/10] fb / read_only / packed_rank_root_raw seed=11 repeat=0
+results/aidb_fullscale/sweep/results.jsonl
+22:42:17 FULLSCALE B start (fb at root alpha 4)
+[2/3] fb / read_only / packed_rank_vp10_root_fusion seed=11 repeat=0
+[3/3] fb / read_only / packed_rank_root_vf4 seed=11 repeat=0
+results/aidb_fullscale/sweep/results.jsonl
+results/aidb_fullscale/sweep/summary.csv
+22:50:20 FULLSCALE A+B DONE (13 rows)
+22:50:20 ASSEMBLY 1 start
+skip missing results/aidb/sweep/summary.csv
+skip missing results/aidb_window/sweep/summary.csv
+skip missing results/aidb_granularity/summary_r4096.csv
+skip missing results/aidb_granularity/summary_r16384.csv
+skip missing results/aidb_granularity/summary_r32768.csv
+skip missing results/aidb_fullscale/sweep/summary.csv
+skip missing results/aidb_final/sweep/summary.csv
+results/aidb/assemble.sh:cd:13: no such file or directory: experimental/scaleli
+22:50:20 ASSEMBLY 1 DONE
+22:50:20 GRANULARITY resume start
+[150/150] fb / read_only / packed_rank_fusion_auto_r16384 seed=11 repeat=0
+results/aidb_granularity/sweep/results.jsonl
+results/aidb_granularity/summary_r4096.csv
+results/aidb_granularity/summary_r16384.csv
+results/aidb_granularity/summary_r32768.csv
+23:49:39 GRANULARITY RESUME DONE (150 rows)
+23:49:39 ASSEMBLY 2 start
+results/aidb/fusion_report.html
+manifest entries: 211
+PASS package manifest: 211 files
+Evidence checks passed. These are not a substitute for compiling/testing the native code.
+  GRE (PLA-32·PLA-4096)    Cov 0.47  Conf -0.28  Conf[packed_rank] -0.15
+  CD·PLA-32                Cov 0.56  Conf 0.09  Conf[packed_rank] 0.38
+
+Results: /Users/louisvasseur/Downloads/scaleli_sota/results/local/report.html
+ASSEMBLY DONE 23:49:40
+23:49:40 ASSEMBLY 2 DONE
+23:49:40 FULLSCALE C start (planet at root alpha 4; 4 h cap per run)
+23:49:40 FULLSCALE c1 start
+[1/1] planet / read_only / packed_rank_root_vf4 seed=11 repeat=0
+results/aidb_fullscale/sweep/results.jsonl
+00:59:37 FULLSCALE c2 start
+[1/1] planet / read_only / packed_rank_root_fusion seed=11 repeat=0
+results/aidb_fullscale/sweep/results.jsonl
+02:39:15 FULLSCALE c3 start
+[1/1] planet / read_only / packed_rank_vp10_root_fusion seed=11 repeat=0
+results/aidb_fullscale/sweep/results.jsonl
+results/aidb_fullscale/sweep/summary.csv
+05:08:08 FULLSCALE C DONE (16 rows)
+05:08:08 ASSEMBLY 3 start
+results/aidb/fusion_report.html
+manifest entries: 211
+PASS package manifest: 211 files
+Evidence checks passed. These are not a substitute for compiling/testing the native code.
+  GRE (PLA-32·PLA-4096)    Cov 0.47  Conf -0.28  Conf[packed_rank] -0.15
+  CD·PLA-32                Cov 0.56  Conf 0.09  Conf[packed_rank] 0.38
+
+Results: /Users/louisvasseur/Downloads/scaleli_sota/results/local/report.html
+ASSEMBLY DONE 05:08:09
+05:08:09 ASSEMBLY 3 DONE
+05:08:09 CHAIN3 DONE

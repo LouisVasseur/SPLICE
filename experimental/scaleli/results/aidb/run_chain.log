@@ -1,0 +1,17 @@
+18:16:19 WINDOW start
+  "log": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/pipeline.log",
+  "label": "Reduced-scale, single-host, clean-room controls of this repository's NFL-style transform and CSV-style virtual points under the AIDB 2026 hardness protocol. Not a reproduction of the paper, NFL/AFLI or CSV."
+}
+18:38:03 WINDOW DONE
+18:38:03 UNIFORM resume
+  "log": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb/pipeline.log",
+  "label": "Reduced-scale, single-host, clean-room controls of this repository's NFL-style transform and CSV-style virtual points under the AIDB 2026 hardness protocol. Not a reproduction of the paper, NFL/AFLI or CSV."
+}
+19:01:06 UNIFORM DONE
+19:01:06 GRANULARITY start
+[20/150] genome / read_only / packed_rank_flow_vp10_r32768 seed=11 repeat=0
+[21/150] fb / read_only / packed_rank_flow_vp10_r32768 seed=11 repeat=0
+results/aidb_granularity/summary_r4096.csv
+results/aidb_granularity/summary_r16384.csv
+results/aidb_granularity/summary_r32768.csv
+19:14:33 GRANULARITY DONE

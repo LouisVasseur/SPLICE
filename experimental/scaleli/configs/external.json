@@ -1,0 +1,47 @@
+{
+  "description": "Small correctness/performance smoke suite, not a publication benchmark.",
+  "datasets": [
+    "uniform",
+    "dense_sparse"
+  ],
+  "profiles": [
+    "read_only",
+    "read_heavy"
+  ],
+  "variants": [
+    {
+      "name": "sorted_vector",
+      "index": "sorted_vector"
+    },
+    {
+      "name": "raw_rank",
+      "policy": "raw",
+      "routing": "rank"
+    },
+    {
+      "name": "packed_byte",
+      "policy": "min_bytes",
+      "routing": "byte"
+    },
+    {
+      "name": "alex",
+      "index": "alex"
+    },
+    {
+      "name": "dynamic_pgm",
+      "index": "pgm"
+    }
+  ],
+  "seeds": [
+    11,
+    29
+  ],
+  "repeats": 1,
+  "common": {
+    "n": 20000,
+    "ops": 5000,
+    "verify": 1,
+    "instrument": 1,
+    "warmup": 1024
+  }
+}

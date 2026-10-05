@@ -1,0 +1,222 @@
+{
+ "books_uniform": {
+  "sentinel_gap_fraction": 0.0008490137306370636,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 11.0757420676,
+  "raw_emu": 11.075742067553737,
+  "raw_fit_without_sentinel": 11.07267144319345,
+  "flow_stored": 10.9109518936,
+  "flow_emu": 10.910951893551688,
+  "flow_fit_without_sentinel": 10.905834186284544
+ },
+ "covid_uniform": {
+  "sentinel_gap_fraction": 0.9298754109257408,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 13.780962129,
+  "raw_emu": 13.780962128966223,
+  "raw_fit_without_sentinel": 4.632548618219038,
+  "flow_stored": 9.9938587513,
+  "flow_emu": 9.993858751279427,
+  "flow_fit_without_sentinel": 4.492323439099284
+ },
+ "fb_uniform": {
+  "sentinel_gap_fraction": 0.0019484358037530035,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 2.26612077789,
+  "raw_emu": 2.2661207778915045,
+  "raw_fit_without_sentinel": 2.2661207778915045,
+  "flow_stored": 4.13920163767,
+  "flow_emu": 4.139201637666326,
+  "flow_fit_without_sentinel": 4.1330603889457525
+ },
+ "genome_uniform": {
+  "sentinel_gap_fraction": 0.0032541102241433334,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 8.63459570113,
+  "raw_emu": 8.634595701125896,
+  "raw_fit_without_sentinel": 8.616171954964177,
+  "flow_stored": 8.9825997953,
+  "flow_emu": 8.982599795291708,
+  "flow_fit_without_sentinel": 8.975435005117708
+ },
+ "history_uniform": {
+  "sentinel_gap_fraction": 0.00186329430066889,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 3.78096212897,
+  "raw_emu": 3.780962128966223,
+  "raw_fit_without_sentinel": 3.780962128966223,
+  "flow_stored": 2.7082906857699998,
+  "flow_emu": 2.708290685772774,
+  "flow_fit_without_sentinel": 2.700102354145343
+ },
+ "libio_uniform": {
+  "sentinel_gap_fraction": 0.008458726032321015,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 6.51995905834,
+  "raw_emu": 6.519959058341863,
+  "raw_fit_without_sentinel": 6.4861821903787105,
+  "flow_stored": 6.8884339816,
+  "flow_emu": 6.888433981576254,
+  "flow_fit_without_sentinel": 6.87410440122825
+ },
+ "osm_uniform": {
+  "sentinel_gap_fraction": 0.03726093072407249,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 11.6622313204,
+  "raw_emu": 11.662231320368475,
+  "raw_fit_without_sentinel": 11.683725690890482,
+  "flow_stored": 11.8311156602,
+  "flow_emu": 11.831115660184237,
+  "flow_fit_without_sentinel": 11.870010235414535
+ },
+ "planet_uniform": {
+  "sentinel_gap_fraction": 0.000197731810843597,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 12.5946775844,
+  "raw_emu": 12.59467758444217,
+  "raw_fit_without_sentinel": 12.600818833162743,
+  "flow_stored": 10.582395087,
+  "flow_emu": 10.582395087001023,
+  "flow_fit_without_sentinel": 10.582395087001023
+ },
+ "stack_uniform": {
+  "sentinel_gap_fraction": 0.0022476263838654025,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 3.31627430911,
+  "raw_emu": 3.316274309109519,
+  "raw_fit_without_sentinel": 3.3050153531218016,
+  "flow_stored": 5.05220061412,
+  "flow_emu": 5.052200614124872,
+  "flow_fit_without_sentinel": 5.036847492323439
+ },
+ "wise_uniform": {
+  "sentinel_gap_fraction": 0.5018622071423735,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 6.54042988741,
+  "raw_emu": 6.54042988741044,
+  "raw_fit_without_sentinel": 5.749232343909928,
+  "flow_stored": 6.3858751279,
+  "flow_emu": 6.385875127942682,
+  "flow_fit_without_sentinel": 4.493346980552713
+ },
+ "books_window": {
+  "sentinel_gap_fraction": 0.9702810085881725,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 14.2405322416,
+  "raw_emu": 14.240532241555783,
+  "raw_fit_without_sentinel": 2.3224155578300922,
+  "flow_stored": 9.954964176,
+  "flow_emu": 9.95496417604913,
+  "flow_fit_without_sentinel": 4.123848515864893
+ },
+ "covid_window": {
+  "sentinel_gap_fraction": 0.9993190248996459,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 14.3776867963,
+  "raw_emu": 14.37768679631525,
+  "raw_fit_without_sentinel": 6.138178096212896,
+  "flow_stored": 10.0194472876,
+  "flow_emu": 10.019447287615149,
+  "flow_fit_without_sentinel": 5.22517911975435
+ },
+ "fb_window": {
+  "sentinel_gap_fraction": 0.988516151805167,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 14.3387922211,
+  "raw_emu": 14.338792221084955,
+  "raw_fit_without_sentinel": 3.5813715455475945,
+  "flow_stored": 10.065506653,
+  "flow_emu": 10.065506653019447,
+  "flow_fit_without_sentinel": 3.848515864892528
+ },
+ "genome_window": {
+  "sentinel_gap_fraction": 0.9942824490889051,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 14.3654042989,
+  "raw_emu": 14.365404298874104,
+  "raw_fit_without_sentinel": 7.2640736949846465,
+  "flow_stored": 9.3326509724,
+  "flow_emu": 9.33265097236438,
+  "flow_fit_without_sentinel": 7.3633572159672465
+ },
+ "history_window": {
+  "sentinel_gap_fraction": 0.9886140117395102,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 14.3285568066,
+  "raw_emu": 14.328556806550665,
+  "raw_fit_without_sentinel": 3.848515864892528,
+  "flow_stored": 9.7850562948,
+  "flow_emu": 9.785056294779938,
+  "flow_fit_without_sentinel": 5.147389969293757
+ },
+ "libio_window": {
+  "sentinel_gap_fraction": 0.990142554646826,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 14.3480040942,
+  "raw_emu": 14.348004094165814,
+  "raw_fit_without_sentinel": 3.625383828045036,
+  "flow_stored": 9.5916069601,
+  "flow_emu": 9.591606960081883,
+  "flow_fit_without_sentinel": 4.032753326509724
+ },
+ "osm_window": {
+  "sentinel_gap_fraction": 0.9979940617149842,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 14.3776867963,
+  "raw_emu": 14.37768679631525,
+  "raw_fit_without_sentinel": 10.554759467758444,
+  "flow_stored": 11.6315250768,
+  "flow_emu": 11.631525076765609,
+  "flow_fit_without_sentinel": 10.382804503582395
+ },
+ "planet_window": {
+  "sentinel_gap_fraction": 0.9557424640155319,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 14.1392016377,
+  "raw_emu": 14.139201637666325,
+  "raw_fit_without_sentinel": 7.58546571136131,
+  "flow_stored": 10.8045035824,
+  "flow_emu": 10.804503582395087,
+  "flow_fit_without_sentinel": 7.889457523029683
+ },
+ "stack_window": {
+  "sentinel_gap_fraction": 0.988731048922269,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 14.3377686796,
+  "raw_emu": 14.337768679631525,
+  "raw_fit_without_sentinel": 6.293756397134084,
+  "flow_stored": 10.2896622313,
+  "flow_emu": 10.289662231320369,
+  "flow_fit_without_sentinel": 7.054247697031729
+ },
+ "wise_window": {
+  "sentinel_gap_fraction": 0.9949709241441018,
+  "binary_stored": 8.9559877175,
+  "binary_emu": 8.955987717502559,
+  "raw_stored": 14.3694984647,
+  "raw_emu": 14.369498464687819,
+  "raw_fit_without_sentinel": 2.991811668372569,
+  "flow_stored": 10.1299897646,
+  "flow_emu": 10.129989764585465,
+  "flow_fit_without_sentinel": 4.231320368474924
+ }
+}

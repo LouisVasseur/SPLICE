@@ -1,0 +1,48 @@
+skip fb B0 11
+14:26:42 start fb L0 11
+14:27:51 end fb L0 11 ok 69s thr=856110
+14:27:51 start fb N1 11
+14:29:06 end fb N1 11 ok 76s thr=701014
+14:29:06 start fb N2 11
+14:30:21 end fb N2 11 ok 74s thr=751295
+14:30:21 start fb N3 11
+14:31:30 end fb N3 11 ok 69s thr=874200
+14:31:30 start fb C1 11
+14:38:34 end fb C1 11 ok 424s thr=866477
+14:38:34 start fb C2 11
+14:39:49 end fb C2 11 ok 75s thr=915583
+14:39:49 start fb F1 11
+14:55:30 end fb F1 11 ok 941s thr=1050243
+14:55:30 start fb J1 11
+15:06:42 end fb J1 11 ok 672s thr=962864
+15:06:42 start fb J1s 11
+15:08:06 end fb J1s 11 ok 84s thr=929014
+15:08:06 start fb R0raw 11
+15:09:15 end fb R0raw 11 ok 69s thr=889101
+15:09:15 start fb R0sv 11
+15:10:23 end fb R0sv 11 ok 68s thr=1010682
+15:10:23 start osm B0 11
+15:11:38 end osm B0 11 ok 74s thr=749838
+15:11:38 start osm L0 11
+15:12:47 end osm L0 11 ok 69s thr=886194
+15:12:47 start osm N1 11
+15:13:57 end osm N1 11 ok 70s thr=878893
+15:13:57 start osm N2 11
+15:15:07 end osm N2 11 ok 70s thr=891568
+15:15:07 start osm N3 11
+15:16:20 end osm N3 11 ok 73s thr=775459
+15:16:20 start osm C1 11
+15:24:00 end osm C1 11 ok 460s thr=685135
+15:24:00 start osm C2 11
+15:25:19 end osm C2 11 ok 79s thr=698018
+15:25:20 start osm F1 11
+15:33:09 end osm F1 11 ok 469s thr=685043
+15:33:09 start osm J1s 11
+15:34:34 end osm J1s 11 ok 85s thr=742597
+15:34:34 start osm R0raw 11
+15:35:46 end osm R0raw 11 ok 72s thr=919541
+15:35:46 start osm R0sv 11
+15:36:54 end osm R0sv 11 ok 68s thr=1116532
+15:36:54 start osm N3 29
+15:46:48 end osm N3 29 ok 594s thr=734309
+15:46:48 start osm C1 29

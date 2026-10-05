@@ -1,0 +1,108 @@
+{
+ "dataset": "books",
+ "mode": "window",
+ "k": 0,
+ "order": "GTV",
+ "nostop": false,
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model_probes": 2.298874104401228,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.298874104401228,
+   "total_charged": 9.198874104401229,
+   "total_charged_pwl": 2.7488741044012284,
+   "virtual_count": 1,
+   "sse": 28.494473181664944,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     48620.44417741239
+    ],
+    [
+     35.485955562003575,
+     0.0,
+     0.8839973184610072
+    ]
+   ],
+   "warp_sse": 81.44531427696347,
+   "notes": [
+    "ok",
+    "V kept_previous=False"
+   ],
+   "seconds": 0.08304619789123535
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model_probes": 2.2958034800409415,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.2958034800409415,
+   "total_charged": 9.195803480040942,
+   "total_charged_pwl": 2.7458034800409417,
+   "virtual_count": 1,
+   "sse": 28.468325313180685,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     48759.641249588356
+    ],
+    [
+     35.485955562003575,
+     0.0,
+     0.8158905074818905
+    ]
+   ],
+   "warp_sse": 28.468325350433588,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.024997234344482422
+  },
+  {
+   "round": 3,
+   "accepted": false,
+   "model_probes": 2.2958034800409415,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.2958034800409415,
+   "total_charged": 9.195803480040942,
+   "total_charged_pwl": 2.7458034800409417,
+   "virtual_count": 1,
+   "sse": 28.468325313180685,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     48759.641249588356
+    ],
+    [
+     35.485955562003575,
+     0.0,
+     0.8158905074818905
+    ]
+   ],
+   "warp_sse": 28.468325350433588,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.0696260929107666
+  }
+ ],
+ "error": null,
+ "baseline_linear": 2.3203684749232343,
+ "seconds": 0.4752039909362793
+}

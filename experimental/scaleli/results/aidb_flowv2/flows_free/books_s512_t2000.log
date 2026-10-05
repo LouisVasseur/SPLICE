@@ -1,0 +1,26 @@
+step     1  nll 2.929490
+step   200  nll -0.343576
+step   400  nll -0.353875
+step   600  nll -0.357288
+step   800  nll -0.358660
+step  1000  nll -0.359439
+step  1200  nll -0.359954
+step  1400  nll -0.360325
+step  1600  nll -0.360608
+step  1800  nll -0.360831
+step  2000  nll -0.361013
+{
+  "weights": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/books_s512_t2000.txt",
+  "keys": 2000000,
+  "training_keys": 16384,
+  "steps": 2000,
+  "seed": 1000000007,
+  "shifts": 512.0,
+  "monotone": false,
+  "best_nll": -0.3610126709486397,
+  "train_seconds": 191.68056392669678,
+  "unordered_transformed_pairs": 516,
+  "tail_conflict_degree_raw": 4,
+  "tail_conflict_degree_transformed": 3,
+  "note": "Stand-in trainer (1-D likelihood, Adam), not the official BNAF; format-compatible with luffy06/NFL weights."
+}

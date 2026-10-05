@@ -1,0 +1,199 @@
+{
+ "dataset": "stack",
+ "mode": "window",
+ "k": 0,
+ "order": "GTV",
+ "nostop": true,
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model_probes": 2.2661207778915045,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.2661207778915045,
+   "total_charged": 9.166120777891505,
+   "total_charged_pwl": 2.7161207778915046,
+   "virtual_count": 41,
+   "sse": 39.22317779995501,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     47691.81066435652
+    ]
+   ],
+   "warp_sse": 18701.234819684178,
+   "notes": [
+    "ok",
+    "V kept_previous=False"
+   ],
+   "seconds": 0.47905993461608887
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model_probes": 2.2650972364380757,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.2650972364380757,
+   "total_charged": 9.165097236438076,
+   "total_charged_pwl": 2.715097236438076,
+   "virtual_count": 41,
+   "sse": 39.22283334471285,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.011702275477071136,
+     0.0,
+     41464.99798117304
+    ],
+    [
+     0.013694325134126044,
+     0.0,
+     3175.6650663635673
+    ]
+   ],
+   "warp_sse": 0.0,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.31183910369873047
+  },
+  {
+   "round": 3,
+   "accepted": false,
+   "model_probes": 2.2650972364380757,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.2650972364380757,
+   "total_charged": 9.165097236438076,
+   "total_charged_pwl": 2.715097236438076,
+   "virtual_count": 41,
+   "sse": 39.22283334471285,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.011702275477071136,
+     0.0,
+     41464.99798117304
+    ],
+    [
+     0.013694325134126044,
+     0.0,
+     3175.6650663635673
+    ]
+   ],
+   "warp_sse": 0.0,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.34220027923583984
+  },
+  {
+   "round": 4,
+   "accepted": false,
+   "model_probes": 2.2650972364380757,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.2650972364380757,
+   "total_charged": 9.165097236438076,
+   "total_charged_pwl": 2.715097236438076,
+   "virtual_count": 41,
+   "sse": 39.22283334471285,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.011702275477071136,
+     0.0,
+     41464.99798117304
+    ],
+    [
+     0.013694325134126044,
+     0.0,
+     3175.6650663635673
+    ]
+   ],
+   "warp_sse": 0.0,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.3553280830383301
+  },
+  {
+   "round": 5,
+   "accepted": false,
+   "model_probes": 2.2650972364380757,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.2650972364380757,
+   "total_charged": 9.165097236438076,
+   "total_charged_pwl": 2.715097236438076,
+   "virtual_count": 41,
+   "sse": 39.22283334471285,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.011702275477071136,
+     0.0,
+     41464.99798117304
+    ],
+    [
+     0.013694325134126044,
+     0.0,
+     3175.6650663635673
+    ]
+   ],
+   "warp_sse": 0.0,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.4004859924316406
+  },
+  {
+   "round": 6,
+   "accepted": false,
+   "model_probes": 2.2650972364380757,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.2650972364380757,
+   "total_charged": 9.165097236438076,
+   "total_charged_pwl": 2.715097236438076,
+   "virtual_count": 41,
+   "sse": 39.22283334471285,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.011702275477071136,
+     0.0,
+     41464.99798117304
+    ],
+    [
+     0.013694325134126044,
+     0.0,
+     3175.6650663635673
+    ]
+   ],
+   "warp_sse": 0.0,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.28562307357788086
+  }
+ ],
+ "error": null,
+ "baseline_linear": 6.293756397134084,
+ "seconds": 2.572077989578247
+}

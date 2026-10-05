@@ -1,0 +1,11 @@
+{
+  "source": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm",
+  "source_count": 200000000,
+  "source_sha256": "1d1f5681cbfcd3774de112533dccc4065b58b74adf09684e9ad47298d1caa9e0",
+  "mode": "window",
+  "seed": 42,
+  "sample_count": 2000000,
+  "dtype": "uint64",
+  "sample_sha256": "7c3c37cb82936d9741a4451de9aeba95d00f95191a1631c89611862c79d9f67c",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

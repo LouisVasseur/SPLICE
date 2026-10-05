@@ -1,0 +1,70 @@
+{
+ "dataset": "books",
+ "mode": "uniform",
+ "k": 4,
+ "order": "TGV",
+ "pert": "id",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.496417604912999,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.496417604912999,
+   "virt": 85,
+   "gaps": [
+    483,
+    484,
+    485,
+    486
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model": 2.4329580348004094,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.432958034800409,
+   "virt": 91,
+   "gaps": [
+    484,
+    485,
+    486,
+    487
+   ]
+  },
+  {
+   "round": 3,
+   "accepted": true,
+   "model": 2.399181166837257,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.399181166837257,
+   "virt": 91,
+   "gaps": [
+    484,
+    485,
+    486,
+    487
+   ]
+  },
+  {
+   "round": 4,
+   "accepted": false,
+   "model": 2.4155578300921188,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.415557830092119,
+   "virt": 91,
+   "gaps": [
+    484,
+    485,
+    486,
+    487
+   ]
+  }
+ ],
+ "seconds": 2.4691998958587646
+}

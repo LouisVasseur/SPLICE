@@ -1,0 +1,110 @@
+[
+  [
+    "S1",
+    "NFL: Robust Learned Index via Distribution Transformation",
+    "Uploaded 2205.11807v1.pdf. Numeric claims use this attachment exactly. Tables 1\u20132 and sections 4.1, 4.3, 4.4.3.",
+    "sources/2205.11807v1.pdf"
+  ],
+  [
+    "S2",
+    "Learned Indexes with Distribution Smoothing via Virtual Points",
+    "Uploaded 2408.06134v3.pdf. Numeric claims use this attachment, not a silently substituted version. Figure 7, Table 4, section 6.1.",
+    "sources/2408.06134v3.pdf"
+  ],
+  [
+    "S3",
+    "The Case for Learned Index Structures",
+    "Kraska et al., SIGMOD 2018. Foundational key-to-position viewpoint.",
+    "https://arxiv.org/abs/1712.01208"
+  ],
+  [
+    "S4",
+    "FITing-Tree: A Data-aware Index Structure",
+    "Galakatos et al., SIGMOD 2019. Error-bounded piecewise-linear approximation.",
+    "https://arxiv.org/abs/1801.10207"
+  ],
+  [
+    "S5",
+    "ALEX: An Updatable Adaptive Learned Index",
+    "Ding et al., SIGMOD 2020. Adaptive learned structure with gapped storage.",
+    "https://www.microsoft.com/en-us/research/publication/msr-alex-techreport/"
+  ],
+  [
+    "S6",
+    "The PGM-index",
+    "Ferragina and Vinciguerra, PVLDB 2020. Bounded-error models, dynamic variant, compressed model representation.",
+    "https://www.vldb.org/pvldb/vol13/p1162-ferragina.pdf"
+  ],
+  [
+    "S7",
+    "LeCo: Lightweight Compression via Learning Serial Correlations",
+    "Liu, Zeng and Zhang. Linked author manuscript; section 5.2 supplies card 04. Not locally reproduced.",
+    "https://arxiv.org/html/2306.15374#S5.SS2"
+  ],
+  [
+    "S8",
+    "LA-vector: learned compressed rank/select",
+    "Boffa, Ferragina and Vinciguerra, ALENEX 2021. Exact compressed rank/select is prior art.",
+    "https://giorgiovinciguerra.net/publications/learned-rank-select/"
+  ],
+  [
+    "S9",
+    "A Comparative Study of Compressed, Learned, and Traditional Indexing Methods for Integer Data",
+    "Bellomo et al., SEA 2025. Includes optimized traditional and compressed baselines; not locally reproduced.",
+    "https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.SEA.2025.5"
+  ],
+  [
+    "S10",
+    "Are Updatable Learned Indexes Ready? / GRE",
+    "Wongkham et al., PVLDB 2022. Dynamic evaluation and robustness; ten real datasets.",
+    "https://vldb.org/pvldb/vol15/p3004-wongkham.pdf"
+  ],
+  [
+    "S11",
+    "SOSD benchmark",
+    "Official repository; static sorted-data benchmark. Catalogued, not run here.",
+    "https://github.com/learnedsystems/SOSD"
+  ],
+  [
+    "S12",
+    "GRE benchmark",
+    "Official repository; dynamic comparison suite. Catalogued, not run here.",
+    "https://github.com/gre4index/GRE"
+  ],
+  [
+    "S13",
+    "Understanding Robustness Issues of Updatable Learned Indexes / RoBin",
+    "2026 author paper. Bulk-load and insertion-pattern robustness; a newer reference to screen, not a local baseline.",
+    "https://minhui-xie.github.io/papers/sigmod26-robust_learned_index.pdf"
+  ],
+  [
+    "S14",
+    "LINE",
+    "Chen and Chen, SIGMOD 2026. Group-enhanced leaves, cache-aware inner tree, group-wise migrations. Not run here.",
+    "https://www.shimin-chen.com/papers/LINE-pacmmod26.pdf"
+  ],
+  [
+    "S15",
+    "SELIX: On Self-Designing Learned Indexes",
+    "SIGMOD 2026. Automatically tailored index structures. Later adaptation context; not implemented here.",
+    "https://dl.acm.org/doi/10.1145/3802096"
+  ],
+  [
+    "S16",
+    "PARROT: Deconstructed Learned Indexes and Their Smoothed Analysis",
+    "Hermann et al., ESA 2026, published 25 August 2026. Minimal-learning two-level structure; newer reference, not run here.",
+    "https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ESA.2026.15"
+  ],
+  [
+    "S17",
+    "Archived SCALE-LI prototype results",
+    "Original delivered package, not fresh benchmarks. Raw JSONL, layout CSVs and environment are included.",
+    "evidence/archived_suite_results.jsonl"
+  ],
+  [
+    "S18",
+    "User\u2019s Mac pilot run",
+    "JSON supplied in the chat: 50K source keys, 20K operations, seed 42. Selected fields transcribed with provenance.",
+    "evidence/mac_run_transcribed.json"
+  ]
+]

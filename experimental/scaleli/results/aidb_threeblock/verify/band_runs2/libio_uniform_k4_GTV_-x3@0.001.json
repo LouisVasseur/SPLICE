@@ -1,0 +1,100 @@
+{
+ "dataset": "libio",
+ "mode": "uniform",
+ "k": 4,
+ "order": "GTV",
+ "pert": "-x3@0.001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.353121801432958,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.353121801432958,
+   "virt": 109,
+   "gaps": [
+    0,
+    2,
+    32,
+    63
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model": 2.3357215967246674,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.335721596724667,
+   "virt": 111,
+   "gaps": [
+    0,
+    2,
+    32,
+    63
+   ]
+  },
+  {
+   "round": 3,
+   "accepted": true,
+   "model": 2.328556806550665,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.328556806550665,
+   "virt": 112,
+   "gaps": [
+    0,
+    2,
+    32,
+    63
+   ]
+  },
+  {
+   "round": 4,
+   "accepted": true,
+   "model": 2.286591606960082,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.286591606960082,
+   "virt": 116,
+   "gaps": [
+    0,
+    2,
+    32,
+    63
+   ]
+  },
+  {
+   "round": 5,
+   "accepted": true,
+   "model": 2.2743091095189354,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.274309109518935,
+   "virt": 116,
+   "gaps": [
+    0,
+    2,
+    32,
+    63
+   ]
+  },
+  {
+   "round": 6,
+   "accepted": false,
+   "model": 2.2753326509723646,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.275332650972365,
+   "virt": 116,
+   "gaps": [
+    0,
+    2,
+    32,
+    63
+   ]
+  }
+ ],
+ "seconds": 4.185481071472168
+}

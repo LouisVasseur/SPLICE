@@ -1,0 +1,11 @@
+{
+  "source": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/locally_hard",
+  "source_count": 50000,
+  "source_sha256": "56d69ddbb6faea64541255f4683c5a55ebefe834e21484a2a70dea34919ba8e5",
+  "mode": "uniform",
+  "seed": 42,
+  "sample_count": 20000,
+  "dtype": "uint64",
+  "sample_sha256": "31c54e1adea23bbd298f694f0a30a935732097845268a0df1163211a720c067b",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

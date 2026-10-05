@@ -1,0 +1,17 @@
+{
+  "twofold_density_key_only": {
+    "feasible_in_continuous_relaxation": true,
+    "slope_lower": 2,
+    "slope_upper": 8
+  },
+  "tenfold_density_key_only": {
+    "feasible_in_continuous_relaxation": false,
+    "slope_lower": 10,
+    "slope_upper": 8
+  },
+  "tenfold_density_with_8_byte_values": {
+    "feasible_in_continuous_relaxation": false,
+    "slope_lower": 90,
+    "slope_upper": 16
+  }
+}

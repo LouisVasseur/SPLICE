@@ -1,0 +1,50 @@
+books   baseline_linear  new=11.075742 old=11.075742 diff=+0.00e+00 virt=0 log=[]
+books   flow_only        new=3.728762 old=3.728762 diff=+0.00e+00 virt=0 log=[('T', 'ok')]
+books   csv_only         new=2.727738 old=2.727738 diff=+0.00e+00 virt=662 log=[('V', 662, 662, False)]
+books   sequential       new=2.420676 old=2.420676 diff=+0.00e+00 virt=41 log=[('T', 'ok'), ('V', 41, 41, False)]
+  seconds 5.0
+fb      baseline_linear  new=2.266121 old=2.266121 diff=+0.00e+00 virt=0 log=[]
+fb      flow_only        new=2.269191 old=2.269191 diff=+0.00e+00 virt=0 log=[('T', 'ok')]
+fb      csv_only         new=2.224156 old=2.224156 diff=+0.00e+00 virt=1 log=[('V', 1, 1, False)]
+fb      sequential       new=2.224156 old=2.224156 diff=+0.00e+00 virt=1 log=[('T', 'ok'), ('V', 1, 1, False)]
+  seconds 0.3
+osm     baseline_linear  new=11.668373 old=11.668373 diff=+0.00e+00 virt=0 log=[]
+osm     flow_only        new=12.027636 old=12.027636 diff=+0.00e+00 virt=0 log=[('T', 'ok')]
+osm     csv_only         new=8.181167 old=8.181167 diff=+0.00e+00 virt=1956 log=[('V', 1956, 1956, False)]
+osm     sequential       new=8.219038 old=8.219038 diff=+0.00e+00 virt=1956 log=[('T', 'ok'), ('V', 1956, 1956, False)]
+  seconds 52.9
+covid   baseline_linear  new=4.641760 old=4.641760 diff=+0.00e+00 virt=0 log=[]
+covid   flow_only        new=4.534289 old=4.534289 diff=+0.00e+00 virt=0 log=[('T', 'ok')]
+covid   csv_only         new=2.561924 old=2.561924 diff=+0.00e+00 virt=58 log=[('V', 58, 58, False)]
+covid   sequential       new=2.415558 old=2.415558 diff=+0.00e+00 virt=58 log=[('T', 'ok'), ('V', 58, 58, False)]
+  seconds 0.8
+genome  baseline_linear  new=8.634596 old=8.634596 diff=+0.00e+00 virt=0 log=[]
+genome  flow_only        new=8.636643 old=8.636643 diff=+0.00e+00 virt=0 log=[('T', 'ok')]
+genome  csv_only         new=2.965200 old=2.965200 diff=+0.00e+00 virt=294 log=[('V', 294, 294, False)]
+genome  sequential       new=2.773797 old=2.773797 diff=+0.00e+00 virt=335 log=[('T', 'ok'), ('V', 335, 335, False)]
+  seconds 3.9
+history baseline_linear  new=3.780962 old=3.780962 diff=+0.00e+00 virt=0 log=[]
+history flow_only        new=2.308086 old=2.308086 diff=+0.00e+00 virt=0 log=[('T', 'ok')]
+history csv_only         new=2.323439 old=2.323439 diff=+0.00e+00 virt=20 log=[('V', 20, 20, False)]
+history sequential       new=2.274309 old=2.274309 diff=+0.00e+00 virt=2 log=[('T', 'ok'), ('V', 2, 2, False)]
+  seconds 0.4
+libio   baseline_linear  new=6.519959 old=6.519959 diff=+0.00e+00 virt=0 log=[]
+libio   flow_only        new=6.519959 old=6.519959 diff=+0.00e+00 virt=0 log=[('T', 'ok')]
+libio   csv_only         new=2.455476 old=2.455476 diff=+0.00e+00 virt=117 log=[('V', 117, 117, False)]
+libio   sequential       new=2.310133 old=2.310133 diff=+0.00e+00 virt=126 log=[('T', 'ok'), ('V', 126, 126, False)]
+  seconds 1.4
+planet  baseline_linear  new=12.594678 old=12.594678 diff=+0.00e+00 virt=0 log=[]
+planet  flow_only        new=6.229273 old=6.229273 diff=+0.00e+00 virt=0 log=[('T', 'ok')]
+planet  csv_only         new=5.242579 old=5.242579 diff=+0.00e+00 virt=1956 log=[('V', 1956, 1956, False)]
+planet  sequential       new=2.836233 old=2.836233 diff=+0.00e+00 virt=326 log=[('T', 'ok'), ('V', 326, 326, False)]
+  seconds 29.7
+stack   baseline_linear  new=3.316274 old=3.316274 diff=+0.00e+00 virt=0 log=[]
+stack   flow_only        new=3.317298 old=3.317298 diff=+0.00e+00 virt=0 log=[('T', 'ok')]
+stack   csv_only         new=2.314227 old=2.314227 diff=+0.00e+00 virt=13 log=[('V', 13, 13, False)]
+stack   sequential       new=2.316274 old=2.316274 diff=+0.00e+00 virt=13 log=[('T', 'ok'), ('V', 13, 13, False)]
+  seconds 0.4
+wise    baseline_linear  new=5.745138 old=5.745138 diff=+0.00e+00 virt=0 log=[]
+wise    flow_only        new=4.185261 old=4.185261 diff=+0.00e+00 virt=0 log=[('T', 'ok')]
+wise    csv_only         new=2.730809 old=2.730809 diff=+0.00e+00 virt=89 log=[('V', 89, 89, False)]
+wise    sequential       new=2.667349 old=2.667349 diff=+0.00e+00 virt=97 log=[('T', 'ok'), ('V', 97, 97, False)]
+  seconds 1.1

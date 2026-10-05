@@ -1,0 +1,70 @@
+{
+ "dataset": "osm",
+ "mode": "window",
+ "k": 1,
+ "order": "TGV",
+ "pert": "+x2@0.0001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 3.5537359263050154,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 4.5537359263050154,
+   "virt": 777,
+   "gaps": [
+    11
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model": 3.526100307062436,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 4.5261003070624355,
+   "virt": 791,
+   "gaps": [
+    11
+   ]
+  },
+  {
+   "round": 3,
+   "accepted": true,
+   "model": 3.512794268167861,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 4.512794268167861,
+   "virt": 810,
+   "gaps": [
+    11
+   ]
+  },
+  {
+   "round": 4,
+   "accepted": true,
+   "model": 3.498464687819857,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 4.498464687819856,
+   "virt": 810,
+   "gaps": [
+    11
+   ]
+  },
+  {
+   "round": 5,
+   "accepted": false,
+   "model": 3.498464687819857,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 4.498464687819856,
+   "virt": 810,
+   "gaps": [
+    11
+   ]
+  }
+ ],
+ "seconds": 37.28179216384888
+}

@@ -1,0 +1,11 @@
+{
+  "source": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/clustered",
+  "source_count": 50000,
+  "source_sha256": "85b7fc237c451912a8798c70071ea129c0cd05ddbb9a5607aa504e50240d9869",
+  "mode": "uniform",
+  "seed": 42,
+  "sample_count": 20000,
+  "dtype": "uint64",
+  "sample_sha256": "6c69df3cc2242012e5189ca271d4db2c40b542a9b489695944cffea6e6d9c474",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

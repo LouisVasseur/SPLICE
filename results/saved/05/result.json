@@ -1,0 +1,89 @@
+{
+  "status": "TEACHING DEMO + separately labeled paper data; not optimized CSV",
+  "keys": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    10,
+    20,
+    26,
+    27,
+    30
+  ],
+  "budget": 3,
+  "before_sse": 7.840537000654879,
+  "greedy": {
+    "virtual_points": [
+      17,
+      15,
+      22
+    ],
+    "augmented_keys": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      15,
+      17,
+      20,
+      22,
+      26,
+      27,
+      30
+    ],
+    "sse_all": 4.653435114503817,
+    "sse_original": 4.504087174407086
+  },
+  "exhaustive": {
+    "virtual_points": [
+      14,
+      17,
+      22
+    ],
+    "augmented_keys": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      14,
+      17,
+      20,
+      22,
+      26,
+      27,
+      30
+    ],
+    "sse_all": 4.507522331922896,
+    "sse_original": 4.488354747399997,
+    "subsets_examined": 1351
+  },
+  "verified": true,
+  "published_csv": {
+    "source": "CSV attachment 2408.06134v3.pdf, section 6.1 p.9; Fig.7/section6.2.1 p.10; Table4 p.11",
+    "max_reported_promoted_key_query_time_reduction_percent": 34,
+    "preprocessing_alpha": 0.1,
+    "preprocessing_seconds_ALEX": {
+      "Facebook": 889,
+      "Covid": 1423,
+      "OSM": 2297,
+      "Genome": 2902
+    },
+    "caution": "34% is a maximum over tested settings and selected promoted keys, not whole-workload throughput and not asserted to occur at alpha=0.1. The preprocessing table is a separate fixed-alpha cost illustration."
+  },
+  "warning": "These ten keys and budget three are ours, not Figure 2 or Table 2 from the paper. SSE_all fits augmented ranks; original-key SSE is separate. No virtual key becomes a user record.",
+  "lesson": "05",
+  "title": "2024/25: virtual-point teaching experiment and CSV evidence",
+  "environment": {
+    "system": "Linux-6.18.35-x86_64-with-glibc2.41",
+    "python": "3.13.5",
+    "fixture_sha256": "621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca",
+    "radix_binary_sha256": "bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863",
+    "experimental_binary_sha256": "6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884"
+  }
+}

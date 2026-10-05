@@ -1,0 +1,27 @@
+{
+  "description": "Learnability controls: NFL-style key transform and CSV-style virtual points on the SCALE-LI region/block map. Run tools/prepare_flows.py first. Exploratory, single host, not a paper reproduction.",
+  "datasets": [
+    {"name": "dense_sparse", "distribution": "dense_sparse", "flow_weights": "results/flows/dense_sparse_2D2H2L.txt", "flow_train_args": ["--monotone"]},
+    {"name": "lognormal", "distribution": "lognormal", "flow_weights": "results/flows/lognormal_2D2H2L.txt", "flow_train_args": ["--monotone"]},
+    {"name": "locally_hard", "distribution": "locally_hard", "flow_weights": "results/flows/locally_hard_2D2H2L.txt", "flow_train_args": ["--monotone"]},
+    {"name": "clustered", "distribution": "clustered", "flow_weights": "results/flows/clustered_2D2H2L.txt", "flow_train_args": ["--monotone"]}
+  ],
+  "profiles": ["read_only", "read_heavy"],
+  "variants": [
+    {"name": "raw_rank", "policy": "raw", "routing": "rank"},
+    {"name": "packed_rank", "policy": "min_bytes", "routing": "rank"},
+    {"name": "packed_rank_flow", "policy": "min_bytes", "routing": "rank", "flow": "$flow", "flow-bypass": 1},
+    {"name": "packed_rank_flow_forced", "policy": "min_bytes", "routing": "rank", "flow": "$flow", "flow-bypass": 0},
+    {"name": "packed_rank_vp05", "policy": "min_bytes", "routing": "rank", "virtual-alpha": 0.05},
+    {"name": "packed_rank_vp10", "policy": "min_bytes", "routing": "rank", "virtual-alpha": 0.1},
+    {"name": "packed_rank_vp30", "policy": "min_bytes", "routing": "rank", "virtual-alpha": 0.3},
+    {"name": "packed_rank_vp10_relearn", "policy": "min_bytes", "routing": "rank", "virtual-alpha": 0.1, "relearn": 1},
+    {"name": "packed_rank_fusion_auto", "policy": "min_bytes", "routing": "rank", "flow": "$flow", "virtual-alpha": 0.1, "fusion": "auto"},
+    {"name": "packed_rank_flow_vp10", "policy": "min_bytes", "routing": "rank", "flow": "$flow", "flow-bypass": 1, "virtual-alpha": 0.1},
+    {"name": "packed_byte", "policy": "min_bytes", "routing": "byte"},
+    {"name": "packed_byte_flow", "policy": "min_bytes", "routing": "byte", "flow": "$flow", "flow-bypass": 1}
+  ],
+  "seeds": [11, 29, 47],
+  "repeats": 1,
+  "common": {"n": 20000, "ops": 5000, "verify": 1, "instrument": 1, "warmup": 1024}
+}

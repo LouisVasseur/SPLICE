@@ -1,0 +1,323 @@
+# Arm A: back-and-forth over G, T and V
+
+Question: once gap removal (G) is added to the warp (T) and the CSV virtual fences (V), do rounds 2 and later of a
+block-coordinate cycle improve on the single coarse-to-fine pass by more than the CSV greedy's instability band?
+
+**Answer: no, not in any way that matters.** G does not change last week's verdict on back-and-forth.
+
+- Rounds 2 and later beat the round-1 chaos spread in 11 of 160 G cells (6.9%). The no-G control does so in 1 of 20 (5.0%).
+  Against the "lucky re-roll" null the rates are 26/160 (16%) with G and 2/20 (10%) without.
+- Where the gain does clear every yardstick (8 cells), the cycle mostly **repairs a weak round 1**. It does not
+  produce a usable advantage over the no-G optimum.
+  - Model-only, 5 of the 8 end within their own round-1 spread of the no-G optimum.
+  - The rest are slightly better model-only (osm-uniform k=1 GTV: -0.231 against a spread of 0.083, covid-uniform k=64 GTV: -0.089 against a spread of 0.070, wise-window k=64 GTV: -0.053 against a spread of 0.016).
+    Even so, the gap table leaves them +0.77, +6.91, +6.95 probes worse on total.
+  - The largest case is books-uniform k=64 (G->T->V), which gains 0.537. Round 1 picked the gaps in raw x,
+    and the warp fitted after that made the model worse than no G at all (2.890 vs 2.421).
+  - The cycle then replaced 53 of the 64 gaps and ended at model 2.353.
+    That is about last week's no-G joint result (2.349).
+- **No G configuration beats its sample's no-G optimum on total_uncharged, on any of the 20 samples, at any k, in either order,
+  after any number of rounds** (0 of 160 cells). The closest is osm-uniform k=1 TGV, at +0.711 probes. The gap-table charge (1, 3, 5 or 7 probes for k = 1, 4, 16, 64) is
+  never paid back. The only sample where G's model-only saving is large is osm-uniform: at k=64, model probes fall from 8.22 to 4.67.
+  That saving is still smaller than the 7-probe table charge.
+
+## Method (as run)
+
+- **Module.** `threeblock.py`, imported and not modified. G uses select="current": gaps are ranked by width in the current
+  composed coordinate f(g(x)), and an already-shrunk gap is measured unshrunk. V budget is 4x the number of fences (the deployed setting).
+- **Round 1.** One pass, in the order G->T->V ("GTV") or T->G->V ("TGV").
+- **Round r >= 2.** The same three blocks again, each applied to the current state. G re-selects in the current coordinate, T
+  refits to the current slot targets in the current g-coordinate, and V re-runs the greedy with joint.py's keep-previous-slots guard.
+- **Round guard.** This is the keep-previous rule lifted to the whole round. A round is accepted only if total_uncharged drops
+  by more than 1e-6. The first rejected round stops the cycle, since the cycle is deterministic. At most 6 rounds are run,
+  round 1 included.
+- **Diagnostic "nostop" runs.** Same cycle, but with no round guard and no early stop. All 6 rounds run, and the best round is
+  chosen afterwards, either by probes (optimistic) or by loss (last week's rule).
+- **Control.** k=0 is run in the same harness. It reproduces last week's `sequential` exactly as round 1 on all 10 uniform samples.
+  Its guarded best matches last week's `joint` on 8 of 10 samples. On osm and genome it is better, because there the probe-based guard
+  keeps round 1 while last week's loss-based selection did not.
+- **Noise yardsticks**, all measured at the round-1 state of each cell with `perturbed_V_spread` (c4 family: eps in
+  {1e-6, 3.33e-5, 1e-4, 1e-3}, x^2 and x^3, both signs; 16 variants plus identity):
+  - spread = max - min of model probes over the 17 variants.
+  - lucky = base - min(variants). This is what re-rolling the greedy buys with no change to G or T, so it is the null for
+    "a later round just got a lucky greedy draw".
+  - listed = last week's quoted band. It exists for uniform samples only, and not for osm or planet.
+- **Determinism.** Re-running genome-window k64 TGV, books-window k16 GTV and history-window k4 TGV reproduced every stored
+  round bit for bit (`armA_extend.py`).
+- **total_charged** adds the 6.9-probe tanh charge, which is constant once T is on. Every gain is therefore identical in
+  charged and uncharged currency.
+
+## Aggregate
+
+| group | cells | gain > 1e-6 | mean gain | max gain | gain > spread@r1 | gain > lucky@r1 | gain > listed band | gap set changed (accepted) | gap set changed (any candidate) |
+|---|---|---|---|---|---|---|---|---|---|
+| k=0 control (T<->V only) | 20 | 10 | 0.016 | 0.137 | 1/20 | 2/20 | 1/8 | 0 | 0 |
+| all k>0 | 160 | 70 | 0.025 | 0.537 | 11/160 | 26/160 | 8/64 | 16 | 45 |
+| k=1 | 40 | 18 | 0.025 | 0.211 | 2/40 | 6/40 | 2/16 | 1 | 3 |
+| k=4 | 40 | 21 | 0.017 | 0.144 | 1/40 | 8/40 | 2/16 | 4 | 6 |
+| k=16 | 40 | 14 | 0.013 | 0.193 | 2/40 | 3/40 | 2/16 | 2 | 14 |
+| k=64 | 40 | 17 | 0.045 | 0.537 | 6/40 | 9/40 | 2/16 | 9 | 22 |
+| order GTV | 80 | 34 | 0.029 | 0.537 | 6/80 | 13/80 | 5/32 | 9 | 30 |
+| order TGV | 80 | 36 | 0.021 | 0.216 | 5/80 | 13/80 | 3/32 | 7 | 15 |
+| uniform samples, k>0 | 80 | 42 | 0.032 | 0.537 | 7/80 | 18/80 | 8/64 | 12 | 24 |
+| window samples, k>0 | 80 | 28 | 0.018 | 0.193 | 4/80 | 8/80 | 0/0 | 4 | 21 |
+| k>0, gap set changed in an accepted round | 16 | 16 | 0.116 | 0.537 | 6/16 | 9/16 | 2/9 | 16 | 16 |
+
+## Cells where rounds >= 2 clear every yardstick (spread, lucky, and listed where it exists)
+
+| cell | r1 total | best total (round) | gain | spread / lucky / listed | gap set changed | r1 model vs k=0 r1 model | best model vs k=0 best model | best total vs k=0 best total |
+|---|---|---|---|---|---|---|---|---|
+| books-uniform k=64 GTV | 9.890 | 9.353 (4) | 0.537 | 0.139 / 0.024 / 0.361 | yes (53 of 64 replaced) | +0.470 | +0.004 | +7.004 |
+| fb-window k=1 TGV | 3.492 | 3.391 (3) | 0.101 | 0.045 / 0.043 / - | no | +0.080 | -0.021 | +0.979 |
+| fb-window k=4 TGV | 5.471 | 5.380 (4) | 0.091 | 0.063 / 0.053 / - | no | +0.058 | -0.033 | +2.967 |
+| osm-uniform k=1 GTV | 9.075 | 8.988 (2) | 0.087 | 0.083 / 0.057 / - | no | -0.144 | -0.231 | +0.769 |
+| covid-uniform k=64 GTV | 9.421 | 9.327 (4) | 0.094 | 0.070 / 0.067 / 0.086 | yes (11 of 64 replaced) | +0.005 | -0.089 | +6.911 |
+| genome-window k=16 TGV | 7.707 | 7.514 (4) | 0.193 | 0.124 / 0.100 / - | no | +0.088 | -0.105 | +4.895 |
+| planet-uniform k=64 GTV | 9.901 | 9.670 (3) | 0.230 | 0.199 / 0.050 / - | yes (43 of 64 replaced) | +0.064 | -0.165 | +6.835 |
+| wise-window k=64 GTV | 9.321 | 9.302 (3) | 0.019 | 0.016 / 0.016 / - | yes (1 of 64 replaced) | -0.034 | -0.053 | +6.947 |
+
+In every one of these cells the best total is 0.77 to 7.00 probes above that sample's no-G optimum. Model-only, 5 of the 8 land within their own
+round-1 spread of the no-G optimum.
+
+## Did the gap set change after round 1?
+
+- In accepted rounds the gap set changed in 16 of 160 cells.
+  In any candidate round, accepted or rejected, it changed in 45.
+  In the no-guard runs it changed in 47.
+- Changes concentrate at k=64 and k=16, where the k-th largest gap is close to the median gap. Near that threshold, re-ranking
+  after T can swap gaps in and out.
+- At k=1 and k=4 the set changed in only 9 of 80 cells
+  (any candidate round). With so few gaps, only the top of the ranking matters, and T rarely re-orders the top.
+- 4 of the 8 cells that clear every yardstick kept their round-1
+  gap set. Their gain is the T<->V coupling of last week's joint, acting in the G coordinate, not the new G<->T coupling.
+- The cells whose gap set did change gained more on average than those whose set did not (see Aggregate). The G<->T coupling is
+  real. What it buys is mainly undoing a poor round-1 selection.
+
+## Other observations
+
+- **Order matters little.** TGV has the better round-1 total in 27 of 80 cells
+  and the better final total in 25 of 80.
+  - The GTV and TGV finals differ by 0.044 probes on average,
+    which is inside a typical spread.
+  - The largest difference is 0.343.
+- **The early stop sometimes quits too soon.** In 22 of 180 cells,
+  the no-guard run (best round chosen afterwards by probes) finds a lower total than the guarded cycle. The largest case is
+  osm-uniform k64 TGV: round 2 got worse, and rounds 3 and 4 recovered 0.236. That is post-hoc selection on the evaluation
+  metric itself.
+- **Selecting by loss is worse.** Choosing the no-guard round with the smallest least-squares loss (last week's rule) gives a
+  total worse than round 1 in 39 of 180 cells. Loss and probes do not
+  move together closely enough for the loss to choose the round.
+- **The round cap rarely binds.** It was hit once (genome-window k64 TGV). Re-run with a cap of 12, that cell stops at round 7
+  with no further gain, so the cap does not change its result (0.168, against a spread of 0.177).
+
+## Per-cell table
+
+Column notes:
+- r1 = round 1 and gapT = gap-table probes. The best round is the last accepted one.
+- gain = r1 total - best total, in uncharged probes.
+- spread@r1 and lucky@r1 = the chaos yardsticks above.
+- The gap set column reads accepted rounds / any candidate / nostop runs.
+- virt = virtual-fence count.
+- The last column gives the best result minus the no-G (k=0) best for the same sample, as total / model-only.
+
+| sample | k | order | r1 model | r1 gapT | r1 total | best total (round) | gain r>=2 | listed band | spread@r1 | lucky@r1 | > spread | > lucky | gap set changed (acc/cand/nostop) | virt r1->best | best - k0best (total / model) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| books-u | 0 | GTV | 2.421 | 0 | 2.421 | 2.349 (3) | 0.072 | 0.361 | 0.042 | 0.015 | YES | YES | n/n/n | 41->51 | +0.000 / +0.000 |
+| books-u | 1 | GTV | 2.395 | 1 | 3.395 | 3.376 (3) | 0.019 | 0.361 | 0.081 | 0.038 | no | no | n/n/n | 41->44 | +1.027 / +0.027 |
+| books-u | 1 | TGV | 2.414 | 1 | 3.414 | 3.414 (1) | 0.000 | 0.361 | 0.100 | 0.000 | no | no | n/n/n | 61->61 | +1.064 / +0.064 |
+| books-u | 4 | GTV | 2.393 | 3 | 5.393 | 5.364 (2) | 0.029 | 0.361 | 0.066 | 0.050 | no | no | n/n/n | 30->33 | +3.015 / +0.015 |
+| books-u | 4 | TGV | 2.496 | 3 | 5.496 | 5.399 (3) | 0.097 | 0.361 | 0.106 | 0.091 | no | YES | Y/Y/Y | 85->91 | +3.050 / +0.050 |
+| books-u | 16 | GTV | 2.364 | 5 | 7.364 | 7.270 (3) | 0.094 | 0.361 | 0.076 | 0.003 | YES | YES | n/n/n | 37->35 | +4.921 / -0.079 |
+| books-u | 16 | TGV | 2.437 | 5 | 7.437 | 7.394 (2) | 0.043 | 0.361 | 0.140 | 0.000 | no | YES | Y/Y/Y | 126->126 | +5.045 / +0.045 |
+| books-u | 64 | GTV | 2.890 | 7 | 9.890 | 9.353 (4) | 0.537 | 0.361 | 0.139 | 0.024 | YES | YES | Y/Y/Y | 179->32 | +7.004 / +0.004 |
+| books-u | 64 | TGV | 2.594 | 7 | 9.594 | 9.430 (2) | 0.164 | 0.361 | 0.155 | 0.151 | YES | YES | Y/Y/Y | 104->105 | +7.081 / +0.081 |
+| books-w | 0 | GTV | 2.299 | 0 | 2.299 | 2.296 (2) | 0.003 | - | 0.025 | 0.023 | no | no | n/n/n | 1->1 | +0.000 / +0.000 |
+| books-w | 1 | GTV | 2.291 | 1 | 3.291 | 3.287 (2) | 0.004 | - | 0.030 | 0.020 | no | no | n/n/n | 1->1 | +0.991 / -0.009 |
+| books-w | 1 | TGV | 2.290 | 1 | 3.290 | 3.287 (2) | 0.003 | - | 0.030 | 0.018 | no | no | n/n/n | 1->1 | +0.991 / -0.009 |
+| books-w | 4 | GTV | 2.257 | 3 | 5.257 | 5.257 (1) | 0.000 | - | 0.032 | 0.002 | no | no | n/n/n | 1->1 | +2.961 / -0.039 |
+| books-w | 4 | TGV | 2.258 | 3 | 5.258 | 5.258 (1) | 0.000 | - | 0.032 | 0.003 | no | no | n/n/n | 1->1 | +2.962 / -0.038 |
+| books-w | 16 | GTV | 2.270 | 5 | 7.270 | 7.270 (1) | 0.000 | - | 0.021 | 0.020 | no | no | n/Y/Y | 1->1 | +4.974 / -0.026 |
+| books-w | 16 | TGV | 2.268 | 5 | 7.268 | 7.264 (3) | 0.004 | - | 0.028 | 0.010 | no | no | n/n/n | 2->2 | +4.968 / -0.032 |
+| books-w | 64 | GTV | 2.249 | 7 | 9.249 | 9.249 (1) | 0.000 | - | 0.031 | 0.015 | no | no | n/Y/Y | 0->0 | +6.953 / -0.047 |
+| books-w | 64 | TGV | 2.251 | 7 | 9.251 | 9.244 (2) | 0.007 | - | 0.030 | 0.028 | no | no | n/n/n | 0->0 | +6.948 / -0.052 |
+| fb-u | 0 | GTV | 2.224 | 0 | 2.224 | 2.222 (2) | 0.002 | 0.000 | 0.057 | 0.020 | no | no | n/n/n | 1->1 | +0.000 / +0.000 |
+| fb-u | 1 | GTV | 2.253 | 1 | 3.253 | 3.248 (2) | 0.005 | 0.000 | 0.046 | 0.030 | no | no | n/n/n | 1->1 | +1.026 / +0.026 |
+| fb-u | 1 | TGV | 2.253 | 1 | 3.253 | 3.248 (2) | 0.005 | 0.000 | 0.045 | 0.030 | no | no | n/n/n | 1->1 | +1.026 / +0.026 |
+| fb-u | 4 | GTV | 2.274 | 3 | 5.274 | 5.268 (2) | 0.006 | 0.000 | 0.040 | 0.037 | no | no | n/n/n | 1->1 | +3.046 / +0.046 |
+| fb-u | 4 | TGV | 2.276 | 3 | 5.276 | 5.268 (2) | 0.008 | 0.000 | 0.038 | 0.038 | no | no | n/n/n | 1->1 | +3.046 / +0.046 |
+| fb-u | 16 | GTV | 2.261 | 5 | 7.261 | 7.249 (2) | 0.012 | 0.000 | 0.047 | 0.023 | no | no | n/n/n | 1->1 | +5.027 / +0.027 |
+| fb-u | 16 | TGV | 2.263 | 5 | 7.263 | 7.253 (2) | 0.010 | 0.000 | 0.043 | 0.021 | no | no | n/n/n | 1->1 | +5.031 / +0.031 |
+| fb-u | 64 | GTV | 2.202 | 7 | 9.202 | 9.202 (1) | 0.000 | 0.000 | 0.055 | 0.002 | no | no | n/Y/Y | 0->0 | +6.980 / -0.020 |
+| fb-u | 64 | TGV | 2.202 | 7 | 9.202 | 9.202 (1) | 0.000 | 0.000 | 0.056 | 0.001 | no | no | n/Y/Y | 0->0 | +6.980 / -0.020 |
+| fb-w | 0 | GTV | 2.412 | 0 | 2.412 | 2.412 (1) | 0.000 | - | 0.095 | 0.000 | no | no | n/n/n | 31->31 | +0.000 / +0.000 |
+| fb-w | 1 | GTV | 2.477 | 1 | 3.477 | 3.477 (1) | 0.000 | - | 0.021 | 0.001 | no | no | n/n/n | 25->25 | +1.064 / +0.064 |
+| fb-w | 1 | TGV | 2.492 | 1 | 3.492 | 3.391 (3) | 0.101 | - | 0.045 | 0.043 | YES | YES | n/n/n | 22->33 | +0.979 / -0.021 |
+| fb-w | 4 | GTV | 2.503 | 3 | 5.503 | 5.496 (2) | 0.006 | - | 0.089 | 0.089 | no | no | n/n/n | 21->21 | +3.084 / +0.084 |
+| fb-w | 4 | TGV | 2.471 | 3 | 5.471 | 5.380 (4) | 0.091 | - | 0.063 | 0.053 | YES | YES | n/n/n | 22->29 | +2.967 / -0.033 |
+| fb-w | 16 | GTV | 2.411 | 5 | 7.411 | 7.411 (1) | 0.000 | - | 0.068 | 0.004 | no | no | n/Y/Y | 26->26 | +4.999 / -0.001 |
+| fb-w | 16 | TGV | 2.486 | 5 | 7.486 | 7.486 (1) | 0.000 | - | 0.099 | 0.018 | no | no | n/n/n | 21->21 | +5.074 / +0.074 |
+| fb-w | 64 | GTV | 2.397 | 7 | 9.397 | 9.397 (1) | 0.000 | - | 0.051 | 0.005 | no | no | n/n/n | 15->15 | +6.985 / -0.015 |
+| fb-w | 64 | TGV | 2.365 | 7 | 9.365 | 9.365 (1) | 0.000 | - | 0.079 | 0.000 | no | no | n/n/n | 20->20 | +6.953 / -0.047 |
+| osm-u | 0 | GTV | 8.219 | 0 | 8.219 | 8.219 (1) | 0.000 | - | 0.068 | 0.068 | no | no | n/n/n | 1956->1956 | +0.000 / +0.000 |
+| osm-u | 1 | GTV | 8.075 | 1 | 9.075 | 8.988 (2) | 0.087 | - | 0.083 | 0.057 | YES | YES | n/n/n | 1956->1956 | +0.769 / -0.231 |
+| osm-u | 1 | TGV | 7.930 | 1 | 8.930 | 8.930 (1) | 0.000 | - | 0.075 | 0.027 | no | no | n/n/n | 1956->1956 | +0.711 / -0.289 |
+| osm-u | 4 | GTV | 7.092 | 3 | 10.092 | 10.092 (1) | 0.000 | - | 0.084 | 0.038 | no | no | n/n/n | 1956->1956 | +1.873 / -1.127 |
+| osm-u | 4 | TGV | 7.259 | 3 | 10.259 | 10.222 (3) | 0.037 | - | 0.115 | 0.056 | no | no | n/n/n | 1956->1956 | +2.003 / -0.997 |
+| osm-u | 16 | GTV | 6.558 | 5 | 11.558 | 11.558 (1) | 0.000 | - | 0.059 | 0.004 | no | no | n/n/n | 1956->1956 | +3.339 / -1.661 |
+| osm-u | 16 | TGV | 6.222 | 5 | 11.222 | 11.215 (2) | 0.007 | - | 0.059 | 0.057 | no | no | n/n/n | 1894->1956 | +2.996 / -2.004 |
+| osm-u | 64 | GTV | 4.670 | 7 | 11.670 | 11.670 (1) | 0.000 | - | 0.264 | 0.094 | no | no | n/n/n | 1696->1696 | +3.451 / -3.549 |
+| osm-u | 64 | TGV | 4.778 | 7 | 11.778 | 11.778 (1) | 0.000 | - | 0.337 | 0.215 | no | no | n/Y/Y | 1524->1524 | +3.559 / -3.441 |
+| osm-w | 0 | GTV | 3.649 | 0 | 3.649 | 3.512 (3) | 0.137 | - | 0.240 | 0.174 | no | no | n/n/n | 772->819 | +0.000 / +0.000 |
+| osm-w | 1 | GTV | 3.591 | 1 | 4.591 | 4.492 (3) | 0.098 | - | 0.157 | 0.123 | no | no | n/n/n | 749->797 | +0.981 / -0.019 |
+| osm-w | 1 | TGV | 3.612 | 1 | 4.612 | 4.459 (3) | 0.154 | - | 0.167 | 0.099 | no | YES | n/n/n | 746->816 | +0.947 / -0.053 |
+| osm-w | 4 | GTV | 3.455 | 3 | 6.455 | 6.455 (1) | 0.000 | - | 0.224 | 0.197 | no | no | n/Y/Y | 799->799 | +2.944 / -0.056 |
+| osm-w | 4 | TGV | 3.505 | 3 | 6.505 | 6.499 (2) | 0.005 | - | 0.165 | 0.084 | no | no | n/n/n | 767->767 | +2.988 / -0.012 |
+| osm-w | 16 | GTV | 3.490 | 5 | 8.490 | 8.490 (1) | 0.000 | - | 0.174 | 0.131 | no | no | n/Y/Y | 626->626 | +4.979 / -0.021 |
+| osm-w | 16 | TGV | 3.353 | 5 | 8.353 | 8.353 (1) | 0.000 | - | 0.184 | 0.001 | no | no | n/Y/Y | 673->673 | +4.841 / -0.159 |
+| osm-w | 64 | GTV | 3.164 | 7 | 10.164 | 10.164 (1) | 0.000 | - | 0.136 | 0.089 | no | no | n/Y/Y | 406->406 | +6.652 / -0.348 |
+| osm-w | 64 | TGV | 3.036 | 7 | 10.036 | 10.036 (1) | 0.000 | - | 0.232 | 0.000 | no | no | n/Y/Y | 548->548 | +6.524 / -0.476 |
+| covid-u | 0 | GTV | 2.416 | 0 | 2.416 | 2.416 (1) | 0.000 | 0.086 | 0.147 | 0.080 | no | no | n/n/n | 58->58 | +0.000 / +0.000 |
+| covid-u | 1 | GTV | 2.473 | 1 | 3.473 | 3.411 (3) | 0.061 | 0.086 | 0.103 | 0.103 | no | no | Y/Y/Y | 49->56 | +0.996 / -0.004 |
+| covid-u | 1 | TGV | 2.417 | 1 | 3.417 | 3.374 (2) | 0.043 | 0.086 | 0.099 | 0.045 | no | no | n/n/n | 57->60 | +0.958 / -0.042 |
+| covid-u | 4 | GTV | 2.374 | 3 | 5.374 | 5.365 (2) | 0.008 | 0.086 | 0.137 | 0.000 | no | YES | n/n/n | 55->55 | +2.950 / -0.050 |
+| covid-u | 4 | TGV | 2.434 | 3 | 5.434 | 5.433 (2) | 0.001 | 0.086 | 0.066 | 0.023 | no | no | n/n/n | 48->48 | +3.017 / +0.017 |
+| covid-u | 16 | GTV | 2.423 | 5 | 7.423 | 7.423 (1) | 0.000 | 0.086 | 0.125 | 0.067 | no | no | n/Y/Y | 39->39 | +5.007 / +0.007 |
+| covid-u | 16 | TGV | 2.377 | 5 | 7.377 | 7.377 (1) | 0.000 | 0.086 | 0.057 | 0.001 | no | no | n/n/n | 46->46 | +4.961 / -0.039 |
+| covid-u | 64 | GTV | 2.421 | 7 | 9.421 | 9.327 (4) | 0.094 | 0.086 | 0.070 | 0.067 | YES | YES | Y/Y/Y | 21->33 | +6.911 / -0.089 |
+| covid-u | 64 | TGV | 2.381 | 7 | 9.381 | 9.381 (1) | 0.000 | 0.086 | 0.060 | 0.028 | no | no | n/Y/Y | 27->27 | +6.965 / -0.035 |
+| covid-w | 0 | GTV | 2.424 | 0 | 2.424 | 2.416 (2) | 0.008 | - | 0.149 | 0.000 | no | YES | n/n/n | 71->71 | +0.000 / +0.000 |
+| covid-w | 1 | GTV | 2.399 | 1 | 3.399 | 3.399 (1) | 0.000 | - | 0.070 | 0.007 | no | no | n/Y/Y | 72->72 | +0.984 / -0.016 |
+| covid-w | 1 | TGV | 2.399 | 1 | 3.399 | 3.399 (1) | 0.000 | - | 0.171 | 0.001 | no | no | n/n/n | 71->71 | +0.984 / -0.016 |
+| covid-w | 4 | GTV | 2.419 | 3 | 5.419 | 5.419 (1) | 0.000 | - | 0.106 | 0.000 | no | no | n/Y/Y | 69->69 | +3.003 / +0.003 |
+| covid-w | 4 | TGV | 2.411 | 3 | 5.411 | 5.405 (2) | 0.006 | - | 0.252 | 0.000 | no | YES | n/n/n | 70->70 | +2.990 / -0.010 |
+| covid-w | 16 | GTV | 2.462 | 5 | 7.462 | 7.462 (1) | 0.000 | - | 0.179 | 0.040 | no | no | n/Y/Y | 57->57 | +5.046 / +0.046 |
+| covid-w | 16 | TGV | 2.469 | 5 | 7.469 | 7.469 (1) | 0.000 | - | 0.183 | 0.079 | no | no | n/n/n | 59->59 | +5.053 / +0.053 |
+| covid-w | 64 | GTV | 2.455 | 7 | 9.455 | 9.455 (1) | 0.000 | - | 0.061 | 0.044 | no | no | n/Y/Y | 33->33 | +7.040 / +0.040 |
+| covid-w | 64 | TGV | 2.456 | 7 | 9.456 | 9.456 (1) | 0.000 | - | 0.142 | 0.131 | no | no | n/n/n | 40->40 | +7.041 / +0.041 |
+| genome-u | 0 | GTV | 2.774 | 0 | 2.774 | 2.774 (1) | 0.000 | 0.197 | 0.198 | 0.006 | no | no | n/n/n | 335->335 | +0.000 / +0.000 |
+| genome-u | 1 | GTV | 2.939 | 1 | 3.939 | 3.939 (1) | 0.000 | 0.197 | 0.269 | 0.171 | no | no | n/n/n | 289->289 | +1.165 / +0.165 |
+| genome-u | 1 | TGV | 2.939 | 1 | 3.939 | 3.939 (1) | 0.000 | 0.197 | 0.269 | 0.171 | no | no | n/n/n | 289->289 | +1.165 / +0.165 |
+| genome-u | 4 | GTV | 2.769 | 3 | 5.769 | 5.769 (1) | 0.000 | 0.197 | 0.168 | 0.095 | no | no | n/n/n | 318->318 | +2.995 / -0.005 |
+| genome-u | 4 | TGV | 2.769 | 3 | 5.769 | 5.765 (2) | 0.004 | 0.197 | 0.168 | 0.095 | no | no | n/n/n | 318->327 | +2.991 / -0.009 |
+| genome-u | 16 | GTV | 2.878 | 5 | 7.878 | 7.878 (1) | 0.000 | 0.197 | 0.183 | 0.183 | no | no | n/n/n | 279->279 | +5.104 / +0.104 |
+| genome-u | 16 | TGV | 2.878 | 5 | 7.878 | 7.878 (1) | 0.000 | 0.197 | 0.252 | 0.252 | no | no | n/n/n | 279->279 | +5.104 / +0.104 |
+| genome-u | 64 | GTV | 2.720 | 7 | 9.720 | 9.720 (1) | 0.000 | 0.197 | 0.223 | 0.114 | no | no | n/n/n | 264->264 | +6.946 / -0.054 |
+| genome-u | 64 | TGV | 2.725 | 7 | 9.725 | 9.725 (1) | 0.000 | 0.197 | 0.119 | 0.119 | no | no | n/n/n | 264->264 | +6.951 / -0.049 |
+| genome-w | 0 | GTV | 2.619 | 0 | 2.619 | 2.619 (1) | 0.000 | - | 0.276 | 0.053 | no | no | n/n/n | 159->159 | +0.000 / +0.000 |
+| genome-w | 1 | GTV | 2.685 | 1 | 3.685 | 3.573 (2) | 0.112 | - | 0.126 | 0.078 | no | YES | n/n/n | 153->165 | +0.954 / -0.046 |
+| genome-w | 1 | TGV | 2.687 | 1 | 3.687 | 3.682 (2) | 0.005 | - | 0.157 | 0.089 | no | no | n/n/n | 154->154 | +1.062 / +0.062 |
+| genome-w | 4 | GTV | 2.669 | 3 | 5.669 | 5.525 (3) | 0.144 | - | 0.216 | 0.182 | no | no | n/n/n | 147->160 | +2.906 / -0.094 |
+| genome-w | 4 | TGV | 2.662 | 3 | 5.662 | 5.662 (1) | 0.000 | - | 0.255 | 0.095 | no | no | n/n/n | 150->150 | +3.043 / +0.043 |
+| genome-w | 16 | GTV | 2.448 | 5 | 7.448 | 7.448 (1) | 0.000 | - | 0.305 | 0.028 | no | no | n/Y/Y | 142->142 | +4.829 / -0.171 |
+| genome-w | 16 | TGV | 2.707 | 5 | 7.707 | 7.514 (4) | 0.193 | - | 0.124 | 0.100 | YES | YES | n/n/n | 134->151 | +4.895 / -0.105 |
+| genome-w | 64 | GTV | 2.596 | 7 | 9.596 | 9.403 (2) | 0.192 | - | 0.205 | 0.202 | no | no | n/n/n | 57->75 | +6.784 / -0.216 |
+| genome-w | 64 | TGV | 2.639 | 7 | 9.639 | 9.471 (6) | 0.168 | - | 0.177 | 0.173 | no | no | Y/Y/Y | 102->113 | +6.852 / -0.148 |
+| history-u | 0 | GTV | 2.274 | 0 | 2.274 | 2.251 (2) | 0.024 | 0.050 | 0.031 | 0.025 | no | no | n/n/n | 2->2 | +0.000 / +0.000 |
+| history-u | 1 | GTV | 2.271 | 1 | 3.271 | 3.256 (2) | 0.015 | 0.050 | 0.036 | 0.028 | no | no | n/n/n | 6->6 | +1.005 / +0.005 |
+| history-u | 1 | TGV | 2.278 | 1 | 3.278 | 3.278 (1) | 0.000 | 0.050 | 0.030 | 0.030 | no | no | n/n/n | 1->1 | +1.028 / +0.028 |
+| history-u | 4 | GTV | 2.247 | 3 | 5.247 | 5.242 (2) | 0.005 | 0.050 | 0.027 | 0.002 | no | YES | n/n/n | 5->5 | +2.991 / -0.009 |
+| history-u | 4 | TGV | 2.261 | 3 | 5.261 | 5.238 (3) | 0.023 | 0.050 | 0.048 | 0.012 | no | YES | n/n/n | 1->1 | +2.988 / -0.012 |
+| history-u | 16 | GTV | 2.238 | 5 | 7.238 | 7.238 (1) | 0.000 | 0.050 | 0.030 | 0.000 | no | no | n/Y/Y | 2->2 | +4.988 / -0.012 |
+| history-u | 16 | TGV | 2.255 | 5 | 7.255 | 7.250 (2) | 0.005 | 0.050 | 0.012 | 0.012 | no | no | n/n/n | 4->4 | +4.999 / -0.001 |
+| history-u | 64 | GTV | 2.260 | 7 | 9.260 | 9.247 (3) | 0.013 | 0.050 | 0.058 | 0.040 | no | no | Y/Y/Y | 1->1 | +6.996 / -0.004 |
+| history-u | 64 | TGV | 2.242 | 7 | 9.242 | 9.242 (1) | 0.000 | 0.050 | 0.013 | 0.002 | no | no | n/Y/Y | 4->4 | +6.991 / -0.009 |
+| history-w | 0 | GTV | 2.250 | 0 | 2.250 | 2.244 (2) | 0.006 | - | 0.041 | 0.011 | no | no | n/n/n | 20->20 | +0.000 / +0.000 |
+| history-w | 1 | GTV | 2.242 | 1 | 3.242 | 3.237 (3) | 0.004 | - | 0.050 | 0.002 | no | YES | n/n/n | 20->20 | +0.994 / -0.006 |
+| history-w | 1 | TGV | 2.255 | 1 | 3.255 | 3.254 (2) | 0.001 | - | 0.026 | 0.014 | no | no | n/n/n | 17->17 | +1.010 / +0.010 |
+| history-w | 4 | GTV | 2.257 | 3 | 5.257 | 5.257 (1) | 0.000 | - | 0.036 | 0.017 | no | no | n/n/n | 13->13 | +3.013 / +0.013 |
+| history-w | 4 | TGV | 2.242 | 3 | 5.242 | 5.242 (1) | 0.000 | - | 0.030 | 0.005 | no | no | n/n/n | 11->11 | +2.998 / -0.002 |
+| history-w | 16 | GTV | 2.268 | 5 | 7.268 | 7.265 (2) | 0.003 | - | 0.037 | 0.011 | no | no | n/n/n | 5->5 | +5.021 / +0.021 |
+| history-w | 16 | TGV | 2.269 | 5 | 7.269 | 7.269 (1) | 0.000 | - | 0.029 | 0.001 | no | no | n/n/n | 5->5 | +5.026 / +0.026 |
+| history-w | 64 | GTV | 2.278 | 7 | 9.278 | 9.274 (2) | 0.004 | - | 0.052 | 0.020 | no | no | n/Y/Y | 3->3 | +7.031 / +0.031 |
+| history-w | 64 | TGV | 2.298 | 7 | 9.298 | 9.298 (1) | 0.000 | - | 0.031 | 0.023 | no | no | n/Y/Y | 3->3 | +7.054 / +0.054 |
+| libio-u | 0 | GTV | 2.310 | 0 | 2.310 | 2.310 (1) | 0.000 | 0.175 | 0.174 | 0.024 | no | no | n/n/n | 126->126 | +0.000 / +0.000 |
+| libio-u | 1 | GTV | 2.465 | 1 | 3.465 | 3.465 (1) | 0.000 | 0.175 | 0.167 | 0.167 | no | no | n/n/n | 112->112 | +1.155 / +0.155 |
+| libio-u | 1 | TGV | 2.465 | 1 | 3.465 | 3.465 (1) | 0.000 | 0.175 | 0.167 | 0.167 | no | no | n/n/n | 112->112 | +1.155 / +0.155 |
+| libio-u | 4 | GTV | 2.374 | 3 | 5.374 | 5.295 (3) | 0.079 | 0.175 | 0.115 | 0.079 | no | YES | n/n/n | 108->116 | +2.985 / -0.015 |
+| libio-u | 4 | TGV | 2.363 | 3 | 5.363 | 5.363 (1) | 0.000 | 0.175 | 0.146 | 0.100 | no | no | n/n/n | 110->110 | +3.053 / +0.053 |
+| libio-u | 16 | GTV | 2.296 | 5 | 7.296 | 7.280 (3) | 0.015 | 0.175 | 0.151 | 0.040 | no | no | n/n/n | 100->100 | +4.970 / -0.030 |
+| libio-u | 16 | TGV | 2.296 | 5 | 7.296 | 7.281 (2) | 0.014 | 0.175 | 0.151 | 0.040 | no | no | n/n/n | 100->100 | +4.971 / -0.029 |
+| libio-u | 64 | GTV | 2.330 | 7 | 9.330 | 9.293 (3) | 0.037 | 0.175 | 0.082 | 0.044 | no | no | n/n/n | 67->71 | +6.983 / -0.017 |
+| libio-u | 64 | TGV | 2.330 | 7 | 9.330 | 9.285 (3) | 0.045 | 0.175 | 0.082 | 0.044 | no | YES | n/n/n | 67->74 | +6.974 / -0.026 |
+| libio-w | 0 | GTV | 2.441 | 0 | 2.441 | 2.382 (2) | 0.059 | - | 0.096 | 0.062 | no | no | n/n/n | 24->31 | +0.000 / +0.000 |
+| libio-w | 1 | GTV | 2.436 | 1 | 3.436 | 3.436 (1) | 0.000 | - | 0.127 | 0.108 | no | no | n/n/n | 21->21 | +1.054 / +0.054 |
+| libio-w | 1 | TGV | 2.426 | 1 | 3.426 | 3.426 (1) | 0.000 | - | 0.104 | 0.049 | no | no | n/n/n | 23->23 | +1.044 / +0.044 |
+| libio-w | 4 | GTV | 2.473 | 3 | 5.473 | 5.441 (2) | 0.032 | - | 0.115 | 0.108 | no | no | n/n/n | 12->15 | +3.059 / +0.059 |
+| libio-w | 4 | TGV | 2.382 | 3 | 5.382 | 5.379 (2) | 0.003 | - | 0.116 | 0.040 | no | no | n/n/n | 22->22 | +2.997 / -0.003 |
+| libio-w | 16 | GTV | 2.393 | 5 | 7.393 | 7.393 (1) | 0.000 | - | 0.076 | 0.075 | no | no | n/Y/Y | 11->11 | +5.011 / +0.011 |
+| libio-w | 16 | TGV | 2.329 | 5 | 7.329 | 7.328 (2) | 0.001 | - | 0.122 | 0.015 | no | no | n/n/n | 20->20 | +4.946 / -0.054 |
+| libio-w | 64 | GTV | 2.333 | 7 | 9.333 | 9.289 (2) | 0.044 | - | 0.052 | 0.050 | no | no | Y/Y/Y | 3->11 | +6.907 / -0.093 |
+| libio-w | 64 | TGV | 2.324 | 7 | 9.324 | 9.315 (2) | 0.009 | - | 0.073 | 0.068 | no | no | n/n/Y | 5->5 | +6.933 / -0.067 |
+| planet-u | 0 | GTV | 2.836 | 0 | 2.836 | 2.835 (2) | 0.001 | - | 0.202 | 0.008 | no | no | n/n/n | 326->326 | +0.000 / +0.000 |
+| planet-u | 1 | GTV | 3.040 | 1 | 4.040 | 3.829 (2) | 0.211 | - | 0.243 | 0.243 | no | no | n/n/n | 285->322 | +0.994 / -0.006 |
+| planet-u | 1 | TGV | 2.936 | 1 | 3.936 | 3.868 (2) | 0.068 | - | 0.149 | 0.062 | no | YES | n/n/n | 297->314 | +1.033 / +0.033 |
+| planet-u | 4 | GTV | 2.826 | 3 | 5.826 | 5.820 (2) | 0.006 | - | 0.176 | 0.000 | no | YES | Y/Y/Y | 266->257 | +2.985 / -0.015 |
+| planet-u | 4 | TGV | 2.927 | 3 | 5.927 | 5.927 (1) | 0.000 | - | 0.171 | 0.134 | no | no | n/n/n | 315->315 | +3.092 / +0.092 |
+| planet-u | 16 | GTV | 2.780 | 5 | 7.780 | 7.780 (1) | 0.000 | - | 0.178 | 0.024 | no | no | n/Y/Y | 296->296 | +4.945 / -0.055 |
+| planet-u | 16 | TGV | 2.893 | 5 | 7.893 | 7.827 (2) | 0.066 | - | 0.329 | 0.185 | no | no | Y/Y/Y | 327->341 | +4.992 / -0.008 |
+| planet-u | 64 | GTV | 2.901 | 7 | 9.901 | 9.670 (3) | 0.230 | - | 0.199 | 0.050 | YES | YES | Y/Y/Y | 314->184 | +6.835 / -0.165 |
+| planet-u | 64 | TGV | 2.846 | 7 | 9.846 | 9.846 (1) | 0.000 | - | 0.213 | 0.089 | no | no | n/Y/Y | 312->312 | +7.011 / +0.011 |
+| planet-w | 0 | GTV | 3.275 | 0 | 3.275 | 3.275 (1) | 0.000 | - | 0.141 | 0.115 | no | no | n/n/n | 200->200 | +0.000 / +0.000 |
+| planet-w | 1 | GTV | 3.238 | 1 | 4.238 | 4.238 (1) | 0.000 | - | 0.178 | 0.081 | no | no | n/n/n | 206->206 | +0.963 / -0.037 |
+| planet-w | 1 | TGV | 3.238 | 1 | 4.238 | 4.238 (1) | 0.000 | - | 0.178 | 0.081 | no | no | n/n/n | 206->206 | +0.963 / -0.037 |
+| planet-w | 4 | GTV | 3.291 | 3 | 6.291 | 6.291 (1) | 0.000 | - | 0.117 | 0.097 | no | no | n/n/n | 187->187 | +3.015 / +0.015 |
+| planet-w | 4 | TGV | 3.291 | 3 | 6.291 | 6.291 (1) | 0.000 | - | 0.181 | 0.162 | no | no | n/n/n | 187->187 | +3.015 / +0.015 |
+| planet-w | 16 | GTV | 3.221 | 5 | 8.221 | 8.221 (1) | 0.000 | - | 0.193 | 0.078 | no | no | n/n/n | 221->221 | +4.946 / -0.054 |
+| planet-w | 16 | TGV | 3.221 | 5 | 8.221 | 8.221 (1) | 0.000 | - | 0.185 | 0.070 | no | no | n/n/n | 221->221 | +4.946 / -0.054 |
+| planet-w | 64 | GTV | 3.130 | 7 | 10.130 | 10.130 (1) | 0.000 | - | 0.149 | 0.079 | no | no | n/n/n | 206->206 | +6.855 / -0.145 |
+| planet-w | 64 | TGV | 3.130 | 7 | 10.130 | 10.130 (1) | 0.000 | - | 0.209 | 0.062 | no | no | n/n/n | 206->206 | +6.855 / -0.145 |
+| stack-u | 0 | GTV | 2.316 | 0 | 2.316 | 2.316 (1) | 0.000 | 0.045 | 0.044 | 0.041 | no | no | n/n/n | 13->13 | +0.000 / +0.000 |
+| stack-u | 1 | GTV | 2.313 | 1 | 3.313 | 3.313 (1) | 0.000 | 0.045 | 0.055 | 0.050 | no | no | n/n/n | 12->12 | +0.997 / -0.003 |
+| stack-u | 1 | TGV | 2.313 | 1 | 3.313 | 3.313 (1) | 0.000 | 0.045 | 0.055 | 0.050 | no | no | n/n/n | 12->12 | +0.997 / -0.003 |
+| stack-u | 4 | GTV | 2.312 | 3 | 5.312 | 5.312 (1) | 0.000 | 0.045 | 0.052 | 0.045 | no | no | n/n/n | 10->10 | +2.996 / -0.004 |
+| stack-u | 4 | TGV | 2.312 | 3 | 5.312 | 5.312 (1) | 0.000 | 0.045 | 0.052 | 0.045 | no | no | n/n/n | 10->10 | +2.996 / -0.004 |
+| stack-u | 16 | GTV | 2.280 | 5 | 7.280 | 7.280 (1) | 0.000 | 0.045 | 0.056 | 0.008 | no | no | n/n/n | 10->10 | +4.964 / -0.036 |
+| stack-u | 16 | TGV | 2.280 | 5 | 7.280 | 7.280 (1) | 0.000 | 0.045 | 0.056 | 0.008 | no | no | n/n/n | 10->10 | +4.964 / -0.036 |
+| stack-u | 64 | GTV | 2.273 | 7 | 9.273 | 9.271 (2) | 0.002 | 0.045 | 0.014 | 0.001 | no | YES | n/n/n | 6->6 | +6.955 / -0.045 |
+| stack-u | 64 | TGV | 2.273 | 7 | 9.273 | 9.271 (2) | 0.002 | 0.045 | 0.014 | 0.001 | no | YES | n/n/n | 6->6 | +6.955 / -0.045 |
+| stack-w | 0 | GTV | 2.266 | 0 | 2.266 | 2.265 (2) | 0.001 | - | 0.078 | 0.016 | no | no | n/n/n | 41->41 | +0.000 / +0.000 |
+| stack-w | 1 | GTV | 2.328 | 1 | 3.328 | 3.328 (1) | 0.000 | - | 0.052 | 0.048 | no | no | n/n/n | 40->40 | +1.062 / +0.062 |
+| stack-w | 1 | TGV | 2.328 | 1 | 3.328 | 3.328 (1) | 0.000 | - | 0.052 | 0.048 | no | no | n/n/n | 40->40 | +1.062 / +0.062 |
+| stack-w | 4 | GTV | 2.331 | 3 | 5.331 | 5.331 (1) | 0.000 | - | 0.103 | 0.090 | no | no | n/n/n | 40->40 | +3.066 / +0.066 |
+| stack-w | 4 | TGV | 2.331 | 3 | 5.331 | 5.331 (1) | 0.000 | - | 0.103 | 0.090 | no | no | n/n/n | 40->40 | +3.066 / +0.066 |
+| stack-w | 16 | GTV | 2.318 | 5 | 7.318 | 7.318 (1) | 0.000 | - | 0.069 | 0.060 | no | no | n/n/n | 37->37 | +5.053 / +0.053 |
+| stack-w | 16 | TGV | 2.318 | 5 | 7.318 | 7.318 (1) | 0.000 | - | 0.069 | 0.060 | no | no | n/n/n | 37->37 | +5.053 / +0.053 |
+| stack-w | 64 | GTV | 2.319 | 7 | 9.319 | 9.319 (1) | 0.000 | - | 0.082 | 0.081 | no | no | n/n/n | 25->25 | +7.054 / +0.054 |
+| stack-w | 64 | TGV | 2.319 | 7 | 9.319 | 9.319 (1) | 0.000 | - | 0.083 | 0.081 | no | no | n/n/n | 25->25 | +7.054 / +0.054 |
+| wise-u | 0 | GTV | 2.667 | 0 | 2.667 | 2.667 (1) | 0.000 | 0.263 | 0.252 | 0.023 | no | no | n/n/n | 97->97 | +0.000 / +0.000 |
+| wise-u | 1 | GTV | 2.701 | 1 | 3.701 | 3.701 (1) | 0.000 | 0.263 | 0.145 | 0.031 | no | no | n/Y/Y | 92->92 | +1.034 / +0.034 |
+| wise-u | 1 | TGV | 2.864 | 1 | 3.864 | 3.864 (1) | 0.000 | 0.263 | 0.225 | 0.202 | no | no | n/n/n | 69->69 | +1.197 / +0.197 |
+| wise-u | 4 | GTV | 2.800 | 3 | 5.800 | 5.712 (5) | 0.088 | 0.263 | 0.238 | 0.160 | no | no | Y/Y/Y | 74->87 | +3.045 / +0.045 |
+| wise-u | 4 | TGV | 2.885 | 3 | 5.885 | 5.885 (1) | 0.000 | 0.263 | 0.220 | 0.212 | no | no | n/n/n | 66->66 | +3.218 / +0.218 |
+| wise-u | 16 | GTV | 2.767 | 5 | 7.767 | 7.767 (1) | 0.000 | 0.263 | 0.138 | 0.136 | no | no | n/Y/Y | 76->76 | +5.099 / +0.099 |
+| wise-u | 16 | TGV | 2.755 | 5 | 7.755 | 7.700 (4) | 0.055 | 0.263 | 0.270 | 0.178 | no | no | n/n/n | 73->82 | +5.033 / +0.033 |
+| wise-u | 64 | GTV | 2.684 | 7 | 9.684 | 9.684 (1) | 0.000 | 0.263 | 0.116 | 0.112 | no | no | n/Y/Y | 55->55 | +7.016 / +0.016 |
+| wise-u | 64 | TGV | 2.780 | 7 | 9.780 | 9.564 (5) | 0.216 | 0.263 | 0.123 | 0.113 | YES | YES | Y/Y/Y | 47->71 | +6.897 / -0.103 |
+| wise-w | 0 | GTV | 2.355 | 0 | 2.355 | 2.355 (1) | 0.000 | - | 0.009 | 0.009 | no | no | n/n/n | 13->13 | +0.000 / +0.000 |
+| wise-w | 1 | GTV | 2.349 | 1 | 3.349 | 3.349 (1) | 0.000 | - | 0.021 | 0.020 | no | no | n/n/n | 13->13 | +0.994 / -0.006 |
+| wise-w | 1 | TGV | 2.343 | 1 | 3.343 | 3.343 (1) | 0.000 | - | 0.005 | 0.000 | no | no | n/n/n | 13->13 | +0.988 / -0.012 |
+| wise-w | 4 | GTV | 2.340 | 3 | 5.340 | 5.340 (1) | 0.000 | - | 0.008 | 0.002 | no | no | n/n/Y | 13->13 | +2.985 / -0.015 |
+| wise-w | 4 | TGV | 2.349 | 3 | 5.349 | 5.348 (2) | 0.001 | - | 0.031 | 0.031 | no | no | Y/Y/Y | 13->13 | +2.993 / -0.007 |
+| wise-w | 16 | GTV | 2.349 | 5 | 7.349 | 7.349 (1) | 0.000 | - | 0.028 | 0.027 | no | no | n/Y/Y | 11->11 | +4.994 / -0.006 |
+| wise-w | 16 | TGV | 2.306 | 5 | 7.306 | 7.306 (1) | 0.000 | - | 0.048 | 0.001 | no | no | n/n/n | 16->16 | +4.951 / -0.049 |
+| wise-w | 64 | GTV | 2.321 | 7 | 9.321 | 9.302 (3) | 0.019 | - | 0.016 | 0.016 | YES | YES | Y/Y/Y | 11->11 | +6.947 / -0.053 |
+| wise-w | 64 | TGV | 2.315 | 7 | 9.315 | 9.315 (1) | 0.000 | - | 0.017 | 0.012 | no | no | n/n/n | 11->11 | +6.960 / -0.040 |
+
+
+## Caveats
+
+- **The band is measured once per cell.** It is taken at the round-1 state, with one perturbation family. A later round's
+  state has its own band, not measured here. Running 148 cells against a one-sided threshold also produces a few exceedances
+  by chance: compare the k=0 control rate, not zero.
+- **The G selection rule is threeblock's first-order rule.** Gaps are ranked by width in f(g(x)), and selected gaps are
+  shrunk to the median on the input axis. A different "current coordinate" rule could couple G and T more strongly or less.
+- **The gap-table charge is the binary search only**, ceil(log2(k_eff+1)) probes. With a stricter charge, G's totals would
+  only get worse. The back-and-forth verdict does not depend on the charge, because the charge is constant across rounds. The
+  "G never pays" verdict does depend on it. The closest G cell is +0.711 probes from the no-G
+  optimum. If the table were free (model-only column), G would win clearly on osm-uniform
+  (-3.549 at best), and elsewhere only by
+  amounts comparable to the spread.
+- **The T-first order (TGV) evaluates the warp on g(x) before it is refit in round 1.** That is the literal T->G->V order.
+  The refit happens at the start of round 2.
+- **Some of last week's listed bands came from a different perturbation subset** (see the harness report). The spread
+  column here uses the c4 family consistently.

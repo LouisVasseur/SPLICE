@@ -1,0 +1,11 @@
+{
+  "source": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/wise.sorted",
+  "source_count": 200000000,
+  "source_sha256": "6353bad843367ceda822189c223b6ecea76cd606d824f9483d2a45fb7afa7f88",
+  "mode": "window",
+  "seed": 42,
+  "sample_count": 2000000,
+  "dtype": "uint64",
+  "sample_sha256": "9d038460726c16aad533cee4d1a9527937735e8890a9a0e0bdb82215008abd6a",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

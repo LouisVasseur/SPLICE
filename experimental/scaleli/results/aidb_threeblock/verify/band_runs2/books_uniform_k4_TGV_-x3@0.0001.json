@@ -1,0 +1,40 @@
+{
+ "dataset": "books",
+ "mode": "uniform",
+ "k": 4,
+ "order": "TGV",
+ "pert": "-x3@0.0001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.4411463664278403,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.441146366427841,
+   "virt": 91,
+   "gaps": [
+    483,
+    484,
+    485,
+    486
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": false,
+   "model": 2.4616171954964177,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.461617195496418,
+   "virt": 86,
+   "gaps": [
+    484,
+    485,
+    486,
+    487
+   ]
+  }
+ ],
+ "seconds": 1.2054259777069092
+}

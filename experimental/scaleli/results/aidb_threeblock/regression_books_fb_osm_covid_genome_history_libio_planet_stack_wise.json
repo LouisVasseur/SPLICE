@@ -1,0 +1,322 @@
+[
+ {
+  "dataset": "books",
+  "method": "baseline_linear",
+  "new": 11.075742067553737,
+  "old": 11.075742067553737,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "books",
+  "method": "flow_only",
+  "new": 3.728761514841351,
+  "old": 3.728761514841351,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "books",
+  "method": "csv_only",
+  "new": 2.727737973387922,
+  "old": 2.727737973387922,
+  "diff": 0.0,
+  "virt": 662
+ },
+ {
+  "dataset": "books",
+  "method": "sequential",
+  "new": 2.420675537359263,
+  "old": 2.420675537359263,
+  "diff": 0.0,
+  "virt": 41
+ },
+ {
+  "dataset": "fb",
+  "method": "baseline_linear",
+  "new": 2.2661207778915045,
+  "old": 2.2661207778915045,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "fb",
+  "method": "flow_only",
+  "new": 2.269191402251791,
+  "old": 2.269191402251791,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "fb",
+  "method": "csv_only",
+  "new": 2.224155578300921,
+  "old": 2.224155578300921,
+  "diff": 0.0,
+  "virt": 1
+ },
+ {
+  "dataset": "fb",
+  "method": "sequential",
+  "new": 2.224155578300921,
+  "old": 2.224155578300921,
+  "diff": 0.0,
+  "virt": 1
+ },
+ {
+  "dataset": "osm",
+  "method": "baseline_linear",
+  "new": 11.668372569089048,
+  "old": 11.668372569089048,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "osm",
+  "method": "flow_only",
+  "new": 12.027635619242579,
+  "old": 12.027635619242579,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "osm",
+  "method": "csv_only",
+  "new": 8.181166837256908,
+  "old": 8.181166837256908,
+  "diff": 0.0,
+  "virt": 1956
+ },
+ {
+  "dataset": "osm",
+  "method": "sequential",
+  "new": 8.219037871033777,
+  "old": 8.219037871033777,
+  "diff": 0.0,
+  "virt": 1956
+ },
+ {
+  "dataset": "covid",
+  "method": "baseline_linear",
+  "new": 4.641760491299897,
+  "old": 4.641760491299897,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "covid",
+  "method": "flow_only",
+  "new": 4.534288638689867,
+  "old": 4.534288638689867,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "covid",
+  "method": "csv_only",
+  "new": 2.5619242579324464,
+  "old": 2.5619242579324464,
+  "diff": 0.0,
+  "virt": 58
+ },
+ {
+  "dataset": "covid",
+  "method": "sequential",
+  "new": 2.4155578300921188,
+  "old": 2.4155578300921188,
+  "diff": 0.0,
+  "virt": 58
+ },
+ {
+  "dataset": "genome",
+  "method": "baseline_linear",
+  "new": 8.634595701125896,
+  "old": 8.634595701125896,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "genome",
+  "method": "flow_only",
+  "new": 8.636642784032754,
+  "old": 8.636642784032754,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "genome",
+  "method": "csv_only",
+  "new": 2.9651995905834188,
+  "old": 2.9651995905834188,
+  "diff": 0.0,
+  "virt": 294
+ },
+ {
+  "dataset": "genome",
+  "method": "sequential",
+  "new": 2.773797338792221,
+  "old": 2.773797338792221,
+  "diff": 0.0,
+  "virt": 335
+ },
+ {
+  "dataset": "history",
+  "method": "baseline_linear",
+  "new": 3.780962128966223,
+  "old": 3.780962128966223,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "history",
+  "method": "flow_only",
+  "new": 2.308085977482088,
+  "old": 2.308085977482088,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "history",
+  "method": "csv_only",
+  "new": 2.323439099283521,
+  "old": 2.323439099283521,
+  "diff": 0.0,
+  "virt": 20
+ },
+ {
+  "dataset": "history",
+  "method": "sequential",
+  "new": 2.2743091095189354,
+  "old": 2.2743091095189354,
+  "diff": 0.0,
+  "virt": 2
+ },
+ {
+  "dataset": "libio",
+  "method": "baseline_linear",
+  "new": 6.519959058341863,
+  "old": 6.519959058341863,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "libio",
+  "method": "flow_only",
+  "new": 6.519959058341863,
+  "old": 6.519959058341863,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "libio",
+  "method": "csv_only",
+  "new": 2.4554759467758442,
+  "old": 2.4554759467758442,
+  "diff": 0.0,
+  "virt": 117
+ },
+ {
+  "dataset": "libio",
+  "method": "sequential",
+  "new": 2.310133060388946,
+  "old": 2.310133060388946,
+  "diff": 0.0,
+  "virt": 126
+ },
+ {
+  "dataset": "planet",
+  "method": "baseline_linear",
+  "new": 12.59467758444217,
+  "old": 12.59467758444217,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "planet",
+  "method": "flow_only",
+  "new": 6.229273285568065,
+  "old": 6.229273285568065,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "planet",
+  "method": "csv_only",
+  "new": 5.242579324462641,
+  "old": 5.242579324462641,
+  "diff": 0.0,
+  "virt": 1956
+ },
+ {
+  "dataset": "planet",
+  "method": "sequential",
+  "new": 2.8362333674513818,
+  "old": 2.8362333674513818,
+  "diff": 0.0,
+  "virt": 326
+ },
+ {
+  "dataset": "stack",
+  "method": "baseline_linear",
+  "new": 3.316274309109519,
+  "old": 3.316274309109519,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "stack",
+  "method": "flow_only",
+  "new": 3.317297850562948,
+  "old": 3.317297850562948,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "stack",
+  "method": "csv_only",
+  "new": 2.3142272262026613,
+  "old": 2.3142272262026613,
+  "diff": 0.0,
+  "virt": 13
+ },
+ {
+  "dataset": "stack",
+  "method": "sequential",
+  "new": 2.316274309109519,
+  "old": 2.316274309109519,
+  "diff": 0.0,
+  "virt": 13
+ },
+ {
+  "dataset": "wise",
+  "method": "baseline_linear",
+  "new": 5.745138178096213,
+  "old": 5.745138178096213,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "wise",
+  "method": "flow_only",
+  "new": 4.185261003070624,
+  "old": 4.185261003070624,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "wise",
+  "method": "csv_only",
+  "new": 2.730808597748209,
+  "old": 2.730808597748209,
+  "diff": 0.0,
+  "virt": 89
+ },
+ {
+  "dataset": "wise",
+  "method": "sequential",
+  "new": 2.6673490276356193,
+  "old": 2.6673490276356193,
+  "diff": 0.0,
+  "virt": 97
+ }
+]

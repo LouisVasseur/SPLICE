@@ -1,0 +1,18 @@
+PASS: 108 verified runs; 12 groups with matched traces and checksums
+
+Card 05: dense_sparse / read_only (medians of two runs)
+Variant              bytes/record     Mops/s   hit P99 ns
+adaptive_byte              15.052      6.470        286.0
+ordered_map                48.006      8.335        205.5
+packed_binary              11.249      4.711        361.0
+packed_byte                11.249      4.622        350.5
+packed_rank                11.249      4.444        390.5
+raw_binary                 16.628      8.251        195.0
+raw_rank                   16.628      7.402        191.0
+smooth_byte                15.052      6.320        285.5
+sorted_vector              16.002     13.356        290.5
+
+PASS: Card 06 stored size calculations and recorded logical-rank invariance
+PASS: Card 07 counts, cardinality and memory; final-drain-inclusive throughput = 810,430.3 ops/s
+
+No benchmarks were run. Paper table values remain manually transcribed source evidence, not reproduced results.

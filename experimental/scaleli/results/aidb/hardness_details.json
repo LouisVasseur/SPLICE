@@ -1,0 +1,952 @@
+{
+  "books": {
+    "full": {
+      "keys": 200000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 0,
+      "max": 9223372036854784874,
+      "elapsed_ns": 13329210292
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 4.336809359682029e-11,
+        "intercept": -1.1096604913962356,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 245,
+        "ut": 23058426531.188797,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 1121943042,
+      "fmcd": {
+        "slope": 147450922.36225095,
+        "intercept": 38216.743577368994,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 245,
+        "ut": 6.781917562667013e-09,
+        "ut_epsilon": 1.3563809658911225e-14,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample": {
+      "keys": 2000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 3241,
+      "max": 9223372036854781810,
+      "elapsed_ns": 9868141459
+    },
+    "sample_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 10026291,
+      "fmcd": {
+        "slope": 1477002.7285024116,
+        "intercept": 375.21956710899815,
+        "capacity": 4000000,
+        "gap": 1,
+        "d": 9,
+        "ut": 6.770468196859307e-07,
+        "ut_epsilon": 1.3563816373000354e-12,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 185445,
+      "smoothing_ns": 9675336625,
+      "regions": 489,
+      "fmcd": {
+        "slope": 1613954.0715197304,
+        "intercept": 410.2186087302574,
+        "capacity": 4370890,
+        "gap": 1,
+        "d": 9,
+        "ut": 6.195963179165196e-07,
+        "ut_epsilon": 1.2412864013987242e-12,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 185327,
+      "smoothing_ns": 16575434458,
+      "regions": 489,
+      "fmcd": {
+        "slope": 4.750316589391143e-13,
+        "intercept": -2.8379395599524706,
+        "capacity": 4370654,
+        "gap": 1,
+        "d": 10,
+        "ut": 2105122850618.6191,
+        "ut_epsilon": 4220593.191521438,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096
+  },
+  "fb": {
+    "full": {
+      "keys": 200000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 1,
+      "max": 18446744073709551615,
+      "elapsed_ns": 17369469084
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 0.005174060837022508,
+        "intercept": -500.4699763263582,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 114,
+        "ut": 193.27179008885895,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 811906667,
+      "fmcd": {
+        "slope": 238871802.34663105,
+        "intercept": 82686.12589894608,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 115,
+        "ut": 4.186345940275037e-09,
+        "ut_epsilon": 2.336628725441605e-14,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample": {
+      "keys": 2000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 97995,
+      "max": 77308811965,
+      "elapsed_ns": 18799984625
+    },
+    "sample_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 11598875,
+      "fmcd": {
+        "slope": 2388769.7237326927,
+        "intercept": 769.9827367927968,
+        "capacity": 4000000,
+        "gap": 1,
+        "d": 24,
+        "ut": 4.1862553349738524e-07,
+        "ut_epsilon": 8.372649154259954e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 199707,
+      "smoothing_ns": 18576480916,
+      "regions": 489,
+      "fmcd": {
+        "slope": 2627296.860605004,
+        "intercept": 846.7683928937463,
+        "capacity": 4399414,
+        "gap": 1,
+        "d": 24,
+        "ut": 3.8061934111614777e-07,
+        "ut_epsilon": 7.612512733915694e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 199707,
+      "smoothing_ns": 11721832833,
+      "regions": 489,
+      "fmcd": {
+        "slope": 5.6908006349630035e-05,
+        "intercept": -47.864929549691745,
+        "capacity": 4399414,
+        "gap": 1,
+        "d": 24,
+        "ut": 17572.219871070938,
+        "ut_epsilon": 0.03514502118464922,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096
+  },
+  "osm": {
+    "full": {
+      "keys": 200000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 33246697004540789,
+      "max": 13748550930623082253,
+      "elapsed_ns": 19430752500
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 2.9306606265845605e-11,
+        "intercept": -1246263.1072077625,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 4106,
+        "ut": 34121999351.57338,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 949689750,
+      "fmcd": {
+        "slope": 191005619.50111008,
+        "intercept": 20722.915683013354,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 4032,
+        "ut": 5.235448059653492e-09,
+        "ut_epsilon": 1.0517024731123612e-14,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample": {
+      "keys": 2000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 42262281243463475,
+      "max": 13748274210235485307,
+      "elapsed_ns": 18871405541
+    },
+    "sample_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 12497709,
+      "fmcd": {
+        "slope": 1913559.475047209,
+        "intercept": -219.42431356059177,
+        "capacity": 4000000,
+        "gap": 1,
+        "d": 1101,
+        "ut": 5.225863178228778e-07,
+        "ut_epsilon": 1.0509476452112836e-12,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 199396,
+      "smoothing_ns": 18523777125,
+      "regions": 489,
+      "fmcd": {
+        "slope": 2104261.0544747505,
+        "intercept": -241.32538823686113,
+        "capacity": 4398792,
+        "gap": 1,
+        "d": 1099,
+        "ut": 4.752262072585915e-07,
+        "ut_epsilon": 9.556692815410245e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 199605,
+      "smoothing_ns": 19257055292,
+      "regions": 489,
+      "fmcd": {
+        "slope": 3.229663752027058e-13,
+        "intercept": -520.92142305846,
+        "capacity": 4399210,
+        "gap": 1,
+        "d": 1101,
+        "ut": 3096297561541.391,
+        "ut_epsilon": 6231127.025133625,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096
+  },
+  "covid": {
+    "full": {
+      "keys": 200000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 1344795470900715522,
+      "max": 1446626459003486210,
+      "elapsed_ns": 13658946917
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 3.928078442325197e-09,
+        "intercept": -5282462125.0788965,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 27,
+        "ut": 254577400.80365026,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 1078508708,
+      "fmcd": {
+        "slope": 227709269.18750772,
+        "intercept": 69110.6946684894,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 27,
+        "ut": 4.391564750825087e-09,
+        "ut_epsilon": 8.78311423092006e-15,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample": {
+      "keys": 2000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 1344795518640259075,
+      "max": 1446626324517429249,
+      "elapsed_ns": 22303964208
+    },
+    "sample_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 21825416,
+      "fmcd": {
+        "slope": 2277155.340896478,
+        "intercept": 670.7005719770426,
+        "capacity": 4000000,
+        "gap": 1,
+        "d": 8,
+        "ut": 4.3914439302428825e-07,
+        "ut_epsilon": 8.783103759340343e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 198904,
+      "smoothing_ns": 22075333500,
+      "regions": 489,
+      "fmcd": {
+        "slope": 2503624.79073318,
+        "intercept": 734.3467189593129,
+        "capacity": 4397808,
+        "gap": 1,
+        "d": 11,
+        "ut": 3.9942087316812064e-07,
+        "ut_epsilon": 7.988619204929424e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 198862,
+      "smoothing_ns": 21430318375,
+      "regions": 489,
+      "fmcd": {
+        "slope": 4.318767557293337e-11,
+        "intercept": -18.068412799455487,
+        "capacity": 4397724,
+        "gap": 1,
+        "d": 11,
+        "ut": 23154753913.792973,
+        "ut_epsilon": 46310.706259818224,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096
+  },
+  "genome": {
+    "full": {
+      "keys": 200000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 2489750,
+      "max": 446640429470,
+      "elapsed_ns": 17932987333
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 0.0008958837630557327,
+        "intercept": -134267.60087663037,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 585,
+        "ut": 1116.2162338885812,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 907765584,
+      "fmcd": {
+        "slope": 269566220.08128506,
+        "intercept": 184747.48296620077,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 608,
+        "ut": 3.7096636206808844e-09,
+        "ut_epsilon": 7.421924513865932e-15,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample": {
+      "keys": 2000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 46509831,
+      "max": 446638295046,
+      "elapsed_ns": 20317658334
+    },
+    "sample_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 12323834,
+      "fmcd": {
+        "slope": 2696154.093399701,
+        "intercept": 1212.5245212770237,
+        "capacity": 4000000,
+        "gap": 1,
+        "d": 82,
+        "ut": 3.7089868210724385e-07,
+        "ut_epsilon": 7.421136629528156e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 199707,
+      "smoothing_ns": 20093021084,
+      "regions": 489,
+      "fmcd": {
+        "slope": 2965344.756871302,
+        "intercept": 1371.7882902822716,
+        "capacity": 4399414,
+        "gap": 1,
+        "d": 74,
+        "ut": 3.372289166994152e-07,
+        "ut_epsilon": 6.747386167933206e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 199707,
+      "smoothing_ns": 13134409333,
+      "regions": 489,
+      "fmcd": {
+        "slope": 9.855049172000911e-06,
+        "intercept": -1651.1974682698913,
+        "capacity": 4399414,
+        "gap": 1,
+        "d": 72,
+        "ut": 101470.8280544242,
+        "ut_epsilon": 0.2030233973153685,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096
+  },
+  "history": {
+    "full": {
+      "keys": 200000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 83,
+      "max": 9178997263,
+      "elapsed_ns": 12870607041
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 0.04357774990095303,
+        "intercept": -14.557256727543024,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 9,
+        "ut": 22.94749045723745,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 650504584,
+      "fmcd": {
+        "slope": 235224930.62271708,
+        "intercept": 82951.96930879563,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 9,
+        "ut": 4.251250058200353e-09,
+        "ut_epsilon": 8.502484387889345e-15,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample": {
+      "keys": 2000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 81021,
+      "max": 9178989449,
+      "elapsed_ns": 22269819667
+    },
+    "sample_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 11672542,
+      "fmcd": {
+        "slope": 2352299.4827182367,
+        "intercept": 764.0680405650808,
+        "capacity": 4000000,
+        "gap": 1,
+        "d": 8,
+        "ut": 4.251159375524898e-07,
+        "ut_epsilon": 8.50240345450145e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 195568,
+      "smoothing_ns": 22092220833,
+      "regions": 489,
+      "fmcd": {
+        "slope": 2582343.265308739,
+        "intercept": 819.6877253752455,
+        "capacity": 4391136,
+        "gap": 1,
+        "d": 21,
+        "ut": 3.872451867395105e-07,
+        "ut_epsilon": 7.745060117317962e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 195413,
+      "smoothing_ns": 14321152833,
+      "regions": 489,
+      "fmcd": {
+        "slope": 0.00047837004719134706,
+        "intercept": -43.87689467219094,
+        "capacity": 4390826,
+        "gap": 1,
+        "d": 21,
+        "ut": 2090.431886091735,
+        "ut_epsilon": 0.004180950285413398,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096
+  },
+  "libio": {
+    "full": {
+      "keys": 200000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 21335,
+      "max": 527206042,
+      "elapsed_ns": 14388122500
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 0.7587472811452906,
+        "intercept": -16299.926588904073,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 2,
+        "ut": 1.3179618890898044,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 1124552041,
+      "fmcd": {
+        "slope": 247842442.4447354,
+        "intercept": 542756.9598093062,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 2,
+        "ut": 4.034821437910025e-09,
+        "ut_epsilon": 8.06963237910609e-15,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample": {
+      "keys": 2000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 29518,
+      "max": 527205800,
+      "elapsed_ns": 21397671500
+    },
+    "sample_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 11048542,
+      "fmcd": {
+        "slope": 2478567.998496238,
+        "intercept": 5209.531291641035,
+        "capacity": 4000000,
+        "gap": 1,
+        "d": 8,
+        "ut": 4.034587715998536e-07,
+        "ut_epsilon": 8.069502319590906e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 195953,
+      "smoothing_ns": 21207367958,
+      "regions": 489,
+      "fmcd": {
+        "slope": 2721434.8952520965,
+        "intercept": 5692.167631744126,
+        "capacity": 4391906,
+        "gap": 1,
+        "d": 16,
+        "ut": 3.6745321438504094e-07,
+        "ut_epsilon": 7.349430483762621e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 195924,
+      "smoothing_ns": 13537265584,
+      "regions": 489,
+      "fmcd": {
+        "slope": 0.008331408835096294,
+        "intercept": -240.99263234689798,
+        "capacity": 4391848,
+        "gap": 1,
+        "d": 21,
+        "ut": 120.02771917607403,
+        "ut_epsilon": 0.0002400704769702763,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096
+  },
+  "planet": {
+    "full": {
+      "keys": 200000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 1,
+      "max": 9178997250,
+      "elapsed_ns": 19306843917
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 0.04357778177128446,
+        "intercept": 4.399066942500353,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 22,
+        "ut": 22.947473674737363,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 845272584,
+      "fmcd": {
+        "slope": 191227532.25159737,
+        "intercept": 25577.46897601249,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 34,
+        "ut": 5.22937250837031e-09,
+        "ut_epsilon": 1.0458740327448885e-14,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample": {
+      "keys": 2000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 457,
+      "max": 9178968583,
+      "elapsed_ns": 20448227083
+    },
+    "sample_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 11697416,
+      "fmcd": {
+        "slope": 1912317.387728895,
+        "intercept": 222.12658196836756,
+        "capacity": 4000000,
+        "gap": 1,
+        "d": 36,
+        "ut": 5.229257477952545e-07,
+        "ut_epsilon": 1.0458725542055144e-12,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 199699,
+      "smoothing_ns": 20230862667,
+      "regions": 489,
+      "fmcd": {
+        "slope": 2103260.581519351,
+        "intercept": 245.43188485248595,
+        "capacity": 4399398,
+        "gap": 1,
+        "d": 34,
+        "ut": 4.75452261496586e-07,
+        "ut_epsilon": 9.509232915329625e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 199656,
+      "smoothing_ns": 12814460500,
+      "regions": 489,
+      "fmcd": {
+        "slope": 0.00047929548947366974,
+        "intercept": -5.3353430566810705,
+        "capacity": 4399312,
+        "gap": 1,
+        "d": 37,
+        "ut": 2086.3955992954016,
+        "ut_epsilon": 0.004172912627662065,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096
+  },
+  "stack": {
+    "full": {
+      "keys": 200000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 1,
+      "max": 238071030,
+      "elapsed_ns": 14279600084
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 1.6801680265484835,
+        "intercept": 333.6732675920252,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 1,
+        "ut": 0.5951785679758879,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 839972417,
+      "fmcd": {
+        "slope": 240598931.85029683,
+        "intercept": 206031.62691788474,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 1,
+        "ut": 4.156294428697674e-09,
+        "ut_epsilon": 8.312572332545591e-15,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample": {
+      "keys": 2000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 299,
+      "max": 238070846,
+      "elapsed_ns": 19737701958
+    },
+    "sample_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 15039584,
+      "fmcd": {
+        "slope": 2406023.3531249557,
+        "intercept": 2026.6362186691606,
+        "capacity": 4000000,
+        "gap": 1,
+        "d": 8,
+        "ut": 4.156235635457132e-07,
+        "ut_epsilon": 8.312559698887921e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 184637,
+      "smoothing_ns": 19557825375,
+      "regions": 489,
+      "fmcd": {
+        "slope": 2628143.931110711,
+        "intercept": 2213.640009424302,
+        "capacity": 4369274,
+        "gap": 1,
+        "d": 8,
+        "ut": 3.8049666464704547e-07,
+        "ut_epsilon": 7.610014247323647e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 184990,
+      "smoothing_ns": 13538881291,
+      "regions": 489,
+      "fmcd": {
+        "slope": 0.018356009675295916,
+        "intercept": -25.431358971028587,
+        "capacity": 4369980,
+        "gap": 1,
+        "d": 8,
+        "ut": 54.478071088937746,
+        "ut_epsilon": 0.00010895732060893669,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096
+  },
+  "wise": {
+    "full": {
+      "keys": 200000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 8796093034805,
+      "max": 17592186032162,
+      "elapsed_ns": 27419146625
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 4.547474186605117e-05,
+        "intercept": -400000101.85888845,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 10,
+        "ut": 21990.22927816865,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 922655834,
+      "fmcd": {
+        "slope": 236539113.53054336,
+        "intercept": 146634.54304152142,
+        "capacity": 400000000,
+        "gap": 1,
+        "d": 10,
+        "ut": 4.227630623426996e-09,
+        "ut_epsilon": 8.455245624240565e-15,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample": {
+      "keys": 2000000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 8796104780969,
+      "max": 17592181572984,
+      "elapsed_ns": 14686944458
+    },
+    "sample_flow": {
+      "unordered_pairs": 0,
+      "transform_ns": 12217333,
+      "fmcd": {
+        "slope": 2365425.8674858017,
+        "intercept": 1420.9760407108274,
+        "capacity": 4000000,
+        "gap": 1,
+        "d": 8,
+        "ut": 4.2275685479963677e-07,
+        "ut_epsilon": 8.455234081599693e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 194876,
+      "smoothing_ns": 14430631375,
+      "regions": 489,
+      "fmcd": {
+        "slope": 2595908.348403124,
+        "intercept": 1559.3357353450797,
+        "capacity": 4389752,
+        "gap": 1,
+        "d": 8,
+        "ut": 3.852216125485136e-07,
+        "ut_epsilon": 7.704520625532344e-13,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 194693,
+      "smoothing_ns": 13955260500,
+      "regions": 489,
+      "fmcd": {
+        "slope": 4.990217766112086e-07,
+        "intercept": -37.85586615051652,
+        "capacity": 4389386,
+        "gap": 1,
+        "d": 9,
+        "ut": 2003920.5639298323,
+        "ut_epsilon": 4.007886661096409,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096
+  }
+}

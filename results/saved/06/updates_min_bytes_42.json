@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "index": "scaleli",
+  "distribution": "dense_sparse",
+  "profile": "read_heavy",
+  "dataset_path": "/mnt/data/scaleli_sota/evidence/dense_sparse_fixture_uint64",
+  "dataset_scope": "full_input",
+  "seed": 42,
+  "source_rows": 16384,
+  "unique_rows": 16384,
+  "initial_rows": 12288,
+  "final_rows": 13140,
+  "operations": 10000,
+  "trace_fingerprint": "15056163051654466426",
+  "result_checksum": "17727645650178343746",
+  "verified": true,
+  "instrumented": true,
+  "software_counters_supported": true,
+  "policy": "min_bytes",
+  "routing": "byte",
+  "forced_codec": "for",
+  "region_keys": 4096,
+  "block_keys": 128,
+  "delta_limit": 64,
+  "restart_interval": 16,
+  "min_saving_fraction": 0.05,
+  "smooth_scale": 1,
+  "query_distribution": "uniform",
+  "insert_mode": "random",
+  "bulk_sampling": "uniform",
+  "insert_order": "shuffled",
+  "load_ratio": 0.75,
+  "scan_length": 100,
+  "requested_miss_ratio": 0.1,
+  "warmup_reads": 1024,
+  "build_ns": 810424,
+  "elapsed_ns": 11185810,
+  "throughput_ops_s": 893989.796,
+  "scan_records_returned": 29666,
+  "scan_records_per_total_second": 2652110.12881,
+  "clock_pair_p50_ns": 20,
+  "memory_before": {
+    "key_bytes": 32643,
+    "value_bytes": 98304,
+    "metadata_bytes": 6104,
+    "delta_bytes": 0,
+    "reserved_slack_bytes": 0,
+    "accounted_bytes": 137051,
+    "estimated": false
+  },
+  "memory_after": {
+    "key_bytes": 34723,
+    "value_bytes": 104800,
+    "metadata_bytes": 6552,
+    "delta_bytes": 2208,
+    "reserved_slack_bytes": 864,
+    "accounted_bytes": 149147,
+    "estimated": false
+  },
+  "memory_after_drain": {
+    "key_bytes": 34773,
+    "value_bytes": 105120,
+    "metadata_bytes": 6608,
+    "delta_bytes": 0,
+    "reserved_slack_bytes": 0,
+    "accounted_bytes": 146501,
+    "estimated": false
+  },
+  "maintenance": {
+    "compactions": 25,
+    "splits": 0,
+    "bytes_rewritten": 1132288,
+    "max_rewrite_bytes": 46608,
+    "raw_bypasses": 0,
+    "drain_ns": 848351,
+    "drain_additional_rewrite_bytes": 139893
+  },
+  "latency_ns": {
+    "read_hit": {
+      "count": 7168,
+      "p50": 241,
+      "p95": 341,
+      "p99": 410,
+      "max": 207554
+    },
+    "read_miss": {
+      "count": 835,
+      "p50": 241,
+      "p95": 340,
+      "p99": 411,
+      "max": 25849
+    },
+    "insert": {
+      "count": 1030,
+      "p50": 291,
+      "p95": 421,
+      "p99": 273533,
+      "max": 320684
+    },
+    "update": {
+      "count": 490,
+      "p50": 291,
+      "p95": 391,
+      "p99": 276778,
+      "max": 510511
+    },
+    "erase": {
+      "count": 178,
+      "p50": 290,
+      "p95": 420,
+      "p99": 470,
+      "max": 365702
+    },
+    "scan": {
+      "count": 299,
+      "p50": 1893,
+      "p95": 3365,
+      "p99": 4076,
+      "max": 44407
+    }
+  },
+  "phase_latency_ns": [
+    {
+      "count": 5000,
+      "p50": 250,
+      "p95": 400,
+      "p99": 2624,
+      "max": 510511
+    },
+    {
+      "count": 5000,
+      "p50": 251,
+      "p95": 401,
+      "p99": 3205,
+      "max": 320684
+    }
+  ],
+  "compaction_operation_latency_ns": {
+    "count": 25,
+    "p50": 278340,
+    "p95": 365702,
+    "p99": 510511,
+    "max": 510511
+  },
+  "work_counters": {
+    "root_probes": 20000,
+    "coordinate_probes": 50949,
+    "fence_probes": 25700,
+    "delta_probes": 46886,
+    "key_at_calls": 95678,
+    "decoded_keys": 403463,
+    "codec_bytes_examined": 1132908,
+    "block_routes": 9958,
+    "correction_distance": 2007,
+    "max_correction_distance": 1,
+    "blocks_decoded_for_scan": 528
+  }
+}

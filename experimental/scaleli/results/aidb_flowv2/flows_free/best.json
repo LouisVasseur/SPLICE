@@ -1,0 +1,72 @@
+{
+ "books": {
+  "path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/books_s64_t2000.txt",
+  "cfg": "s64_t2000",
+  "raw": 4,
+  "flow": 3,
+  "unordered": 65
+ },
+ "fb": {
+  "path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/fb_s512_t2000.txt",
+  "cfg": "s512_t2000",
+  "raw": 8,
+  "flow": 3,
+  "unordered": 513
+ },
+ "osm": {
+  "path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/osm_s512_t2000.txt",
+  "cfg": "s512_t2000",
+  "raw": 99,
+  "flow": 6,
+  "unordered": 321
+ },
+ "covid": {
+  "path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/covid_s64_t2000.txt",
+  "cfg": "s64_t2000",
+  "raw": 3,
+  "flow": 3,
+  "unordered": 65
+ },
+ "genome": {
+  "path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/genome_s64_t2000.txt",
+  "cfg": "s64_t2000",
+  "raw": 5,
+  "flow": 4,
+  "unordered": 65
+ },
+ "history": {
+  "path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/history_s64_t2000.txt",
+  "cfg": "s64_t2000",
+  "raw": 3,
+  "flow": 3,
+  "unordered": 65
+ },
+ "libio": {
+  "path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/libio_s64_t2000.txt",
+  "cfg": "s64_t2000",
+  "raw": 3,
+  "flow": 3,
+  "unordered": 65
+ },
+ "planet": {
+  "path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/planet_s512_t2000.txt",
+  "cfg": "s512_t2000",
+  "raw": 18,
+  "flow": 3,
+  "unordered": 513
+ },
+ "stack": {
+  "path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/stack_s64_t2000.txt",
+  "cfg": "s64_t2000",
+  "raw": 3,
+  "flow": 3,
+  "unordered": 65
+ },
+ "wise": {
+  "path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/wise_s64_t2000.txt",
+  "cfg": "s64_t2000",
+  "raw": 3,
+  "flow": 3,
+  "unordered": 65
+ }
+}

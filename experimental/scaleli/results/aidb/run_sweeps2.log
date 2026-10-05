@@ -1,0 +1,8 @@
+18:10:56 UNIFORM resume
+2026-09-21T16:10:57+00:00 [sweep] begin
+2026-09-21T16:10:57+00:00 [sweep] FAILED: /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb/sweep holds a sweep with different settings; pass --force or use another --results
+FAILED step sweep: /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb/sweep holds a sweep with different settings; pass --force or use another --results
+18:10:57 UNIFORM DONE
+2026-09-21T16:14:26+00:00 [hardness] done in 105.1 s
+2026-09-21T16:14:26+00:00 [sweep] begin
+2026-09-21T16:14:26+00:00 [sweep] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/run_suite.py --binary /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_bench --config /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/configs/aidb.json --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/sweep --timeout 14400 --resume

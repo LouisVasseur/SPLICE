@@ -1,0 +1,10 @@
+Internal ctest changing into directory: /mnt/data/build-sanitize
+Test project /mnt/data/build-sanitize
+    Start 1: scaleli_core
+1/2 Test #1: scaleli_core .....................   Passed   12.82 sec
+    Start 2: scaleli_example
+2/2 Test #2: scaleli_example ..................   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Total Test time (real) =  12.83 sec

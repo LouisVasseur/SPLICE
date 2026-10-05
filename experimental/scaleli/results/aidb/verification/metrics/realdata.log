@@ -1,0 +1,25 @@
+flow=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb/flows/books_2D2H2L.txt
+books_2D2H2L.txt
+books_training.json
+covid_2D2H2L.txt
+== sample books 2M (flow + alpha 0.1) ==
+sample exit 0 in 7 s
+        7.35 real        79.63 user         0.24 sys
+           109903872  maximum resident set size
+== full books 200M (flow) ==
+full exit 0 in 10 s
+[hardness] read 200000000 keys
+[hardness] sorted=true duplicates=0
+[hardness] original metrics done
+[hardness] transformed: unordered_pairs=0
+[hardness] transformed metrics done
+       10.09 real        26.39 user         0.50 sys
+          3201859584  maximum resident set size
+== prefix 5M of full fb (exact oracle target) ==
+fb 5M exit 0
+== python oracles ==
+sample_books n=2000000 LS rel(rmse)=5.3e-15 rel(me)=2.5e-14 (rmse 180591.343 me 961972.761) | CD cpp=11 exact=10 D cpp=10 py=10 fb cpp=False py=False gap=1 cap cpp=4000000 py=4000000 Ut cpp=2300186144265.4873 py=2300186144265.4873 | 6s MISMATCH
+   transformed: LS rel(rmse)=2.7e-15 rel(me)=2.9e-14 | CD cpp=9 exact=9 | unordered py=0 cli=0 | OK
+   smoothed: keys=2185445 n+vp=2185445 regions=489 ceil=489 rounds=185445 vp=185445 budget/region=409
+fb_5M n=5000000 LS rel(rmse)=2.7e-14 rel(me)=5.5e-13 (rmse 18728.5637 me 37477.1838) | CD cpp=94 exact=94 D cpp=94 py=94 fb cpp=False py=False gap=1 cap cpp=10000000 py=10000000 Ut cpp=183.789691057938 py=183.789691057938 | 14s OK
+REALDATA_DONE

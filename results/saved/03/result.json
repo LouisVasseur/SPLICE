@@ -1,0 +1,63 @@
+{
+  "status": "PUBLISHED NUMBERS + recomputed arithmetic; no NF run",
+  "rows": [
+    {
+      "dataset": "Longlat (LLT)",
+      "without_NF_Mops_s": 8.21,
+      "with_NF_Mops_s": 11.57,
+      "max_height_without": 4,
+      "max_height_with": 3,
+      "ratio": 1.4092570036540804
+    },
+    {
+      "dataset": "Facebook (FB)",
+      "without_NF_Mops_s": 4.13,
+      "with_NF_Mops_s": 9.16,
+      "max_height_without": 11,
+      "max_height_with": 3,
+      "ratio": 2.2179176755447942
+    }
+  ],
+  "batch_transform": [
+    {
+      "batch_size": 1,
+      "two_hidden_two_layer_ns_per_key": 169.53
+    },
+    {
+      "batch_size": 8,
+      "two_hidden_two_layer_ns_per_key": 40.6
+    },
+    {
+      "batch_size": 32,
+      "two_hidden_two_layer_ns_per_key": 15.28
+    },
+    {
+      "batch_size": 128,
+      "two_hidden_two_layer_ns_per_key": 9.52
+    },
+    {
+      "batch_size": 256,
+      "two_hidden_two_layer_ns_per_key": 8.38
+    },
+    {
+      "batch_size": 1024,
+      "two_hidden_two_layer_ns_per_key": 7.4
+    },
+    {
+      "batch_size": 2048,
+      "two_hidden_two_layer_ns_per_key": 7.29
+    }
+  ],
+  "source": "sources/2205.11807v1.pdf, Table 1 p.3; Table 2 p.6; latency definition p.10",
+  "verified": true,
+  "warning": "Table 1 does not state its operation mix or batch size. Do not silently assign settings from later experiments. Table 2 is transform-only average cost.",
+  "lesson": "03",
+  "title": "2022: NFL published evidence and batching cost",
+  "environment": {
+    "system": "Linux-6.18.35-x86_64-with-glibc2.41",
+    "python": "3.13.5",
+    "fixture_sha256": "621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca",
+    "radix_binary_sha256": "bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863",
+    "experimental_binary_sha256": "6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884"
+  }
+}

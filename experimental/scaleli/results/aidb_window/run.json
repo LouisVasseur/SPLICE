@@ -1,0 +1,64 @@
+{
+  "label": "Reduced-scale, single-host, clean-room controls of this repository's NFL-style transform and CSV-style virtual points under the AIDB 2026 hardness protocol. Not a reproduction of the paper, NFL/AFLI or CSV.",
+  "started_utc": "2026-09-22T03:08:09+00:00",
+  "finished_utc": "2026-09-22T03:08:09+00:00",
+  "status": "finished",
+  "dry_run": false,
+  "steps": [
+    "report"
+  ],
+  "datasets": [
+    "books",
+    "fb",
+    "osm",
+    "covid",
+    "genome",
+    "history",
+    "libio",
+    "planet",
+    "stack",
+    "wise"
+  ],
+  "settings": {
+    "sample": 2000000,
+    "sample_seed": 42,
+    "sample_mode": "window",
+    "ops": 1000000,
+    "warmup": 200000,
+    "seeds": [
+      11,
+      29,
+      47
+    ],
+    "alpha": 0.1,
+    "region_keys": 4096,
+    "flow_sample": 4096,
+    "flow_steps": 200,
+    "jobs": 1,
+    "force": true,
+    "build_threads": null,
+    "extra_variants": []
+  },
+  "variants": [
+    "sorted_vector",
+    "raw_rank",
+    "packed_rank",
+    "packed_rank_flow",
+    "packed_rank_flow_forced",
+    "packed_rank_vp10",
+    "packed_rank_flow_vp10",
+    "packed_byte"
+  ],
+  "paths": {
+    "data_dir": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre",
+    "samples_dir": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples",
+    "results": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window",
+    "binary_dir": "/Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli",
+    "config": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/configs/aidb.json"
+  },
+  "binaries": {
+    "scaleli_bench": "3cc4fa88fedc1fd6f0b26e0c1224c3890cee12c6e2e5d534cad3962a407c9cde",
+    "scaleli_hardness": "1a414ce41813bb39f66a4b782859357e619c6427c4009dba111b1b8db02e18de"
+  },
+  "scale_note": "Hardness metrics use the full files (sorted copies for the seven GRE files served unsorted); index runs use uniform samples; paper protocol is 200M keys, 20M warm-up and 100M measured lookups per run."
+}

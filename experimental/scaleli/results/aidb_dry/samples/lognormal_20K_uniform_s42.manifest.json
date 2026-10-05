@@ -1,0 +1,11 @@
+{
+  "source": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/lognormal",
+  "source_count": 50000,
+  "source_sha256": "984476070aa3b6321c67581a926129993d91a58038ce4c8951664ec70c5512c0",
+  "mode": "uniform",
+  "seed": 42,
+  "sample_count": 20000,
+  "dtype": "uint64",
+  "sample_sha256": "696bfcc84108cf2ebaf8a148c7592f60c50d8ae5b454e6c13b71a9a35ff49acb",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

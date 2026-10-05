@@ -1,0 +1,82 @@
+{
+ "dataset": "books",
+ "mode": "uniform",
+ "k": 1,
+ "order": "GTV",
+ "pert": "+x3@0.001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.3950870010235414,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.3950870010235414,
+   "virt": 41,
+   "gaps": [
+    485
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model": 2.3879222108495393,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.3879222108495393,
+   "virt": 42,
+   "gaps": [
+    485
+   ]
+  },
+  {
+   "round": 3,
+   "accepted": true,
+   "model": 2.3633572159672465,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.3633572159672465,
+   "virt": 42,
+   "gaps": [
+    485
+   ]
+  },
+  {
+   "round": 4,
+   "accepted": true,
+   "model": 2.3500511770726713,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.3500511770726713,
+   "virt": 45,
+   "gaps": [
+    485
+   ]
+  },
+  {
+   "round": 5,
+   "accepted": true,
+   "model": 2.331627430910952,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.331627430910952,
+   "virt": 46,
+   "gaps": [
+    485
+   ]
+  },
+  {
+   "round": 6,
+   "accepted": true,
+   "model": 2.317297850562948,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.317297850562948,
+   "virt": 46,
+   "gaps": [
+    485
+   ]
+  }
+ ],
+ "seconds": 1.9555418491363525
+}

@@ -1,0 +1,103 @@
+PASS fixture SHA-256; 16,384 distinct sorted synthetic keys
+PASS virtual-point toy objective and exhaustive ceiling
+PASS: 108 verified runs; 12 groups with matched traces and checksums
+
+Card 05: dense_sparse / read_only (medians of two runs)
+Variant              bytes/record     Mops/s   hit P99 ns
+adaptive_byte              15.052      6.470        286.0
+ordered_map                48.006      8.335        205.5
+packed_binary              11.249      4.711        361.0
+packed_byte                11.249      4.622        350.5
+packed_rank                11.249      4.444        390.5
+raw_binary                 16.628      8.251        195.0
+raw_rank                   16.628      7.402        191.0
+smooth_byte                15.052      6.320        285.5
+sorted_vector              16.002     13.356        290.5
+
+PASS: Card 06 stored size calculations and recorded logical-rank invariance
+PASS: Card 07 counts, cardinality and memory; final-drain-inclusive throughput = 810,430.3 ops/s
+
+No benchmarks were run. Paper table values remain manually transcribed source evidence, not reproduced results.
+
+PASS package manifest: 184 files
+Evidence checks passed. These are not a substitute for compiling/testing the native code.
+-- The CXX compiler identification is GNU 14.2.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (0.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /mnt/data/sota_build/clean_extract/scaleli_sota/build
+
+[ 12%] Building CXX object CMakeFiles/radix_walkthrough.dir/native/radix_walkthrough.cpp.o
+[ 25%] Building CXX object experimental/scaleli/CMakeFiles/scaleli_tests.dir/tests/test_main.cpp.o
+[ 37%] Linking CXX executable radix_walkthrough
+[ 37%] Built target radix_walkthrough
+[ 50%] Building CXX object experimental/scaleli/CMakeFiles/scaleli_bench.dir/src/benchmark.cpp.o
+[ 62%] Linking CXX executable scaleli_tests
+[ 62%] Built target scaleli_tests
+[ 75%] Building CXX object experimental/scaleli/CMakeFiles/scaleli_example.dir/examples/basic.cpp.o
+[ 87%] Linking CXX executable scaleli_example
+[ 87%] Built target scaleli_example
+[100%] Linking CXX executable scaleli_bench
+[100%] Built target scaleli_bench
+
+Internal ctest changing into directory: /mnt/data/sota_build/clean_extract/scaleli_sota/build
+Test project /mnt/data/sota_build/clean_extract/scaleli_sota/build
+    Start 1: radix_differential
+1/3 Test #1: radix_differential ...............   Passed    0.07 sec
+    Start 2: scaleli_core
+2/3 Test #2: scaleli_core .....................   Passed    0.32 sec
+    Start 3: scaleli_example
+3/3 Test #3: scaleli_example ..................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 3
+
+Total Test time (real) =   0.39 sec
+
+test_all_workloads (test_tools.BenchmarkTests.test_all_workloads) ... ok
+test_bulk_sampling_and_order (test_tools.BenchmarkTests.test_bulk_sampling_and_order) ... ok
+test_cli_rejects_invalid_inputs (test_tools.BenchmarkTests.test_cli_rejects_invalid_inputs) ... ok
+test_full_width_and_duplicates (test_tools.BenchmarkTests.test_full_width_and_duplicates) ... ok
+test_pairing (test_tools.BenchmarkTests.test_pairing) ... ok
+test_query_distributions (test_tools.BenchmarkTests.test_query_distributions) ... ok
+test_u32_u64_import (test_tools.BenchmarkTests.test_u32_u64_import) ... ok
+test_cluster_bootstrap (test_tools.ToolsTests.test_cluster_bootstrap) ... ok
+test_dataset_sampling_and_corruption (test_tools.ToolsTests.test_dataset_sampling_and_corruption) ... ok
+test_feasibility (test_tools.ToolsTests.test_feasibility) ... ok
+test_uniform_scaling_not_smoothing (test_tools.ToolsTests.test_uniform_scaling_not_smoothing) ... ok
+test_virtual_greedy (test_tools.ToolsTests.test_virtual_greedy) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.230s
+
+OK
+
+READY: build and tests passed. Next: python3 walkthrough.py demo all
+
+01 — 2018: rank prediction and a two-stage teaching model
+PASS | TEACHING DEMO, not original RMI | 0.24s
+
+02 — 2020: RadixSpline source-derived native experiment
+PASS | locally_measured_source_transcription | 0.09s
+Binary: 75.55 ns/query; RadixSpline-derived: 33.63 ns/query; window <= 66 keys
+
+03 — 2022: NFL published evidence and batching cost
+PASS | PUBLISHED NUMBERS + recomputed arithmetic; no NF run | 0.00s
+
+04 — Compression: real encodings in the experimental map
+PASS | LOCAL EXPERIMENTAL MAP; not LeCo/LA-vector benchmark | 0.30s
+
+05 — 2024/25: virtual-point teaching experiment and CSV evidence
+PASS | TEACHING DEMO + separately labeled paper data; not optimized CSV | 0.01s
+Augmented SSE: 7.8405 -> greedy 4.6534; exhaustive 4.5075
+
+06 — Project controls: byte geometry and update cost
+PASS | LOCAL EXPERIMENTAL MAP, not prior SOTA | 0.49s
+
+07 — Evidence audit: archived suite and user Mac pilot
+PASS | ARCHIVED RESULTS AUDIT, not a fresh performance run | 0.63s
+
+Results: /mnt/data/sota_build/clean_extract/scaleli_sota/results/local/report.html

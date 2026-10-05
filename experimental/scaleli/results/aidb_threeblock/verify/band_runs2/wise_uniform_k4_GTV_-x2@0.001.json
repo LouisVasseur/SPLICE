@@ -1,0 +1,70 @@
+{
+ "dataset": "wise",
+ "mode": "uniform",
+ "k": 4,
+ "order": "GTV",
+ "pert": "-x2@0.001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.6509723643807575,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.650972364380758,
+   "virt": 91,
+   "gaps": [
+    0,
+    1,
+    222,
+    458
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model": 2.6479017400204707,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.647901740020471,
+   "virt": 92,
+   "gaps": [
+    0,
+    1,
+    221,
+    222
+   ]
+  },
+  {
+   "round": 3,
+   "accepted": true,
+   "model": 2.644831115660184,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.644831115660184,
+   "virt": 92,
+   "gaps": [
+    0,
+    1,
+    221,
+    222
+   ]
+  },
+  {
+   "round": 4,
+   "accepted": false,
+   "model": 2.644831115660184,
+   "gapT": 3.0,
+   "k_eff": 4,
+   "total": 5.644831115660184,
+   "virt": 92,
+   "gaps": [
+    0,
+    1,
+    221,
+    222
+   ]
+  }
+ ],
+ "seconds": 1.8363542556762695
+}

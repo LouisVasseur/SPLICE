@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/clustered_20K_uniform_s42",
+    "--dtype",
+    "uint64",
+    "--output",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/clustered_2D2H2L.txt",
+    "--sample",
+    "4096",
+    "--steps",
+    "200",
+    "--monotone"
+  ],
+  "sha256": {
+    "/opt/homebrew/opt/python@3.14/bin/python3.14": "4d4c42c0ebf9bf42e9aa2c0e56843632347a1f1c22d4a9f680b4f87fb241d0e6",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py": "8fa8f2aeeb40d27acc65c02f9b2e214d20abc4fc3785c70b35ba608ffef0f057"
+  }
+}

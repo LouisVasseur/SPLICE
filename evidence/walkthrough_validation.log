@@ -1,0 +1,25 @@
+
+01 — 2018: rank prediction and a two-stage teaching model
+PASS | TEACHING DEMO, not original RMI | 0.09s
+
+02 — 2020: RadixSpline source-derived native experiment
+PASS | locally_measured_source_transcription | 0.09s
+Binary: 78.40 ns/query; RadixSpline-derived: 33.83 ns/query; window <= 66 keys
+
+03 — 2022: NFL published evidence and batching cost
+PASS | PUBLISHED NUMBERS + recomputed arithmetic; no NF run | 0.00s
+
+04 — Compression: real encodings in the experimental map
+PASS | LOCAL EXPERIMENTAL MAP; not LeCo/LA-vector benchmark | 0.31s
+
+05 — 2024/25: virtual-point teaching experiment and CSV evidence
+PASS | TEACHING DEMO + separately labeled paper data; not optimized CSV | 0.01s
+Augmented SSE: 7.8405 -> greedy 4.6534; exhaustive 4.5075
+
+06 — Project controls: byte geometry and update cost
+PASS | LOCAL EXPERIMENTAL MAP, not prior SOTA | 0.57s
+
+07 — Evidence audit: archived suite and user Mac pilot
+PASS | ARCHIVED RESULTS AUDIT, not a fresh performance run | 0.64s
+
+Results: /mnt/data/scaleli_sota/results/saved/report.html

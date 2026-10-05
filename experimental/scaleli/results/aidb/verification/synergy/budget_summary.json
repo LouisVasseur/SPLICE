@@ -1,0 +1,400 @@
+{
+ "books_window": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 14.2405322416,
+   "vp_raw_4x": 13.9017400205,
+   "flow_corr": 9.954964176,
+   "fusion_corr": 2.9897645854699997,
+   "fusion_virtual": 1374,
+   "fusion_measured": 2.9298678,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 12.7328556807,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 16.191298007965088
+   },
+   "raw_32x": {
+    "vp_raw": 11.4964176049,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 26.96029782295227
+   },
+   "raw_63x": {
+    "vp_raw": 11.4964176049,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 26.953500032424927
+   }
+  }
+ },
+ "covid_uniform": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 13.780962129,
+   "vp_raw_4x": 13.0440122825,
+   "flow_corr": 9.9938587513,
+   "fusion_corr": 4.3275332651,
+   "fusion_virtual": 1339,
+   "fusion_measured": 4.3397898,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 7.73797338792,
+    "vp_flow_corr": null,
+    "chosen_virtual": 6085,
+    "chosen": "raw+fences",
+    "measured": 7.7656,
+    "wall_s": 10.046839237213135
+   }
+  }
+ },
+ "covid_window": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 14.3776867963,
+   "vp_raw_4x": 14.3664278403,
+   "flow_corr": 10.0194472876,
+   "fusion_corr": 4.80143295803,
+   "fusion_virtual": 1340,
+   "fusion_measured": 4.7285418,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 14.3664278403,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 0.5594587326049805
+   },
+   "raw_32x": {
+    "vp_raw": 14.3664278403,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 0.5480551719665527
+   }
+  }
+ },
+ "fb_window": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 14.3387922211,
+   "vp_raw_4x": 14.230296827,
+   "flow_corr": 10.065506653,
+   "fusion_corr": 3,
+   "fusion_virtual": 1386,
+   "fusion_measured": 2.8822112,
+   "regions": 489
+  },
+  "runs": {
+   "raw_4x": {
+    "vp_raw": 14.230296827,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 1.5267980098724365
+   },
+   "flow_4x": {
+    "vp_raw": 14.230296827,
+    "vp_flow_corr": 3,
+    "chosen_virtual": 1386,
+    "chosen": "flow+fences",
+    "measured": 2.88398,
+    "wall_s": 2.1120822429656982
+   },
+   "raw_16x": {
+    "vp_raw": 13.8116683726,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 16.19972038269043
+   },
+   "flow_16x": {
+    "vp_raw": 13.8116683726,
+    "vp_flow_corr": 3,
+    "chosen_virtual": 1386,
+    "chosen": "flow+fences",
+    "measured": 2.88398,
+    "wall_s": 16.667464017868042
+   },
+   "raw_32x": {
+    "vp_raw": 13.8116683726,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 16.05002999305725
+   }
+  }
+ },
+ "genome_window": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 14.3654042989,
+   "vp_raw_4x": 14.2824974411,
+   "flow_corr": 9.3326509724,
+   "fusion_corr": 4.73285568066,
+   "fusion_virtual": 1474,
+   "fusion_measured": 4.669304,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 14.1852610031,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 7.101794004440308
+   }
+  }
+ },
+ "history_window": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 14.3285568066,
+   "vp_raw_4x": 14.209825998,
+   "flow_corr": 9.7850562948,
+   "fusion_corr": 4.049129989760001,
+   "fusion_virtual": 1399,
+   "fusion_measured": 3.9113642,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 13.7727737973,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 16.116719722747803
+   },
+   "raw_32x": {
+    "vp_raw": 13.7574206755,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 17.405223846435547
+   }
+  }
+ },
+ "libio_window": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 14.3480040942,
+   "vp_raw_4x": 14.2466734903,
+   "flow_corr": 9.5916069601,
+   "fusion_corr": 3.5527123848500004,
+   "fusion_virtual": 1361,
+   "fusion_measured": 3.4776186,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 13.9109518936,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 14.166704893112183
+   },
+   "raw_32x": {
+    "vp_raw": 13.9109518936,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 14.118662118911743
+   }
+  }
+ },
+ "osm_uniform": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 11.6622313204,
+   "vp_raw_4x": 8.19242579324,
+   "flow_corr": 11.8311156602,
+   "fusion_corr": 8.1883316274,
+   "fusion_virtual": 1956,
+   "fusion_measured": 8.1631804,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 7.7911975435,
+    "vp_flow_corr": null,
+    "chosen_virtual": 2655,
+    "chosen": "raw+fences",
+    "measured": 7.79527,
+    "wall_s": 2.5060482025146484
+   }
+  }
+ },
+ "osm_window": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 14.3776867963,
+   "vp_raw_4x": 14.3582395087,
+   "flow_corr": 11.6315250768,
+   "fusion_corr": 6.509723643799999,
+   "fusion_virtual": 0,
+   "fusion_measured": 8.956451,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 14.3582395087,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 1.0039968490600586
+   }
+  }
+ },
+ "planet_uniform": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 12.5946775844,
+   "vp_raw_4x": 5.24257932446,
+   "flow_corr": 10.582395087,
+   "fusion_corr": 3.1115660184199996,
+   "fusion_virtual": 1956,
+   "fusion_measured": 5.139295,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 4.63254861822,
+    "vp_flow_corr": null,
+    "chosen_virtual": 2065,
+    "chosen": "raw+fences",
+    "measured": 4.56547,
+    "wall_s": 1.778212070465088
+   }
+  }
+ },
+ "planet_window": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 14.1392016377,
+   "vp_raw_4x": 13.6397134084,
+   "flow_corr": 10.8045035824,
+   "fusion_corr": 4.828045035820001,
+   "fusion_virtual": 1706,
+   "fusion_measured": 4.7666006,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 11.4012282497,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 16.15701699256897
+   },
+   "flow_16x": {
+    "vp_raw": 11.4012282497,
+    "vp_flow_corr": 4.828045035820001,
+    "chosen_virtual": 1706,
+    "chosen": "flow+fences",
+    "measured": 4.76344,
+    "wall_s": 16.995573043823242
+   },
+   "raw_32x": {
+    "vp_raw": 10.9375639713,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 19.264413118362427
+   },
+   "raw_63x": {
+    "vp_raw": 10.9375639713,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 19.305137872695923
+   }
+  }
+ },
+ "stack_window": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 14.3377686796,
+   "vp_raw_4x": 14.2221084954,
+   "flow_corr": 10.2896622313,
+   "fusion_corr": 3.8597748208800002,
+   "fusion_virtual": 1519,
+   "fusion_measured": 3.7577672,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 13.7871033777,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 16.063984155654907
+   },
+   "raw_32x": {
+    "vp_raw": 13.7850562948,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 16.50549292564392
+   }
+  }
+ },
+ "wise_window": {
+  "fusion_row": {
+   "binary": 8.9559877175,
+   "raw": 14.3694984647,
+   "vp_raw_4x": 14.3111566018,
+   "flow_corr": 10.1299897646,
+   "fusion_corr": 2.70931422723,
+   "fusion_virtual": 1398,
+   "fusion_measured": 2.5631762,
+   "regions": 489
+  },
+  "runs": {
+   "raw_16x": {
+    "vp_raw": 14.2517911975,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 4.84968113899231
+   },
+   "raw_32x": {
+    "vp_raw": 14.2517911975,
+    "vp_flow_corr": null,
+    "chosen_virtual": 0,
+    "chosen": "binary",
+    "measured": 8.95554,
+    "wall_s": 4.860988140106201
+   }
+  }
+ }
+}

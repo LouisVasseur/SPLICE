@@ -1,0 +1,11 @@
+{
+  "source": "data/external/gre/osm",
+  "source_count": 200000000,
+  "source_sha256": "1d1f5681cbfcd3774de112533dccc4065b58b74adf09684e9ad47298d1caa9e0",
+  "mode": "uniform",
+  "seed": 42,
+  "sample_count": 2000000,
+  "dtype": "uint64",
+  "sample_sha256": "b832a46ba727d96dd16acd70e909b4dc9a232dad0d116b850a2373a865d84ceb",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

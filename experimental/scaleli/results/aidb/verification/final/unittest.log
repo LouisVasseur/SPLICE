@@ -1,0 +1,98 @@
+test_sample_stale_reason_and_cached_run_identity (test_aidb_pipeline.Helpers.test_sample_stale_reason_and_cached_run_identity) ... 2026-09-21T18:37:16+00:00 [t] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /var/folders/2w/rn565rk90cb0rh3m23g8wkkr0000gn/T/tmpzqgxf1cd/emit.py v1
+2026-09-21T18:37:16+00:00 [t] ok 0.0 s: python3.14
+2026-09-21T18:37:16+00:00 [t] keep cached/o.json
+2026-09-21T18:37:16+00:00 [t] redo cached/o.json: same arguments, different binary/script sha256 (python3.14 4d4c42c0ebf9…, emit.py 6643330fd5a7…)
+2026-09-21T18:37:16+00:00 [t] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /var/folders/2w/rn565rk90cb0rh3m23g8wkkr0000gn/T/tmpzqgxf1cd/emit.py v1
+2026-09-21T18:37:16+00:00 [t] ok 0.0 s: python3.14
+2026-09-21T18:37:16+00:00 [t] keep cached/o.json
+2026-09-21T18:37:16+00:00 [t] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /var/folders/2w/rn565rk90cb0rh3m23g8wkkr0000gn/T/tmpzqgxf1cd/twin.py v2
+2026-09-21T18:37:16+00:00 [t] ok 0.0 s: python3.14
+2026-09-21T18:37:16+00:00 [t] keep cached/o.json (WARNING: predates binary fingerprinting; --force to redo)
+2026-09-21T18:37:16+00:00 [t] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /var/folders/2w/rn565rk90cb0rh3m23g8wkkr0000gn/T/tmpzqgxf1cd/emit.py v1
+2026-09-21T18:37:16+00:00 [t] ok 0.0 s: python3.14
+ok
+test_sosd_helpers_and_metric_block (test_aidb_pipeline.Helpers.test_sosd_helpers_and_metric_block) ... ok
+test_write_json_leaves_identical_files_untouched (test_aidb_pipeline.Helpers.test_write_json_leaves_identical_files_untouched) ... ok
+test_contract_variants_and_common_block (test_aidb_pipeline.Settings.test_contract_variants_and_common_block) ... ok
+test_dry_dataset_urls_and_report_step_detection (test_aidb_pipeline.Settings.test_dry_dataset_urls_and_report_step_detection) ... ok
+test_extra_variants_and_build_threads_are_opt_in (test_aidb_pipeline.Settings.test_extra_variants_and_build_threads_are_opt_in) ... usage: python3.14 -m unittest [-h] [--datasets NAME [NAME ...]]
+                              [--data-dir DATA_DIR]
+                              [--samples-dir SAMPLES_DIR]
+                              [--build-threads BUILD_THREADS]
+                              [--extra-variants [GROUP ...]]
+                              [--sample-mode {uniform,window,strided}]
+                              [--results RESULTS] [--sample SAMPLE]
+                              [--sample-seed SAMPLE_SEED] [--ops OPS]
+                              [--warmup WARMUP] [--seeds SEEDS]
+                              [--alpha ALPHA] [--region-keys REGION_KEYS]
+                              [--flow-sample FLOW_SAMPLE]
+                              [--flow-steps FLOW_STEPS]
+                              [--binary-dir BINARY_DIR] [--jobs JOBS] [--wait]
+                              [--poll-seconds POLL_SECONDS]
+                              [--timeout TIMEOUT] [--force] [--dry-run]
+                              [--steps STEPS]
+python3.14 -m unittest: error: argument --extra-variants: invalid choice: 'nope' (choose from 'fusion')
+usage: python3.14 -m unittest [-h] [--datasets NAME [NAME ...]]
+                              [--data-dir DATA_DIR]
+                              [--samples-dir SAMPLES_DIR]
+                              [--build-threads BUILD_THREADS]
+                              [--extra-variants [GROUP ...]]
+                              [--sample-mode {uniform,window,strided}]
+                              [--results RESULTS] [--sample SAMPLE]
+                              [--sample-seed SAMPLE_SEED] [--ops OPS]
+                              [--warmup WARMUP] [--seeds SEEDS]
+                              [--alpha ALPHA] [--region-keys REGION_KEYS]
+                              [--flow-sample FLOW_SAMPLE]
+                              [--flow-steps FLOW_STEPS]
+                              [--binary-dir BINARY_DIR] [--jobs JOBS] [--wait]
+                              [--poll-seconds POLL_SECONDS]
+                              [--timeout TIMEOUT] [--force] [--dry-run]
+                              [--steps STEPS]
+python3.14 -m unittest: error: invalid numeric argument
+ok
+test_median_throughput_orders_contract_variants_first (test_aidb_pipeline.Settings.test_median_throughput_orders_contract_variants_first) ... ok
+test_corrupt_and_partial_inputs (test_aidb_report.ReportTests.test_corrupt_and_partial_inputs) ... ok
+test_empty_results_dir (test_aidb_report.ReportTests.test_empty_results_dir) ... ok
+test_full_inputs_via_cli (test_aidb_report.ReportTests.test_full_inputs_via_cli) ... ok
+test_end_to_end_writes_contract_shape_and_prints_table (test_aidb_scores.CommandLine.test_end_to_end_writes_contract_shape_and_prints_table) ... ok
+test_rejects_unknown_option_and_missing_scope (test_aidb_scores.CommandLine.test_rejects_unknown_option_and_missing_scope) ... ok
+test_cli_accepts_nan_in_throughput_json (test_aidb_scores.DatasetSelection.test_cli_accepts_nan_in_throughput_json) ... ok
+test_datasets_are_the_intersection_of_hardness_and_every_scored_variant (test_aidb_scores.DatasetSelection.test_datasets_are_the_intersection_of_hardness_and_every_scored_variant) ... ok
+test_nan_and_inf_throughput_are_dropped_with_a_reason (test_aidb_scores.DatasetSelection.test_nan_and_inf_throughput_are_dropped_with_a_reason) ... ok
+test_null_throughput_shrinks_the_corpus_and_says_so (test_aidb_scores.DatasetSelection.test_null_throughput_shrinks_the_corpus_and_says_so) ... ok
+test_scopes_are_independent_and_missing_fields_drop_a_dataset (test_aidb_scores.DatasetSelection.test_scopes_are_independent_and_missing_fields_drop_a_dataset) ... ok
+test_string_throughput_skips_the_variant_with_the_real_reason (test_aidb_scores.DatasetSelection.test_string_throughput_skips_the_variant_with_the_real_reason) ... ok
+test_variant_with_fewer_than_three_datasets_is_skipped (test_aidb_scores.DatasetSelection.test_variant_with_fewer_than_three_datasets_is_skipped) ... ok
+test_all_ties_are_incomparable (test_aidb_scores.HandBuiltExample.test_all_ties_are_incomparable) ... ok
+test_normalization (test_aidb_scores.HandBuiltExample.test_normalization) ... ok
+test_sample_std_changes_scale_not_sign (test_aidb_scores.HandBuiltExample.test_sample_std_changes_scale_not_sign) ... ok
+test_scalar_rmse (test_aidb_scores.HandBuiltExample.test_scalar_rmse) ... ok
+test_three_dim_with_tied_dimension_matches_two_dim (test_aidb_scores.HandBuiltExample.test_three_dim_with_tied_dimension_matches_two_dim) ... ok
+test_two_dim_rmse_me_trades_coverage_for_conformance (test_aidb_scores.HandBuiltExample.test_two_dim_rmse_me_trades_coverage_for_conformance) ... ok
+test_adding_a_dimension_never_increases_coverage (test_aidb_scores.ProtocolProperties.test_adding_a_dimension_never_increases_coverage) ... ok
+test_canonical_metric_names (test_aidb_scores.ProtocolProperties.test_canonical_metric_names) ... ok
+test_importance_is_sigmoid_of_signed_gap (test_aidb_scores.ProtocolProperties.test_importance_is_sigmoid_of_signed_gap) ... ok
+test_perfectly_conforming_ordering_scores_one_and_reversed_minus_one (test_aidb_scores.ProtocolProperties.test_perfectly_conforming_ordering_scores_one_and_reversed_minus_one) ... ok
+test_scalar_metric_has_full_coverage_when_values_are_distinct (test_aidb_scores.ProtocolProperties.test_scalar_metric_has_full_coverage_when_values_are_distinct) ... ok
+test_zero_std_variant_is_skipped_not_scored (test_aidb_scores.ProtocolProperties.test_zero_std_variant_is_skipped_not_scored) ... ok
+test_all_workloads (test_tools.BenchmarkTests.test_all_workloads) ... ok
+test_bulk_sampling_and_order (test_tools.BenchmarkTests.test_bulk_sampling_and_order) ... ok
+test_cli_rejects_invalid_inputs (test_tools.BenchmarkTests.test_cli_rejects_invalid_inputs) ... ok
+test_full_width_and_duplicates (test_tools.BenchmarkTests.test_full_width_and_duplicates) ... ok
+test_latency_skip (test_tools.BenchmarkTests.test_latency_skip) ... ok
+test_learnability_options (test_tools.BenchmarkTests.test_learnability_options) ... ok
+test_pairing (test_tools.BenchmarkTests.test_pairing) ... ok
+test_query_distributions (test_tools.BenchmarkTests.test_query_distributions) ... ok
+test_u32_u64_import (test_tools.BenchmarkTests.test_u32_u64_import) ... ok
+test_cluster_bootstrap (test_tools.ToolsTests.test_cluster_bootstrap) ... ok
+test_dataset_sampling_and_corruption (test_tools.ToolsTests.test_dataset_sampling_and_corruption) ... ok
+test_feasibility (test_tools.ToolsTests.test_feasibility) ... ok
+test_flow_trainer_and_conflicts (test_tools.ToolsTests.test_flow_trainer_and_conflicts) ... ok
+test_uniform_scaling_not_smoothing (test_tools.ToolsTests.test_uniform_scaling_not_smoothing) ... ok
+test_virtual_greedy (test_tools.ToolsTests.test_virtual_greedy) ... ok
+
+----------------------------------------------------------------------
+Ran 46 tests in 1.446s
+
+OK
+SCALELI_BENCH= python3 -m unittest discover -s tests -p 'test_*.py' -v  1.00s user 0.23s system 77% cpu 1.590 total

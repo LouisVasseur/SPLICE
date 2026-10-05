@@ -1,0 +1,582 @@
+{
+  "books": {
+    "full": {
+      "rmse": 18053637.47705111,
+      "max_error": 96380337.87058854,
+      "conflict_degree": 246.0,
+      "pla_32": 262604.0,
+      "pla_4096": 97.0,
+      "keys": 200000000
+    },
+    "full_flow": {
+      "rmse": 44272678.04377817,
+      "max_error": 83881943.19654863,
+      "conflict_degree": 32252603.0,
+      "pla_32": 262890.0,
+      "pla_4096": 345.0,
+      "keys": 200000000,
+      "duplicates": 39473722,
+      "unordered_pairs": 0
+    },
+    "sample": {
+      "rmse": 1709.0619681358755,
+      "max_error": 4261.653626679094,
+      "conflict_degree": 27.0,
+      "pla_32": 5789.0,
+      "pla_4096": 1.0,
+      "keys": 2000000
+    },
+    "sample_flow": {
+      "rmse": 11384.642152313252,
+      "max_error": 30804.214677043958,
+      "conflict_degree": 26.0,
+      "pla_32": 5789.0,
+      "pla_4096": 3.0,
+      "keys": 2000000,
+      "duplicates": 0,
+      "unordered_pairs": 0
+    },
+    "sample_flow_csv": {
+      "rmse": 12517.335181459994,
+      "max_error": 33811.98366838042,
+      "conflict_degree": 26.0,
+      "pla_32": 4730.0,
+      "pla_4096": 3.0,
+      "keys": 2199707,
+      "virtual_points": 199707,
+      "regions": 489
+    },
+    "sample_csv": {
+      "rmse": 1875.1052832127566,
+      "max_error": 4565.130715931067,
+      "conflict_degree": 26.0,
+      "pla_32": 4730.0,
+      "pla_4096": 1.0,
+      "keys": 2199707,
+      "virtual_points": 199707,
+      "regions": 489
+    }
+  },
+  "fb": {
+    "full": {
+      "rmse": 57735023.667034544,
+      "max_error": 99999995.54065111,
+      "conflict_degree": 110.0,
+      "pla_32": 1055308.0,
+      "pla_4096": 1687.0,
+      "keys": 200000000
+    },
+    "full_flow": {
+      "rmse": 44537840.137103766,
+      "max_error": 84203184.7943562,
+      "conflict_degree": 83901921.0,
+      "pla_32": 515386.0,
+      "pla_4096": 1018.0,
+      "keys": 200000000,
+      "duplicates": 117328682,
+      "unordered_pairs": 0
+    },
+    "sample": {
+      "rmse": 8202.474037348702,
+      "max_error": 24280.721805336652,
+      "conflict_degree": 96.0,
+      "pla_32": 10599.0,
+      "pla_4096": 18.0,
+      "keys": 2000000
+    },
+    "sample_flow": {
+      "rmse": 11037.781328009218,
+      "max_error": 33896.03508934073,
+      "conflict_degree": 89.0,
+      "pla_32": 10599.0,
+      "pla_4096": 18.0,
+      "keys": 2000000,
+      "duplicates": 0,
+      "unordered_pairs": 0
+    },
+    "sample_flow_csv": {
+      "rmse": 12139.18532855161,
+      "max_error": 37214.385476190095,
+      "conflict_degree": 86.0,
+      "pla_32": 11033.0,
+      "pla_4096": 20.0,
+      "keys": 2199707,
+      "virtual_points": 199707,
+      "regions": 489
+    },
+    "sample_csv": {
+      "rmse": 9015.343437583675,
+      "max_error": 26484.18606272526,
+      "conflict_degree": 85.0,
+      "pla_32": 11034.0,
+      "pla_4096": 20.0,
+      "keys": 2199707,
+      "virtual_points": 199707,
+      "regions": 489
+    }
+  },
+  "osm": {
+    "full": {
+      "rmse": 24177498.46715493,
+      "max_error": 67384214.81235945,
+      "conflict_degree": 4107.0,
+      "pla_32": 661115.0,
+      "pla_4096": 5495.0,
+      "keys": 200000000
+    },
+    "full_flow": {
+      "rmse": 45136796.87481451,
+      "max_error": 84944930.73376592,
+      "conflict_degree": 200000000.0,
+      "pla_32": 94181.0,
+      "pla_4096": 889.0,
+      "keys": 200000000,
+      "duplicates": 168160900,
+      "unordered_pairs": 0
+    },
+    "sample": {
+      "rmse": 118136.49382557328,
+      "max_error": 219857.78803826182,
+      "conflict_degree": 152.0,
+      "pla_32": 4919.0,
+      "pla_4096": 44.0,
+      "keys": 2000000
+    },
+    "sample_flow": {
+      "rmse": 111995.66486106852,
+      "max_error": 213508.6841390637,
+      "conflict_degree": 164.0,
+      "pla_32": 4918.0,
+      "pla_4096": 44.0,
+      "keys": 2000000,
+      "duplicates": 0,
+      "unordered_pairs": 0
+    },
+    "sample_flow_csv": {
+      "rmse": 123184.61819948861,
+      "max_error": 234738.0281490875,
+      "conflict_degree": 149.0,
+      "pla_32": 4859.0,
+      "pla_4096": 49.0,
+      "keys": 2199707,
+      "virtual_points": 199707,
+      "regions": 489
+    },
+    "sample_csv": {
+      "rmse": 129938.90409933223,
+      "max_error": 241721.0768951389,
+      "conflict_degree": 141.0,
+      "pla_32": 4856.0,
+      "pla_4096": 49.0,
+      "keys": 2199707,
+      "virtual_points": 199707,
+      "regions": 489
+    }
+  },
+  "covid": {
+    "full": {
+      "rmse": 1795722.481759676,
+      "max_error": 8133078.025962055,
+      "conflict_degree": 27.0,
+      "pla_32": 81908.0,
+      "pla_4096": 850.0,
+      "keys": 200000000
+    },
+    "full_flow": {
+      "rmse": 44614663.99361768,
+      "max_error": 84286972.9210378,
+      "conflict_degree": 86771080.0,
+      "pla_32": 49390.0,
+      "pla_4096": 529.0,
+      "keys": 200000000,
+      "duplicates": 117332396,
+      "unordered_pairs": 0
+    },
+    "sample": {
+      "rmse": 24143.53984129621,
+      "max_error": 49834.73783492985,
+      "conflict_degree": 24.0,
+      "pla_32": 827.0,
+      "pla_4096": 9.0,
+      "keys": 2000000
+    },
+    "sample_flow": {
+      "rmse": 17664.610175799626,
+      "max_error": 34341.4385180814,
+      "conflict_degree": 23.0,
+      "pla_32": 827.0,
+      "pla_4096": 9.0,
+      "keys": 2000000,
+      "duplicates": 526,
+      "unordered_pairs": 0
+    },
+    "sample_flow_csv": {
+      "rmse": 19341.17021848646,
+      "max_error": 37597.5891289025,
+      "conflict_degree": 22.0,
+      "pla_32": 489.0,
+      "pla_4096": 9.0,
+      "keys": 2197565,
+      "virtual_points": 197565,
+      "regions": 489
+    },
+    "sample_csv": {
+      "rmse": 26482.544975837507,
+      "max_error": 54690.53938261047,
+      "conflict_degree": 22.0,
+      "pla_32": 490.0,
+      "pla_4096": 9.0,
+      "keys": 2197391,
+      "virtual_points": 197391,
+      "regions": 489
+    }
+  },
+  "genome": {
+    "full": {
+      "rmse": 7531940.124627509,
+      "max_error": 19622982.479450524,
+      "conflict_degree": 585.0,
+      "pla_32": 1290208.0,
+      "pla_4096": 1426.0,
+      "keys": 200000000
+    },
+    "full_flow": {
+      "rmse": 44898327.659626976,
+      "max_error": 84634789.35848437,
+      "conflict_degree": 108444969.0,
+      "pla_32": 478472.0,
+      "pla_4096": 666.0,
+      "keys": 200000000,
+      "duplicates": 137931015,
+      "unordered_pairs": 0
+    },
+    "sample": {
+      "rmse": 48827.02069055255,
+      "max_error": 98852.59202177043,
+      "conflict_degree": 171.0,
+      "pla_32": 12719.0,
+      "pla_4096": 14.0,
+      "keys": 2000000
+    },
+    "sample_flow": {
+      "rmse": 45938.147066600366,
+      "max_error": 89886.69654351752,
+      "conflict_degree": 160.0,
+      "pla_32": 12719.0,
+      "pla_4096": 14.0,
+      "keys": 2000000,
+      "duplicates": 0,
+      "unordered_pairs": 0
+    },
+    "sample_flow_csv": {
+      "rmse": 50522.95750035384,
+      "max_error": 98766.30746863154,
+      "conflict_degree": 167.0,
+      "pla_32": 12330.0,
+      "pla_4096": 14.0,
+      "keys": 2199707,
+      "virtual_points": 199707,
+      "regions": 489
+    },
+    "sample_csv": {
+      "rmse": 53700.70914954167,
+      "max_error": 108703.03511824796,
+      "conflict_degree": 142.0,
+      "pla_32": 12337.0,
+      "pla_4096": 14.0,
+      "keys": 2199707,
+      "virtual_points": 199707,
+      "regions": 489
+    }
+  },
+  "history": {
+    "full": {
+      "rmse": 815542.6657631118,
+      "max_error": 2303085.17866714,
+      "conflict_degree": 8.0,
+      "pla_32": 105468.0,
+      "pla_4096": 468.0,
+      "keys": 200000000
+    },
+    "full_flow": {
+      "rmse": 44552332.023756854,
+      "max_error": 84217052.08648078,
+      "conflict_degree": 84133569.0,
+      "pla_32": 60572.0,
+      "pla_4096": 561.0,
+      "keys": 200000000,
+      "duplicates": 113383014,
+      "unordered_pairs": 0
+    },
+    "sample": {
+      "rmse": 9651.722110504485,
+      "max_error": 21773.602736799745,
+      "conflict_degree": 8.0,
+      "pla_32": 943.0,
+      "pla_4096": 6.0,
+      "keys": 2000000
+    },
+    "sample_flow": {
+      "rmse": 18579.027045837214,
+      "max_error": 48044.88870471553,
+      "conflict_degree": 8.0,
+      "pla_32": 943.0,
+      "pla_4096": 6.0,
+      "keys": 2000000,
+      "duplicates": 0,
+      "unordered_pairs": 0
+    },
+    "sample_flow_csv": {
+      "rmse": 20400.109271819994,
+      "max_error": 52812.79228950897,
+      "conflict_degree": 20.0,
+      "pla_32": 418.0,
+      "pla_4096": 6.0,
+      "keys": 2194819,
+      "virtual_points": 194819,
+      "regions": 489
+    },
+    "sample_csv": {
+      "rmse": 10512.413614992209,
+      "max_error": 23859.291134380735,
+      "conflict_degree": 21.0,
+      "pla_32": 422.0,
+      "pla_4096": 6.0,
+      "keys": 2194763,
+      "virtual_points": 194763,
+      "regions": 489
+    }
+  },
+  "libio": {
+    "full": {
+      "rmse": 3445772.8895729836,
+      "max_error": 11828007.17763635,
+      "conflict_degree": 2.0,
+      "pla_32": 145808.0,
+      "pla_4096": 639.0,
+      "keys": 200000000
+    },
+    "full_flow": {
+      "rmse": 44459553.3447461,
+      "max_error": 84111300.55821285,
+      "conflict_degree": 78352449.0,
+      "pla_32": 59701.0,
+      "pla_4096": 472.0,
+      "keys": 200000000,
+      "duplicates": 116966482,
+      "unordered_pairs": 0
+    },
+    "sample": {
+      "rmse": 8853.956160674335,
+      "max_error": 21656.4553115631,
+      "conflict_degree": 2.0,
+      "pla_32": 1057.0,
+      "pla_4096": 9.0,
+      "keys": 2000000
+    },
+    "sample_flow": {
+      "rmse": 13617.558789870092,
+      "max_error": 44065.25850629993,
+      "conflict_degree": 2.0,
+      "pla_32": 1058.0,
+      "pla_4096": 9.0,
+      "keys": 2000000,
+      "duplicates": 0,
+      "unordered_pairs": 0
+    },
+    "sample_flow_csv": {
+      "rmse": 15157.82755142912,
+      "max_error": 48427.89054240612,
+      "conflict_degree": 20.0,
+      "pla_32": 944.0,
+      "pla_4096": 9.0,
+      "keys": 2170632,
+      "virtual_points": 170632,
+      "regions": 489
+    },
+    "sample_csv": {
+      "rmse": 9257.038775927955,
+      "max_error": 23767.320930782473,
+      "conflict_degree": 31.0,
+      "pla_32": 941.0,
+      "pla_4096": 9.0,
+      "keys": 2170213,
+      "virtual_points": 170213,
+      "regions": 489
+    }
+  },
+  "planet": {
+    "full": {
+      "rmse": 29771622.180880297,
+      "max_error": 60462049.517017394,
+      "conflict_degree": 21.0,
+      "pla_32": 613597.0,
+      "pla_4096": 2314.0,
+      "keys": 200000000
+    },
+    "full_flow": {
+      "rmse": 44323772.0523223,
+      "max_error": 83945769.64358443,
+      "conflict_degree": 3530248.0,
+      "pla_32": 613611.0,
+      "pla_4096": 2317.0,
+      "keys": 200000000,
+      "duplicates": 0,
+      "unordered_pairs": 0
+    },
+    "sample": {
+      "rmse": 42645.10722245522,
+      "max_error": 81354.95074365032,
+      "conflict_degree": 49.0,
+      "pla_32": 8498.0,
+      "pla_4096": 35.0,
+      "keys": 2000000
+    },
+    "sample_flow": {
+      "rmse": 47239.86431537327,
+      "max_error": 100453.97362838664,
+      "conflict_degree": 47.0,
+      "pla_32": 8498.0,
+      "pla_4096": 35.0,
+      "keys": 2000000,
+      "duplicates": 0,
+      "unordered_pairs": 0
+    },
+    "sample_flow_csv": {
+      "rmse": 51950.214050821975,
+      "max_error": 110460.91271572183,
+      "conflict_degree": 190.0,
+      "pla_32": 8636.0,
+      "pla_4096": 37.0,
+      "keys": 2199707,
+      "virtual_points": 199707,
+      "regions": 489
+    },
+    "sample_csv": {
+      "rmse": 46896.623843766414,
+      "max_error": 89150.89135722262,
+      "conflict_degree": 124.0,
+      "pla_32": 8628.0,
+      "pla_4096": 38.0,
+      "keys": 2199707,
+      "virtual_points": 199707,
+      "regions": 489
+    }
+  },
+  "stack": {
+    "full": {
+      "rmse": 839727.0277638616,
+      "max_error": 2444699.9800324095,
+      "conflict_degree": 1.0,
+      "pla_32": 17833.0,
+      "pla_4096": 133.0,
+      "keys": 200000000
+    },
+    "full_flow": {
+      "rmse": 44372267.096935704,
+      "max_error": 84006497.1832458,
+      "conflict_degree": 82728514.0,
+      "pla_32": 17359.0,
+      "pla_4096": 354.0,
+      "keys": 200000000,
+      "duplicates": 108368526,
+      "unordered_pairs": 0
+    },
+    "sample": {
+      "rmse": 25321.920729276975,
+      "max_error": 48379.90358081553,
+      "conflict_degree": 1.0,
+      "pla_32": 144.0,
+      "pla_4096": 3.0,
+      "keys": 2000000
+    },
+    "sample_flow": {
+      "rmse": 34350.235787255726,
+      "max_error": 73343.18534953007,
+      "conflict_degree": 1.0,
+      "pla_32": 146.0,
+      "pla_4096": 4.0,
+      "keys": 2000000,
+      "duplicates": 0,
+      "unordered_pairs": 0
+    },
+    "sample_flow_csv": {
+      "rmse": 33100.258180034485,
+      "max_error": 71408.79349531815,
+      "conflict_degree": 10.0,
+      "pla_32": 88.0,
+      "pla_4096": 4.0,
+      "keys": 2062394,
+      "virtual_points": 62394,
+      "regions": 489
+    },
+    "sample_csv": {
+      "rmse": 23747.659503255763,
+      "max_error": 45364.65502406494,
+      "conflict_degree": 6.0,
+      "pla_32": 86.0,
+      "pla_4096": 3.0,
+      "keys": 2062282,
+      "virtual_points": 62282,
+      "regions": 489
+    }
+  },
+  "wise": {
+    "full": {
+      "rmse": 2200401.5910767177,
+      "max_error": 4988460.571139708,
+      "conflict_degree": 10.0,
+      "pla_32": 79035.0,
+      "pla_4096": 382.0,
+      "keys": 200000000
+    },
+    "full_flow": {
+      "rmse": 44571741.158254765,
+      "max_error": 84243454.42200823,
+      "conflict_degree": 83164902.0,
+      "pla_32": 44677.0,
+      "pla_4096": 331.0,
+      "keys": 200000000,
+      "duplicates": 116686531,
+      "unordered_pairs": 0
+    },
+    "sample": {
+      "rmse": 5551.034340559529,
+      "max_error": 11282.55541158802,
+      "conflict_degree": 8.0,
+      "pla_32": 805.0,
+      "pla_4096": 4.0,
+      "keys": 2000000
+    },
+    "sample_flow": {
+      "rmse": 11518.17487620945,
+      "max_error": 29991.548910034315,
+      "conflict_degree": 7.0,
+      "pla_32": 807.0,
+      "pla_4096": 3.0,
+      "keys": 2000000,
+      "duplicates": 0,
+      "unordered_pairs": 0
+    },
+    "sample_flow_csv": {
+      "rmse": 12666.026859219442,
+      "max_error": 32988.36379340727,
+      "conflict_degree": 10.0,
+      "pla_32": 317.0,
+      "pla_4096": 4.0,
+      "keys": 2195323,
+      "virtual_points": 195323,
+      "regions": 489
+    },
+    "sample_csv": {
+      "rmse": 6107.456995904494,
+      "max_error": 12504.693670237564,
+      "conflict_degree": 16.0,
+      "pla_32": 315.0,
+      "pla_4096": 4.0,
+      "keys": 2195396,
+      "virtual_points": 195396,
+      "regions": 489
+    }
+  }
+}

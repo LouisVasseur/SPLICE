@@ -1,0 +1,11 @@
+{
+  "source": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/covid.sorted",
+  "source_count": 200000000,
+  "source_sha256": "cdc34a55f609691b57e316fd11c46253477df63b1296a7f05314e701d7c342ba",
+  "mode": "uniform",
+  "seed": 42,
+  "sample_count": 2000000,
+  "dtype": "uint64",
+  "sample_sha256": "5dee4e179c89b1e59ddba6578bc96614267d3bfc3e91190acb33447f405ff268",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

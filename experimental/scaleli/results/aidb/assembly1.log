@@ -1,0 +1,9 @@
+results/aidb/fusion_report.html
+manifest entries: 211
+PASS package manifest: 211 files
+Evidence checks passed. These are not a substitute for compiling/testing the native code.
+  GRE (PLA-32·PLA-4096)    Cov 0.47  Conf -0.28  Conf[packed_rank] -0.15
+  CD·PLA-32                Cov 0.56  Conf 0.09  Conf[packed_rank] 0.38
+
+Results: /Users/louisvasseur/Downloads/scaleli_sota/results/local/report.html
+ASSEMBLY DONE 22:52:08

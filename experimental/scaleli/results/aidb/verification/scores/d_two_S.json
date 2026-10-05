@@ -1,0 +1,565 @@
+{
+ "full": {
+  "metrics": {
+   "RMSE": {
+    "dims": [
+     "RMSE"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME": {
+    "dims": [
+     "ME"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "CD": {
+    "dims": [
+     "CD"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "PLA-32": {
+    "dims": [
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "PLA-4096": {
+    "dims": [
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·ME": {
+    "dims": [
+     "RMSE",
+     "ME"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·CD": {
+    "dims": [
+     "RMSE",
+     "CD"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·PLA-32": {
+    "dims": [
+     "RMSE",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·PLA-4096": {
+    "dims": [
+     "RMSE",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·CD": {
+    "dims": [
+     "ME",
+     "CD"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·PLA-32": {
+    "dims": [
+     "ME",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·PLA-4096": {
+    "dims": [
+     "ME",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "CD·PLA-32": {
+    "dims": [
+     "CD",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "CD·PLA-4096": {
+    "dims": [
+     "CD",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "PLA-32·PLA-4096": {
+    "dims": [
+     "PLA-32",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    },
+    "alias": "GRE"
+   },
+   "RMSE·ME·CD": {
+    "dims": [
+     "RMSE",
+     "ME",
+     "CD"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·ME·PLA-32": {
+    "dims": [
+     "RMSE",
+     "ME",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·ME·PLA-4096": {
+    "dims": [
+     "RMSE",
+     "ME",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·CD·PLA-32": {
+    "dims": [
+     "RMSE",
+     "CD",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·CD·PLA-4096": {
+    "dims": [
+     "RMSE",
+     "CD",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "RMSE·PLA-32·PLA-4096": {
+    "dims": [
+     "RMSE",
+     "PLA-32",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·CD·PLA-32": {
+    "dims": [
+     "ME",
+     "CD",
+     "PLA-32"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·CD·PLA-4096": {
+    "dims": [
+     "ME",
+     "CD",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "ME·PLA-32·PLA-4096": {
+    "dims": [
+     "ME",
+     "PLA-32",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   },
+   "CD·PLA-32·PLA-4096": {
+    "dims": [
+     "CD",
+     "PLA-32",
+     "PLA-4096"
+    ],
+    "coverage": 1.0,
+    "conformance": null,
+    "per_variant": {},
+    "comparable_pairs": 1,
+    "incomparable_pairs": 0,
+    "per_variant_detail": {},
+    "pairs": {
+     "comparable": [
+      [
+       "hard",
+       "easy"
+      ]
+     ],
+     "incomparable": []
+    }
+   }
+  },
+  "datasets": [
+   "easy",
+   "hard"
+  ],
+  "variants": [],
+  "skipped": {
+   "ix": "skipped: only 2 dataset(s) overlap the full hardness scope (need 3)"
+  },
+  "dropped_datasets": {},
+  "ddof": 0,
+  "normalized_throughput": {},
+  "hardness": {
+   "easy": {
+    "RMSE": 1.0,
+    "ME": 1.0,
+    "CD": 1.0,
+    "PLA-32": 10.0,
+    "PLA-4096": 1.0
+   },
+   "hard": {
+    "RMSE": 2.0,
+    "ME": 2.0,
+    "CD": 2.0,
+    "PLA-32": 20.0,
+    "PLA-4096": 2.0
+   }
+  },
+  "note": "Reduced-scale, single-host, clean-room control variants scored with the AIDB 2026 protocol; not a reproduction of the paper or of NFL/CSV."
+ }
+}

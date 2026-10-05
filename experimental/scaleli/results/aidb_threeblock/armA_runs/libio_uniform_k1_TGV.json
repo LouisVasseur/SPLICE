@@ -1,0 +1,74 @@
+{
+ "dataset": "libio",
+ "mode": "uniform",
+ "k": 1,
+ "order": "TGV",
+ "nostop": false,
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model_probes": 2.4646878198567044,
+   "gap_table_probes": 1.0,
+   "gap_k_eff": 1,
+   "total_uncharged": 3.4646878198567044,
+   "total_charged": 10.364687819856705,
+   "total_charged_pwl": 3.9146878198567046,
+   "virtual_count": 112,
+   "sse": 271.714969817549,
+   "gaps": [
+    2
+   ],
+   "gap_factors": [
+    0.2155396420356702
+   ],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     50989.79819527666
+    ]
+   ],
+   "warp_sse": 35046.18396590091,
+   "notes": [
+    "ok",
+    "V kept_previous=False"
+   ],
+   "seconds": 1.4379000663757324
+  },
+  {
+   "round": 2,
+   "accepted": false,
+   "model_probes": 2.4646878198567044,
+   "gap_table_probes": 1.0,
+   "gap_k_eff": 1,
+   "total_uncharged": 3.4646878198567044,
+   "total_charged": 10.364687819856705,
+   "total_charged_pwl": 3.9146878198567046,
+   "virtual_count": 112,
+   "sse": 271.7149702850729,
+   "gaps": [
+    2
+   ],
+   "gap_factors": [
+    0.21553967605191368
+   ],
+   "warp_units": [
+    [
+     0.010000000000000005,
+     0.0,
+     60048.79449719892
+    ]
+   ],
+   "warp_sse": 271.7149698231369,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 1.3795740604400635
+  }
+ ],
+ "error": null,
+ "baseline_linear": 6.519959058341863,
+ "seconds": 3.2448127269744873
+}

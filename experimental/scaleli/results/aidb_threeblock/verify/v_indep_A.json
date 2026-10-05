@@ -1,0 +1,62 @@
+[
+ {
+  "cell": "A books-uniform k=64 GTV",
+  "best_round": 4,
+  "best_round_stored": 4,
+  "model_indep_best": 2.353121801432958,
+  "model_stored_best": 2.353121801432958,
+  "V_kept_previous_in_best_round": false,
+  "indep_smoothcdf_slots_match_best": true,
+  "model_indep_round1": 2.8904810644831116,
+  "model_stored_round1": 2.8904810644831116,
+  "charge_indep": 7,
+  "charge_stored": 7.0,
+  "mono_violations_best": 0,
+  "mono_violations_round1": 0
+ },
+ {
+  "cell": "A fb-window k=1 TGV",
+  "best_round": 3,
+  "best_round_stored": 3,
+  "model_indep_best": 2.390992835209826,
+  "model_stored_best": 2.390992835209826,
+  "V_kept_previous_in_best_round": false,
+  "indep_smoothcdf_slots_match_best": true,
+  "model_indep_round1": 2.4923234390992834,
+  "model_stored_round1": 2.4923234390992834,
+  "charge_indep": 1,
+  "charge_stored": 1.0,
+  "mono_violations_best": 0,
+  "mono_violations_round1": 0
+ },
+ {
+  "cell": "A genome-window k=16 TGV",
+  "best_round": 4,
+  "best_round_stored": 4,
+  "model_indep_best": 2.5138178096212895,
+  "model_stored_best": 2.5138178096212895,
+  "V_kept_previous_in_best_round": true,
+  "indep_smoothcdf_slots_match_best": null,
+  "model_indep_round1": 2.707267144319345,
+  "model_stored_round1": 2.707267144319345,
+  "charge_indep": 5,
+  "charge_stored": 5.0,
+  "mono_violations_best": 0,
+  "mono_violations_round1": 0
+ },
+ {
+  "cell": "A planet-uniform k=64 GTV",
+  "best_round": 3,
+  "best_round_stored": 3,
+  "model_indep_best": 2.670419651995906,
+  "model_stored_best": 2.670419651995906,
+  "V_kept_previous_in_best_round": false,
+  "indep_smoothcdf_slots_match_best": true,
+  "model_indep_round1": 2.9007164790174,
+  "model_stored_round1": 2.9007164790174,
+  "charge_indep": 7,
+  "charge_stored": 7.0,
+  "mono_violations_best": 0,
+  "mono_violations_round1": 0
+ }
+]

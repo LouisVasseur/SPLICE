@@ -1,0 +1,31 @@
+{
+  "status": "locally_measured_source_transcription",
+  "contract": "static uint64 lower_bound; keys only, no payload",
+  "dataset": "bundled dense_sparse synthetic fixture",
+  "keys": 16384,
+  "queries": 100000,
+  "absent_queries": 8349,
+  "repeats_same_trace": 5,
+  "epsilon": 32,
+  "radix_bits": 10,
+  "key_bytes": 131072,
+  "auxiliary_index_bytes": 5908,
+  "build_ns": 509559,
+  "binary_ns_per_query_median": 78.4,
+  "radix_ns_per_query_median": 33.8287,
+  "mean_search_window_keys": 65.9195,
+  "max_search_window_keys": 66,
+  "verified": true,
+  "trace_fingerprint": "6904169734224255362",
+  "checksum": "10336956078313747101",
+  "caution": "Same-process warmed repeated trace. Not independent trials or paper reproduction.",
+  "lesson": "02",
+  "title": "2020: RadixSpline source-derived native experiment",
+  "environment": {
+    "system": "Linux-6.18.35-x86_64-with-glibc2.41",
+    "python": "3.13.5",
+    "fixture_sha256": "621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca",
+    "radix_binary_sha256": "bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863",
+    "experimental_binary_sha256": "6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884"
+  }
+}

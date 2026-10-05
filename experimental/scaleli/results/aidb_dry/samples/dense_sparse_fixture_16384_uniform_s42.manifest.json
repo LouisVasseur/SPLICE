@@ -1,0 +1,11 @@
+{
+  "source": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/dense_sparse_fixture",
+  "source_count": 16384,
+  "source_sha256": "621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca",
+  "mode": "uniform",
+  "seed": 42,
+  "sample_count": 16384,
+  "dtype": "uint64",
+  "sample_sha256": "621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

@@ -1,0 +1,15 @@
+{
+  "weights": "results/aidb_pilot/flows/fb_uniform_2D2H2L.txt",
+  "keys": 2000000,
+  "training_keys": 4096,
+  "steps": 200,
+  "seed": 1000000007,
+  "shifts": 64,
+  "monotone": true,
+  "best_nll": 4.182016254972711,
+  "train_seconds": 2.3741421699523926,
+  "unordered_transformed_pairs": 0,
+  "tail_conflict_degree_raw": 8,
+  "tail_conflict_degree_transformed": 8,
+  "note": "Stand-in trainer (1-D likelihood, Adam), not the official BNAF; format-compatible with luffy06/NFL weights."
+}

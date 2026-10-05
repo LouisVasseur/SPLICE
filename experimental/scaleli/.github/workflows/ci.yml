@@ -1,0 +1,14 @@
+name: core
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        sanitize: [OFF, ON]
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DSCALELI_SANITIZE=${{ matrix.sanitize }}
+      - run: cmake --build build --parallel 2
+      - run: ctest --test-dir build --output-on-failure
+      - run: python3 -m unittest discover -s tests -p 'test_tools.py' -v

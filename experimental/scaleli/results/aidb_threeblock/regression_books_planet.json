@@ -1,0 +1,66 @@
+[
+ {
+  "dataset": "books",
+  "method": "baseline_linear",
+  "new": 11.075742067553737,
+  "old": 11.075742067553737,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "books",
+  "method": "flow_only",
+  "new": 3.728761514841351,
+  "old": 3.728761514841351,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "books",
+  "method": "csv_only",
+  "new": 2.727737973387922,
+  "old": 2.727737973387922,
+  "diff": 0.0,
+  "virt": 662
+ },
+ {
+  "dataset": "books",
+  "method": "sequential",
+  "new": 2.420675537359263,
+  "old": 2.420675537359263,
+  "diff": 0.0,
+  "virt": 41
+ },
+ {
+  "dataset": "planet",
+  "method": "baseline_linear",
+  "new": 12.59467758444217,
+  "old": 12.59467758444217,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "planet",
+  "method": "flow_only",
+  "new": 6.229273285568065,
+  "old": 6.229273285568065,
+  "diff": 0.0,
+  "virt": 0
+ },
+ {
+  "dataset": "planet",
+  "method": "csv_only",
+  "new": 5.242579324462641,
+  "old": 5.242579324462641,
+  "diff": 0.0,
+  "virt": 1956
+ },
+ {
+  "dataset": "planet",
+  "method": "sequential",
+  "new": 2.8362333674513818,
+  "old": 2.8362333674513818,
+  "diff": 0.0,
+  "virt": 326
+ }
+]

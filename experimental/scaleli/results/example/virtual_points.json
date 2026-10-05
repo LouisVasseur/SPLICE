@@ -1,0 +1,54 @@
+{
+  "notice": "Illustrative toy; not the paper figure, not an optimized CSV implementation.",
+  "objective": "OLS SSE over augmented keys; original-key SSE also reported.",
+  "before_sse": 7.840537000654879,
+  "greedy": {
+    "virtual_points": [
+      17,
+      15,
+      22
+    ],
+    "augmented_keys": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      15,
+      17,
+      20,
+      22,
+      26,
+      27,
+      30
+    ],
+    "sse_all": 4.653435114503817,
+    "sse_original": 4.504087174407086
+  },
+  "exhaustive": {
+    "virtual_points": [
+      14,
+      17,
+      22
+    ],
+    "augmented_keys": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      14,
+      17,
+      20,
+      22,
+      26,
+      27,
+      30
+    ],
+    "sse_all": 4.507522331922896,
+    "sse_original": 4.488354747399997,
+    "subsets_examined": 1351
+  }
+}

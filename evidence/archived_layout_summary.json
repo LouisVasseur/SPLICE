@@ -1,0 +1,72 @@
+{
+  "logical_rank_invariance_verified": true,
+  "results": [
+    {
+      "keys": 16384,
+      "regions": 4,
+      "blocks": 128,
+      "key_bytes": 133120,
+      "bytes_per_key": 8.125,
+      "codecs": {
+        "raw": 128
+      },
+      "rank_mae": 33.5073827997524,
+      "rank_p99": 81.0910538127896,
+      "byte_mae": 272.23693278452487,
+      "byte_p99": 660.8896310082782,
+      "rank_normalized_mse": 9.219955067801639e-05,
+      "byte_normalized_mse": 9.218545541551927e-05,
+      "rank_mean_block_error": 0.2440185546875,
+      "byte_mean_block_error": 0.244140625,
+      "rank_p99_block_error": 1,
+      "byte_p99_block_error": 1,
+      "policy": "raw",
+      "distribution": "dense_sparse"
+    },
+    {
+      "keys": 16384,
+      "regions": 4,
+      "blocks": 128,
+      "key_bytes": 31024,
+      "bytes_per_key": 1.8935546875,
+      "codecs": {
+        "linear": 128
+      },
+      "rank_mae": 33.5073827997524,
+      "rank_p99": 81.0910538127896,
+      "byte_mae": 29.527350531748713,
+      "byte_p99": 92.94202183274865,
+      "rank_normalized_mse": 9.219955067801639e-05,
+      "byte_normalized_mse": 2.2581089520944425e-05,
+      "rank_mean_block_error": 0.2440185546875,
+      "byte_mean_block_error": 0.12786865234375,
+      "rank_p99_block_error": 1,
+      "byte_p99_block_error": 1,
+      "policy": "min_bytes",
+      "distribution": "dense_sparse"
+    },
+    {
+      "keys": 16384,
+      "regions": 4,
+      "blocks": 128,
+      "key_bytes": 72768,
+      "bytes_per_key": 4.44140625,
+      "codecs": {
+        "linear": 64,
+        "raw": 64
+      },
+      "rank_mae": 33.5073827997524,
+      "rank_p99": 81.0910538127896,
+      "byte_mae": 49.326934003431994,
+      "byte_p99": 172.0294585782376,
+      "rank_normalized_mse": 9.219955067801639e-05,
+      "byte_normalized_mse": 1.2222965784770404e-05,
+      "rank_mean_block_error": 0.2440185546875,
+      "byte_mean_block_error": 0.18585205078125,
+      "rank_p99_block_error": 1,
+      "byte_p99_block_error": 1,
+      "policy": "smooth",
+      "distribution": "dense_sparse"
+    }
+  ]
+}

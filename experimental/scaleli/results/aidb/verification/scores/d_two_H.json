@@ -1,0 +1,1 @@
+{"easy": {"full": {"rmse": 1, "max_error": 1, "conflict_degree": 1, "pla_32": 10, "pla_4096": 1}}, "hard": {"full": {"rmse": 2, "max_error": 2, "conflict_degree": 2, "pla_32": 20, "pla_4096": 2}}}

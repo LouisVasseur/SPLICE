@@ -1,0 +1,49 @@
+@page {
+  size: A4;
+  margin: 22mm 18mm 21mm 18mm;
+  @top-left { content: "SCALE-LI  /  RESEARCH SPECIFICATION"; color:#526276; font-family:"DejaVu Sans";font-size:8pt;letter-spacing:.8pt; }
+  @top-right { content: "v0.1.0 · 07 SEP 2026";color:#526276;font-family:"DejaVu Sans";font-size:8pt; }
+  @bottom-left { content: "Compression • exact search • sustainable updates";font-family:"DejaVu Sans";font-size:8pt;color:#526276; }
+  @bottom-right { content: counter(page); font-family:"DejaVu Sans";font-size:9pt;color:#263e59; }
+}
+@page:first { @top-left {content:none;} @top-right {content:none;} @bottom-left {content:none;} }
+html {font-size:10.25pt;}
+body {font-family:"DejaVu Sans",sans-serif; line-height:1.46; color:#172331; margin:0;max-width:none;text-align:left;}
+#title-block-header {box-sizing:border-box;min-height:237mm; padding-top:41mm;break-after:page;}
+#title-block-header .title {font-size:42pt;font-weight:700;letter-spacing:-1.2pt;color:#163c59;border-top:5pt solid #163c59;padding-top:20pt;margin:0 0 15pt;break-before:auto;}
+#title-block-header .subtitle {font-size:20pt;line-height:1.32;color:#36586e;margin:0 0 28pt;max-width:150mm;}
+#title-block-header .author {font-size:11pt;color:#607083;margin-top:28pt;}
+#title-block-header .date {font-size:10.5pt;color:#607083;}
+nav#TOC {break-after:page;}
+nav#TOC:before {content:"CONTENTS";display:block;font-size:23pt;font-weight:700;color:#163c59;margin:0 0 17pt;}
+nav#TOC ul {list-style:none;padding-left:0;}
+nav#TOC > ul > li {margin:7pt 0;font-weight:600;}
+nav#TOC > ul > li > a:after {content:leader('.') target-counter(attr(href),page);font-weight:400;}
+nav#TOC a {text-decoration:none;color:#24455e;}
+h1 {font-size:23pt;line-height:1.22;color:#163c59;break-before:page;margin:0 0 17pt;}
+h2 {font-size:14pt;line-height:1.28;color:#244d68;margin:18pt 0 7pt;break-after:avoid;}
+h3 {font-size:11.5pt;color:#244d68;margin:13pt 0 6pt;break-after:avoid;}
+p {margin:0 0 9pt;orphans:3;widows:3;}
+strong {font-weight:700;}
+blockquote {border-left:3pt solid #67889d;background:#f0f4f7;padding:11pt 13pt;margin:13pt 0;break-inside:avoid;}
+blockquote p {margin:0;}
+a {color:#275674;text-decoration:none;overflow-wrap:anywhere;}
+code {font-family:"DejaVu Sans Mono",monospace;font-size:8.7pt;overflow-wrap:anywhere;}
+pre {font-family:"DejaVu Sans Mono",monospace;font-size:8.3pt;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere;padding:11pt;background:#f1f4f6;border:0.5pt solid #d4dfe5;margin:12pt 0;break-inside:avoid;}
+pre code {font-size:8.3pt;white-space:pre-wrap;}
+table {border-collapse:collapse;width:100%;table-layout:fixed;font-size:8.5pt;line-height:1.4;margin:12pt 0 14pt;}
+thead {display:table-header-group;}
+th {background:#24485f;color:#fff;font-weight:600;text-align:left;padding:7pt 6pt;vertical-align:top;}
+td {border-bottom:0.5pt solid #d0dae0;padding:7pt 6pt;vertical-align:top;overflow-wrap:anywhere;}
+tr:nth-child(even) td {background:#f2f5f7;}
+tr {break-inside:avoid;}
+figure {margin:14pt 0 15pt;break-inside:avoid;}
+figure img,img {max-width:100%;height:auto;}
+figcaption {font-size:8.7pt;line-height:1.4;color:#526276;margin-top:5pt;}
+ul,ol {padding-left:19pt;margin:7pt 0 11pt;}
+li {margin-bottom:5pt;}
+hr {border:0;border-top:.6pt solid #c4d3de;margin:17pt 0;}
+/* Flow chapters continuously to avoid near-empty spill pages. */
+html {font-size:10.5pt;}
+h1 {break-before:auto;break-after:avoid;margin-top:23pt;}
+table {break-inside:avoid;}

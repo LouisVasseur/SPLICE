@@ -1,0 +1,4166 @@
+{
+ "per_dataset": {
+  "books_uniform": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 2.2587693186099997,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.2304252,
+    "total_probes": 16.2165386,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.0589805,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.18140145418,
+    "speedup": 0.9476591763132719,
+    "lo": 0.8567577691914418,
+    "hi": 1.02857211724802,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.2304252,
+    "total_probes": 16.2165386,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     11.0757420676,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.057195042,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 2.1505147029800002,
+    "speedup": 0.9239683278151258,
+    "lo": 0.7619787631765179,
+    "hi": 1.0237734738087105,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.230344,
+    "total_probes": 16.216463,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     11.0757420676,
+     14.9109518936,
+     0,
+     0
+    ],
+    "build_s": 0.063904667,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 2.2645242056900003,
+    "speedup": 0.9563688992579057,
+    "lo": 0.8863449433614671,
+    "hi": 1.0780488082088335,
+    "root_probes": 2.6002982,
+    "fence_probes": 2.2304252,
+    "total_probes": 9.860925400000001,
+    "chosen": "raw+fences",
+    "root_virtual": 662,
+    "est": [
+     8.9559877175,
+     11.0757420676,
+     0,
+     2.72773797339,
+     0
+    ],
+    "build_s": 0.151323791,
+    "meta_bytes_per_key": 0.572886
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 2.42618817775,
+    "speedup": 1.0445676637686139,
+    "lo": 0.8942074717515923,
+    "hi": 1.1550105169738256,
+    "root_probes": 2.6002982,
+    "fence_probes": 2.230344,
+    "total_probes": 9.860875,
+    "chosen": "raw+fences",
+    "root_virtual": 662,
+    "est": [
+     8.9559877175,
+     11.0757420676,
+     14.9109518936,
+     2.72773797339,
+     6.60900716479
+    ],
+    "build_s": 0.221173792,
+    "meta_bytes_per_key": 0.572886
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.29811073204,
+    "speedup": 1.0120362853867,
+    "lo": 0.8916776546189696,
+    "hi": 1.1425660028284925,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.0078696,
+    "total_probes": 15.994621199999997,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 4.073477334,
+    "meta_bytes_per_key": 1.310784
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.2456644216800004,
+    "speedup": 0.9767439480111961,
+    "lo": 0.8270703040884836,
+    "hi": 1.0690704243063918,
+    "root_probes": 2.6002982,
+    "fence_probes": 2.0078626,
+    "total_probes": 9.6385412,
+    "chosen": "raw+fences",
+    "root_virtual": 662,
+    "est": [
+     8.9559877175,
+     11.0757420676,
+     14.9109518936,
+     2.72773797339,
+     6.60900716479
+    ],
+    "build_s": 4.453691833,
+    "meta_bytes_per_key": 1.313198
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.60359830015,
+    "speedup": 1.507509210013703,
+    "lo": 1.3136239577868611,
+    "hi": 1.856152188498332,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.2304252,
+    "total_probes": 16.2165386,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.050365209,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 4.28265845595,
+    "speedup": 2.080544813356597,
+    "lo": 1.8960140907994358,
+    "hi": 2.3512511130897877,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.041149125,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "books_window": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 2.496206338,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.9520148,
+    "total_probes": 16.9369816,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.058110167,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.4220299113699997,
+    "speedup": 1.0039060304283678,
+    "lo": 0.8792491736744681,
+    "hi": 1.1878621837686802,
+    "root_probes": 2.1697706,
+    "fence_probes": 2.9520148,
+    "total_probes": 10.1500936,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     2.32036847492,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.058005416,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 2.71062915525,
+    "speedup": 1.0756790561343719,
+    "lo": 1.0371193551829923,
+    "hi": 1.106749341960859,
+    "root_probes": 2.1697706,
+    "fence_probes": 2.9520194,
+    "total_probes": 10.1500962,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     2.32036847492,
+     8.11463664278,
+     0,
+     0
+    ],
+    "build_s": 0.06507875,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 2.4659482337600003,
+    "speedup": 0.9407455424175,
+    "lo": 0.8186183322754155,
+    "hi": 1.0295123659128853,
+    "root_probes": 2.101552,
+    "fence_probes": 2.9520148,
+    "total_probes": 10.082035000000001,
+    "chosen": "raw+fences",
+    "root_virtual": 1,
+    "est": [
+     8.9559877175,
+     2.32036847492,
+     0,
+     2.30092118731,
+     0
+    ],
+    "build_s": 0.0585625,
+    "meta_bytes_per_key": 0.571564
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 2.53154558959,
+    "speedup": 0.9770471832224139,
+    "lo": 0.9190057304070262,
+    "hi": 1.0259455687673205,
+    "root_probes": 2.101552,
+    "fence_probes": 2.9520194,
+    "total_probes": 10.0820376,
+    "chosen": "raw+fences",
+    "root_virtual": 1,
+    "est": [
+     8.9559877175,
+     2.32036847492,
+     8.11463664278,
+     2.30092118731,
+     6.33060388946
+    ],
+    "build_s": 0.06706275,
+    "meta_bytes_per_key": 0.571564
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.58160124115,
+    "speedup": 1.0139172015525173,
+    "lo": 0.8891893866482738,
+    "hi": 1.1121026474895521,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.4375802,
+    "total_probes": 16.4230212,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 2.053418041,
+    "meta_bytes_per_key": 1.369412
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.72499265061,
+    "speedup": 1.0926827400231838,
+    "lo": 0.9892311920138898,
+    "hi": 1.2391620942408126,
+    "root_probes": 2.101552,
+    "fence_probes": 2.437576,
+    "total_probes": 9.5681188,
+    "chosen": "raw+fences",
+    "root_virtual": 1,
+    "est": [
+     8.9559877175,
+     2.32036847492,
+     8.11463664278,
+     2.30092118731,
+     6.33060388946
+    ],
+    "build_s": 2.21193675,
+    "meta_bytes_per_key": 1.370392
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.7599608422,
+    "speedup": 1.5193484368947943,
+    "lo": 1.3649470008744564,
+    "hi": 1.7407089062963512,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.9520148,
+    "total_probes": 16.9369816,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.049504208,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 6.17463409115,
+    "speedup": 2.293754028427703,
+    "lo": 2.0927138114076063,
+    "hi": 2.473607248388454,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.040780833,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "covid_uniform": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 2.47465831351,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.0639822,
+    "total_probes": 17.0483266,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.056877667,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.52694992091,
+    "speedup": 1.0188159104797505,
+    "lo": 1.01249091945098,
+    "hi": 1.0228563040711687,
+    "root_probes": 4.6581814,
+    "fence_probes": 3.0639822,
+    "total_probes": 12.750834600000001,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     4.6417604913,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.057734,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 2.4239478284900002,
+    "speedup": 0.9484636530585879,
+    "lo": 0.9213686912824728,
+    "hi": 0.9822890611109848,
+    "root_probes": 4.6581814,
+    "fence_probes": 3.063977,
+    "total_probes": 12.7508286,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     4.6417604913,
+     8.49334698055,
+     0,
+     0
+    ],
+    "build_s": 0.064457416,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 2.38762123445,
+    "speedup": 0.92836294612151,
+    "lo": 0.9066642447539511,
+    "hi": 0.9648286478238894,
+    "root_probes": 2.4392242,
+    "fence_probes": 3.0639822,
+    "total_probes": 10.531680399999999,
+    "chosen": "raw+fences",
+    "root_virtual": 58,
+    "est": [
+     8.9559877175,
+     4.6417604913,
+     0,
+     2.56192425793,
+     0
+    ],
+    "build_s": 0.063429667,
+    "meta_bytes_per_key": 0.571678
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 2.46556058742,
+    "speedup": 0.9583820767870379,
+    "lo": 0.9196351552186505,
+    "hi": 0.9994054868779386,
+    "root_probes": 2.4392242,
+    "fence_probes": 3.063977,
+    "total_probes": 10.5316752,
+    "chosen": "raw+fences",
+    "root_virtual": 58,
+    "est": [
+     8.9559877175,
+     4.6417604913,
+     8.49334698055,
+     2.56192425793,
+     6.42579324463
+    ],
+    "build_s": 0.070830667,
+    "meta_bytes_per_key": 0.571678
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.45880835206,
+    "speedup": 0.9628437594559217,
+    "lo": 0.9171166233094976,
+    "hi": 1.0327330611696073,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.3276262,
+    "total_probes": 16.3109276,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 3.386945708,
+    "meta_bytes_per_key": 1.366944
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.38167193848,
+    "speedup": 0.9314148972922683,
+    "lo": 0.8883453337141026,
+    "hi": 0.9779598577701668,
+    "root_probes": 2.4392242,
+    "fence_probes": 2.3276102,
+    "total_probes": 9.794016,
+    "chosen": "raw+fences",
+    "root_virtual": 58,
+    "est": [
+     8.9559877175,
+     4.6417604913,
+     8.49334698055,
+     2.56192425793,
+     6.42579324463
+    ],
+    "build_s": 3.796780292,
+    "meta_bytes_per_key": 1.368038
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 4.05807373951,
+    "speedup": 1.5600824595388003,
+    "lo": 1.5027298326409728,
+    "hi": 1.6693289827275812,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.0639822,
+    "total_probes": 17.0483266,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.049864084,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 6.076381946410001,
+    "speedup": 2.068965105420746,
+    "lo": 1.4685279548889882,
+    "hi": 2.6609231353884004,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.040815417,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "covid_window": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 2.68231619344,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.5950944,
+    "total_probes": 16.5802474,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.058925708,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.6929090046,
+    "speedup": 0.9832547149044307,
+    "lo": 0.9675871444117481,
+    "hi": 1.0040629264608047,
+    "root_probes": 6.1046046,
+    "fence_probes": 2.5950944,
+    "total_probes": 13.7284796,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     6.15148413511,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.057858417,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 2.57107991463,
+    "speedup": 0.9197922393873017,
+    "lo": 0.8389720907184762,
+    "hi": 0.9675354364959031,
+    "root_probes": 6.1046046,
+    "fence_probes": 2.5950944,
+    "total_probes": 13.7284796,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     6.15148413511,
+     9.23234390993,
+     0,
+     0
+    ],
+    "build_s": 0.064147875,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 2.6736644793699997,
+    "speedup": 0.983703218424843,
+    "lo": 0.9673546428978608,
+    "hi": 0.9968875208723589,
+    "root_probes": 2.2767416,
+    "fence_probes": 2.5950944,
+    "total_probes": 9.9007216,
+    "chosen": "raw+fences",
+    "root_virtual": 86,
+    "est": [
+     8.9559877175,
+     6.15148413511,
+     0,
+     2.42579324463,
+     0
+    ],
+    "build_s": 0.06429675,
+    "meta_bytes_per_key": 0.571734
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 2.77083612825,
+    "speedup": 1.0303989874813637,
+    "lo": 0.9917527404600874,
+    "hi": 1.0677332464361697,
+    "root_probes": 2.2767416,
+    "fence_probes": 2.5950944,
+    "total_probes": 9.9007216,
+    "chosen": "raw+fences",
+    "root_virtual": 86,
+    "est": [
+     8.9559877175,
+     6.15148413511,
+     9.23234390993,
+     2.42579324463,
+     6.53531218014
+    ],
+    "build_s": 0.07497125,
+    "meta_bytes_per_key": 0.571734
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.72517644772,
+    "speedup": 1.0012693689507584,
+    "lo": 0.9605326965234764,
+    "hi": 1.02862241228118,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.054412,
+    "total_probes": 16.040372400000003,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 3.982277541,
+    "meta_bytes_per_key": 1.360356
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.61300466774,
+    "speedup": 0.9491465447495988,
+    "lo": 0.8318948406434001,
+    "hi": 1.0549987466991368,
+    "root_probes": 2.2767416,
+    "fence_probes": 2.0544094,
+    "total_probes": 9.3606606,
+    "chosen": "raw+fences",
+    "root_virtual": 86,
+    "est": [
+     8.9559877175,
+     6.15148413511,
+     9.23234390993,
+     2.42579324463,
+     6.53531218014
+    ],
+    "build_s": 4.112202333,
+    "meta_bytes_per_key": 1.361506
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.03860286722,
+    "speedup": 1.106793258876293,
+    "lo": 1.0735476854266854,
+    "hi": 1.1569921850488278,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.5950944,
+    "total_probes": 16.5802474,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.052439417,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 6.53998354909,
+    "speedup": 2.100698322380588,
+    "lo": 1.5235484438478095,
+    "hi": 2.495277720027572,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.0406785,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "fb_uniform": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 2.93487153269,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.6002932,
+    "total_probes": 16.585559,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.054280708,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 3.09151247792,
+    "speedup": 1.060981000684865,
+    "lo": 0.9670262624100566,
+    "hi": 1.179228243274525,
+    "root_probes": 2.1436034,
+    "fence_probes": 2.6002932,
+    "total_probes": 9.77279,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     2.26612077789,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.053763208,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 3.03636709889,
+    "speedup": 1.0076471550449915,
+    "lo": 0.8898054675144946,
+    "hi": 1.1113867070734986,
+    "root_probes": 2.1436034,
+    "fence_probes": 2.6003146,
+    "total_probes": 9.772803199999998,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     2.26612077789,
+     8.13920163767,
+     0,
+     0
+    ],
+    "build_s": 0.059730834,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 3.1059264571000003,
+    "speedup": 1.0545881740702063,
+    "lo": 1.021425079050178,
+    "hi": 1.1116077140351819,
+    "root_probes": 2.078522,
+    "fence_probes": 2.6002932,
+    "total_probes": 9.7077306,
+    "chosen": "raw+fences",
+    "root_virtual": 1,
+    "est": [
+     8.9559877175,
+     2.26612077789,
+     0,
+     2.2241555783,
+     0
+    ],
+    "build_s": 0.05576275,
+    "meta_bytes_per_key": 0.571564
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 3.20598578989,
+    "speedup": 1.0762661544234837,
+    "lo": 1.0347787058656805,
+    "hi": 1.102907446754988,
+    "root_probes": 2.078522,
+    "fence_probes": 2.6003146,
+    "total_probes": 9.7077438,
+    "chosen": "raw+fences",
+    "root_virtual": 1,
+    "est": [
+     8.9559877175,
+     2.26612077789,
+     8.13920163767,
+     2.2241555783,
+     6.34902763562
+    ],
+    "build_s": 0.063606708,
+    "meta_bytes_per_key": 0.571564
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 3.00985433895,
+    "speedup": 1.0058117327107554,
+    "lo": 0.9414835659184516,
+    "hi": 1.1039025597899876,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.1808324,
+    "total_probes": 16.167174799999998,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 2.400770708,
+    "meta_bytes_per_key": 1.369412
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 3.01359969737,
+    "speedup": 1.0156089869174485,
+    "lo": 0.9426551154367365,
+    "hi": 1.084675756235864,
+    "root_probes": 2.078522,
+    "fence_probes": 2.1808442,
+    "total_probes": 9.2893566,
+    "chosen": "raw+fences",
+    "root_virtual": 1,
+    "est": [
+     8.9559877175,
+     2.26612077789,
+     8.13920163767,
+     2.2241555783,
+     6.34902763562
+    ],
+    "build_s": 2.851299125,
+    "meta_bytes_per_key": 1.370392
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 4.08017766837,
+    "speedup": 1.3551221365650108,
+    "lo": 1.2252885258010915,
+    "hi": 1.4602911670448946,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.6002932,
+    "total_probes": 16.585559,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.04987875,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 5.580834671710001,
+    "speedup": 1.8226776917555956,
+    "lo": 1.2578988887882685,
+    "hi": 2.5314761478754058,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.038490417,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "fb_window": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 3.01141431364,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 5.1652458,
+    "total_probes": 19.153332799999998,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.055317417,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 3.0182135612499996,
+    "speedup": 0.9979085784152958,
+    "lo": 0.9450338150608935,
+    "hi": 1.0457155479697304,
+    "root_probes": 3.534728,
+    "fence_probes": 5.1652458,
+    "total_probes": 13.7317672,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     3.58444216991,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.051492,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 3.03101271713,
+    "speedup": 1.0173943879340692,
+    "lo": 0.9752597294445521,
+    "hi": 1.0501500507088477,
+    "root_probes": 3.534728,
+    "fence_probes": 5.1652464,
+    "total_probes": 13.7317678,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     3.58444216991,
+     7.85977482088,
+     0,
+     0
+    ],
+    "build_s": 0.056925042,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 3.0586025951,
+    "speedup": 1.0211525659960612,
+    "lo": 0.9706596281730618,
+    "hi": 1.0597090708955665,
+    "root_probes": 2.273575,
+    "fence_probes": 5.1652458,
+    "total_probes": 12.470598800000001,
+    "chosen": "raw+fences",
+    "root_virtual": 34,
+    "est": [
+     8.9559877175,
+     3.58444216991,
+     0,
+     2.40941658137,
+     0
+    ],
+    "build_s": 0.056042958,
+    "meta_bytes_per_key": 0.57163
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 3.08797176007,
+    "speedup": 1.029329822233421,
+    "lo": 0.9979985378289862,
+    "hi": 1.069884557757834,
+    "root_probes": 2.273575,
+    "fence_probes": 5.1652464,
+    "total_probes": 12.470599400000001,
+    "chosen": "raw+fences",
+    "root_virtual": 34,
+    "est": [
+     8.9559877175,
+     3.58444216991,
+     7.85977482088,
+     2.40941658137,
+     6.49027635619
+    ],
+    "build_s": 0.064500792,
+    "meta_bytes_per_key": 0.57163
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.8622280141,
+    "speedup": 0.968229078123942,
+    "lo": 0.9253524728611594,
+    "hi": 1.0097097471900691,
+    "root_probes": 8.9563724,
+    "fence_probes": 4.7687992,
+    "total_probes": 18.753618,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 1.674293292,
+    "meta_bytes_per_key": 1.369412
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.92615040083,
+    "speedup": 0.9932822941851149,
+    "lo": 0.9588181165380404,
+    "hi": 1.0138185743816341,
+    "root_probes": 2.273575,
+    "fence_probes": 4.7687892,
+    "total_probes": 12.0708314,
+    "chosen": "raw+fences",
+    "root_virtual": 34,
+    "est": [
+     8.9559877175,
+     3.58444216991,
+     7.85977482088,
+     2.40941658137,
+     6.49027635619
+    ],
+    "build_s": 1.913226083,
+    "meta_bytes_per_key": 1.370458
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.14499974132,
+    "speedup": 1.0854227215867986,
+    "lo": 0.9923821721782431,
+    "hi": 1.2338650659419934,
+    "root_probes": 8.9563724,
+    "fence_probes": 5.1652458,
+    "total_probes": 19.153332799999998,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.049933625,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 5.32680244058,
+    "speedup": 1.822302250331255,
+    "lo": 1.7221443527738975,
+    "hi": 1.927152335885382,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.038177458,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "genome_uniform": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 2.78137186496,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.2962776,
+    "total_probes": 17.2818978,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.058417416,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.6888147333399997,
+    "speedup": 0.9569216078954039,
+    "lo": 0.8706507571898447,
+    "hi": 1.0150098156603198,
+    "root_probes": 8.6706126,
+    "fence_probes": 3.2962776,
+    "total_probes": 16.996138000000002,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     8.63459570113,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.057772625,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 2.67790553915,
+    "speedup": 0.9753563415691343,
+    "lo": 0.9564591191614208,
+    "hi": 1.0108916668542698,
+    "root_probes": 8.6706126,
+    "fence_probes": 3.2962818,
+    "total_probes": 16.9961422,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     8.63459570113,
+     12.9825997953,
+     0,
+     0
+    ],
+    "build_s": 0.065320084,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 2.7830071254699997,
+    "speedup": 1.0200216087638632,
+    "lo": 0.95405154082414,
+    "hi": 1.132100861304695,
+    "root_probes": 2.8385638,
+    "fence_probes": 3.2962776,
+    "total_probes": 11.1640892,
+    "chosen": "raw+fences",
+    "root_virtual": 294,
+    "est": [
+     8.9559877175,
+     8.63459570113,
+     0,
+     2.96519959058,
+     0
+    ],
+    "build_s": 0.090729667,
+    "meta_bytes_per_key": 0.57215
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 2.6932489142300002,
+    "speedup": 0.9887838198468313,
+    "lo": 0.9485626925358801,
+    "hi": 1.0717776097708303,
+    "root_probes": 2.8385638,
+    "fence_probes": 3.2962818,
+    "total_probes": 11.1640934,
+    "chosen": "raw+fences",
+    "root_virtual": 294,
+    "est": [
+     8.9559877175,
+     8.63459570113,
+     12.9825997953,
+     2.96519959058,
+     6.83213920164
+    ],
+    "build_s": 0.149319958,
+    "meta_bytes_per_key": 0.57215
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.85913117865,
+    "speedup": 1.0531438348378774,
+    "lo": 1.0094642005296803,
+    "hi": 1.0871188209540203,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.610496,
+    "total_probes": 16.595551999999998,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 3.012543041,
+    "meta_bytes_per_key": 1.369412
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.89062886491,
+    "speedup": 1.0482342329804695,
+    "lo": 1.026444004340663,
+    "hi": 1.091193318354855,
+    "root_probes": 2.8385638,
+    "fence_probes": 2.6104894,
+    "total_probes": 10.477243399999999,
+    "chosen": "raw+fences",
+    "root_virtual": 294,
+    "est": [
+     8.9559877175,
+     8.63459570113,
+     12.9825997953,
+     2.96519959058,
+     6.83213920164
+    ],
+    "build_s": 3.126450209,
+    "meta_bytes_per_key": 1.370978
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.21656643082,
+    "speedup": 1.157163789455088,
+    "lo": 1.0779082391526278,
+    "hi": 1.2429946105086243,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.2962776,
+    "total_probes": 17.2818978,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.052614959,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 3.8949863627999997,
+    "speedup": 1.6621537382074094,
+    "lo": 1.3345537337410232,
+    "hi": 2.34024972534322,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.040329209,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "genome_window": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 2.53322477425,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.0502838,
+    "total_probes": 17.0349298,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.054996416,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.45247326433,
+    "speedup": 0.9678975028087629,
+    "lo": 0.9330747631581456,
+    "hi": 0.9867129334071962,
+    "root_probes": 7.2662502,
+    "fence_probes": 3.0502838,
+    "total_probes": 15.345143799999999,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     7.29068577277,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.055606042,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 2.34684490171,
+    "speedup": 0.9161310539283976,
+    "lo": 0.8717610644260207,
+    "hi": 0.952060798736291,
+    "root_probes": 7.2662502,
+    "fence_probes": 3.050279,
+    "total_probes": 15.345139,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     7.29068577277,
+     11.406345957,
+     0,
+     0
+    ],
+    "build_s": 0.064744208,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 2.42360166392,
+    "speedup": 0.9540243360433598,
+    "lo": 0.8969591149942483,
+    "hi": 0.9921472614818045,
+    "root_probes": 2.3764374,
+    "fence_probes": 3.0502838,
+    "total_probes": 10.454820999999999,
+    "chosen": "raw+fences",
+    "root_virtual": 130,
+    "est": [
+     8.9559877175,
+     7.29068577277,
+     0,
+     2.48822927329,
+     0
+    ],
+    "build_s": 0.061971125,
+    "meta_bytes_per_key": 0.571822
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 2.5342628652,
+    "speedup": 1.0097297410818797,
+    "lo": 0.9641926609842095,
+    "hi": 1.0467056514734383,
+    "root_probes": 2.3764374,
+    "fence_probes": 3.050279,
+    "total_probes": 10.454813399999999,
+    "chosen": "raw+fences",
+    "root_virtual": 130,
+    "est": [
+     8.9559877175,
+     7.29068577277,
+     11.406345957,
+     2.48822927329,
+     6.57625383828
+    ],
+    "build_s": 0.077635541,
+    "meta_bytes_per_key": 0.571822
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.6726159682499997,
+    "speedup": 1.0406043007165748,
+    "lo": 1.0046965987033356,
+    "hi": 1.1029941190290173,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.5489794,
+    "total_probes": 16.5345138,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 1.792419125,
+    "meta_bytes_per_key": 1.369412
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.56644784732,
+    "speedup": 0.989612926135975,
+    "lo": 0.9248918380807648,
+    "hi": 1.033238964327734,
+    "root_probes": 2.3764374,
+    "fence_probes": 2.5489292,
+    "total_probes": 9.954035999999999,
+    "chosen": "raw+fences",
+    "root_virtual": 130,
+    "est": [
+     8.9559877175,
+     7.29068577277,
+     11.406345957,
+     2.48822927329,
+     6.57625383828
+    ],
+    "build_s": 2.03906225,
+    "meta_bytes_per_key": 1.37065
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.53439661532,
+    "speedup": 1.4353060402051856,
+    "lo": 1.3447063145243352,
+    "hi": 1.5894056130538414,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.0502838,
+    "total_probes": 17.0349298,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.048802625,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 4.22078534064,
+    "speedup": 1.9381139354103103,
+    "lo": 1.6430307413373033,
+    "hi": 2.6075378784054064,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.040645125,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "history_uniform": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 2.98945112442,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.458441,
+    "total_probes": 16.445716400000002,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.053944666,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.96492032342,
+    "speedup": 0.9760807926623861,
+    "lo": 0.9578271069384958,
+    "hi": 1.0025546986914393,
+    "root_probes": 3.6449618,
+    "fence_probes": 2.458441,
+    "total_probes": 11.1346336,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     3.78096212897,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.053923375,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 3.16898961835,
+    "speedup": 1.000651981439416,
+    "lo": 0.92402437244594,
+    "hi": 1.139773649879596,
+    "root_probes": 3.6449618,
+    "fence_probes": 2.45844,
+    "total_probes": 11.1346288,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     3.78096212897,
+     6.70829068577,
+     0,
+     0
+    ],
+    "build_s": 0.060494,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 3.36888300181,
+    "speedup": 1.0776018311950482,
+    "lo": 1.042837108411901,
+    "hi": 1.126923592859748,
+    "root_probes": 2.1787558,
+    "fence_probes": 2.458441,
+    "total_probes": 9.6681514,
+    "chosen": "raw+fences",
+    "root_virtual": 20,
+    "est": [
+     8.9559877175,
+     3.78096212897,
+     0,
+     2.32343909928,
+     0
+    ],
+    "build_s": 0.055195875,
+    "meta_bytes_per_key": 0.571602
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 3.20793840647,
+    "speedup": 1.0147133358788745,
+    "lo": 0.9492174665844542,
+    "hi": 1.1429100155565974,
+    "root_probes": 2.1787558,
+    "fence_probes": 2.45844,
+    "total_probes": 9.6681504,
+    "chosen": "raw+fences",
+    "root_virtual": 20,
+    "est": [
+     8.9559877175,
+     3.78096212897,
+     6.70829068577,
+     2.32343909928,
+     6.28556806551
+    ],
+    "build_s": 0.06108775,
+    "meta_bytes_per_key": 0.571602
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 3.06175483072,
+    "speedup": 0.9984390204099011,
+    "lo": 0.8793510517659007,
+    "hi": 1.1051555138744995,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.072443,
+    "total_probes": 16.0595076,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 3.665655167,
+    "meta_bytes_per_key": 1.352076
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 3.21946091077,
+    "speedup": 1.0434761996572217,
+    "lo": 0.9665169619916586,
+    "hi": 1.1067399437632017,
+    "root_probes": 2.1787558,
+    "fence_probes": 2.0724458,
+    "total_probes": 9.2818382,
+    "chosen": "raw+fences",
+    "root_virtual": 20,
+    "est": [
+     8.9559877175,
+     3.78096212897,
+     6.70829068577,
+     2.32343909928,
+     6.28556806551
+    ],
+    "build_s": 3.769445708,
+    "meta_bytes_per_key": 1.353006
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 2.89004965113,
+    "speedup": 0.9878934049616714,
+    "lo": 0.966585023165622,
+    "hi": 1.020680559650754,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.458441,
+    "total_probes": 16.445716400000002,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.050266125,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 5.44052719631,
+    "speedup": 1.5970770608880565,
+    "lo": 1.1960452736573148,
+    "hi": 1.8714596513800594,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.038271417,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "history_window": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 3.2710775508,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.4514682,
+    "total_probes": 16.4371776,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.054744042,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 3.4995484707599998,
+    "speedup": 1.036708921084384,
+    "lo": 1.0197711696845904,
+    "hi": 1.069845766849558,
+    "root_probes": 3.7647852,
+    "fence_probes": 2.4514682,
+    "total_probes": 11.2455368,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     3.84851586489,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.052731,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 3.30211413803,
+    "speedup": 1.0080567334222714,
+    "lo": 0.9956723648766636,
+    "hi": 1.0197948256762621,
+    "root_probes": 3.7647852,
+    "fence_probes": 2.4514614,
+    "total_probes": 11.245529399999999,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     3.84851586489,
+     9.15046059365,
+     0,
+     0
+    ],
+    "build_s": 0.059840292,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 3.6558983215,
+    "speedup": 1.0609445955702712,
+    "lo": 0.987378900075732,
+    "hi": 1.1432430773233748,
+    "root_probes": 2.0962402,
+    "fence_probes": 2.4514682,
+    "total_probes": 9.577187599999998,
+    "chosen": "raw+fences",
+    "root_virtual": 20,
+    "est": [
+     8.9559877175,
+     3.84851586489,
+     0,
+     2.2548618219,
+     0
+    ],
+    "build_s": 0.054137208,
+    "meta_bytes_per_key": 0.571602
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 3.46760526955,
+    "speedup": 1.0665841665400992,
+    "lo": 0.9961463454519144,
+    "hi": 1.1490090175877143,
+    "root_probes": 2.0962402,
+    "fence_probes": 2.4514614,
+    "total_probes": 9.577180199999999,
+    "chosen": "raw+fences",
+    "root_virtual": 20,
+    "est": [
+     8.9559877175,
+     3.84851586489,
+     9.15046059365,
+     2.2548618219,
+     6.35005117707
+    ],
+    "build_s": 0.064655209,
+    "meta_bytes_per_key": 0.571602
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 3.35300813458,
+    "speedup": 1.0132200200544241,
+    "lo": 0.9600276264124892,
+    "hi": 1.0570214239220903,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.103759,
+    "total_probes": 16.0899166,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 3.771759292,
+    "meta_bytes_per_key": 1.349836
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 3.43751732186,
+    "speedup": 1.028594114906609,
+    "lo": 0.994732892269482,
+    "hi": 1.0616380282915303,
+    "root_probes": 2.0962402,
+    "fence_probes": 2.1037512,
+    "total_probes": 9.2298232,
+    "chosen": "raw+fences",
+    "root_virtual": 20,
+    "est": [
+     8.9559877175,
+     3.84851586489,
+     9.15046059365,
+     2.2548618219,
+     6.35005117707
+    ],
+    "build_s": 3.782034625,
+    "meta_bytes_per_key": 1.350854
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.6300682162999998,
+    "speedup": 1.0498832930494577,
+    "lo": 0.8614339531787784,
+    "hi": 1.2788650512011859,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.4514682,
+    "total_probes": 16.4371776,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.049431125,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 3.7356042671400003,
+    "speedup": 1.1644285434278572,
+    "lo": 1.0603436575327174,
+    "hi": 1.290655388108263,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.03787,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "libio_uniform": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 3.3245829379500003,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.555863,
+    "total_probes": 16.5412636,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.05570375,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 3.0327440069200002,
+    "speedup": 0.9370808461026588,
+    "lo": 0.880575055238411,
+    "hi": 1.038306952068819,
+    "root_probes": 6.5297316,
+    "fence_probes": 2.555863,
+    "total_probes": 14.1140484,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     6.51995905834,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.052929792,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 3.22313220427,
+    "speedup": 0.9773332610108685,
+    "lo": 0.9564921470492364,
+    "hi": 1.0032829365574987,
+    "root_probes": 6.5297316,
+    "fence_probes": 2.555882,
+    "total_probes": 14.1140588,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     6.51995905834,
+     10.8884339816,
+     0,
+     0
+    ],
+    "build_s": 0.059556166,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 3.25430038988,
+    "speedup": 0.9954727831471547,
+    "lo": 0.9562992222851125,
+    "hi": 1.053838117011516,
+    "root_probes": 2.3150206,
+    "fence_probes": 2.555863,
+    "total_probes": 9.899838800000001,
+    "chosen": "raw+fences",
+    "root_virtual": 117,
+    "est": [
+     8.9559877175,
+     6.51995905834,
+     0,
+     2.45547594678,
+     0
+    ],
+    "build_s": 0.066717459,
+    "meta_bytes_per_key": 0.571796
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 3.46272527733,
+    "speedup": 1.0327787542165523,
+    "lo": 1.0220630953271772,
+    "hi": 1.0488728702073498,
+    "root_probes": 2.3150206,
+    "fence_probes": 2.555882,
+    "total_probes": 9.899858,
+    "chosen": "raw+fences",
+    "root_virtual": 117,
+    "est": [
+     8.9559877175,
+     6.51995905834,
+     10.8884339816,
+     2.45547594678,
+     6.27226202661
+    ],
+    "build_s": 0.080990084,
+    "meta_bytes_per_key": 0.571796
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 3.15780324431,
+    "speedup": 0.962760118370028,
+    "lo": 0.9193212450936761,
+    "hi": 1.0112589106301966,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.1453892,
+    "total_probes": 16.131301999999998,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 3.434339417,
+    "meta_bytes_per_key": 1.352744
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 3.05864009435,
+    "speedup": 0.9352433477543834,
+    "lo": 0.8988146241305299,
+    "hi": 0.9795027778869989,
+    "root_probes": 2.3150206,
+    "fence_probes": 2.1453848,
+    "total_probes": 9.4900534,
+    "chosen": "raw+fences",
+    "root_virtual": 117,
+    "est": [
+     8.9559877175,
+     6.51995905834,
+     10.8884339816,
+     2.45547594678,
+     6.27226202661
+    ],
+    "build_s": 3.680810584,
+    "meta_bytes_per_key": 1.353956
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.2406574627499998,
+    "speedup": 1.023217422891056,
+    "lo": 0.9009986088622133,
+    "hi": 1.1456955750013484,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.555863,
+    "total_probes": 16.5412636,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.047784542,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 5.52247567468,
+    "speedup": 1.5798254347395573,
+    "lo": 1.2281920738141208,
+    "hi": 1.815306271294702,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.037993708,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "libio_window": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 3.40292851414,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.0693988,
+    "total_probes": 17.0542242,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.051903208,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 3.379559322,
+    "speedup": 1.0061243056231515,
+    "lo": 0.9904684971913972,
+    "hi": 1.0266397427002003,
+    "root_probes": 3.6012396,
+    "fence_probes": 3.0693988,
+    "total_probes": 11.699012799999998,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     3.62436028659,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.052885792,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 3.2346001294300004,
+    "speedup": 0.9497626137714,
+    "lo": 0.9393798059224052,
+    "hi": 0.9594806415532909,
+    "root_probes": 3.6012396,
+    "fence_probes": 3.0694044,
+    "total_probes": 11.6990184,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     3.62436028659,
+     8.0286591607,
+     0,
+     0
+    ],
+    "build_s": 0.059191958,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 3.41315770589,
+    "speedup": 1.0103232366421175,
+    "lo": 0.9849433100958137,
+    "hi": 1.0351979504533593,
+    "root_probes": 2.2548926,
+    "fence_probes": 3.0693988,
+    "total_probes": 10.3526658,
+    "chosen": "raw+fences",
+    "root_virtual": 25,
+    "est": [
+     8.9559877175,
+     3.62436028659,
+     0,
+     2.40941658137,
+     0
+    ],
+    "build_s": 0.054726584,
+    "meta_bytes_per_key": 0.571612
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 3.5291109615600003,
+    "speedup": 1.0111633198969507,
+    "lo": 0.9748932534224016,
+    "hi": 1.0370805460343,
+    "root_probes": 2.2548926,
+    "fence_probes": 3.0694044,
+    "total_probes": 10.352671399999998,
+    "chosen": "raw+fences",
+    "root_virtual": 25,
+    "est": [
+     8.9559877175,
+     3.62436028659,
+     8.0286591607,
+     2.40941658137,
+     6.36847492323
+    ],
+    "build_s": 0.066166292,
+    "meta_bytes_per_key": 0.571612
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 3.35856501876,
+    "speedup": 0.9984735795571821,
+    "lo": 0.9606810846950009,
+    "hi": 1.0202621105822565,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.5512406,
+    "total_probes": 16.5363038,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 2.940782375,
+    "meta_bytes_per_key": 1.250296
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 3.52976453436,
+    "speedup": 1.0444976325991375,
+    "lo": 0.9985090213035868,
+    "hi": 1.0722689581915978,
+    "root_probes": 2.2548926,
+    "fence_probes": 2.5512352,
+    "total_probes": 9.8349342,
+    "chosen": "raw+fences",
+    "root_virtual": 25,
+    "est": [
+     8.9559877175,
+     3.62436028659,
+     8.0286591607,
+     2.40941658137,
+     6.36847492323
+    ],
+    "build_s": 2.916285667,
+    "meta_bytes_per_key": 1.25132
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.25945666161,
+    "speedup": 1.0025583163242044,
+    "lo": 0.9049761924742743,
+    "hi": 1.124575371427435,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.0693988,
+    "total_probes": 17.0542242,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.051523375,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 4.27631723132,
+    "speedup": 1.3574049414497364,
+    "lo": 1.1055871967885886,
+    "hi": 1.8332026753953807,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.03800225,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "osm_uniform": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 2.45600426446,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 5.0755918,
+    "total_probes": 19.0576584,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.060319583,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.28232739845,
+    "speedup": 0.913335939848816,
+    "lo": 0.86578780727227,
+    "hi": 0.9752938899992744,
+    "root_probes": 8.9563724,
+    "fence_probes": 5.0755918,
+    "total_probes": 19.0576584,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     11.6683725691,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.057152583,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 2.11001153496,
+    "speedup": 0.8512085495535011,
+    "lo": 0.8377509228639091,
+    "hi": 0.8591237260835646,
+    "root_probes": 8.9563724,
+    "fence_probes": 5.0752868,
+    "total_probes": 19.0573534,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     11.6683725691,
+     15.8362333675,
+     0,
+     0
+    ],
+    "build_s": 0.065293083,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 2.16406872589,
+    "speedup": 0.8935080573034547,
+    "lo": 0.7700068501769511,
+    "hi": 0.9648972239838698,
+    "root_probes": 8.1745734,
+    "fence_probes": 5.0755918,
+    "total_probes": 18.2758594,
+    "chosen": "raw+fences",
+    "root_virtual": 1956,
+    "est": [
+     8.9559877175,
+     11.6683725691,
+     0,
+     8.18116683726,
+     0
+    ],
+    "build_s": 0.613012,
+    "meta_bytes_per_key": 0.575474
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 2.1883612227199998,
+    "speedup": 0.9323640410892763,
+    "lo": 0.863323717179665,
+    "hi": 1.053641773342276,
+    "root_probes": 8.1745734,
+    "fence_probes": 5.0752868,
+    "total_probes": 18.2755544,
+    "chosen": "raw+fences",
+    "root_virtual": 1956,
+    "est": [
+     8.9559877175,
+     11.6683725691,
+     15.8362333675,
+     8.18116683726,
+     12.2026612078
+    ],
+    "build_s": 1.171454375,
+    "meta_bytes_per_key": 0.575474
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.22696995688,
+    "speedup": 0.9175575004228591,
+    "lo": 0.8978387400693614,
+    "hi": 0.9488909111388831,
+    "root_probes": 8.9563724,
+    "fence_probes": 4.640773,
+    "total_probes": 18.620016800000002,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 1.80352575,
+    "meta_bytes_per_key": 1.369412
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.1171357574900003,
+    "speedup": 0.8923916176552934,
+    "lo": 0.7878441090878913,
+    "hi": 0.9603481908442809,
+    "root_probes": 8.1745734,
+    "fence_probes": 4.6407906,
+    "total_probes": 17.838238,
+    "chosen": "raw+fences",
+    "root_virtual": 1956,
+    "est": [
+     8.9559877175,
+     11.6683725691,
+     15.8362333675,
+     8.18116683726,
+     12.2026612078
+    ],
+    "build_s": 3.107288583,
+    "meta_bytes_per_key": 1.374302
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.46135041862,
+    "speedup": 1.457875823536075,
+    "lo": 1.3522712224891948,
+    "hi": 1.535657246024134,
+    "root_probes": 8.9563724,
+    "fence_probes": 5.0755918,
+    "total_probes": 19.0576584,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.051333875,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 4.2407317858999996,
+    "speedup": 1.739881260333307,
+    "lo": 1.4505154552879258,
+    "hi": 2.1658527937774408,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.040554542,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "osm_window": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 2.54562194666,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 4.3661374,
+    "total_probes": 18.3562722,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.058582792,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.2826811028900003,
+    "speedup": 0.9035654658082029,
+    "lo": 0.824282723718856,
+    "hi": 0.998047789494352,
+    "root_probes": 8.9563724,
+    "fence_probes": 4.3661374,
+    "total_probes": 18.3562722,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     10.5547594678,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.058109042,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 2.38434363631,
+    "speedup": 0.9474379338580259,
+    "lo": 0.8678684466869405,
+    "hi": 1.0529083380775872,
+    "root_probes": 8.9563724,
+    "fence_probes": 4.3661446,
+    "total_probes": 18.3562794,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     10.5547594678,
+     14.3817809621,
+     0,
+     0
+    ],
+    "build_s": 0.063930708,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 2.36120539535,
+    "speedup": 0.9597105556781977,
+    "lo": 0.9275554048581468,
+    "hi": 0.9829768985145815,
+    "root_probes": 3.4349356,
+    "fence_probes": 4.3661374,
+    "total_probes": 12.834728600000002,
+    "chosen": "raw+fences",
+    "root_virtual": 984,
+    "est": [
+     8.9559877175,
+     10.5547594678,
+     0,
+     3.55885363357,
+     0
+    ],
+    "build_s": 0.250136709,
+    "meta_bytes_per_key": 0.57353
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 2.41238892057,
+    "speedup": 0.9749994860109167,
+    "lo": 0.9314574404934983,
+    "hi": 1.0515400061020137,
+    "root_probes": 3.4349356,
+    "fence_probes": 4.3661446,
+    "total_probes": 12.8347358,
+    "chosen": "raw+fences",
+    "root_virtual": 984,
+    "est": [
+     8.9559877175,
+     10.5547594678,
+     14.3817809621,
+     3.55885363357,
+     7.64790174002
+    ],
+    "build_s": 0.419843041,
+    "meta_bytes_per_key": 0.57353
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.48735655892,
+    "speedup": 1.00529554372383,
+    "lo": 0.9709056803579933,
+    "hi": 1.0390783652814282,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.7735458,
+    "total_probes": 17.7609782,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 2.056880167,
+    "meta_bytes_per_key": 1.369412
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.4363098858599996,
+    "speedup": 0.979355426957351,
+    "lo": 0.8765487581287053,
+    "hi": 1.126868917138059,
+    "root_probes": 3.4349356,
+    "fence_probes": 3.7735376,
+    "total_probes": 12.2395334,
+    "chosen": "raw+fences",
+    "root_virtual": 984,
+    "est": [
+     8.9559877175,
+     10.5547594678,
+     14.3817809621,
+     3.55885363357,
+     7.64790174002
+    ],
+    "build_s": 2.607495083,
+    "meta_bytes_per_key": 1.372358
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.27320197485,
+    "speedup": 1.3223887903673106,
+    "lo": 1.2799345172643257,
+    "hi": 1.4051116291655075,
+    "root_probes": 8.9563724,
+    "fence_probes": 4.3661374,
+    "total_probes": 18.3562722,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.050945083,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 4.17323168176,
+    "speedup": 1.9090011521098116,
+    "lo": 1.4946012714935808,
+    "hi": 2.5588348290637075,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.040883458,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "planet_uniform": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 3.00219047322,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.2288028,
+    "total_probes": 17.213867999999998,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.05706725,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.7165968725000003,
+    "speedup": 0.9033899914497814,
+    "lo": 0.871132658251026,
+    "hi": 0.9353078403373543,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.2288028,
+    "total_probes": 17.213867999999998,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     12.5946775844,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.054078334,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 2.80607936106,
+    "speedup": 0.9282547281903827,
+    "lo": 0.8879364814720914,
+    "hi": 0.9646342132833787,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.2285424,
+    "total_probes": 17.2135744,
+    "chosen": "binary(fallback)",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     12.5946775844,
+     14.582395087,
+     0,
+     0
+    ],
+    "build_s": 0.061072542,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 3.06193537433,
+    "speedup": 1.0196402850546515,
+    "lo": 0.991441003329365,
+    "hi": 1.0483741484396476,
+    "root_probes": 5.139295,
+    "fence_probes": 3.2288028,
+    "total_probes": 13.3968704,
+    "chosen": "raw+fences",
+    "root_virtual": 1956,
+    "est": [
+     8.9559877175,
+     12.5946775844,
+     0,
+     5.24257932446,
+     0
+    ],
+    "build_s": 0.641818292,
+    "meta_bytes_per_key": 0.575474
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 2.96867469307,
+    "speedup": 0.9758272855275031,
+    "lo": 0.9284283228140622,
+    "hi": 1.0130966555622964,
+    "root_probes": 5.139295,
+    "fence_probes": 3.2285424,
+    "total_probes": 13.396621799999998,
+    "chosen": "raw+fences",
+    "root_virtual": 1956,
+    "est": [
+     8.9559877175,
+     12.5946775844,
+     14.582395087,
+     5.24257932446,
+     7.11156601842
+    ],
+    "build_s": 0.711564125,
+    "meta_bytes_per_key": 0.575474
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 3.17528871843,
+    "speedup": 1.0620732472554004,
+    "lo": 1.055770264016733,
+    "hi": 1.073875075143744,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.603618,
+    "total_probes": 16.5886522,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 2.4268205,
+    "meta_bytes_per_key": 1.369304
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.89900882349,
+    "speedup": 0.9424911909315371,
+    "lo": 0.8869345610362084,
+    "hi": 0.9784390650468711,
+    "root_probes": 5.139295,
+    "fence_probes": 2.6037074,
+    "total_probes": 12.7727974,
+    "chosen": "raw+fences",
+    "root_virtual": 1956,
+    "est": [
+     8.9559877175,
+     12.5946775844,
+     14.582395087,
+     5.24257932446,
+     7.11156601842
+    ],
+    "build_s": 3.578900041,
+    "meta_bytes_per_key": 1.374194
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.99419643258,
+    "speedup": 1.2790399628424793,
+    "lo": 1.0988219456154502,
+    "hi": 1.4326450322077275,
+    "root_probes": 8.9563724,
+    "fence_probes": 3.2288028,
+    "total_probes": 17.213867999999998,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.047788875,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 4.87662960039,
+    "speedup": 1.6913047904164802,
+    "lo": 1.3764588318043023,
+    "hi": 2.163818762338321,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.040283042,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "planet_window": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 3.08841562453,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 4.6190946,
+    "total_probes": 18.6058624,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.052552416,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.94307713577,
+    "speedup": 0.9343060360625096,
+    "lo": 0.8984520549457734,
+    "hi": 0.9652673546662539,
+    "root_probes": 7.5964232,
+    "fence_probes": 4.6190946,
+    "total_probes": 17.2451734,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     7.58546571136,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.051907667,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 2.96586628858,
+    "speedup": 0.962325556358979,
+    "lo": 0.9472756569314396,
+    "hi": 0.9796565683529769,
+    "root_probes": 7.5964232,
+    "fence_probes": 4.6190838,
+    "total_probes": 17.245158599999996,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     7.58546571136,
+     11.8884339816,
+     0,
+     0
+    ],
+    "build_s": 0.058355417,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 3.01593264498,
+    "speedup": 0.9865906050993324,
+    "lo": 0.9466375884601876,
+    "hi": 1.0388223485649528,
+    "root_probes": 3.166853,
+    "fence_probes": 4.6190946,
+    "total_probes": 12.8161482,
+    "chosen": "raw+fences",
+    "root_virtual": 206,
+    "est": [
+     8.9559877175,
+     7.58546571136,
+     0,
+     3.26407369498,
+     0
+    ],
+    "build_s": 0.069136541,
+    "meta_bytes_per_key": 0.571974
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 3.10647111327,
+    "speedup": 0.9984607406191404,
+    "lo": 0.9636582595741028,
+    "hi": 1.0166773492481662,
+    "root_probes": 3.166853,
+    "fence_probes": 4.6190838,
+    "total_probes": 12.816137399999999,
+    "chosen": "raw+fences",
+    "root_virtual": 206,
+    "est": [
+     8.9559877175,
+     7.58546571136,
+     11.8884339816,
+     3.26407369498,
+     7.20982599795
+    ],
+    "build_s": 0.096084833,
+    "meta_bytes_per_key": 0.571974
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.92145934214,
+    "speedup": 0.9606884766707822,
+    "lo": 0.9335189551073819,
+    "hi": 1.011749120404152,
+    "root_probes": 8.9563724,
+    "fence_probes": 4.0938296,
+    "total_probes": 18.076970000000003,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 1.724359083,
+    "meta_bytes_per_key": 1.369412
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 3.13501867126,
+    "speedup": 0.9996795742232849,
+    "lo": 0.9448898711792063,
+    "hi": 1.055450418157755,
+    "root_probes": 3.166853,
+    "fence_probes": 4.0938918,
+    "total_probes": 12.2872884,
+    "chosen": "raw+fences",
+    "root_virtual": 206,
+    "est": [
+     8.9559877175,
+     7.58546571136,
+     11.8884339816,
+     3.26407369498,
+     7.20982599795
+    ],
+    "build_s": 2.103761875,
+    "meta_bytes_per_key": 1.370802
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.4910723961200003,
+    "speedup": 1.1343815344427177,
+    "lo": 1.017234906620593,
+    "hi": 1.269501085064471,
+    "root_probes": 8.9563724,
+    "fence_probes": 4.6190946,
+    "total_probes": 18.6058624,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.046655875,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 5.81353352817,
+    "speedup": 1.9112454300294597,
+    "lo": 1.6678886587079442,
+    "hi": 2.2000184068700688,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.037684791,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "stack_uniform": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 3.4162057383,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.2911238,
+    "total_probes": 16.277485,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.053833083,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 3.31777206003,
+    "speedup": 1.0064923016059086,
+    "lo": 0.9664363667699438,
+    "hi": 1.049940588140104,
+    "root_probes": 3.3366112,
+    "fence_probes": 2.2911238,
+    "total_probes": 10.657859,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     3.31627430911,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.0536745,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 3.3698902782499998,
+    "speedup": 1.014051322533721,
+    "lo": 0.9794532723708469,
+    "hi": 1.0845600589000766,
+    "root_probes": 3.3366112,
+    "fence_probes": 2.2911238,
+    "total_probes": 10.657859,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     3.31627430911,
+     9.05220061412,
+     0,
+     0
+    ],
+    "build_s": 0.059027,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 3.42334427373,
+    "speedup": 1.0206577984511218,
+    "lo": 0.9423530359743498,
+    "hi": 1.0963488264144534,
+    "root_probes": 2.1694306,
+    "fence_probes": 2.2911238,
+    "total_probes": 9.4904646,
+    "chosen": "raw+fences",
+    "root_virtual": 13,
+    "est": [
+     8.9559877175,
+     3.31627430911,
+     0,
+     2.3142272262,
+     0
+    ],
+    "build_s": 0.055090167,
+    "meta_bytes_per_key": 0.571588
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 3.38696211666,
+    "speedup": 1.0250719461355717,
+    "lo": 0.9707262440429256,
+    "hi": 1.0846971980602125,
+    "root_probes": 2.1694306,
+    "fence_probes": 2.2911238,
+    "total_probes": 9.4904646,
+    "chosen": "raw+fences",
+    "root_virtual": 13,
+    "est": [
+     8.9559877175,
+     3.31627430911,
+     9.05220061412,
+     2.3142272262,
+     6.29580348004
+    ],
+    "build_s": 0.062826083,
+    "meta_bytes_per_key": 0.571588
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 3.37028485563,
+    "speedup": 1.006336879510643,
+    "lo": 0.9817328592565729,
+    "hi": 1.021692907882907,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.0321702,
+    "total_probes": 16.019078,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 4.038119375,
+    "meta_bytes_per_key": 1.307788
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 3.62472694479,
+    "speedup": 1.0916199845405565,
+    "lo": 1.0558494904632754,
+    "hi": 1.1432276803394466,
+    "root_probes": 2.1694306,
+    "fence_probes": 2.0321706,
+    "total_probes": 9.2320906,
+    "chosen": "raw+fences",
+    "root_virtual": 13,
+    "est": [
+     8.9559877175,
+     3.31627430911,
+     9.05220061412,
+     2.3142272262,
+     6.29580348004
+    ],
+    "build_s": 4.063676333,
+    "meta_bytes_per_key": 1.308792
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.34354246801,
+    "speedup": 1.0016899795695786,
+    "lo": 0.8857341846838109,
+    "hi": 1.1594012267566962,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.2911238,
+    "total_probes": 16.277485,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.052937,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 4.449890121089999,
+    "speedup": 1.3042324698888383,
+    "lo": 1.3024216358166631,
+    "hi": 1.3077000874244111,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.037877958,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "stack_window": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 3.524125578,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.0792102,
+    "total_probes": 16.066178999999998,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.052758708,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 3.6018614059600003,
+    "speedup": 1.022648651810431,
+    "lo": 1.002469976460147,
+    "hi": 1.0384978193391927,
+    "root_probes": 6.2656544,
+    "fence_probes": 2.0792102,
+    "total_probes": 13.375130200000001,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     6.29375639713,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.053349042,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 3.41923165156,
+    "speedup": 0.9665557556628618,
+    "lo": 0.9121535159220923,
+    "hi": 1.0203182340864794,
+    "root_probes": 6.2656544,
+    "fence_probes": 2.0792102,
+    "total_probes": 13.375130200000001,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     6.29375639713,
+     11.0491299898,
+     0,
+     0
+    ],
+    "build_s": 0.064065458,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 3.70111760672,
+    "speedup": 1.039817664278427,
+    "lo": 1.0309137411038418,
+    "hi": 1.0502229630592352,
+    "root_probes": 2.0798158,
+    "fence_probes": 2.0792102,
+    "total_probes": 9.189519,
+    "chosen": "raw+fences",
+    "root_virtual": 41,
+    "est": [
+     8.9559877175,
+     6.29375639713,
+     0,
+     2.24974411464,
+     0
+    ],
+    "build_s": 0.055408417,
+    "meta_bytes_per_key": 0.571644
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 3.67634274882,
+    "speedup": 1.0342814711873387,
+    "lo": 0.9217872869155458,
+    "hi": 1.1076142317309896,
+    "root_probes": 2.0798158,
+    "fence_probes": 2.0792102,
+    "total_probes": 9.189519,
+    "chosen": "raw+fences",
+    "root_virtual": 41,
+    "est": [
+     8.9559877175,
+     6.29375639713,
+     11.0491299898,
+     2.24974411464,
+     6.27328556807
+    ],
+    "build_s": 0.069447417,
+    "meta_bytes_per_key": 0.571644
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 3.3987794764,
+    "speedup": 0.9666106721567413,
+    "lo": 0.9328339862368953,
+    "hi": 1.0038730270066047,
+    "root_probes": 8.9563724,
+    "fence_probes": 1.9816218,
+    "total_probes": 15.968245199999998,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 2.093385667,
+    "meta_bytes_per_key": 0.818724
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 3.59666560325,
+    "speedup": 1.0518395376821528,
+    "lo": 1.001023880779795,
+    "hi": 1.142415366137404,
+    "root_probes": 2.0798158,
+    "fence_probes": 1.9816218,
+    "total_probes": 9.0916886,
+    "chosen": "raw+fences",
+    "root_virtual": 41,
+    "est": [
+     8.9559877175,
+     6.29375639713,
+     11.0491299898,
+     2.24974411464,
+     6.27328556807
+    ],
+    "build_s": 2.147090583,
+    "meta_bytes_per_key": 0.819784
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.45470707805,
+    "speedup": 1.004105511579173,
+    "lo": 0.8284291283951543,
+    "hi": 1.2000254720179553,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.0792102,
+    "total_probes": 16.066178999999998,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.049500458,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 4.363688725359999,
+    "speedup": 1.1472229777575127,
+    "lo": 0.9081705204490303,
+    "hi": 1.368919689265623,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.039804917,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "wise_uniform": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 2.8056196561699998,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.416268,
+    "total_probes": 16.4026098,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.0575875,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.74843165379,
+    "speedup": 0.9896193401498365,
+    "lo": 0.9788247752579903,
+    "hi": 1.000042376579654,
+    "root_probes": 5.734211,
+    "fence_probes": 2.416268,
+    "total_probes": 13.180369800000001,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     5.7451381781,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.056921792,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 2.55493525986,
+    "speedup": 0.9044409335124539,
+    "lo": 0.8474724997175682,
+    "hi": 0.958658461788834,
+    "root_probes": 5.734211,
+    "fence_probes": 2.4162694,
+    "total_probes": 13.1803712,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     5.7451381781,
+     8.49437052201,
+     0,
+     0
+    ],
+    "build_s": 0.06743775,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 2.6836341518399998,
+    "speedup": 0.9610009714987495,
+    "lo": 0.941114726899974,
+    "hi": 0.9859034722363759,
+    "root_probes": 2.6509894,
+    "fence_probes": 2.416268,
+    "total_probes": 10.096924000000001,
+    "chosen": "raw+fences",
+    "root_virtual": 89,
+    "est": [
+     8.9559877175,
+     5.7451381781,
+     0,
+     2.73080859775,
+     0
+    ],
+    "build_s": 0.064792041,
+    "meta_bytes_per_key": 0.57174
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 2.7659408953,
+    "speedup": 0.9976457607153278,
+    "lo": 0.9518855085388593,
+    "hi": 1.0731533007170075,
+    "root_probes": 2.6509894,
+    "fence_probes": 2.4162694,
+    "total_probes": 10.0969254,
+    "chosen": "raw+fences",
+    "root_virtual": 89,
+    "est": [
+     8.9559877175,
+     5.7451381781,
+     8.49437052201,
+     2.73080859775,
+     6.73592630502
+    ],
+    "build_s": 0.07708825,
+    "meta_bytes_per_key": 0.57174
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.57484417624,
+    "speedup": 0.9366338361691445,
+    "lo": 0.8991878041341836,
+    "hi": 0.9851717387535015,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.0587232,
+    "total_probes": 16.0444716,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 4.201473041,
+    "meta_bytes_per_key": 1.350432
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.72671790215,
+    "speedup": 0.9620675888701694,
+    "lo": 0.8660129595359535,
+    "hi": 1.0730314306001514,
+    "root_probes": 2.6509894,
+    "fence_probes": 2.058721,
+    "total_probes": 9.7391596,
+    "chosen": "raw+fences",
+    "root_virtual": 89,
+    "est": [
+     8.9559877175,
+     5.7451381781,
+     8.49437052201,
+     2.73080859775,
+     6.73592630502
+    ],
+    "build_s": 4.207647417,
+    "meta_bytes_per_key": 1.351588
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 4.06743950387,
+    "speedup": 1.3039957915386011,
+    "lo": 1.0360670705801003,
+    "hi": 1.4652688804532528,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.416268,
+    "total_probes": 16.4026098,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.049767583,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 3.7591812127399997,
+    "speedup": 1.372357704966917,
+    "lo": 1.2050051861360176,
+    "hi": 1.5838847358339891,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.040772833,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  },
+  "wise_window": {
+   "packed_rank": {
+    "runs": 3,
+    "mops": 3.08450669253,
+    "speedup": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.3181418,
+    "total_probes": 16.3047296,
+    "chosen": "binary",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.057439125,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_raw": {
+    "runs": 3,
+    "mops": 2.9620067095900002,
+    "speedup": 0.9861244312821996,
+    "lo": 0.927824362492427,
+    "hi": 1.0567751206713574,
+    "root_probes": 2.9427564,
+    "fence_probes": 2.3181418,
+    "total_probes": 10.2910412,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     2.98874104401,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.059396125,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_flow": {
+    "runs": 3,
+    "mops": 3.0911647061800003,
+    "speedup": 1.0064324572946721,
+    "lo": 0.9402144318208602,
+    "hi": 1.0819085686822274,
+    "root_probes": 2.9427564,
+    "fence_probes": 2.3181396,
+    "total_probes": 10.291039,
+    "chosen": "raw+ranks",
+    "root_virtual": 0,
+    "est": [
+     8.9559877175,
+     2.98874104401,
+     8.23848515865,
+     0,
+     0
+    ],
+    "build_s": 0.06105775,
+    "meta_bytes_per_key": 0.570584
+   },
+   "packed_rank_root_vf4": {
+    "runs": 3,
+    "mops": 3.0085465291499998,
+    "speedup": 0.984550507606132,
+    "lo": 0.964548664092276,
+    "hi": 1.0144224262334818,
+    "root_probes": 2.1787462,
+    "fence_probes": 2.3181418,
+    "total_probes": 9.5270248,
+    "chosen": "raw+fences",
+    "root_virtual": 13,
+    "est": [
+     8.9559877175,
+     2.98874104401,
+     0,
+     2.34493346981,
+     0
+    ],
+    "build_s": 0.05699825,
+    "meta_bytes_per_key": 0.571588
+   },
+   "packed_rank_root_fusion": {
+    "runs": 3,
+    "mops": 3.1777532683,
+    "speedup": 1.0265278085982685,
+    "lo": 0.961149717285424,
+    "hi": 1.0924124899498386,
+    "root_probes": 2.1787462,
+    "fence_probes": 2.3181396,
+    "total_probes": 9.5270226,
+    "chosen": "raw+fences",
+    "root_virtual": 13,
+    "est": [
+     8.9559877175,
+     2.98874104401,
+     8.23848515865,
+     2.34493346981,
+     6.31525076766
+    ],
+    "build_s": 0.066966,
+    "meta_bytes_per_key": 0.571588
+   },
+   "packed_rank_vp10": {
+    "runs": 3,
+    "mops": 2.9851417560200004,
+    "speedup": 0.9680649703258402,
+    "lo": 0.9255316742102462,
+    "hi": 1.0128642940641626,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.0166512,
+    "total_probes": 16.0033856,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 4.285809625,
+    "meta_bytes_per_key": 1.35288
+   },
+   "packed_rank_vp10_root_fusion": {
+    "runs": 3,
+    "mops": 2.81276413508,
+    "speedup": 0.9296466084328783,
+    "lo": 0.9047742539734679,
+    "hi": 0.9543762383482975,
+    "root_probes": 2.1787462,
+    "fence_probes": 2.0166424,
+    "total_probes": 9.2256778,
+    "chosen": "raw+fences",
+    "root_virtual": 13,
+    "est": [
+     8.9559877175,
+     2.98874104401,
+     8.23848515865,
+     2.34493346981,
+     6.31525076766
+    ],
+    "build_s": 4.362419958,
+    "meta_bytes_per_key": 1.353884
+   },
+   "raw_rank": {
+    "runs": 3,
+    "mops": 3.8121129007600003,
+    "speedup": 1.152255191970916,
+    "lo": 0.9579101369452654,
+    "hi": 1.2934571815005276,
+    "root_probes": 8.9563724,
+    "fence_probes": 2.3181418,
+    "total_probes": 16.3047296,
+    "chosen": "-",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.050878917,
+    "meta_bytes_per_key": 0.570584
+   },
+   "sorted_vector": {
+    "runs": 3,
+    "mops": 5.61534257591,
+    "speedup": 1.6068104176996738,
+    "lo": 1.1529025852833485,
+    "hi": 1.9052964512012316,
+    "root_probes": 0.0,
+    "fence_probes": 0.0,
+    "total_probes": 0.0,
+    "chosen": "n/a",
+    "root_virtual": 0,
+    "est": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "build_s": 0.040279,
+    "meta_bytes_per_key": 1.2e-05
+   }
+  }
+ },
+ "verdicts": {
+  "books_uniform": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.6002982
+   ],
+   "total_probes": [
+    16.2165386,
+    9.860875
+   ],
+   "speedup": [
+    1.0445676637686139,
+    0.8942074717515923,
+    1.1550105169738256
+   ],
+   "chosen": "raw+fences"
+  },
+  "books_window": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.101552
+   ],
+   "total_probes": [
+    16.9369816,
+    10.0820376
+   ],
+   "speedup": [
+    0.9770471832224139,
+    0.9190057304070262,
+    1.0259455687673205
+   ],
+   "chosen": "raw+fences"
+  },
+  "covid_uniform": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.4392242
+   ],
+   "total_probes": [
+    17.0483266,
+    10.5316752
+   ],
+   "speedup": [
+    0.9583820767870379,
+    0.9196351552186505,
+    0.9994054868779386
+   ],
+   "chosen": "raw+fences"
+  },
+  "covid_window": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.2767416
+   ],
+   "total_probes": [
+    16.5802474,
+    9.9007216
+   ],
+   "speedup": [
+    1.0303989874813637,
+    0.9917527404600874,
+    1.0677332464361697
+   ],
+   "chosen": "raw+fences"
+  },
+  "fb_uniform": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.078522
+   ],
+   "total_probes": [
+    16.585559,
+    9.7077438
+   ],
+   "speedup": [
+    1.0762661544234837,
+    1.0347787058656805,
+    1.102907446754988
+   ],
+   "chosen": "raw+fences"
+  },
+  "fb_window": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.273575
+   ],
+   "total_probes": [
+    19.153332799999998,
+    12.470599400000001
+   ],
+   "speedup": [
+    1.029329822233421,
+    0.9979985378289862,
+    1.069884557757834
+   ],
+   "chosen": "raw+fences"
+  },
+  "genome_uniform": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.8385638
+   ],
+   "total_probes": [
+    17.2818978,
+    11.1640934
+   ],
+   "speedup": [
+    0.9887838198468313,
+    0.9485626925358801,
+    1.0717776097708303
+   ],
+   "chosen": "raw+fences"
+  },
+  "genome_window": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.3764374
+   ],
+   "total_probes": [
+    17.0349298,
+    10.454813399999999
+   ],
+   "speedup": [
+    1.0097297410818797,
+    0.9641926609842095,
+    1.0467056514734383
+   ],
+   "chosen": "raw+fences"
+  },
+  "history_uniform": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.1787558
+   ],
+   "total_probes": [
+    16.445716400000002,
+    9.6681504
+   ],
+   "speedup": [
+    1.0147133358788745,
+    0.9492174665844542,
+    1.1429100155565974
+   ],
+   "chosen": "raw+fences"
+  },
+  "history_window": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.0962402
+   ],
+   "total_probes": [
+    16.4371776,
+    9.577180199999999
+   ],
+   "speedup": [
+    1.0665841665400992,
+    0.9961463454519144,
+    1.1490090175877143
+   ],
+   "chosen": "raw+fences"
+  },
+  "libio_uniform": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.3150206
+   ],
+   "total_probes": [
+    16.5412636,
+    9.899858
+   ],
+   "speedup": [
+    1.0327787542165523,
+    1.0220630953271772,
+    1.0488728702073498
+   ],
+   "chosen": "raw+fences"
+  },
+  "libio_window": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.2548926
+   ],
+   "total_probes": [
+    17.0542242,
+    10.352671399999998
+   ],
+   "speedup": [
+    1.0111633198969507,
+    0.9748932534224016,
+    1.0370805460343
+   ],
+   "chosen": "raw+fences"
+  },
+  "osm_uniform": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    8.1745734
+   ],
+   "total_probes": [
+    19.0576584,
+    18.2755544
+   ],
+   "speedup": [
+    0.9323640410892763,
+    0.863323717179665,
+    1.053641773342276
+   ],
+   "chosen": "raw+fences"
+  },
+  "osm_window": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    3.4349356
+   ],
+   "total_probes": [
+    18.3562722,
+    12.8347358
+   ],
+   "speedup": [
+    0.9749994860109167,
+    0.9314574404934983,
+    1.0515400061020137
+   ],
+   "chosen": "raw+fences"
+  },
+  "planet_uniform": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    5.139295
+   ],
+   "total_probes": [
+    17.213867999999998,
+    13.396621799999998
+   ],
+   "speedup": [
+    0.9758272855275031,
+    0.9284283228140622,
+    1.0130966555622964
+   ],
+   "chosen": "raw+fences"
+  },
+  "planet_window": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    3.166853
+   ],
+   "total_probes": [
+    18.6058624,
+    12.816137399999999
+   ],
+   "speedup": [
+    0.9984607406191404,
+    0.9636582595741028,
+    1.0166773492481662
+   ],
+   "chosen": "raw+fences"
+  },
+  "stack_uniform": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.1694306
+   ],
+   "total_probes": [
+    16.277485,
+    9.4904646
+   ],
+   "speedup": [
+    1.0250719461355717,
+    0.9707262440429256,
+    1.0846971980602125
+   ],
+   "chosen": "raw+fences"
+  },
+  "stack_window": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.0798158
+   ],
+   "total_probes": [
+    16.066178999999998,
+    9.189519
+   ],
+   "speedup": [
+    1.0342814711873387,
+    0.9217872869155458,
+    1.1076142317309896
+   ],
+   "chosen": "raw+fences"
+  },
+  "wise_uniform": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.6509894
+   ],
+   "total_probes": [
+    16.4026098,
+    10.0969254
+   ],
+   "speedup": [
+    0.9976457607153278,
+    0.9518855085388593,
+    1.0731533007170075
+   ],
+   "chosen": "raw+fences"
+  },
+  "wise_window": {
+   "synergy_on_estimate": false,
+   "measured_root_probes": [
+    8.9563724,
+    2.1787462
+   ],
+   "total_probes": [
+    16.3047296,
+    9.5270226
+   ],
+   "speedup": [
+    1.0265278085982685,
+    0.961149717285424,
+    1.0924124899498386
+   ],
+   "chosen": "raw+fences"
+  }
+ }
+}

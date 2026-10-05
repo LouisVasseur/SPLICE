@@ -1,0 +1,22 @@
+dataset         variant                  n   Mops speedup    lo    hi root/op fence/op total/op            chosen  virt   est bin/raw/flow/vf/fus build s meta B/key
+fb              binary root              1  0.648   1.000  1.00  1.00   15.66     5.14    25.82            binary     0    0.0/ 0.0/ 0.0/ 0.0/ 0.0    6.63       0.57
+fb              root raw                 1  0.611   0.944   nan   nan   10.81     5.14    20.97         raw+ranks     0   15.7/10.8/ 0.0/ 0.0/ 0.0    6.42       0.57
+fb              root flow                1  0.597   0.922   nan   nan   10.81     5.14    20.97         raw+ranks     0   15.7/10.8/21.0/ 0.0/ 0.0    7.00       0.57
+fb              root fences              1  0.812   1.253   nan   nan    3.42     5.14    13.59        raw+fences   973   15.7/10.8/ 0.0/ 3.5/ 0.0    9.98       0.57
+fb              root fusion              1  0.723   1.117   nan   nan    3.42     5.14    13.59        raw+fences   973   15.7/10.8/21.0/ 3.5/ 6.9   26.70       0.57
+fb              root fences a=0.04       1  0.651   1.005   nan   nan    3.42     5.14    13.59        raw+fences   973   15.7/10.8/ 0.0/ 3.5/ 0.0    9.99       0.57
+fb              region vp + root fusion  1  0.727   1.123   nan   nan    3.42     4.74    13.19        raw+fences   973   15.7/10.8/21.0/ 3.5/ 6.9  183.12       1.37
+fb              region vp + root fences a=0.04 1  0.721   1.113   nan   nan    3.42     4.74    13.19        raw+fences   973   15.7/10.8/ 0.0/ 3.5/ 0.0  161.02       1.37
+
+planet          binary root              1  0.580   1.000  1.00  1.00   15.66     3.99    24.68            binary     0    0.0/ 0.0/ 0.0/ 0.0/ 0.0    6.26       0.57
+planet          root raw                 1  0.533   0.919   nan   nan   15.66     3.99    24.68  binary(fallback)     0   15.7/25.8/ 0.0/ 0.0/ 0.0    6.40       0.57
+planet          root flow                1  0.571   0.985   nan   nan   15.66     3.99    24.68  binary(fallback)     0   15.7/25.8/27.9/ 0.0/ 0.0    7.04       0.57
+planet          root fences              1  0.643   1.110   nan   nan   13.69     3.99    22.70        raw+fences195316   15.7/25.8/ 0.0/13.7/ 0.0 2067.78       0.58
+planet          root fusion              1  0.681   1.175   nan   nan    3.32     3.99    12.34       flow+fences111688   15.7/25.8/27.9/13.7/ 7.5 2973.14       0.57
+planet          root fences a=0.04       1  0.556   0.959   nan   nan   15.66     3.99    24.68  binary(fallback)     0   15.7/25.8/ 0.0/25.2/ 0.0    7.92       0.57
+planet          region vp + root fusion  1  0.667   1.150   nan   nan    3.32     3.42    11.76       flow+fences111688   15.7/25.8/27.9/13.7/ 7.5 5757.60       1.37
+planet          region vp + root fences a=0.04 1  0.530   0.914   nan   nan   15.66     3.42    24.10  binary(fallback)     0   15.7/25.8/ 0.0/25.2/ 0.0  190.30       1.36
+
+VERDICTS (root level): synergy = fusion candidate beats raw, flow, fences AND binary on the estimate; probes = measured root probes/op
+  fb               synergy=False root probes 15.66 -> 3.42 (better), total probes 25.82 -> 13.59, throughput x1.117 [nan, nan], chosen raw+fences
+  planet           synergy=True  root probes 15.66 -> 3.32 (better), total probes 24.68 -> 12.34, throughput x1.175 [nan, nan], chosen flow+fences

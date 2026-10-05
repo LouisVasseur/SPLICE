@@ -1,0 +1,15 @@
+{
+  "weights": "results/aidb_pilot/flows/planet_uniform_2D2H2L.txt",
+  "keys": 2000000,
+  "training_keys": 4096,
+  "steps": 200,
+  "seed": 1000000007,
+  "shifts": 64,
+  "monotone": true,
+  "best_nll": 3.3772372717559014,
+  "train_seconds": 2.3667588233947754,
+  "unordered_transformed_pairs": 0,
+  "tail_conflict_degree_raw": 18,
+  "tail_conflict_degree_transformed": 9,
+  "note": "Stand-in trainer (1-D likelihood, Adam), not the official BNAF; format-compatible with luffy06/NFL weights."
+}

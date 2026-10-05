@@ -1,0 +1,2069 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>SCALE-LI · numbered results</title><style>
+:root{font-family:system-ui,sans-serif;color:#17242f;background:#f6f8fa}body{max-width:1080px;margin:40px auto;padding:0 24px}h1{font-size:38px}h2{font-size:27px}p{line-height:1.55}nav{position:sticky;top:0;background:#fff;padding:16px;border-bottom:1px solid #ccd4da}nav a{margin-right:20px;color:#145a61}section{background:white;margin:25px 0;padding:28px;border:1px solid #dde4e8;border-radius:8px;scroll-margin-top:70px}.eyebrow{font-size:12px;letter-spacing:.08em;font-weight:700;color:#145a61}.notice{border-left:3px solid #a96420;padding-left:15px}table{border-collapse:collapse;width:100%;font-size:15px;margin:20px 0}th,td{text-align:left;padding:12px;border-bottom:1px solid #dbe1e5}th{background:#f1f5f6}pre{overflow:auto;max-height:480px;font-size:12px;line-height:1.5;padding:15px;background:#f2f5f7}code{font-size:14px}svg{width:100%;color:#176771}a{color:#176771}footer{font-size:13px;margin:30px 0}@media print{nav,details{display:none}section{break-inside:avoid}body{max-width:none}}</style><h1>SCALE-LI · results you can step through</h1><p class="eyebrow">SAVED REHEARSAL OUTPUT</p><p>Numbers are separated into published evidence, teaching demonstrations, and native prototype measurements. A successful arithmetic check is not a paper reproduction.</p><nav><a href="#L01">L01</a><a href="#L02">L02</a><a href="#L03">L03</a><a href="#L04">L04</a><a href="#L05">L05</a><a href="#L06">L06</a><a href="#L07">L07</a></nav><section id="L01"><p class="eyebrow">L01 · TEACHING DEMO, not original RMI</p><h2>2018: rank prediction and a two-stage teaching model</h2><svg viewBox="0 0 900 181" role="img"><title>Stored-key mean absolute rank error</title><text x="8" y="54" font-size="17">Single affine</text><rect x="220" y="35" width="480.00000000000006" height="30" rx="2" fill="currentColor"/><text x="710.0" y="56" font-size="16">34.52 ranks</text><text x="8" y="112" font-size="17">Two-stage toy</text><rect x="220" y="93" width="472.15761468169774" height="30" rx="2" fill="currentColor"/><text x="702.1576146816977" y="114" font-size="16">33.95 ranks</text></svg><p>20,482 exact correction checks passed. This is a geometric teaching experiment, not a timing benchmark.</p><p class="notice">More local models can reduce fitting error. This does not measure native throughput or reproduce the published RMI architecture/training.</p><p>Repeat: <code>python3 walkthrough.py demo 01</code> · <a href="01/result.json">Raw result and environment</a></p><details><summary>Inspect all fields</summary><pre>{
+  &quot;status&quot;: &quot;TEACHING DEMO, not original RMI&quot;,
+  &quot;dataset&quot;: &quot;bundled synthetic dense/sparse fixture&quot;,
+  &quot;keys&quot;: 16384,
+  &quot;single_model_mae_rank&quot;: 34.51647451587729,
+  &quot;two_stage_mae_rank&quot;: 33.95253390549631,
+  &quot;single_model_max_rank_error&quot;: 89.04459869969833,
+  &quot;two_stage_max_rank_error&quot;: 80.4600817200635,
+  &quot;capacity_sweep&quot;: [
+    {
+      &quot;leaf_models&quot;: 1,
+      &quot;mae_rank&quot;: 34.51647451587729,
+      &quot;max_error_rank&quot;: 89.04459869969833
+    },
+    {
+      &quot;leaf_models&quot;: 16,
+      &quot;mae_rank&quot;: 33.95253390549631,
+      &quot;max_error_rank&quot;: 80.4600817200635
+    },
+    {
+      &quot;leaf_models&quot;: 128,
+      &quot;mae_rank&quot;: 24.588955048151202,
+      &quot;max_error_rank&quot;: 75.04219084121678
+    },
+    {
+      &quot;leaf_models&quot;: 512,
+      &quot;mae_rank&quot;: 18.54514457435211,
+      &quot;max_error_rank&quot;: 68.09786414219707
+    }
+  ],
+  &quot;root_models&quot;: 1,
+  &quot;leaf_models&quot;: 16,
+  &quot;exact_query_checks&quot;: 20482,
+  &quot;verified&quot;: true,
+  &quot;samples&quot;: [
+    {
+      &quot;key&quot;: 1025,
+      &quot;rank&quot;: 0,
+      &quot;single_prediction&quot;: 68.98615349251122,
+      &quot;two_stage_prediction&quot;: 69.33342000153539
+    },
+    {
+      &quot;key&quot;: 1153,
+      &quot;rank&quot;: 64,
+      &quot;single_prediction&quot;: 68.99042259687285,
+      &quot;two_stage_prediction&quot;: 69.33764948071084
+    },
+    {
+      &quot;key&quot;: 38895,
+      &quot;rank&quot;: 128,
+      &quot;single_prediction&quot;: 70.24920804075313,
+      &quot;two_stage_prediction&quot;: 70.58475106695823
+    },
+    {
+      &quot;key&quot;: 4520079,
+      &quot;rank&quot;: 192,
+      &quot;single_prediction&quot;: 219.7073499131819,
+      &quot;two_stage_prediction&quot;: 218.65564488992712
+    },
+    {
+      &quot;key&quot;: 7419745,
+      &quot;rank&quot;: 256,
+      &quot;single_prediction&quot;: 316.41810591218973,
+      &quot;two_stage_prediction&quot;: 314.468746161393
+    },
+    {
+      &quot;key&quot;: 7419874,
+      &quot;rank&quot;: 320,
+      &quot;single_prediction&quot;: 316.4224083689292,
+      &quot;two_stage_prediction&quot;: 314.4730086833746
+    },
+    {
+      &quot;key&quot;: 7512848,
+      &quot;rank&quot;: 384,
+      &quot;single_prediction&quot;: 319.52331234485325,
+      &quot;two_stage_prediction&quot;: 317.54513053382675
+    },
+    {
+      &quot;key&quot;: 10828880,
+      &quot;rank&quot;: 448,
+      &quot;single_prediction&quot;: 430.1208644894458,
+      &quot;two_stage_prediction&quot;: 427.11613279250815
+    },
+    {
+      &quot;key&quot;: 15408163,
+      &quot;rank&quot;: 512,
+      &quot;single_prediction&quot;: 582.850841274153,
+      &quot;two_stage_prediction&quot;: 578.4284928469774
+    },
+    {
+      &quot;key&quot;: 15408290,
+      &quot;rank&quot;: 576,
+      &quot;single_prediction&quot;: 582.8550770261368,
+      &quot;two_stage_prediction&quot;: 578.4326892833467
+    },
+    {
+      &quot;key&quot;: 15456496,
+      &quot;rank&quot;: 640,
+      &quot;single_prediction&quot;: 584.4628617515804,
+      &quot;two_stage_prediction&quot;: 580.0255507921869
+    },
+    {
+      &quot;key&quot;: 20407376,
+      &quot;rank&quot;: 704,
+      &quot;single_prediction&quot;: 749.586482079014,
+      &quot;two_stage_prediction&quot;: 743.6165184494533
+    },
+    {
+      &quot;key&quot;: 23166273,
+      &quot;rank&quot;: 768,
+      &quot;single_prediction&quot;: 841.6022572039404,
+      &quot;two_stage_prediction&quot;: 834.778216954917
+    },
+    {
+      &quot;key&quot;: 23166401,
+      &quot;rank&quot;: 832,
+      &quot;single_prediction&quot;: 841.606526308302,
+      &quot;two_stage_prediction&quot;: 834.7824464340924
+    },
+    {
+      &quot;key&quot;: 23269839,
+      &quot;rank&quot;: 896,
+      &quot;single_prediction&quot;: 845.0564295657894,
+      &quot;two_stage_prediction&quot;: 838.2003282071373
+    },
+    {
+      &quot;key&quot;: 26155567,
+      &quot;rank&quot;: 960,
+      &quot;single_prediction&quot;: 941.3023201226689,
+      &quot;two_stage_prediction&quot;: 933.5528788477644
+    },
+    {
+      &quot;key&quot;: 30394081,
+      &quot;rank&quot;: 1024,
+      &quot;single_prediction&quot;: 1082.6668404682464,
+      &quot;two_stage_prediction&quot;: 1081.4074909658755
+    },
+    {
+      &quot;key&quot;: 30394210,
+      &quot;rank&quot;: 1088,
+      &quot;single_prediction&quot;: 1082.6711429249858,
+      &quot;two_stage_prediction&quot;: 1081.4118733256864
+    },
+    {
+      &quot;key&quot;: 30452880,
+      &quot;rank&quot;: 1152,
+      &quot;single_prediction&quot;: 1084.6279269319928,
+      &quot;two_stage_prediction&quot;: 1083.40499774506
+    },
+    {
+      &quot;key&quot;: 34973456,
+      &quot;rank&quot;: 1216,
+      &quot;single_prediction&quot;: 1235.3998856717135,
+      &quot;two_stage_prediction&quot;: 1236.9770177763173
+    },
+    {
+      &quot;key&quot;: 38391587,
+      &quot;rank&quot;: 1280,
+      &quot;single_prediction&quot;: 1349.4026822398853,
+      &quot;two_stage_prediction&quot;: 1353.0970171749477
+    },
+    {
+      &quot;key&quot;: 38391714,
+      &quot;rank&quot;: 1344,
+      &quot;single_prediction&quot;: 1349.406917991869,
+      &quot;two_stage_prediction&quot;: 1353.1013315911955
+    },
+    {
+      &quot;key&quot;: 38405616,
+      &quot;rank&quot;: 1408,
+      &quot;single_prediction&quot;: 1349.8705827483957,
+      &quot;two_stage_prediction&quot;: 1353.5736072973166
+    },
+    {
+      &quot;key&quot;: 41361040,
+      &quot;rank&quot;: 1472,
+      &quot;single_prediction&quot;: 1448.4410006301835,
+      &quot;two_stage_prediction&quot;: 1453.9746256031385
+    },
+    {
+      &quot;key&quot;: 45158785,
+      &quot;rank&quot;: 1536,
+      &quot;single_prediction&quot;: 1575.1048267541066,
+      &quot;two_stage_prediction&quot;: 1582.9907888561418
+    },
+    {
+      &quot;key&quot;: 45158913,
+      &quot;rank&quot;: 1600,
+      &quot;single_prediction&quot;: 1575.1090958584682,
+      &quot;two_stage_prediction&quot;: 1582.995137244171
+    },
+    {
+      &quot;key&quot;: 45228047,
+      &quot;rank&quot;: 1664,
+      &quot;single_prediction&quot;: 1577.4148791470386,
+      &quot;two_stage_prediction&quot;: 1585.343742384941
+    },
+    {
+      &quot;key&quot;: 49418319,
+      &quot;rank&quot;: 1728,
+      &quot;single_prediction&quot;: 1717.1704140815705,
+      &quot;two_stage_prediction&quot;: 1727.6947471065555
+    },
+    {
+      &quot;key&quot;: 53495681,
+      &quot;rank&quot;: 1792,
+      &quot;single_prediction&quot;: 1853.1601320358545,
+      &quot;two_stage_prediction&quot;: 1866.2099979813752
+    },
+    {
+      &quot;key&quot;: 53495810,
+      &quot;rank&quot;: 1856,
+      &quot;single_prediction&quot;: 1853.164434492594,
+      &quot;two_stage_prediction&quot;: 1866.214380341186
+    },
+    {
+      &quot;key&quot;: 53520176,
+      &quot;rank&quot;: 1920,
+      &quot;single_prediction&quot;: 1853.9770985306836,
+      &quot;two_stage_prediction&quot;: 1867.0421367687034
+    },
+    {
+      &quot;key&quot;: 57145296,
+      &quot;rank&quot;: 1984,
+      &quot;single_prediction&quot;: 1974.8834704325245,
+      &quot;two_stage_prediction&quot;: 1990.1939212438924
+    },
+    {
+      &quot;key&quot;: 60602275,
+      &quot;rank&quot;: 2048,
+      &quot;single_prediction&quot;: 2090.1819401744515,
+      &quot;two_stage_prediction&quot;: 2101.5139889352977
+    },
+    {
+      &quot;key&quot;: 60602402,
+      &quot;rank&quot;: 2112,
+      &quot;single_prediction&quot;: 2090.1861759264357,
+      &quot;two_stage_prediction&quot;: 2101.518091935067
+    },
+    {
+      &quot;key&quot;: 60682000,
+      &quot;rank&quot;: 2176,
+      &quot;single_prediction&quot;: 2092.8409584965693,
+      &quot;two_stage_prediction&quot;: 2104.0896712707295
+    },
+    {
+      &quot;key&quot;: 64441968,
+      &quot;rank&quot;: 2240,
+      &quot;single_prediction&quot;: 2218.244831843388,
+      &quot;two_stage_prediction&quot;: 2225.563276280304
+    },
+    {
+      &quot;key&quot;: 69178561,
+      &quot;rank&quot;: 2304,
+      &quot;single_prediction&quot;: 2376.221471183784,
+      &quot;two_stage_prediction&quot;: 2378.5887879796364
+    },
+    {
+      &quot;key&quot;: 69178689,
+      &quot;rank&quot;: 2368,
+      &quot;single_prediction&quot;: 2376.2257402881455,
+      &quot;two_stage_prediction&quot;: 2378.5929232864905
+    },
+    {
+      &quot;key&quot;: 69213519,
+      &quot;rank&quot;: 2432,
+      &quot;single_prediction&quot;: 2377.3874036077987,
+      &quot;two_stage_prediction&quot;: 2379.718179049966
+    },
+    {
+      &quot;key&quot;: 73508335,
+      &quot;rank&quot;: 2496,
+      &quot;single_prediction&quot;: 2520.629729529693,
+      &quot;two_stage_prediction&quot;: 2518.471163748985
+    },
+    {
+      &quot;key&quot;: 76524545,
+      &quot;rank&quot;: 2560,
+      &quot;single_prediction&quot;: 2621.227505049966,
+      &quot;two_stage_prediction&quot;: 2615.916115984198
+    },
+    {
+      &quot;key&quot;: 76524674,
+      &quot;rank&quot;: 2624,
+      &quot;single_prediction&quot;: 2621.231807506705,
+      &quot;two_stage_prediction&quot;: 2615.9202835981364
+    },
+    {
+      &quot;key&quot;: 76614736,
+      &quot;rank&quot;: 2688,
+      &quot;single_prediction&quot;: 2624.235589358402,
+      &quot;two_stage_prediction&quot;: 2618.8299242691137
+    },
+    {
+      &quot;key&quot;: 80044400,
+      &quot;rank&quot;: 2752,
+      &quot;single_prediction&quot;: 2738.6230389000325,
+      &quot;two_stage_prediction&quot;: 2729.6323699419377
+    },
+    {
+      &quot;key&quot;: 84740227,
+      &quot;rank&quot;: 2816,
+      &quot;single_prediction&quot;: 2895.240035206005,
+      &quot;two_stage_prediction&quot;: 2881.3408510224403
+    },
+    {
+      &quot;key&quot;: 84740354,
+      &quot;rank&quot;: 2880,
+      &quot;single_prediction&quot;: 2895.2442709579886,
+      &quot;two_stage_prediction&quot;: 2881.3449540222095
+    },
+    {
+      &quot;key&quot;: 84785648,
+      &quot;rank&quot;: 2944,
+      &quot;single_prediction&quot;: 2896.7549335592053,
+      &quot;two_stage_prediction&quot;: 2882.8082711209995
+    },
+    {
+      &quot;key&quot;: 89750160,
+      &quot;rank&quot;: 3008,
+      &quot;single_prediction&quot;: 3062.3332135011524,
+      &quot;two_stage_prediction&quot;: 3043.1971812801535
+    },
+    {
+      &quot;key&quot;: 92425601,
+      &quot;rank&quot;: 3072,
+      &quot;single_prediction&quot;: 3151.5655325822954,
+      &quot;two_stage_prediction&quot;: 3133.4310134377415
+    },
+    {
+      &quot;key&quot;: 92425729,
+      &quot;rank&quot;: 3136,
+      &quot;single_prediction&quot;: 3151.5698016866572,
+      &quot;two_stage_prediction&quot;: 3133.435423215111
+    },
+    {
+      &quot;key&quot;: 92526255,
+      &quot;rank&quot;: 3200,
+      &quot;single_prediction&quot;: 3154.9225828199174,
+      &quot;two_stage_prediction&quot;: 3136.898683213634
+    },
+    {
+      &quot;key&quot;: 95525615,
+      &quot;rank&quot;: 3264,
+      &quot;single_prediction&quot;: 3254.9583707738348,
+      &quot;two_stage_prediction&quot;: 3240.2307914161865
+    },
+    {
+      &quot;key&quot;: 99780673,
+      &quot;rank&quot;: 3328,
+      &quot;single_prediction&quot;: 3396.874672858153,
+      &quot;two_stage_prediction&quot;: 3386.823435735021
+    },
+    {
+      &quot;key&quot;: 99780802,
+      &quot;rank&quot;: 3392,
+      &quot;single_prediction&quot;: 3396.878975314892,
+      &quot;two_stage_prediction&quot;: 3386.827879963776
+    },
+    {
+      &quot;key&quot;: 99836560,
+      &quot;rank&quot;: 3456,
+      &quot;single_prediction&quot;: 3398.738637197672,
+      &quot;two_stage_prediction&quot;: 3388.7488203274397
+    },
+    {
+      &quot;key&quot;: 104470768,
+      &quot;rank&quot;: 3520,
+      &quot;single_prediction&quot;: 3553.3004933344305,
+      &quot;two_stage_prediction&quot;: 3548.403707533089
+    },
+    {
+      &quot;key&quot;: 107705443,
+      &quot;rank&quot;: 3584,
+      &quot;single_prediction&quot;: 3661.1845960762953,
+      &quot;two_stage_prediction&quot;: 3659.842743560806
+    },
+    {
+      &quot;key&quot;: 107705570,
+      &quot;rank&quot;: 3648,
+      &quot;single_prediction&quot;: 3661.188831828279,
+      &quot;two_stage_prediction&quot;: 3659.8471188867898
+    },
+    {
+      &quot;key&quot;: 107716560,
+      &quot;rank&quot;: 3712,
+      &quot;single_prediction&quot;: 3661.555374460578,
+      &quot;two_stage_prediction&quot;: 3660.2257396155937
+    },
+    {
+      &quot;key&quot;: 110485616,
+      &quot;rank&quot;: 3776,
+      &quot;single_prediction&quot;: 3753.9099763918316,
+      &quot;two_stage_prediction&quot;: 3755.623555886708
+    },
+    {
+      &quot;key&quot;: 114399905,
+      &quot;rank&quot;: 3840,
+      &quot;single_prediction&quot;: 3884.4608220370196,
+      &quot;two_stage_prediction&quot;: 3890.4762359531433
+    },
+    {
+      &quot;key&quot;: 114400033,
+      &quot;rank&quot;: 3904,
+      &quot;single_prediction&quot;: 3884.4650911413814,
+      &quot;two_stage_prediction&quot;: 3890.480645730512
+    },
+    {
+      &quot;key&quot;: 114466255,
+      &quot;rank&quot;: 3968,
+      &quot;single_prediction&quot;: 3886.6737523057245,
+      &quot;two_stage_prediction&quot;: 3892.7620853941035
+    },
+    {
+      &quot;key&quot;: 118770159,
+      &quot;rank&quot;: 4032,
+      &quot;single_prediction&quot;: 4030.2191846372943,
+      &quot;two_stage_prediction&quot;: 4041.0375420986675
+    },
+    {
+      &quot;key&quot;: 122664065,
+      &quot;rank&quot;: 4096,
+      &quot;single_prediction&quot;: 4160.09020876527,
+      &quot;two_stage_prediction&quot;: 4170.322773320587
+    },
+    {
+      &quot;key&quot;: 122664194,
+      &quot;rank&quot;: 4160,
+      &quot;single_prediction&quot;: 4160.094511222011,
+      &quot;two_stage_prediction&quot;: 4170.327045581514
+    },
+    {
+      &quot;key&quot;: 122685648,
+      &quot;rank&quot;: 4224,
+      &quot;single_prediction&quot;: 4160.810053135872,
+      &quot;two_stage_prediction&quot;: 4171.037565627435
+    },
+    {
+      &quot;key&quot;: 126124400,
+      &quot;rank&quot;: 4288,
+      &quot;single_prediction&quot;: 4275.500609087178,
+      &quot;two_stage_prediction&quot;: 4284.923192035023
+    },
+    {
+      &quot;key&quot;: 129597923,
+      &quot;rank&quot;: 4352,
+      &quot;single_prediction&quot;: 4391.350860567847,
+      &quot;two_stage_prediction&quot;: 4399.960374913046
+    },
+    {
+      &quot;key&quot;: 129598050,
+      &quot;rank&quot;: 4416,
+      &quot;single_prediction&quot;: 4391.355096319831,
+      &quot;two_stage_prediction&quot;: 4399.964580937369
+    },
+    {
+      &quot;key&quot;: 129674736,
+      &quot;rank&quot;: 4480,
+      &quot;single_prediction&quot;: 4393.912756765737,
+      &quot;two_stage_prediction&quot;: 4402.504291025997
+    },
+    {
+      &quot;key&quot;: 133548336,
+      &quot;rank&quot;: 4544,
+      &quot;single_prediction&quot;: 4523.106527509594,
+      &quot;two_stage_prediction&quot;: 4530.791344716532
+    },
+    {
+      &quot;key&quot;: 138101473,
+      &quot;rank&quot;: 4608,
+      &quot;single_prediction&quot;: 4674.964473023682,
+      &quot;two_stage_prediction&quot;: 4681.583509828924
+    },
+    {
+      &quot;key&quot;: 138101601,
+      &quot;rank&quot;: 4672,
+      &quot;single_prediction&quot;: 4674.968742128043,
+      &quot;two_stage_prediction&quot;: 4681.587748971549
+    },
+    {
+      &quot;key&quot;: 138133519,
+      &quot;rank&quot;: 4736,
+      &quot;single_prediction&quot;: 4676.033283323471,
+      &quot;two_stage_prediction&quot;: 4682.644818927068
+    },
+    {
+      &quot;key&quot;: 142241967,
+      &quot;rank&quot;: 4800,
+      &quot;single_prediction&quot;: 4813.059793294829,
+      &quot;two_stage_prediction&quot;: 4818.709639548911
+    },
+    {
+      &quot;key&quot;: 145374721,
+      &quot;rank&quot;: 4864,
+      &quot;single_prediction&quot;: 4917.544588336367,
+      &quot;two_stage_prediction&quot;: 4922.461131855096
+    },
+    {
+      &quot;key&quot;: 145374850,
+      &quot;rank&quot;: 4928,
+      &quot;single_prediction&quot;: 4917.548890793107,
+      &quot;two_stage_prediction&quot;: 4922.465404116023
+    },
+    {
+      &quot;key&quot;: 145462000,
+      &quot;rank&quot;: 4992,
+      &quot;single_prediction&quot;: 4920.455550520577,
+      &quot;two_stage_prediction&quot;: 4925.351664114249
+    },
+    {
+      &quot;key&quot;: 149005296,
+      &quot;rank&quot;: 5056,
+      &quot;single_prediction&quot;: 5038.632897459245,
+      &quot;two_stage_prediction&quot;: 5042.699610260846
+    },
+    {
+      &quot;key&quot;: 153817667,
+      &quot;rank&quot;: 5120,
+      &quot;single_prediction&quot;: 5199.136913286482,
+      &quot;two_stage_prediction&quot;: 5182.542887505712
+    },
+    {
+      &quot;key&quot;: 153817794,
+      &quot;rank&quot;: 5184,
+      &quot;single_prediction&quot;: 5199.141149038466,
+      &quot;two_stage_prediction&quot;: 5182.547183999684
+    },
+    {
+      &quot;key&quot;: 153860176,
+      &quot;rank&quot;: 5248,
+      &quot;single_prediction&quot;: 5200.554689515455,
+      &quot;two_stage_prediction&quot;: 5183.980995082443
+    },
+    {
+      &quot;key&quot;: 158638320,
+      &quot;rank&quot;: 5312,
+      &quot;single_prediction&quot;: 5359.917153506868,
+      &quot;two_stage_prediction&quot;: 5345.628765886536
+    },
+    {
+      &quot;key&quot;: 161330305,
+      &quot;rank&quot;: 5376,
+      &quot;single_prediction&quot;: 5449.701254326752,
+      &quot;two_stage_prediction&quot;: 5436.70039836309
+    },
+    {
+      &quot;key&quot;: 161330433,
+      &quot;rank&quot;: 5440,
+      &quot;single_prediction&quot;: 5449.705523431113,
+      &quot;two_stage_prediction&quot;: 5436.704728687723
+    },
+    {
+      &quot;key&quot;: 161428047,
+      &quot;rank&quot;: 5504,
+      &quot;single_prediction&quot;: 5452.961182440146,
+      &quot;two_stage_prediction&quot;: 5440.007074849595
+    },
+    {
+      &quot;key&quot;: 164541039,
+      &quot;rank&quot;: 5568,
+      &quot;single_prediction&quot;: 5556.786867791102,
+      &quot;two_stage_prediction&quot;: 5545.3216525038
+    },
+    {
+      &quot;key&quot;: 168912641,
+      &quot;rank&quot;: 5632,
+      &quot;single_prediction&quot;: 5702.590189396685,
+      &quot;two_stage_prediction&quot;: 5693.215838644424
+    },
+    {
+      &quot;key&quot;: 168912770,
+      &quot;rank&quot;: 5696,
+      &quot;single_prediction&quot;: 5702.594491853425,
+      &quot;two_stage_prediction&quot;: 5693.220202799719
+    },
+    {
+      &quot;key&quot;: 168965616,
+      &quot;rank&quot;: 5760,
+      &quot;single_prediction&quot;: 5704.357031611977,
+      &quot;two_stage_prediction&quot;: 5695.008017921221
+    },
+    {
+      &quot;key&quot;: 173713456,
+      &quot;rank&quot;: 5824,
+      &quot;single_prediction&quot;: 5862.7087851457745,
+      &quot;two_stage_prediction&quot;: 5855.630584368465
+    },
+    {
+      &quot;key&quot;: 176764675,
+      &quot;rank&quot;: 5888,
+      &quot;single_prediction&quot;: 5964.474194061331,
+      &quot;two_stage_prediction&quot;: 5958.855340588681
+    },
+    {
+      &quot;key&quot;: 176764802,
+      &quot;rank&quot;: 5952,
+      &quot;single_prediction&quot;: 5964.4784298133145,
+      &quot;two_stage_prediction&quot;: 5958.8596370826535
+    },
+    {
+      &quot;key&quot;: 176872880,
+      &quot;rank&quot;: 6016,
+      &quot;single_prediction&quot;: 5968.083088103911,
+      &quot;two_stage_prediction&quot;: 5962.515987283268
+    },
+    {
+      &quot;key&quot;: 179655568,
+      &quot;rank&quot;: 6080,
+      &quot;single_prediction&quot;: 6060.892349649677,
+      &quot;two_stage_prediction&quot;: 6056.656162222177
+    },
+    {
+      &quot;key&quot;: 183686401,
+      &quot;rank&quot;: 6144,
+      &quot;single_prediction&quot;: 6195.330214816131,
+      &quot;two_stage_prediction&quot;: 6201.259804627302
+    },
+    {
+      &quot;key&quot;: 183686529,
+      &quot;rank&quot;: 6208,
+      &quot;single_prediction&quot;: 6195.334483920492,
+      &quot;two_stage_prediction&quot;: 6201.264095720531
+    },
+    {
+      &quot;key&quot;: 183749839,
+      &quot;rank&quot;: 6272,
+      &quot;single_prediction&quot;: 6197.446022960608,
+      &quot;two_stage_prediction&quot;: 6203.386510660727
+    },
+    {
+      &quot;key&quot;: 188067375,
+      &quot;rank&quot;: 6336,
+      &quot;single_prediction&quot;: 6341.446114906693,
+      &quot;two_stage_prediction&quot;: 6348.128303603931
+    },
+    {
+      &quot;key&quot;: 191777825,
+      &quot;rank&quot;: 6400,
+      &quot;single_prediction&quot;: 6465.198445208361,
+      &quot;two_stage_prediction&quot;: 6472.518044795692
+    },
+    {
+      &quot;key&quot;: 191777954,
+      &quot;rank&quot;: 6464,
+      &quot;single_prediction&quot;: 6465.2027476651,
+      &quot;two_stage_prediction&quot;: 6472.522369413086
+    },
+    {
+      &quot;key&quot;: 191796496,
+      &quot;rank&quot;: 6528,
+      &quot;single_prediction&quot;: 6465.8211674547365,
+      &quot;two_stage_prediction&quot;: 6473.143974496345
+    },
+    {
+      &quot;key&quot;: 195048880,
+      &quot;rank&quot;: 6592,
+      &quot;single_prediction&quot;: 6574.295907455507,
+      &quot;two_stage_prediction&quot;: 6582.177435132177
+    },
+    {
+      &quot;key&quot;: 198638947,
+      &quot;rank&quot;: 6656,
+      &quot;single_prediction&quot;: 6694.03317845744,
+      &quot;two_stage_prediction&quot;: 6702.531436665975
+    },
+    {
+      &quot;key&quot;: 198639074,
+      &quot;rank&quot;: 6720,
+      &quot;single_prediction&quot;: 6694.037414209424,
+      &quot;two_stage_prediction&quot;: 6702.535694235039
+    },
+    {
+      &quot;key&quot;: 198712848,
+      &quot;rank&quot;: 6784,
+      &quot;single_prediction&quot;: 6696.497952531104,
+      &quot;two_stage_prediction&quot;: 6705.008906046727
+    },
+    {
+      &quot;key&quot;: 202700080,
+      &quot;rank&quot;: 6848,
+      &quot;single_prediction&quot;: 6829.481620671999,
+      &quot;two_stage_prediction&quot;: 6838.677532911799
+    },
+    {
+      &quot;key&quot;: 207069761,
+      &quot;rank&quot;: 6912,
+      &quot;single_prediction&quot;: 6975.22087235978,
+      &quot;two_stage_prediction&quot;: 6985.167443483442
+    },
+    {
+      &quot;key&quot;: 207069889,
+      &quot;rank&quot;: 6976,
+      &quot;single_prediction&quot;: 6975.2251414641405,
+      &quot;two_stage_prediction&quot;: 6985.171734576672
+    },
+    {
+      &quot;key&quot;: 207098895,
+      &quot;rank&quot;: 7040,
+      &quot;single_prediction&quot;: 6976.19256053534,
+      &quot;two_stage_prediction&quot;: 6986.144136531424
+    },
+    {
+      &quot;key&quot;: 211020975,
+      &quot;rank&quot;: 7104,
+      &quot;single_prediction&quot;: 7107.003254556164,
+      &quot;two_stage_prediction&quot;: 7117.628596942797
+    },
+    {
+      &quot;key&quot;: 214270273,
+      &quot;rank&quot;: 7168,
+      &quot;single_prediction&quot;: 7215.375069118967,
+      &quot;two_stage_prediction&quot;: 7221.209128336231
+    },
+    {
+      &quot;key&quot;: 214270402,
+      &quot;rank&quot;: 7232,
+      &quot;single_prediction&quot;: 7215.379371575707,
+      &quot;two_stage_prediction&quot;: 7221.213318684858
+    },
+    {
+      &quot;key&quot;: 214354640,
+      &quot;rank&quot;: 7296,
+      &quot;single_prediction&quot;: 7218.188909178949,
+      &quot;two_stage_prediction&quot;: 7223.949648821775
+    },
+    {
+      &quot;key&quot;: 217911568,
+      &quot;rank&quot;: 7360,
+      &quot;single_prediction&quot;: 7336.820915732132,
+      &quot;two_stage_prediction&quot;: 7339.490488837497
+    },
+    {
+      &quot;key&quot;: 222840483,
+      &quot;rank&quot;: 7424,
+      &quot;single_prediction&quot;: 7501.211951080633,
+      &quot;two_stage_prediction&quot;: 7499.598025303259
+    },
+    {
+      &quot;key&quot;: 222840610,
+      &quot;rank&quot;: 7488,
+      &quot;single_prediction&quot;: 7501.2161868326175,
+      &quot;two_stage_prediction&quot;: 7499.602150685241
+    },
+    {
+      &quot;key&quot;: 222880080,
+      &quot;rank&quot;: 7552,
+      &quot;single_prediction&quot;: 7502.53260518538,
+      &quot;two_stage_prediction&quot;: 7500.884267431889
+    },
+    {
+      &quot;key&quot;: 227471856,
+      &quot;rank&quot;: 7616,
+      &quot;single_prediction&quot;: 7655.679253226258,
+      &quot;two_stage_prediction&quot;: 7650.04040896864
+    },
+    {
+      &quot;key&quot;: 230280385,
+      &quot;rank&quot;: 7680,
+      &quot;single_prediction&quot;: 7749.350373567407,
+      &quot;two_stage_prediction&quot;: 7741.270762765094
+    },
+    {
+      &quot;key&quot;: 230280513,
+      &quot;rank&quot;: 7744,
+      &quot;single_prediction&quot;: 7749.3546426717685,
+      &quot;two_stage_prediction&quot;: 7741.274920630399
+    },
+    {
+      &quot;key&quot;: 230375215,
+      &quot;rank&quot;: 7808,
+      &quot;single_prediction&quot;: 7752.513179556575,
+      &quot;two_stage_prediction&quot;: 7744.351156255964
+    },
+    {
+      &quot;key&quot;: 233601839,
+      &quot;rank&quot;: 7872,
+      &quot;single_prediction&quot;: 7860.128762304567,
+      &quot;two_stage_prediction&quot;: 7849.162624853273
+    },
+    {
+      &quot;key&quot;: 238089985,
+      &quot;rank&quot;: 7936,
+      &quot;single_prediction&quot;: 8009.819103431416,
+      &quot;two_stage_prediction&quot;: 7994.952519659466
+    },
+    {
+      &quot;key&quot;: 238090114,
+      &quot;rank&quot;: 8000,
+      &quot;single_prediction&quot;: 8009.823405888155,
+      &quot;two_stage_prediction&quot;: 7994.956710008093
+    },
+    {
+      &quot;key&quot;: 238140048,
+      &quot;rank&quot;: 8064,
+      &quot;single_prediction&quot;: 8011.48882352248,
+      &quot;two_stage_prediction&quot;: 7996.578732243389
+    },
+    {
+      &quot;key&quot;: 243001520,
+      &quot;rank&quot;: 8128,
+      &quot;single_prediction&quot;: 8173.6304744533145,
+      &quot;two_stage_prediction&quot;: 8154.495495976844
+    },
+    {
+      &quot;key&quot;: 245869283,
+      &quot;rank&quot;: 8192,
+      &quot;single_prediction&quot;: 8269.277189542565,
+      &quot;two_stage_prediction&quot;: 8260.342933241693
+    },
+    {
+      &quot;key&quot;: 245869410,
+      &quot;rank&quot;: 8256,
+      &quot;single_prediction&quot;: 8269.281425294548,
+      &quot;two_stage_prediction&quot;: 8260.34729885342
+    },
+    {
+      &quot;key&quot;: 245974576,
+      &quot;rank&quot;: 8320,
+      &quot;single_prediction&quot;: 8272.788961460918,
+      &quot;two_stage_prediction&quot;: 8263.96236911134
+    },
+    {
+      &quot;key&quot;: 248770896,
+      &quot;rank&quot;: 8384,
+      &quot;single_prediction&quot;: 8366.052882621198,
+      &quot;two_stage_prediction&quot;: 8360.085576836505
+    },
+    {
+      &quot;key&quot;: 252918273,
+      &quot;rank&quot;: 8448,
+      &quot;single_prediction&quot;: 8504.377767308917,
+      &quot;two_stage_prediction&quot;: 8502.651227722521
+    },
+    {
+      &quot;key&quot;: 252918401,
+      &quot;rank&quot;: 8512,
+      &quot;single_prediction&quot;: 8504.382036413277,
+      &quot;two_stage_prediction&quot;: 8502.655627709144
+    },
+    {
+      &quot;key&quot;: 252978799,
+      &quot;rank&quot;: 8576,
+      &quot;single_prediction&quot;: 8506.396453329167,
+      &quot;two_stage_prediction&quot;: 8504.731802646269
+    },
+    {
+      &quot;key&quot;: 257409967,
+      &quot;rank&quot;: 8640,
+      &quot;single_prediction&quot;: 8654.186442672288,
+      &quot;two_stage_prediction&quot;: 8657.052739495099
+    },
+    {
+      &quot;key&quot;: 260936961,
+      &quot;rank&quot;: 8704,
+      &quot;single_prediction&quot;: 8771.82007914765,
+      &quot;two_stage_prediction&quot;: 8778.292789599314
+    },
+    {
+      &quot;key&quot;: 260937090,
+      &quot;rank&quot;: 8768,
+      &quot;single_prediction&quot;: 8771.824381604389,
+      &quot;two_stage_prediction&quot;: 8778.29722396083
+    },
+    {
+      &quot;key&quot;: 260952720,
+      &quot;rank&quot;: 8832,
+      &quot;single_prediction&quot;: 8772.345679269796,
+      &quot;two_stage_prediction&quot;: 8778.834503577164
+    },
+    {
+      &quot;key&quot;: 264018736,
+      &quot;rank&quot;: 8896,
+      &quot;single_prediction&quot;: 8874.604603320035,
+      &quot;two_stage_prediction&quot;: 8884.228483113371
+    },
+    {
+      &quot;key&quot;: 267725347,
+      &quot;rank&quot;: 8960,
+      &quot;single_prediction&quot;: 8998.228893843232,
+      &quot;two_stage_prediction&quot;: 9011.642848818796
+    },
+    {
+      &quot;key&quot;: 267725474,
+      &quot;rank&quot;: 9024,
+      &quot;single_prediction&quot;: 8998.233129595215,
+      &quot;two_stage_prediction&quot;: 9011.64721443052
+    },
+    {
+      &quot;key&quot;: 267796336,
+      &quot;rank&quot;: 9088,
+      &quot;single_prediction&quot;: 9000.596545792667,
+      &quot;two_stage_prediction&quot;: 9014.083088273937
+    },
+    {
+      &quot;key&quot;: 271897200,
+      &quot;rank&quot;: 9152,
+      &quot;single_prediction&quot;: 9137.370111330602,
+      &quot;two_stage_prediction&quot;: 9155.04985964655
+    },
+    {
+      &quot;key&quot;: 276083425,
+      &quot;rank&quot;: 9216,
+      &quot;single_prediction&quot;: 9276.990669192073,
+      &quot;two_stage_prediction&quot;: 9288.220044548152
+    },
+    {
+      &quot;key&quot;: 276083553,
+      &quot;rank&quot;: 9280,
+      &quot;single_prediction&quot;: 9276.994938296437,
+      &quot;two_stage_prediction&quot;: 9288.224235441427
+    },
+    {
+      &quot;key&quot;: 276109647,
+      &quot;rank&quot;: 9344,
+      &quot;single_prediction&quot;: 9277.865235243407,
+      &quot;two_stage_prediction&quot;: 9289.078588324877
+    },
+    {
+      &quot;key&quot;: 279845359,
+      &quot;rank&quot;: 9408,
+      &quot;single_prediction&quot;: 9402.460113313698,
+      &quot;two_stage_prediction&quot;: 9411.39085623868
+    },
+    {
+      &quot;key&quot;: 283211201,
+      &quot;rank&quot;: 9472,
+      &quot;single_prediction&quot;: 9514.718947397765,
+      &quot;two_stage_prediction&quot;: 9521.593079659418
+    },
+    {
+      &quot;key&quot;: 283211330,
+      &quot;rank&quot;: 9536,
+      &quot;single_prediction&quot;: 9514.723249854505,
+      &quot;two_stage_prediction&quot;: 9521.597303294046
+    },
+    {
+      &quot;key&quot;: 283292656,
+      &quot;rank&quot;: 9600,
+      &quot;single_prediction&quot;: 9517.43566533352,
+      &quot;two_stage_prediction&quot;: 9524.260026625061
+    },
+    {
+      &quot;key&quot;: 286963216,
+      &quot;rank&quot;: 9664,
+      &quot;single_prediction&quot;: 9639.85756928374,
+      &quot;two_stage_prediction&quot;: 9644.439129862594
+    },
+    {
+      &quot;key&quot;: 291808675,
+      &quot;rank&quot;: 9728,
+      &quot;single_prediction&quot;: 9801.465148588459,
+      &quot;two_stage_prediction&quot;: 9803.08601682105
+    },
+    {
+      &quot;key&quot;: 291808802,
+      &quot;rank&quot;: 9792,
+      &quot;single_prediction&quot;: 9801.469384340442,
+      &quot;two_stage_prediction&quot;: 9803.09017497297
+    },
+    {
+      &quot;key&quot;: 291845360,
+      &quot;rank&quot;: 9856,
+      &quot;single_prediction&quot;: 9802.688680568977,
+      &quot;two_stage_prediction&quot;: 9804.287133381538
+    },
+    {
+      &quot;key&quot;: 296250768,
+      &quot;rank&quot;: 9920,
+      &quot;single_prediction&quot;: 9949.619512659321,
+      &quot;two_stage_prediction&quot;: 9948.5261549029
+    },
+    {
+      &quot;key&quot;: 299175841,
+      &quot;rank&quot;: 9984,
+      &quot;single_prediction&quot;: 10047.177652521736,
+      &quot;two_stage_prediction&quot;: 10044.297004594588
+    },
+    {
+      &quot;key&quot;: 299175969,
+      &quot;rank&quot;: 10048,
+      &quot;single_prediction&quot;: 10047.181921626096,
+      &quot;two_stage_prediction&quot;: 10044.301195487862
+    },
+    {
+      &quot;key&quot;: 299267759,
+      &quot;rank&quot;: 10112,
+      &quot;single_prediction&quot;: 10050.243336386675,
+      &quot;two_stage_prediction&quot;: 10047.306524343996
+    },
+    {
+      &quot;key&quot;: 302608015,
+      &quot;rank&quot;: 10176,
+      &quot;single_prediction&quot;: 10161.648816531706,
+      &quot;two_stage_prediction&quot;: 10156.671027488963
+    },
+    {
+      &quot;key&quot;: 307212705,
+      &quot;rank&quot;: 10240,
+      &quot;single_prediction&quot;: 10315.22617717982,
+      &quot;two_stage_prediction&quot;: 10298.99614797996
+    },
+    {
+      &quot;key&quot;: 307212834,
+      &quot;rank&quot;: 10304,
+      &quot;single_prediction&quot;: 10315.230479636559,
+      &quot;two_stage_prediction&quot;: 10299.000546687204
+    },
+    {
+      &quot;key&quot;: 307259856,
+      &quot;rank&quot;: 10368,
+      &quot;single_prediction&quot;: 10316.798775146659,
+      &quot;two_stage_prediction&quot;: 10300.603926625292
+    },
+    {
+      &quot;key&quot;: 312234960,
+      &quot;rank&quot;: 10432,
+      &quot;single_prediction&quot;: 10482.73032347453,
+      &quot;two_stage_prediction&quot;: 10470.247539051263
+    },
+    {
+      &quot;key&quot;: 314919267,
+      &quot;rank&quot;: 10496,
+      &quot;single_prediction&quot;: 10572.25834473747,
+      &quot;two_stage_prediction&quot;: 10561.778396766062
+    },
+    {
+      &quot;key&quot;: 314919394,
+      &quot;rank&quot;: 10560,
+      &quot;single_prediction&quot;: 10572.262580489456,
+      &quot;two_stage_prediction&quot;: 10561.782727276293
+    },
+    {
+      &quot;key&quot;: 315021648,
+      &quot;rank&quot;: 10624,
+      &quot;single_prediction&quot;: 10575.672994531598,
+      &quot;two_stage_prediction&quot;: 10565.269435884798
+    },
+    {
+      &quot;key&quot;: 317931600,
+      &quot;rank&quot;: 10688,
+      &quot;single_prediction&quot;: 10672.726813088915,
+      &quot;two_stage_prediction&quot;: 10664.494450932962
+    },
+    {
+      &quot;key&quot;: 322195521,
+      &quot;rank&quot;: 10752,
+      &quot;single_prediction&quot;: 10814.938717297899,
+      &quot;two_stage_prediction&quot;: 10809.887785733392
+    },
+    {
+      &quot;key&quot;: 322195649,
+      &quot;rank&quot;: 10816,
+      &quot;single_prediction&quot;: 10814.942986402262,
+      &quot;two_stage_prediction&quot;: 10809.89215034213
+    },
+    {
+      &quot;key&quot;: 322253135,
+      &quot;rank&quot;: 10880,
+      &quot;single_prediction&quot;: 10816.860281193924,
+      &quot;two_stage_prediction&quot;: 10811.852337044544
+    },
+    {
+      &quot;key&quot;: 326797935,
+      &quot;rank&quot;: 10944,
+      &quot;single_prediction&quot;: 10968.440167934083,
+      &quot;two_stage_prediction&quot;: 10966.82322604577
+    },
+    {
+      &quot;key&quot;: 330141473,
+      &quot;rank&quot;: 11008,
+      &quot;single_prediction&quot;: 11079.955110583136,
+      &quot;two_stage_prediction&quot;: 11080.8328758146
+    },
+    {
+      &quot;key&quot;: 330141602,
+      &quot;rank&quot;: 11072,
+      &quot;single_prediction&quot;: 11079.959413039875,
+      &quot;two_stage_prediction&quot;: 11080.837274521844
+    },
+    {
+      &quot;key&quot;: 330154320,
+      &quot;rank&quot;: 11136,
+      &quot;single_prediction&quot;: 11080.383588581057,
+      &quot;two_stage_prediction&quot;: 11081.270939318163
+    },
+    {
+      &quot;key&quot;: 333033968,
+      &quot;rank&quot;: 11200,
+      &quot;single_prediction&quot;: 11176.426696680759,
+      &quot;two_stage_prediction&quot;: 11179.462633247622
+    },
+    {
+      &quot;key&quot;: 336857123,
+      &quot;rank&quot;: 11264,
+      &quot;single_prediction&quot;: 11303.93800672522,
+      &quot;two_stage_prediction&quot;: 11320.426342153169
+    },
+    {
+      &quot;key&quot;: 336857250,
+      &quot;rank&quot;: 11328,
+      &quot;single_prediction&quot;: 11303.942242477206,
+      &quot;two_stage_prediction&quot;: 11320.430515226355
+    },
+    {
+      &quot;key&quot;: 336925200,
+      &quot;rank&quot;: 11392,
+      &quot;single_prediction&quot;: 11306.20853655043,
+      &quot;two_stage_prediction&quot;: 11322.663273675329
+    },
+    {
+      &quot;key&quot;: 341139696,
+      &quot;rank&quot;: 11456,
+      &quot;single_prediction&quot;: 11446.771999485401,
+      &quot;two_stage_prediction&quot;: 11461.146740226679
+    },
+    {
+      &quot;key&quot;: 345142465,
+      &quot;rank&quot;: 11520,
+      &quot;single_prediction&quot;: 11580.273863520568,
+      &quot;two_stage_prediction&quot;: 11592.673102317016
+    },
+    {
+      &quot;key&quot;: 345142593,
+      &quot;rank&quot;: 11584,
+      &quot;single_prediction&quot;: 11580.278132624928,
+      &quot;two_stage_prediction&quot;: 11592.677308249047
+    },
+    {
+      &quot;key&quot;: 345165775,
+      &quot;rank&quot;: 11648,
+      &quot;single_prediction&quot;: 11581.051307447673,
+      &quot;two_stage_prediction&quot;: 11593.439041970372
+    },
+    {
+      &quot;key&quot;: 348715119,
+      &quot;rank&quot;: 11712,
+      &quot;single_prediction&quot;: 11699.430369567428,
+      &quot;two_stage_prediction&quot;: 11710.066382725527
+    },
+    {
+      &quot;key&quot;: 352197505,
+      &quot;rank&quot;: 11776,
+      &quot;single_prediction&quot;: 11815.57622317276,
+      &quot;two_stage_prediction&quot;: 11824.493561004945
+    },
+    {
+      &quot;key&quot;: 352197634,
+      &quot;rank&quot;: 11840,
+      &quot;single_prediction&quot;: 11815.5805256295,
+      &quot;two_stage_prediction&quot;: 11824.49779979582
+    },
+    {
+      &quot;key&quot;: 352276048,
+      &quot;rank&quot;: 11904,
+      &quot;single_prediction&quot;: 11818.195818984288,
+      &quot;two_stage_prediction&quot;: 11827.07439318828
+    },
+    {
+      &quot;key&quot;: 356060240,
+      &quot;rank&quot;: 11968,
+      &quot;single_prediction&quot;: 11944.407620331547,
+      &quot;two_stage_prediction&quot;: 11951.41856773629
+    },
+    {
+      &quot;key&quot;: 360722243,
+      &quot;rank&quot;: 12032,
+      &quot;single_prediction&quot;: 12099.896505809958,
+      &quot;two_stage_prediction&quot;: 12104.606596984104
+    },
+    {
+      &quot;key&quot;: 360722370,
+      &quot;rank&quot;: 12096,
+      &quot;single_prediction&quot;: 12099.900741561942,
+      &quot;two_stage_prediction&quot;: 12104.61077005729
+    },
+    {
+      &quot;key&quot;: 360756016,
+      &quot;rank&quot;: 12160,
+      &quot;single_prediction&quot;: 12101.02291566625,
+      &quot;two_stage_prediction&quot;: 12105.716338722104
+    },
+    {
+      &quot;key&quot;: 364975056,
+      &quot;rank&quot;: 12224,
+      &quot;single_prediction&quot;: 12241.73793180606,
+      &quot;two_stage_prediction&quot;: 12244.349115860536
+    },
+    {
+      &quot;key&quot;: 368016673,
+      &quot;rank&quot;: 12288,
+      &quot;single_prediction&quot;: 12343.183091189736,
+      &quot;two_stage_prediction&quot;: 12342.416547124256
+    },
+    {
+      &quot;key&quot;: 368016801,
+      &quot;rank&quot;: 12352,
+      &quot;single_prediction&quot;: 12343.1873602941,
+      &quot;two_stage_prediction&quot;: 12342.420758563325
+    },
+    {
+      &quot;key&quot;: 368105679,
+      &quot;rank&quot;: 12416,
+      &quot;single_prediction&quot;: 12346.151652930452,
+      &quot;two_stage_prediction&quot;: 12345.345010763058
+    },
+    {
+      &quot;key&quot;: 371559567,
+      &quot;rank&quot;: 12480,
+      &quot;single_prediction&quot;: 12461.347030472522,
+      &quot;two_stage_prediction&quot;: 12458.984376878763
+    },
+    {
+      &quot;key&quot;: 376280801,
+      &quot;rank&quot;: 12544,
+      &quot;single_prediction&quot;: 12618.811410641898,
+      &quot;two_stage_prediction&quot;: 12614.321793449279
+    },
+    {
+      &quot;key&quot;: 376280930,
+      &quot;rank&quot;: 12608,
+      &quot;single_prediction&quot;: 12618.815713098636,
+      &quot;two_stage_prediction&quot;: 12614.326037790215
+    },
+    {
+      &quot;key&quot;: 376325040,
+      &quot;rank&quot;: 12672,
+      &quot;single_prediction&quot;: 12620.28688648451,
+      &quot;two_stage_prediction&quot;: 12615.7773391756
+    },
+    {
+      &quot;key&quot;: 381213776,
+      &quot;rank&quot;: 12736,
+      &quot;single_prediction&quot;: 12783.337856644372,
+      &quot;two_stage_prediction&quot;: 12776.625884393923
+    },
+    {
+      &quot;key&quot;: 383914627,
+      &quot;rank&quot;: 12800,
+      &quot;single_prediction&quot;: 12873.417659646053,
+      &quot;two_stage_prediction&quot;: 12865.488926742999
+    },
+    {
+      &quot;key&quot;: 383914754,
+      &quot;rank&quot;: 12864,
+      &quot;single_prediction&quot;: 12873.421895398036,
+      &quot;two_stage_prediction&quot;: 12865.4931052802
+    },
+    {
+      &quot;key&quot;: 384014096,
+      &quot;rank&quot;: 12928,
+      &quot;single_prediction&quot;: 12876.735187315951,
+      &quot;two_stage_prediction&quot;: 12868.761642623816
+    },
+    {
+      &quot;key&quot;: 387037680,
+      &quot;rank&quot;: 12992,
+      &quot;single_prediction&quot;: 12977.578903270309,
+      &quot;two_stage_prediction&quot;: 12968.243203449641
+    },
+    {
+      &quot;key&quot;: 391418145,
+      &quot;rank&quot;: 13056,
+      &quot;single_prediction&quot;: 13123.677827000558,
+      &quot;two_stage_prediction&quot;: 13112.368683457107
+    },
+    {
+      &quot;key&quot;: 391418273,
+      &quot;rank&quot;: 13120,
+      &quot;single_prediction&quot;: 13123.682096104918,
+      &quot;two_stage_prediction&quot;: 13112.372894896176
+    },
+    {
+      &quot;key&quot;: 391472847,
+      &quot;rank&quot;: 13184,
+      &quot;single_prediction&quot;: 13125.502268772352,
+      &quot;two_stage_prediction&quot;: 13114.168481425442
+    },
+    {
+      &quot;key&quot;: 396131279,
+      &quot;rank&quot;: 13248,
+      &quot;single_prediction&quot;: 13280.87205290955,
+      &quot;two_stage_prediction&quot;: 13267.439594899044
+    },
+    {
+      &quot;key&quot;: 399291361,
+      &quot;rank&quot;: 13312,
+      &quot;single_prediction&quot;: 13386.268301732296,
+      &quot;two_stage_prediction&quot;: 13387.386112814165
+    },
+    {
+      &quot;key&quot;: 399291490,
+      &quot;rank&quot;: 13376,
+      &quot;single_prediction&quot;: 13386.272604189036,
+      &quot;two_stage_prediction&quot;: 13387.390506796988
+    },
+    {
+      &quot;key&quot;: 399401296,
+      &quot;rank&quot;: 13440,
+      &quot;single_prediction&quot;: 13389.934895388515,
+      &quot;two_stage_prediction&quot;: 13391.13070584928
+    },
+    {
+      &quot;key&quot;: 402094576,
+      &quot;rank&quot;: 13504,
+      &quot;single_prediction&quot;: 13479.762187537683,
+      &quot;two_stage_prediction&quot;: 13482.868892319575
+    },
+    {
+      &quot;key&quot;: 406034275,
+      &quot;rank&quot;: 13568,
+      &quot;single_prediction&quot;: 13611.160517103408,
+      &quot;two_stage_prediction&quot;: 13617.062456114962
+    },
+    {
+      &quot;key&quot;: 406034402,
+      &quot;rank&quot;: 13632,
+      &quot;single_prediction&quot;: 13611.164752855395,
+      &quot;two_stage_prediction&quot;: 13617.06678197402
+    },
+    {
+      &quot;key&quot;: 406099440,
+      &quot;rank&quot;: 13696,
+      &quot;single_prediction&quot;: 13613.33392480439,
+      &quot;two_stage_prediction&quot;: 13619.282098677688
+    },
+    {
+      &quot;key&quot;: 410427568,
+      &quot;rank&quot;: 13760,
+      &quot;single_prediction&quot;: 13757.6872851364,
+      &quot;two_stage_prediction&quot;: 13766.706285368751
+    },
+    {
+      &quot;key&quot;: 414246881,
+      &quot;rank&quot;: 13824,
+      &quot;single_prediction&quot;: 13885.070455345258,
+      &quot;two_stage_prediction&quot;: 13896.799275396683
+    },
+    {
+      &quot;key&quot;: 414247009,
+      &quot;rank&quot;: 13888,
+      &quot;single_prediction&quot;: 13885.07472444962,
+      &quot;two_stage_prediction&quot;: 13896.803635317623
+    },
+    {
+      &quot;key&quot;: 414267279,
+      &quot;rank&quot;: 13952,
+      &quot;single_prediction&quot;: 13885.750777148136,
+      &quot;two_stage_prediction&quot;: 13897.494069672666
+    },
+    {
+      &quot;key&quot;: 417630255,
+      &quot;rank&quot;: 14016,
+      &quot;single_prediction&quot;: 13997.914023317358,
+      &quot;two_stage_prediction&quot;: 14012.043362498935
+    },
+    {
+      &quot;key&quot;: 421229185,
+      &quot;rank&quot;: 14080,
+      &quot;single_prediction&quot;: 14117.946896443955,
+      &quot;two_stage_prediction&quot;: 14134.629692710996
+    },
+    {
+      &quot;key&quot;: 421229314,
+      &quot;rank&quot;: 14144,
+      &quot;single_prediction&quot;: 14117.951198900695,
+      &quot;two_stage_prediction&quot;: 14134.634086693819
+    },
+    {
+      &quot;key&quot;: 421304816,
+      &quot;rank&quot;: 14208,
+      &quot;single_prediction&quot;: 14120.469370131257,
+      &quot;two_stage_prediction&quot;: 14137.205826934298
+    },
+    {
+      &quot;key&quot;: 425202640,
+      &quot;rank&quot;: 14272,
+      &quot;single_prediction&quot;: 14250.471068875551,
+      &quot;two_stage_prediction&quot;: 14269.973049406672
+    },
+    {
+      &quot;key&quot;: 429681187,
+      &quot;rank&quot;: 14336,
+      &quot;single_prediction&quot;: 14399.841260527655,
+      &quot;two_stage_prediction&quot;: 14406.583945392962
+    },
+    {
+      &quot;key&quot;: 429681314,
+      &quot;rank&quot;: 14400,
+      &quot;single_prediction&quot;: 14399.845496279639,
+      &quot;two_stage_prediction&quot;: 14406.588097609509
+    },
+    {
+      &quot;key&quot;: 429712048,
+      &quot;rank&quot;: 14464,
+      &quot;single_prediction&quot;: 14400.87054825972,
+      &quot;two_stage_prediction&quot;: 14407.592934014086
+    },
+    {
+      &quot;key&quot;: 433744720,
+      &quot;rank&quot;: 14528,
+      &quot;single_prediction&quot;: 14535.369748448993,
+      &quot;two_stage_prediction&quot;: 14539.439606536964
+    },
+    {
+      &quot;key&quot;: 436902881,
+      &quot;rank&quot;: 14592,
+      &quot;single_prediction&quot;: 14640.701927353939,
+      &quot;two_stage_prediction&quot;: 14642.694475552227
+    },
+    {
+      &quot;key&quot;: 436903009,
+      &quot;rank&quot;: 14656,
+      &quot;single_prediction&quot;: 14640.706196458299,
+      &quot;two_stage_prediction&quot;: 14642.698660463393
+    },
+    {
+      &quot;key&quot;: 436988975,
+      &quot;rank&quot;: 14720,
+      &quot;single_prediction&quot;: 14643.573366970424,
+      &quot;two_stage_prediction&quot;: 14645.50928603624
+    },
+    {
+      &quot;key&quot;: 440556495,
+      &quot;rank&quot;: 14784,
+      &quot;single_prediction&quot;: 14762.558641909533,
+      &quot;two_stage_prediction&quot;: 14762.14799138069
+    },
+    {
+      &quot;key&quot;: 445394273,
+      &quot;rank&quot;: 14848,
+      &quot;single_prediction&quot;: 14923.910041600175,
+      &quot;two_stage_prediction&quot;: 14920.317297415095
+    },
+    {
+      &quot;key&quot;: 445394402,
+      &quot;rank&quot;: 14912,
+      &quot;single_prediction&quot;: 14923.914344056913,
+      &quot;two_stage_prediction&quot;: 14920.32151502088
+    },
+    {
+      &quot;key&quot;: 445435600,
+      &quot;rank&quot;: 14976,
+      &quot;single_prediction&quot;: 14925.28839531856,
+      &quot;two_stage_prediction&quot;: 14921.668467913305
+    },
+    {
+      &quot;key&quot;: 450137968,
+      &quot;rank&quot;: 15040,
+      &quot;single_prediction&quot;: 15082.123549527885,
+      &quot;two_stage_prediction&quot;: 15075.410595658397
+    },
+    {
+      &quot;key&quot;: 452955363,
+      &quot;rank&quot;: 15104,
+      &quot;single_prediction&quot;: 15176.090372050832,
+      &quot;two_stage_prediction&quot;: 15167.524250310347
+    },
+    {
+      &quot;key&quot;: 452955490,
+      &quot;rank&quot;: 15168,
+      &quot;single_prediction&quot;: 15176.094607802816,
+      &quot;two_stage_prediction&quot;: 15167.528402526896
+    },
+    {
+      &quot;key&quot;: 453051920,
+      &quot;rank&quot;: 15232,
+      &quot;single_prediction&quot;: 15179.310777596505,
+      &quot;two_stage_prediction&quot;: 15170.681144587588
+    },
+    {
+      &quot;key&quot;: 456189136,
+      &quot;rank&quot;: 15296,
+      &quot;single_prediction&quot;: 15283.9443909479,
+      &quot;two_stage_prediction&quot;: 15273.251224818643
+    },
+    {
+      &quot;key&quot;: 460686145,
+      &quot;rank&quot;: 15360,
+      &quot;single_prediction&quot;: 15433.930334199413,
+      &quot;two_stage_prediction&quot;: 15421.542378011001
+    },
+    {
+      &quot;key&quot;: 460686273,
+      &quot;rank&quot;: 15424,
+      &quot;single_prediction&quot;: 15433.934603303775,
+      &quot;two_stage_prediction&quot;: 15421.546705819572
+    },
+    {
+      &quot;key&quot;: 460737935,
+      &quot;rank&quot;: 15488,
+      &quot;single_prediction&quot;: 15435.657653846982,
+      &quot;two_stage_prediction&quot;: 15423.293449931843
+    },
+    {
+      &quot;key&quot;: 465509999,
+      &quot;rank&quot;: 15552,
+      &quot;single_prediction&quot;: 15594.817335381216,
+      &quot;two_stage_prediction&quot;: 15584.641727106302
+    },
+    {
+      &quot;key&quot;: 468486625,
+      &quot;rank&quot;: 15616,
+      &quot;single_prediction&quot;: 15694.094890377655,
+      &quot;two_stage_prediction&quot;: 15685.284442059976
+    },
+    {
+      &quot;key&quot;: 468486754,
+      &quot;rank&quot;: 15680,
+      &quot;single_prediction&quot;: 15694.099192834394,
+      &quot;two_stage_prediction&quot;: 15685.288803679552
+    },
+    {
+      &quot;key&quot;: 468593648,
+      &quot;rank&quot;: 15744,
+      &quot;single_prediction&quot;: 15697.664361909645,
+      &quot;two_stage_prediction&quot;: 15688.902997190009
+    },
+    {
+      &quot;key&quot;: 471400560,
+      &quot;rank&quot;: 15808,
+      &quot;single_prediction&quot;: 15791.28155145585,
+      &quot;two_stage_prediction&quot;: 15783.80751133322
+    },
+    {
+      &quot;key&quot;: 475456803,
+      &quot;rank&quot;: 15872,
+      &quot;single_prediction&quot;: 15926.566900542844,
+      &quot;two_stage_prediction&quot;: 15920.953161486057
+    },
+    {
+      &quot;key&quot;: 475456930,
+      &quot;rank&quot;: 15936,
+      &quot;single_prediction&quot;: 15926.571136294828,
+      &quot;two_stage_prediction&quot;: 15920.957455483624
+    },
+    {
+      &quot;key&quot;: 475519056,
+      &quot;rank&quot;: 16000,
+      &quot;single_prediction&quot;: 15928.6431861196,
+      &quot;two_stage_prediction&quot;: 15923.057997946536
+    },
+    {
+      &quot;key&quot;: 479960816,
+      &quot;rank&quot;: 16064,
+      &quot;single_prediction&quot;: 16076.786443848645,
+      &quot;two_stage_prediction&quot;: 16073.238365104735
+    },
+    {
+      &quot;key&quot;: 483596673,
+      &quot;rank&quot;: 16128,
+      &quot;single_prediction&quot;: 16198.050920231197,
+      &quot;two_stage_prediction&quot;: 16196.170342337791
+    },
+    {
+      &quot;key&quot;: 483596801,
+      &quot;rank&quot;: 16192,
+      &quot;single_prediction&quot;: 16198.055189335557,
+      &quot;two_stage_prediction&quot;: 16196.174670146362
+    },
+    {
+      &quot;key&quot;: 483614159,
+      &quot;rank&quot;: 16256,
+      &quot;single_prediction&quot;: 16198.634119909848,
+      &quot;two_stage_prediction&quot;: 16196.761561561732
+    },
+    {
+      &quot;key&quot;: 486790767,
+      &quot;rank&quot;: 16320,
+      &quot;single_prediction&quot;: 16304.581550128534,
+      &quot;two_stage_prediction&quot;: 16304.165868808785
+    }
+  ],
+  &quot;interpretation&quot;: &quot;More local models can reduce fitting error. This does not measure native throughput or reproduce the published RMI architecture/training.&quot;,
+  &quot;lesson&quot;: &quot;01&quot;,
+  &quot;title&quot;: &quot;2018: rank prediction and a two-stage teaching model&quot;,
+  &quot;environment&quot;: {
+    &quot;system&quot;: &quot;Linux-6.18.35-x86_64-with-glibc2.41&quot;,
+    &quot;python&quot;: &quot;3.13.5&quot;,
+    &quot;fixture_sha256&quot;: &quot;621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca&quot;,
+    &quot;radix_binary_sha256&quot;: &quot;bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863&quot;,
+    &quot;experimental_binary_sha256&quot;: &quot;6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884&quot;
+  }
+}</pre></details></section><section id="L02"><p class="eyebrow">L02 · locally_measured_source_transcription</p><h2>2020: RadixSpline source-derived native experiment</h2><svg viewBox="0 0 900 181" role="img"><title>Median of five warmed trace replays</title><text x="8" y="54" font-size="17">Binary lower_bound</text><rect x="220" y="35" width="479.99999999999994" height="30" rx="2" fill="currentColor"/><text x="710.0" y="56" font-size="16">78.4 ns/query</text><text x="8" y="112" font-size="17">RadixSpline-derived</text><rect x="220" y="93" width="207.11448979591833" height="30" rx="2" fill="currentColor"/><text x="437.1144897959183" y="114" font-size="16">33.83 ns/query</text></svg><p>Keys: 16,384; queries: 100,000; actually absent queries: 8,349. Key array: 131,072 bytes; additional spline+radix metadata: 5,908 bytes. Maximum correction window: 66 keys. No payloads or updates.</p><p class="notice">Same-process warmed repeated trace. Not independent trials or paper reproduction.</p><p>Repeat: <code>python3 walkthrough.py demo 02</code> · <a href="02/result.json">Raw result and environment</a></p><details><summary>Inspect all fields</summary><pre>{
+  &quot;status&quot;: &quot;locally_measured_source_transcription&quot;,
+  &quot;contract&quot;: &quot;static uint64 lower_bound; keys only, no payload&quot;,
+  &quot;dataset&quot;: &quot;bundled dense_sparse synthetic fixture&quot;,
+  &quot;keys&quot;: 16384,
+  &quot;queries&quot;: 100000,
+  &quot;absent_queries&quot;: 8349,
+  &quot;repeats_same_trace&quot;: 5,
+  &quot;epsilon&quot;: 32,
+  &quot;radix_bits&quot;: 10,
+  &quot;key_bytes&quot;: 131072,
+  &quot;auxiliary_index_bytes&quot;: 5908,
+  &quot;build_ns&quot;: 509559,
+  &quot;binary_ns_per_query_median&quot;: 78.4,
+  &quot;radix_ns_per_query_median&quot;: 33.8287,
+  &quot;mean_search_window_keys&quot;: 65.9195,
+  &quot;max_search_window_keys&quot;: 66,
+  &quot;verified&quot;: true,
+  &quot;trace_fingerprint&quot;: &quot;6904169734224255362&quot;,
+  &quot;checksum&quot;: &quot;10336956078313747101&quot;,
+  &quot;caution&quot;: &quot;Same-process warmed repeated trace. Not independent trials or paper reproduction.&quot;,
+  &quot;lesson&quot;: &quot;02&quot;,
+  &quot;title&quot;: &quot;2020: RadixSpline source-derived native experiment&quot;,
+  &quot;environment&quot;: {
+    &quot;system&quot;: &quot;Linux-6.18.35-x86_64-with-glibc2.41&quot;,
+    &quot;python&quot;: &quot;3.13.5&quot;,
+    &quot;fixture_sha256&quot;: &quot;621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca&quot;,
+    &quot;radix_binary_sha256&quot;: &quot;bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863&quot;,
+    &quot;experimental_binary_sha256&quot;: &quot;6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884&quot;
+  }
+}</pre></details></section><section id="L03"><p class="eyebrow">L03 · PUBLISHED NUMBERS + recomputed arithmetic; no NF run</p><h2>2022: NFL published evidence and batching cost</h2><table><thead><tr><th>Paper dataset</th><th>ALEX without NF, Mops/s</th><th>With NF, Mops/s</th><th>Ratio</th></tr></thead><tbody><tr><td>Longlat (LLT)</td><td>8.21</td><td>11.57</td><td>1.409</td></tr><tr><td>Facebook (FB)</td><td>4.13</td><td>9.16</td><td>2.218</td></tr></tbody></table><table><thead><tr><th>Batch size</th><th>Transform-only ns/key</th></tr></thead><tbody><tr><td>1</td><td>169.5</td></tr><tr><td>8</td><td>40.6</td></tr><tr><td>32</td><td>15.28</td></tr><tr><td>128</td><td>9.52</td></tr><tr><td>256</td><td>8.38</td></tr><tr><td>1024</td><td>7.4</td></tr><tr><td>2048</td><td>7.29</td></tr></tbody></table><p>Source: NFL Table 1 (p.3), Table 2 (p.6). Regenerating this view recalculates reported ratios; it does not execute or train NFL.</p><p class="notice">Table 1 does not state its operation mix or batch size. Do not silently assign settings from later experiments. Table 2 is transform-only average cost.</p><p>Repeat: <code>python3 walkthrough.py demo 03</code> · <a href="03/result.json">Raw result and environment</a></p><details><summary>Inspect all fields</summary><pre>{
+  &quot;status&quot;: &quot;PUBLISHED NUMBERS + recomputed arithmetic; no NF run&quot;,
+  &quot;rows&quot;: [
+    {
+      &quot;dataset&quot;: &quot;Longlat (LLT)&quot;,
+      &quot;without_NF_Mops_s&quot;: 8.21,
+      &quot;with_NF_Mops_s&quot;: 11.57,
+      &quot;max_height_without&quot;: 4,
+      &quot;max_height_with&quot;: 3,
+      &quot;ratio&quot;: 1.4092570036540804
+    },
+    {
+      &quot;dataset&quot;: &quot;Facebook (FB)&quot;,
+      &quot;without_NF_Mops_s&quot;: 4.13,
+      &quot;with_NF_Mops_s&quot;: 9.16,
+      &quot;max_height_without&quot;: 11,
+      &quot;max_height_with&quot;: 3,
+      &quot;ratio&quot;: 2.2179176755447942
+    }
+  ],
+  &quot;batch_transform&quot;: [
+    {
+      &quot;batch_size&quot;: 1,
+      &quot;two_hidden_two_layer_ns_per_key&quot;: 169.53
+    },
+    {
+      &quot;batch_size&quot;: 8,
+      &quot;two_hidden_two_layer_ns_per_key&quot;: 40.6
+    },
+    {
+      &quot;batch_size&quot;: 32,
+      &quot;two_hidden_two_layer_ns_per_key&quot;: 15.28
+    },
+    {
+      &quot;batch_size&quot;: 128,
+      &quot;two_hidden_two_layer_ns_per_key&quot;: 9.52
+    },
+    {
+      &quot;batch_size&quot;: 256,
+      &quot;two_hidden_two_layer_ns_per_key&quot;: 8.38
+    },
+    {
+      &quot;batch_size&quot;: 1024,
+      &quot;two_hidden_two_layer_ns_per_key&quot;: 7.4
+    },
+    {
+      &quot;batch_size&quot;: 2048,
+      &quot;two_hidden_two_layer_ns_per_key&quot;: 7.29
+    }
+  ],
+  &quot;source&quot;: &quot;sources/2205.11807v1.pdf, Table 1 p.3; Table 2 p.6; latency definition p.10&quot;,
+  &quot;verified&quot;: true,
+  &quot;warning&quot;: &quot;Table 1 does not state its operation mix or batch size. Do not silently assign settings from later experiments. Table 2 is transform-only average cost.&quot;,
+  &quot;lesson&quot;: &quot;03&quot;,
+  &quot;title&quot;: &quot;2022: NFL published evidence and batching cost&quot;,
+  &quot;environment&quot;: {
+    &quot;system&quot;: &quot;Linux-6.18.35-x86_64-with-glibc2.41&quot;,
+    &quot;python&quot;: &quot;3.13.5&quot;,
+    &quot;fixture_sha256&quot;: &quot;621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca&quot;,
+    &quot;radix_binary_sha256&quot;: &quot;bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863&quot;,
+    &quot;experimental_binary_sha256&quot;: &quot;6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884&quot;
+  }
+}</pre></details></section><section id="L04"><p class="eyebrow">L04 · LOCAL EXPERIMENTAL MAP; not LeCo/LA-vector benchmark</p><h2>Compression: real encodings in the experimental map</h2><table><thead><tr><th>Matched variant</th><th>Accounted B/record</th><th>Operations/s</th><th>Hit P99 ns</th></tr></thead><tbody><tr><td>raw_rank</td><td>16.62</td><td>7.85e+06</td><td>200</td></tr><tr><td>packed_rank</td><td>10.12</td><td>4.754e+06</td><td>340</td></tr><tr><td>packed_byte</td><td>10.12</td><td>4.7e+06</td><td>271</td></tr><tr><td>packed_binary</td><td>10.12</td><td>4.805e+06</td><td>301</td></tr></tbody></table><p>Read-only, all 16,384 fixture records loaded; 10,000 operations per seed; three seeds. These are custom-map ablations, not ALEX/PGM/LeCo results.</p><p class="notice">Three small process runs; memory includes values and metadata. Not comparable to the keys-only contract of lesson 02. No statistical superiority claim.</p><p>Repeat: <code>python3 walkthrough.py demo 04</code> · <a href="04/result.json">Raw result and environment</a></p><details><summary>Inspect all fields</summary><pre>{
+  &quot;status&quot;: &quot;LOCAL EXPERIMENTAL MAP; not LeCo/LA-vector benchmark&quot;,
+  &quot;dataset&quot;: &quot;bundled synthetic fixture&quot;,
+  &quot;keys&quot;: 16384,
+  &quot;source_rows&quot;: 16384,
+  &quot;operations_per_trace&quot;: 10000,
+  &quot;seeds&quot;: [
+    11,
+    29,
+    47
+  ],
+  &quot;load_ratio&quot;: 1,
+  &quot;verified&quot;: true,
+  &quot;trace_pairing_verified&quot;: true,
+  &quot;summary&quot;: [
+    {
+      &quot;variant&quot;: &quot;raw_rank&quot;,
+      &quot;bytes_per_record&quot;: 16.61865234375,
+      &quot;throughput_ops_s&quot;: 7849891.23976,
+      &quot;read_p99_ns&quot;: 200
+    },
+    {
+      &quot;variant&quot;: &quot;packed_rank&quot;,
+      &quot;bytes_per_record&quot;: 10.11865234375,
+      &quot;throughput_ops_s&quot;: 4754239.11731,
+      &quot;read_p99_ns&quot;: 340
+    },
+    {
+      &quot;variant&quot;: &quot;packed_byte&quot;,
+      &quot;bytes_per_record&quot;: 10.11865234375,
+      &quot;throughput_ops_s&quot;: 4700080.79439,
+      &quot;read_p99_ns&quot;: 271
+    },
+    {
+      &quot;variant&quot;: &quot;packed_binary&quot;,
+      &quot;bytes_per_record&quot;: 10.11865234375,
+      &quot;throughput_ops_s&quot;: 4804592.42162,
+      &quot;read_p99_ns&quot;: 301
+    }
+  ],
+  &quot;warning&quot;: &quot;Three small process runs; memory includes values and metadata. Not comparable to the keys-only contract of lesson 02. No statistical superiority claim.&quot;,
+  &quot;lesson&quot;: &quot;04&quot;,
+  &quot;title&quot;: &quot;Compression: real encodings in the experimental map&quot;,
+  &quot;environment&quot;: {
+    &quot;system&quot;: &quot;Linux-6.18.35-x86_64-with-glibc2.41&quot;,
+    &quot;python&quot;: &quot;3.13.5&quot;,
+    &quot;fixture_sha256&quot;: &quot;621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca&quot;,
+    &quot;radix_binary_sha256&quot;: &quot;bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863&quot;,
+    &quot;experimental_binary_sha256&quot;: &quot;6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884&quot;
+  }
+}</pre></details></section><section id="L05"><p class="eyebrow">L05 · TEACHING DEMO + separately labeled paper data; not optimized CSV</p><h2>2024/25: virtual-point teaching experiment and CSV evidence</h2><svg viewBox="0 0 900 239" role="img"><title>Augmented-set SSE in the independent teaching toy</title><text x="8" y="54" font-size="17">Before</text><rect x="220" y="35" width="480.0" height="30" rx="2" fill="currentColor"/><text x="710.0" y="56" font-size="16">7.841 SSE</text><text x="8" y="112" font-size="17">Greedy toy</text><rect x="220" y="93" width="284.88467751319416" height="30" rx="2" fill="currentColor"/><text x="514.8846775131942" y="114" font-size="16">4.653 SSE</text><text x="8" y="170" font-size="17">Exhaustive toy</text><rect x="220" y="151" width="275.9518536985764" height="30" rx="2" fill="currentColor"/><text x="505.9518536985764" y="172" font-size="16">4.508 SSE</text></svg><p>Original keys: [1, 2, 3, 4, 5, 10, 20, 26, 27, 30]. Budget = 3. Greedy inserts [17, 15, 22]; exhaustive search checks 1,351 subsets. The source paper uses different keys/budget for its figure.</p><p>Separately, CSV reports up to 34% less query time on <strong>promoted keys</strong>. It repeats each queried key 100 times. See paper p.9–10, not the toy timing.</p><p class="notice">These ten keys and budget three are ours, not Figure 2 or Table 2 from the paper. SSE_all fits augmented ranks; original-key SSE is separate. No virtual key becomes a user record.</p><p>Repeat: <code>python3 walkthrough.py demo 05</code> · <a href="05/result.json">Raw result and environment</a></p><details><summary>Inspect all fields</summary><pre>{
+  &quot;status&quot;: &quot;TEACHING DEMO + separately labeled paper data; not optimized CSV&quot;,
+  &quot;keys&quot;: [
+    1,
+    2,
+    3,
+    4,
+    5,
+    10,
+    20,
+    26,
+    27,
+    30
+  ],
+  &quot;budget&quot;: 3,
+  &quot;before_sse&quot;: 7.840537000654879,
+  &quot;greedy&quot;: {
+    &quot;virtual_points&quot;: [
+      17,
+      15,
+      22
+    ],
+    &quot;augmented_keys&quot;: [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      15,
+      17,
+      20,
+      22,
+      26,
+      27,
+      30
+    ],
+    &quot;sse_all&quot;: 4.653435114503817,
+    &quot;sse_original&quot;: 4.504087174407086
+  },
+  &quot;exhaustive&quot;: {
+    &quot;virtual_points&quot;: [
+      14,
+      17,
+      22
+    ],
+    &quot;augmented_keys&quot;: [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      14,
+      17,
+      20,
+      22,
+      26,
+      27,
+      30
+    ],
+    &quot;sse_all&quot;: 4.507522331922896,
+    &quot;sse_original&quot;: 4.488354747399997,
+    &quot;subsets_examined&quot;: 1351
+  },
+  &quot;verified&quot;: true,
+  &quot;published_csv&quot;: {
+    &quot;source&quot;: &quot;CSV attachment 2408.06134v3.pdf, section 6.1 p.9; Fig.7/section6.2.1 p.10; Table4 p.11&quot;,
+    &quot;max_reported_promoted_key_query_time_reduction_percent&quot;: 34,
+    &quot;preprocessing_alpha&quot;: 0.1,
+    &quot;preprocessing_seconds_ALEX&quot;: {
+      &quot;Facebook&quot;: 889,
+      &quot;Covid&quot;: 1423,
+      &quot;OSM&quot;: 2297,
+      &quot;Genome&quot;: 2902
+    },
+    &quot;caution&quot;: &quot;34% is a maximum over tested settings and selected promoted keys, not whole-workload throughput and not asserted to occur at alpha=0.1. The preprocessing table is a separate fixed-alpha cost illustration.&quot;
+  },
+  &quot;warning&quot;: &quot;These ten keys and budget three are ours, not Figure 2 or Table 2 from the paper. SSE_all fits augmented ranks; original-key SSE is separate. No virtual key becomes a user record.&quot;,
+  &quot;lesson&quot;: &quot;05&quot;,
+  &quot;title&quot;: &quot;2024/25: virtual-point teaching experiment and CSV evidence&quot;,
+  &quot;environment&quot;: {
+    &quot;system&quot;: &quot;Linux-6.18.35-x86_64-with-glibc2.41&quot;,
+    &quot;python&quot;: &quot;3.13.5&quot;,
+    &quot;fixture_sha256&quot;: &quot;621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca&quot;,
+    &quot;radix_binary_sha256&quot;: &quot;bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863&quot;,
+    &quot;experimental_binary_sha256&quot;: &quot;6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884&quot;
+  }
+}</pre></details></section><section id="L06"><p class="eyebrow">L06 · LOCAL EXPERIMENTAL MAP, not prior SOTA</p><h2>Project controls: byte geometry and update cost</h2><table><thead><tr><th>Layout</th><th>Encoded key B/key</th><th>Normalized byte MSE</th><th>Initial block error</th></tr></thead><tbody><tr><td>raw</td><td>8.125</td><td>9.469e-05</td><td>0.2527</td></tr><tr><td>min_bytes</td><td>1.625</td><td>1.958e-05</td><td>0.3047</td></tr><tr><td>smooth</td><td>4.25</td><td>1.406e-05</td><td>0.4111</td></tr></tbody></table><table><thead><tr><th>Update control</th><th>Insert median ns</th><th>Insert P99 ns</th><th>Compactions</th><th>Drain ns</th></tr></thead><tbody><tr><td>raw</td><td>220</td><td>173552</td><td>25</td><td>558734</td></tr><tr><td>min_bytes</td><td>291</td><td>273533</td><td>25</td><td>848351</td></tr></tbody></table><p>Verified invariant: logical rank model unchanged across layouts. Geometry and update tables are different workloads.</p><p class="notice">Geometry has full initial fixture; dynamic experiment has 75% initial load. Geometry error and mutation timing are not one combined metric.</p><p>Repeat: <code>python3 walkthrough.py demo 06</code> · <a href="06/result.json">Raw result and environment</a></p><details><summary>Inspect all fields</summary><pre>{
+  &quot;status&quot;: &quot;LOCAL EXPERIMENTAL MAP, not prior SOTA&quot;,
+  &quot;verified&quot;: true,
+  &quot;logical_rank_invariance_verified&quot;: true,
+  &quot;geometry&quot;: [
+    {
+      &quot;keys&quot;: 16384,
+      &quot;regions&quot;: 4,
+      &quot;blocks&quot;: 128,
+      &quot;key_bytes&quot;: 133120,
+      &quot;bytes_per_key&quot;: 8.125,
+      &quot;codecs&quot;: {
+        &quot;raw&quot;: 128
+      },
+      &quot;rank_mae&quot;: 34.42683131607788,
+      &quot;rank_p99&quot;: 79.20677843437397,
+      &quot;byte_mae&quot;: 279.63942895029237,
+      &quot;byte_p99&quot;: 645.0885163711864,
+      &quot;rank_normalized_mse&quot;: 9.47166199335147e-05,
+      &quot;byte_normalized_mse&quot;: 9.468897803580027e-05,
+      &quot;rank_mean_block_error&quot;: 0.25274658203125,
+      &quot;byte_mean_block_error&quot;: 0.252685546875,
+      &quot;rank_p99_block_error&quot;: 1,
+      &quot;byte_p99_block_error&quot;: 1,
+      &quot;policy&quot;: &quot;raw&quot;
+    },
+    {
+      &quot;keys&quot;: 16384,
+      &quot;regions&quot;: 4,
+      &quot;blocks&quot;: 128,
+      &quot;key_bytes&quot;: 26624,
+      &quot;bytes_per_key&quot;: 1.625,
+      &quot;codecs&quot;: {
+        &quot;linear&quot;: 128
+      },
+      &quot;rank_mae&quot;: 34.42683131607788,
+      &quot;rank_p99&quot;: 79.20677843437397,
+      &quot;byte_mae&quot;: 23.858286665389993,
+      &quot;byte_p99&quot;: 71.44028677211281,
+      &quot;rank_normalized_mse&quot;: 9.47166199335147e-05,
+      &quot;byte_normalized_mse&quot;: 1.9584483244034233e-05,
+      &quot;rank_mean_block_error&quot;: 0.25274658203125,
+      &quot;byte_mean_block_error&quot;: 0.30474853515625,
+      &quot;rank_p99_block_error&quot;: 1,
+      &quot;byte_p99_block_error&quot;: 1,
+      &quot;policy&quot;: &quot;min_bytes&quot;
+    },
+    {
+      &quot;keys&quot;: 16384,
+      &quot;regions&quot;: 4,
+      &quot;blocks&quot;: 128,
+      &quot;key_bytes&quot;: 69632,
+      &quot;bytes_per_key&quot;: 4.25,
+      &quot;codecs&quot;: {
+        &quot;linear&quot;: 64,
+        &quot;raw&quot;: 64
+      },
+      &quot;rank_mae&quot;: 34.42683131607788,
+      &quot;rank_p99&quot;: 79.20677843437397,
+      &quot;byte_mae&quot;: 52.54571608602909,
+      &quot;byte_p99&quot;: 174.1646054919056,
+      &quot;rank_normalized_mse&quot;: 9.47166199335147e-05,
+      &quot;byte_normalized_mse&quot;: 1.406069922370435e-05,
+      &quot;rank_mean_block_error&quot;: 0.25274658203125,
+      &quot;byte_mean_block_error&quot;: 0.4111328125,
+      &quot;rank_p99_block_error&quot;: 1,
+      &quot;byte_p99_block_error&quot;: 2,
+      &quot;policy&quot;: &quot;smooth&quot;
+    }
+  ],
+  &quot;update_controls&quot;: [
+    {
+      &quot;policy&quot;: &quot;raw&quot;,
+      &quot;trace_fingerprint&quot;: &quot;15056163051654466426&quot;,
+      &quot;checksum&quot;: &quot;17727645650178343746&quot;,
+      &quot;verified&quot;: true,
+      &quot;insert_p50_ns&quot;: 220,
+      &quot;insert_p99_ns&quot;: 173552,
+      &quot;compactions&quot;: 25,
+      &quot;drain_ns&quot;: 558734
+    },
+    {
+      &quot;policy&quot;: &quot;min_bytes&quot;,
+      &quot;trace_fingerprint&quot;: &quot;15056163051654466426&quot;,
+      &quot;checksum&quot;: &quot;17727645650178343746&quot;,
+      &quot;verified&quot;: true,
+      &quot;insert_p50_ns&quot;: 291,
+      &quot;insert_p99_ns&quot;: 273533,
+      &quot;compactions&quot;: 25,
+      &quot;drain_ns&quot;: 848351
+    }
+  ],
+  &quot;warning&quot;: &quot;Geometry has full initial fixture; dynamic experiment has 75% initial load. Geometry error and mutation timing are not one combined metric.&quot;,
+  &quot;lesson&quot;: &quot;06&quot;,
+  &quot;title&quot;: &quot;Project controls: byte geometry and update cost&quot;,
+  &quot;environment&quot;: {
+    &quot;system&quot;: &quot;Linux-6.18.35-x86_64-with-glibc2.41&quot;,
+    &quot;python&quot;: &quot;3.13.5&quot;,
+    &quot;fixture_sha256&quot;: &quot;621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca&quot;,
+    &quot;radix_binary_sha256&quot;: &quot;bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863&quot;,
+    &quot;experimental_binary_sha256&quot;: &quot;6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884&quot;
+  }
+}</pre></details></section><section id="L07"><p class="eyebrow">L07 · ARCHIVED RESULTS AUDIT, not a fresh performance run</p><h2>Evidence audit: archived suite and user Mac pilot</h2><pre>PASS: 108 verified runs; 12 groups with matched traces and checksums
+
+Card 05: dense_sparse / read_only (medians of two runs)
+Variant              bytes/record     Mops/s   hit P99 ns
+adaptive_byte              15.052      6.470        286.0
+ordered_map                48.006      8.335        205.5
+packed_binary              11.249      4.711        361.0
+packed_byte                11.249      4.622        350.5
+packed_rank                11.249      4.444        390.5
+raw_binary                 16.628      8.251        195.0
+raw_rank                   16.628      7.402        191.0
+smooth_byte                15.052      6.320        285.5
+sorted_vector              16.002     13.356        290.5
+
+PASS: Card 06 stored size calculations and recorded logical-rank invariance
+PASS: Card 07 counts, cardinality and memory; final-drain-inclusive throughput = 810,430.3 ops/s
+
+No benchmarks were run. Paper table values remain manually transcribed source evidence, not reproduced results.
+</pre><p class="notice">Mac numbers are transcribed from the user, not measured in this runtime. Archived Linux results use a different generated dataset from the shipped binary fixture.</p><p>Repeat: <code>python3 walkthrough.py demo 07</code> · <a href="07/result.json">Raw result and environment</a></p><details><summary>Inspect all fields</summary><pre>{
+  &quot;status&quot;: &quot;ARCHIVED RESULTS AUDIT, not a fresh performance run&quot;,
+  &quot;verified&quot;: true,
+  &quot;audit_output&quot;: &quot;PASS: 108 verified runs; 12 groups with matched traces and checksums\n\nCard 05: dense_sparse / read_only (medians of two runs)\nVariant              bytes/record     Mops/s   hit P99 ns\nadaptive_byte              15.052      6.470        286.0\nordered_map                48.006      8.335        205.5\npacked_binary              11.249      4.711        361.0\npacked_byte                11.249      4.622        350.5\npacked_rank                11.249      4.444        390.5\nraw_binary                 16.628      8.251        195.0\nraw_rank                   16.628      7.402        191.0\nsmooth_byte                15.052      6.320        285.5\nsorted_vector              16.002     13.356        290.5\n\nPASS: Card 06 stored size calculations and recorded logical-rank invariance\nPASS: Card 07 counts, cardinality and memory; final-drain-inclusive throughput = 810,430.3 ops/s\n\nNo benchmarks were run. Paper table values remain manually transcribed source evidence, not reproduced results.\n&quot;,
+  &quot;mac_pilot&quot;: {
+    &quot;provenance&quot;: &quot;Transcribed from the JSON pasted by the user in this conversation. This is not a new measurement; no hardware metadata file was supplied for this run.&quot;,
+    &quot;schema_version&quot;: 1,
+    &quot;index&quot;: &quot;scaleli&quot;,
+    &quot;distribution&quot;: &quot;dense_sparse&quot;,
+    &quot;profile&quot;: &quot;read_heavy&quot;,
+    &quot;seed&quot;: 42,
+    &quot;source_rows&quot;: 50000,
+    &quot;unique_rows&quot;: 50000,
+    &quot;initial_rows&quot;: 37500,
+    &quot;final_rows&quot;: 39096,
+    &quot;operations&quot;: 20000,
+    &quot;trace_fingerprint&quot;: &quot;6056907619755482120&quot;,
+    &quot;result_checksum&quot;: &quot;53401893602511524&quot;,
+    &quot;verified&quot;: true,
+    &quot;policy&quot;: &quot;min_bytes&quot;,
+    &quot;routing&quot;: &quot;byte&quot;,
+    &quot;region_keys&quot;: 4096,
+    &quot;block_keys&quot;: 128,
+    &quot;delta_limit&quot;: 64,
+    &quot;restart_interval&quot;: 16,
+    &quot;load_ratio&quot;: 0.75,
+    &quot;query_distribution&quot;: &quot;uniform&quot;,
+    &quot;warmup_reads&quot;: 4096,
+    &quot;build_ns&quot;: 2567375,
+    &quot;elapsed_ns&quot;: 22269416,
+    &quot;throughput_ops_s&quot;: 898092.702566,
+    &quot;memory_before&quot;: {
+      &quot;key_bytes&quot;: 103185,
+      &quot;value_bytes&quot;: 300000,
+      &quot;metadata_bytes&quot;: 18480,
+      &quot;delta_bytes&quot;: 0,
+      &quot;reserved_slack_bytes&quot;: 0,
+      &quot;accounted_bytes&quot;: 421665,
+      &quot;estimated&quot;: false
+    },
+    &quot;memory_after&quot;: {
+      &quot;key_bytes&quot;: 106625,
+      &quot;value_bytes&quot;: 311264,
+      &quot;metadata_bytes&quot;: 19488,
+      &quot;delta_bytes&quot;: 8400,
+      &quot;reserved_slack_bytes&quot;: 1392,
+      &quot;accounted_bytes&quot;: 447169,
+      &quot;estimated&quot;: false
+    },
+    &quot;memory_after_drain&quot;: {
+      &quot;key_bytes&quot;: 107113,
+      &quot;value_bytes&quot;: 312768,
+      &quot;metadata_bytes&quot;: 19488,
+      &quot;delta_bytes&quot;: 0,
+      &quot;reserved_slack_bytes&quot;: 0,
+      &quot;accounted_bytes&quot;: 439369,
+      &quot;estimated&quot;: false
+    },
+    &quot;maintenance&quot;: {
+      &quot;compactions&quot;: 47,
+      &quot;splits&quot;: 0,
+      &quot;bytes_rewritten&quot;: 2077552,
+      &quot;max_rewrite_bytes&quot;: 45922,
+      &quot;raw_bypasses&quot;: 0,
+      &quot;drain_ns&quot;: 2408833,
+      &quot;drain_additional_rewrite_bytes&quot;: 419881
+    },
+    &quot;latency_ns&quot;: {
+      &quot;read_hit&quot;: {
+        &quot;count&quot;: 14396,
+        &quot;p50&quot;: 375,
+        &quot;p95&quot;: 708,
+        &quot;p99&quot;: 917,
+        &quot;max&quot;: 32042
+      },
+      &quot;read_miss&quot;: {
+        &quot;count&quot;: 1647,
+        &quot;p50&quot;: 375,
+        &quot;p95&quot;: 625,
+        &quot;p99&quot;: 750,
+        &quot;max&quot;: 3459
+      },
+      &quot;insert&quot;: {
+        &quot;count&quot;: 1991,
+        &quot;p50&quot;: 458,
+        &quot;p95&quot;: 750,
+        &quot;p99&quot;: 253958,
+        &quot;max&quot;: 317000
+      },
+      &quot;update&quot;: {
+        &quot;count&quot;: 987,
+        &quot;p50&quot;: 458,
+        &quot;p95&quot;: 792,
+        &quot;p99&quot;: 251958,
+        &quot;max&quot;: 286208
+      },
+      &quot;erase&quot;: {
+        &quot;count&quot;: 395,
+        &quot;p50&quot;: 458,
+        &quot;p95&quot;: 791,
+        &quot;p99&quot;: 253417,
+        &quot;max&quot;: 320916
+      },
+      &quot;scan&quot;: {
+        &quot;count&quot;: 584,
+        &quot;p50&quot;: 2709,
+        &quot;p95&quot;: 3459,
+        &quot;p99&quot;: 7625,
+        &quot;max&quot;: 17666
+      }
+    },
+    &quot;compaction_operation_latency_ns&quot;: {
+      &quot;count&quot;: 47,
+      &quot;p50&quot;: 256875,
+      &quot;p95&quot;: 291125,
+      &quot;p99&quot;: 320916,
+      &quot;max&quot;: 320916
+    },
+    &quot;work_counters&quot;: {
+      &quot;block_routes&quot;: 19896,
+      &quot;correction_distance&quot;: 3907,
+      &quot;max_correction_distance&quot;: 1,
+      &quot;coordinate_probes&quot;: 100463
+    }
+  },
+  &quot;warning&quot;: &quot;Mac numbers are transcribed from the user, not measured in this runtime. Archived Linux results use a different generated dataset from the shipped binary fixture.&quot;,
+  &quot;lesson&quot;: &quot;07&quot;,
+  &quot;title&quot;: &quot;Evidence audit: archived suite and user Mac pilot&quot;,
+  &quot;environment&quot;: {
+    &quot;system&quot;: &quot;Linux-6.18.35-x86_64-with-glibc2.41&quot;,
+    &quot;python&quot;: &quot;3.13.5&quot;,
+    &quot;fixture_sha256&quot;: &quot;621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca&quot;,
+    &quot;radix_binary_sha256&quot;: &quot;bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863&quot;,
+    &quot;experimental_binary_sha256&quot;: &quot;6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884&quot;
+  }
+}</pre></details></section><footer>Meeting guide: ../../docs/REHEARSAL.md · Scope and sources: ../../docs/APPROACHES.md · Timing is machine-dependent.</footer></html>

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness",
+    "--data",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm",
+    "--dtype",
+    "uint64",
+    "--check-sorted",
+    "0",
+    "--sort-only",
+    "1",
+    "--write-sorted",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm.sorted"
+  ],
+  "sha256": {
+    "/Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness": "4cbad796be72685cde71780a6ca2a6ed9376b97062bbcf3e26a1fdbe3dd8b39d"
+  }
+}

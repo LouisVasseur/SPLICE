@@ -1,0 +1,2 @@
+# Optional: core tests and benchmark orchestration use the Python standard library.
+matplotlib>=3.6,<4

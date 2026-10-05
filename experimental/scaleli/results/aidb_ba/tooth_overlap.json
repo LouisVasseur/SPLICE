@@ -1,0 +1,82 @@
+{
+ "books": {
+  "shifts": 64,
+  "tooth_z_width": 2.2775,
+  "tooth_to_tooth_shift": 0.042457,
+  "max_teeth_overlapping": 54,
+  "mean_teeth_seen_by_a_key": 38.7,
+  "monotone_within_tooth": true
+ },
+ "fb": {
+  "shifts": 512,
+  "tooth_z_width": 2.5253,
+  "tooth_to_tooth_shift": 0.003774,
+  "max_teeth_overlapping": 512,
+  "mean_teeth_seen_by_a_key": 384.7,
+  "monotone_within_tooth": true
+ },
+ "osm": {
+  "shifts": 512,
+  "tooth_z_width": 2.7246,
+  "tooth_to_tooth_shift": 0.005368,
+  "max_teeth_overlapping": 509,
+  "mean_teeth_seen_by_a_key": 342.5,
+  "monotone_within_tooth": true
+ },
+ "covid": {
+  "shifts": 64,
+  "tooth_z_width": 2.4575,
+  "tooth_to_tooth_shift": 0.030636,
+  "max_teeth_overlapping": 64,
+  "mean_teeth_seen_by_a_key": 47.4,
+  "monotone_within_tooth": true
+ },
+ "genome": {
+  "shifts": 64,
+  "tooth_z_width": 2.6447,
+  "tooth_to_tooth_shift": 0.029528,
+  "max_teeth_overlapping": 64,
+  "mean_teeth_seen_by_a_key": 49.3,
+  "monotone_within_tooth": true
+ },
+ "history": {
+  "shifts": 64,
+  "tooth_z_width": 2.5081,
+  "tooth_to_tooth_shift": 0.030514,
+  "max_teeth_overlapping": 64,
+  "mean_teeth_seen_by_a_key": 47.8,
+  "monotone_within_tooth": true
+ },
+ "libio": {
+  "shifts": 64,
+  "tooth_z_width": 2.5784,
+  "tooth_to_tooth_shift": 0.030992,
+  "max_teeth_overlapping": 64,
+  "mean_teeth_seen_by_a_key": 48.0,
+  "monotone_within_tooth": true
+ },
+ "planet": {
+  "shifts": 512,
+  "tooth_z_width": 2.0128,
+  "tooth_to_tooth_shift": 0.003432,
+  "max_teeth_overlapping": 512,
+  "mean_teeth_seen_by_a_key": 364.1,
+  "monotone_within_tooth": true
+ },
+ "stack": {
+  "shifts": 64,
+  "tooth_z_width": 2.5237,
+  "tooth_to_tooth_shift": 0.03054,
+  "max_teeth_overlapping": 64,
+  "mean_teeth_seen_by_a_key": 47.9,
+  "monotone_within_tooth": true
+ },
+ "wise": {
+  "shifts": 64,
+  "tooth_z_width": 2.4937,
+  "tooth_to_tooth_shift": 0.0312,
+  "max_teeth_overlapping": 64,
+  "mean_teeth_seen_by_a_key": 47.3,
+  "monotone_within_tooth": true
+ }
+}

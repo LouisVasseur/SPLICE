@@ -1,0 +1,58 @@
+{
+ "dataset": "fb",
+ "mode": "window",
+ "k": 1,
+ "order": "TGV",
+ "pert": "+x3@1e-06",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.4923234390992834,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.4923234390992834,
+   "virt": 22,
+   "gaps": [
+    331
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model": 2.471852610030706,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.471852610030706,
+   "virt": 25,
+   "gaps": [
+    331
+   ]
+  },
+  {
+   "round": 3,
+   "accepted": true,
+   "model": 2.390992835209826,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.390992835209826,
+   "virt": 33,
+   "gaps": [
+    331
+   ]
+  },
+  {
+   "round": 4,
+   "accepted": false,
+   "model": 2.3940634595701127,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.3940634595701127,
+   "virt": 33,
+   "gaps": [
+    331
+   ]
+  }
+ ],
+ "seconds": 1.0846447944641113
+}

@@ -1,0 +1,82 @@
+{
+ "description": "Full scale (200M keys, paper protocol scale): control, root ablation and region virtual points on fb and planet; single seed, 2M measured lookups, 16 build threads.",
+ "datasets": [
+  {
+   "name": "fb",
+   "data": "data/external/gre/fb",
+   "format": "sosd",
+   "dtype": "uint64",
+   "flow_weights": "results/aidb/flows/fb_2D2H2L.txt"
+  },
+  {
+   "name": "planet",
+   "data": "data/external/gre/planet.sorted",
+   "format": "sosd",
+   "dtype": "uint64",
+   "flow_weights": "results/aidb/flows/planet_2D2H2L.txt"
+  }
+ ],
+ "profiles": [
+  "read_only"
+ ],
+ "variants": [
+  {
+   "name": "packed_rank",
+   "policy": "min_bytes",
+   "routing": "rank"
+  },
+  {
+   "name": "packed_rank_root_raw",
+   "policy": "min_bytes",
+   "routing": "rank",
+   "root": "model"
+  },
+  {
+   "name": "packed_rank_root_flow",
+   "policy": "min_bytes",
+   "routing": "rank",
+   "root": "model",
+   "flow": "$flow"
+  },
+  {
+   "name": "packed_rank_root_vf4",
+   "policy": "min_bytes",
+   "routing": "rank",
+   "root": "model",
+   "root-alpha": 4
+  },
+  {
+   "name": "packed_rank_root_fusion",
+   "policy": "min_bytes",
+   "routing": "rank",
+   "root": "model",
+   "root-alpha": 4,
+   "flow": "$flow"
+  },
+  {
+   "name": "packed_rank_vp10_root_fusion",
+   "policy": "min_bytes",
+   "routing": "rank",
+   "virtual-alpha": 0.1,
+   "root": "model",
+   "root-alpha": 4,
+   "flow": "$flow"
+  }
+ ],
+ "seeds": [
+  11
+ ],
+ "repeats": 1,
+ "common": {
+  "load-ratio": 1,
+  "miss": 0,
+  "query-distribution": "uniform",
+  "ops": 2000000,
+  "warmup": 200000,
+  "verify": 0,
+  "instrument": 1,
+  "latency": 0,
+  "build-threads": 16,
+  "qos": 1
+ }
+}

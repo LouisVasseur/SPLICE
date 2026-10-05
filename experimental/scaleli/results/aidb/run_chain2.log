@@ -1,0 +1,8 @@
+20:46:02 FINAL root-ablation rerun start
+[540/540] osm_uniform / read_only / packed_rank_root_vf4 seed=47 repeat=0
+results/aidb_final/sweep/results.jsonl
+results/aidb_final/sweep/summary.csv
+21:17:20 FINAL DONE
+21:17:20 FULLSCALE start
+[1/12] planet / read_only / packed_rank_root_flow seed=11 repeat=0
+[2/12] fb / read_only / packed_rank_root_fusion seed=11 repeat=0

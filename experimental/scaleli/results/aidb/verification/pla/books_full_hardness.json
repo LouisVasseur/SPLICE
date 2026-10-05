@@ -1,0 +1,7 @@
+{
+"schema":"scaleli_hardness/1","data":"/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books","dtype":"uint64","limit":0,"keys":200000000,"sorted":true,"duplicates":0,"min":0,"max":9223372036854784874,"pla_eps":[32,4096],"flow_weights":null,"virtual_alpha":0,"region_keys":4096,"threads":16,"read_ns":507264125,"original_metrics_ns":2508221000,"elapsed_ns":3127489291,
+"original":{"keys":200000000,"rmse":18053637.477051109,"max_error":96380337.870588541,"conflict_degree":246,"pla":{"32":262604,"4096":97},"least_squares":{"slope":2.8888418204900384e-11,"intercept":29931464.210543927,"origin":0},"fmcd":{"slope":4.3368093596820291e-11,"intercept":-1.1096604913962356,"capacity":400000000,"gap":1,"d":245,"ut":23058426531.188797,"ut_epsilon":9.9999999999999995e-07,"fallback":false,"degenerate":false},"min":0,"max":9223372036854784874},
+"transformed":null,
+"smoothed":null,
+"note":"Reduced-scale, single-host, clean-room controls: FMCD ported from LIPP (MIT), PLA from PGM-index (Apache-2.0); not the paper's measurements and not NFL/CSV."
+}

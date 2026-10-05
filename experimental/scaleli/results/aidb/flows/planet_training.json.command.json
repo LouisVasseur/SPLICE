@@ -1,0 +1,14 @@
+[
+  "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py",
+  "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/planet_2M_uniform_s42",
+  "--dtype",
+  "uint64",
+  "--output",
+  "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb/flows/planet_2D2H2L.txt",
+  "--sample",
+  "4096",
+  "--steps",
+  "200",
+  "--monotone"
+]

@@ -1,0 +1,14 @@
+osm untr rc=0 wall=16s 18:54:22
+planet untr rc=0 wall=16s 18:54:38
+fb untr rc=0 wall=16s 18:54:54
+books untr rc=0 wall=13s 18:55:07
+genome untr rc=0 wall=17s 18:55:24
+covid untr rc=0 wall=12s 18:55:36
+history untr rc=0 wall=12s 18:55:48
+libio untr rc=0 wall=13s 18:56:01
+stack untr rc=0 wall=10s 18:56:11
+wise untr rc=0 wall=12s 18:56:23
+PHASE_DONE untrained
+fb trimraw rc=0 wall=4s 18:56:27
+fb trimfree rc=0 wall=16s 18:56:43
+fb trimmono rc=0 wall=14s 18:56:57

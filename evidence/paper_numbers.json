@@ -1,0 +1,82 @@
+{
+  "01": {
+    "source": "NFL attachment 2205.11807v1.pdf, Table 1, p.3",
+    "units": "throughput in million operations/second; height in levels",
+    "rows": [
+      {
+        "dataset": "Longlat (LLT)",
+        "without_NF_Mops_s": 8.21,
+        "with_NF_Mops_s": 11.57,
+        "max_height_without": 4,
+        "max_height_with": 3
+      },
+      {
+        "dataset": "Facebook (FB)",
+        "without_NF_Mops_s": 4.13,
+        "with_NF_Mops_s": 9.16,
+        "max_height_without": 11,
+        "max_height_with": 3
+      }
+    ],
+    "caution": "ALEX with and without NF, not overall NFL versus all indexes. Table 1 does not specify the operation mix or batch size; do not silently assign those from later experiments."
+  },
+  "02": {
+    "source": "NFL attachment, Table 2, p.6; section 4.3, p.10; section 4.4.3, p.11",
+    "rows": [
+      {
+        "batch_size": 1,
+        "two_hidden_two_layer_ns_per_key": 169.53
+      },
+      {
+        "batch_size": 8,
+        "two_hidden_two_layer_ns_per_key": 40.6
+      },
+      {
+        "batch_size": 32,
+        "two_hidden_two_layer_ns_per_key": 15.28
+      },
+      {
+        "batch_size": 128,
+        "two_hidden_two_layer_ns_per_key": 9.52
+      },
+      {
+        "batch_size": 256,
+        "two_hidden_two_layer_ns_per_key": 8.38
+      },
+      {
+        "batch_size": 1024,
+        "two_hidden_two_layer_ns_per_key": 7.4
+      },
+      {
+        "batch_size": 2048,
+        "two_hidden_two_layer_ns_per_key": 7.29
+      }
+    ],
+    "memory_note": "In the paper's write-heavy final index-size comparison NFL is reported as 2.26x ALEX and 3.1x PGM. This is a separate experiment, not measured from Table 2."
+  },
+  "03": {
+    "source": "CSV attachment 2408.06134v3.pdf, section 6.1 p.9; Fig.7/section6.2.1 p.10; Table4 p.11",
+    "max_reported_promoted_key_query_time_reduction_percent": 34,
+    "preprocessing_alpha": 0.1,
+    "preprocessing_seconds_ALEX": {
+      "Facebook": 889,
+      "Covid": 1423,
+      "OSM": 2297,
+      "Genome": 2902
+    },
+    "caution": "34% is a maximum over tested settings and selected promoted keys, not whole-workload throughput and not asserted to occur at alpha=0.1. The preprocessing table is a separate fixed-alpha cost illustration."
+  },
+  "04": {
+    "source": "LeCo, arXiv HTML 2306.15374, section5.2 (RocksDB), checked 2026-09-08",
+    "max_throughput_improvement_percent": 16,
+    "comparison": "second-best of the tested restart-interval configurations as stated in section5.2",
+    "records": 900000000,
+    "key_bytes": 20,
+    "value_bytes": 400,
+    "nonempty_seek_queries": 200000000,
+    "threads": 64,
+    "repeats": 3,
+    "query_skew": "80% of queries access 20% of keys",
+    "caution": "RocksDB index-block compression under a different API, workload and machine. Not a predicted SCALE-LI gain."
+  }
+}

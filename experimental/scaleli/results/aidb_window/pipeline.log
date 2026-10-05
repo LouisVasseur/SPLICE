@@ -1,0 +1,405 @@
+2026-09-21T16:10:57+00:00 [pipeline] start steps=['verify-downloads', 'sort', 'sample', 'flows', 'hardness', 'sweep', 'throughput', 'scores', 'report'] datasets=['books', 'fb', 'osm', 'covid', 'genome', 'history', 'libio', 'planet', 'stack', 'wise'] results=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window dry_run=False variants=['sorted_vector', 'raw_rank', 'packed_rank', 'packed_rank_flow', 'packed_rank_flow_forced', 'packed_rank_vp10', 'packed_rank_flow_vp10', 'packed_byte']
+2026-09-21T16:10:57+00:00 [verify-downloads] begin
+2026-09-21T16:10:58+00:00 [verify-downloads] books: 200,000,000 keys, 1,600,000,008 bytes, sha256 c71eb78eebb746f0… (1.2 s)
+2026-09-21T16:10:59+00:00 [verify-downloads] fb: 200,000,000 keys, 1,600,000,008 bytes, sha256 22d5fd6f608e528c… (1.2 s)
+2026-09-21T16:11:00+00:00 [verify-downloads] osm: 200,000,000 keys, 1,600,000,008 bytes, sha256 1d1f5681cbfcd377… (1.3 s)
+2026-09-21T16:11:02+00:00 [verify-downloads] covid: 200,000,000 keys, 1,600,000,008 bytes, sha256 96834e0f0a9a697a… (1.3 s)
+2026-09-21T16:11:03+00:00 [verify-downloads] genome: 200,000,000 keys, 1,600,000,008 bytes, sha256 6862bff81727ec2b… (1.2 s)
+2026-09-21T16:11:04+00:00 [verify-downloads] history: 200,000,000 keys, 1,600,000,008 bytes, sha256 2556096e02969666… (1.1 s)
+2026-09-21T16:11:05+00:00 [verify-downloads] libio: 200,000,000 keys, 1,600,000,008 bytes, sha256 0d0c99a064a1142c… (1.1 s)
+2026-09-21T16:11:06+00:00 [verify-downloads] planet: 200,000,000 keys, 1,600,000,008 bytes, sha256 0e4a90c81e6e36f1… (1.2 s)
+2026-09-21T16:11:07+00:00 [verify-downloads] stack: 200,000,000 keys, 1,600,000,008 bytes, sha256 34f9a3ae69ac17ed… (1.2 s)
+2026-09-21T16:11:09+00:00 [verify-downloads] wise: 200,000,000 keys, 1,600,000,008 bytes, sha256 87e34fb1503881b1… (1.1 s)
+2026-09-21T16:11:09+00:00 [verify-downloads] done in 11.9 s
+2026-09-21T16:11:09+00:00 [sort] begin
+2026-09-21T16:11:09+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books.sorted
+2026-09-21T16:11:09+00:00 [sort] ok 0.6 s: scaleli_hardness
+2026-09-21T16:11:09+00:00 [sort] books: sorted=True duplicates=0
+2026-09-21T16:11:09+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb.sorted
+2026-09-21T16:11:10+00:00 [sort] ok 0.6 s: scaleli_hardness
+2026-09-21T16:11:10+00:00 [sort] fb: sorted=True duplicates=0
+2026-09-21T16:11:10+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm.sorted
+2026-09-21T16:11:10+00:00 [sort] ok 0.6 s: scaleli_hardness
+2026-09-21T16:11:10+00:00 [sort] osm: sorted=True duplicates=0
+2026-09-21T16:11:11+00:00 [sort] covid: reuse existing covid.sorted (200,000,000 keys, sha256 cdc34a55f609691b…)
+2026-09-21T16:11:12+00:00 [sort] genome: reuse existing genome.sorted (200,000,000 keys, sha256 2b0b5ae57a5cd00f…)
+2026-09-21T16:11:13+00:00 [sort] history: reuse existing history.sorted (200,000,000 keys, sha256 c2662355dd437e5d…)
+2026-09-21T16:11:14+00:00 [sort] libio: reuse existing libio.sorted (200,000,000 keys, sha256 f9f8683751342735…)
+2026-09-21T16:11:15+00:00 [sort] planet: reuse existing planet.sorted (200,000,000 keys, sha256 d6680d1340758901…)
+2026-09-21T16:11:16+00:00 [sort] stack: reuse existing stack.sorted (200,000,000 keys, sha256 1e261e45f0058731…)
+2026-09-21T16:11:17+00:00 [sort] wise: reuse existing wise.sorted (200,000,000 keys, sha256 6353bad843367ced…)
+2026-09-21T16:11:17+00:00 [sort] done in 8.8 s
+2026-09-21T16:11:17+00:00 [sample] begin
+2026-09-21T16:11:17+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/books_2M_window_s42 --n 2000000 --dtype uint64 --mode window --seed 42
+2026-09-21T16:11:19+00:00 [sample] ok 1.4 s: python3.14
+2026-09-21T16:11:19+00:00 [sample] books: wrote books_2M_window_s42 (2,000,000 keys from books)
+2026-09-21T16:11:19+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/fb_2M_window_s42 --n 2000000 --dtype uint64 --mode window --seed 42
+2026-09-21T16:11:20+00:00 [sample] ok 1.4 s: python3.14
+2026-09-21T16:11:20+00:00 [sample] fb: wrote fb_2M_window_s42 (2,000,000 keys from fb)
+2026-09-21T16:11:20+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/osm_2M_window_s42 --n 2000000 --dtype uint64 --mode window --seed 42
+2026-09-21T16:11:22+00:00 [sample] ok 1.4 s: python3.14
+2026-09-21T16:11:22+00:00 [sample] osm: wrote osm_2M_window_s42 (2,000,000 keys from osm)
+2026-09-21T16:11:22+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/covid.sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/covid_2M_window_s42 --n 2000000 --dtype uint64 --mode window --seed 42
+2026-09-21T16:11:23+00:00 [sample] ok 1.5 s: python3.14
+2026-09-21T16:11:23+00:00 [sample] covid: wrote covid_2M_window_s42 (2,000,000 keys from covid.sorted)
+2026-09-21T16:11:23+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/genome.sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/genome_2M_window_s42 --n 2000000 --dtype uint64 --mode window --seed 42
+2026-09-21T16:11:25+00:00 [sample] ok 1.5 s: python3.14
+2026-09-21T16:11:25+00:00 [sample] genome: wrote genome_2M_window_s42 (2,000,000 keys from genome.sorted)
+2026-09-21T16:11:25+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/history.sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/history_2M_window_s42 --n 2000000 --dtype uint64 --mode window --seed 42
+2026-09-21T16:11:26+00:00 [sample] ok 1.5 s: python3.14
+2026-09-21T16:11:26+00:00 [sample] history: wrote history_2M_window_s42 (2,000,000 keys from history.sorted)
+2026-09-21T16:11:26+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/libio.sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/libio_2M_window_s42 --n 2000000 --dtype uint64 --mode window --seed 42
+2026-09-21T16:11:27+00:00 [sample] ok 1.5 s: python3.14
+2026-09-21T16:11:27+00:00 [sample] libio: wrote libio_2M_window_s42 (2,000,000 keys from libio.sorted)
+2026-09-21T16:11:27+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/planet.sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/planet_2M_window_s42 --n 2000000 --dtype uint64 --mode window --seed 42
+2026-09-21T16:11:29+00:00 [sample] ok 1.5 s: python3.14
+2026-09-21T16:11:29+00:00 [sample] planet: wrote planet_2M_window_s42 (2,000,000 keys from planet.sorted)
+2026-09-21T16:11:29+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/stack.sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/stack_2M_window_s42 --n 2000000 --dtype uint64 --mode window --seed 42
+2026-09-21T16:11:30+00:00 [sample] ok 1.5 s: python3.14
+2026-09-21T16:11:30+00:00 [sample] stack: wrote stack_2M_window_s42 (2,000,000 keys from stack.sorted)
+2026-09-21T16:11:30+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/wise.sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/wise_2M_window_s42 --n 2000000 --dtype uint64 --mode window --seed 42
+2026-09-21T16:11:32+00:00 [sample] ok 1.5 s: python3.14
+2026-09-21T16:11:32+00:00 [sample] wise: wrote wise_2M_window_s42 (2,000,000 keys from wise.sorted)
+2026-09-21T16:11:32+00:00 [sample] done in 14.5 s
+2026-09-21T16:11:32+00:00 [flows] begin
+2026-09-21T16:11:32+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/books_2M_window_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/books_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T16:11:40+00:00 [flows] ok 7.7 s: python3.14
+2026-09-21T16:11:40+00:00 [flows] books: nll 4.1814, tail conflicts 11 -> 11, unordered pairs 0
+2026-09-21T16:11:40+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/fb_2M_window_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/fb_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T16:11:46+00:00 [flows] ok 6.6 s: python3.14
+2026-09-21T16:11:46+00:00 [flows] fb: nll 4.1721, tail conflicts 31 -> 31, unordered pairs 0
+2026-09-21T16:11:46+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/osm_2M_window_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/osm_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T16:11:54+00:00 [flows] ok 7.6 s: python3.14
+2026-09-21T16:11:54+00:00 [flows] osm: nll 4.1628, tail conflicts 15 -> 14, unordered pairs 0
+2026-09-21T16:11:54+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/covid_2M_window_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/covid_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T16:12:02+00:00 [flows] ok 7.8 s: python3.14
+2026-09-21T16:12:02+00:00 [flows] covid: nll 4.1543, tail conflicts 3 -> 3, unordered pairs 0
+2026-09-21T16:12:02+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/genome_2M_window_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/genome_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T16:12:08+00:00 [flows] ok 6.6 s: python3.14
+2026-09-21T16:12:08+00:00 [flows] genome: nll 4.1544, tail conflicts 67 -> 67, unordered pairs 0
+2026-09-21T16:12:08+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/history_2M_window_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/history_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T16:12:15+00:00 [flows] ok 6.6 s: python3.14
+2026-09-21T16:12:15+00:00 [flows] history: nll 4.1913, tail conflicts 3 -> 3, unordered pairs 0
+2026-09-21T16:12:15+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/libio_2M_window_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/libio_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T16:12:21+00:00 [flows] ok 6.3 s: python3.14
+2026-09-21T16:12:21+00:00 [flows] libio: nll 4.1874, tail conflicts 2 -> 2, unordered pairs 0
+2026-09-21T16:12:21+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/planet_2M_window_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/planet_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T16:12:28+00:00 [flows] ok 6.5 s: python3.14
+2026-09-21T16:12:28+00:00 [flows] planet: nll 4.1799, tail conflicts 52 -> 52, unordered pairs 0
+2026-09-21T16:12:28+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/stack_2M_window_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/stack_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T16:12:34+00:00 [flows] ok 6.2 s: python3.14
+2026-09-21T16:12:34+00:00 [flows] stack: nll 4.2061, tail conflicts 1 -> 1, unordered pairs 0
+2026-09-21T16:12:34+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/wise_2M_window_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/wise_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T16:12:41+00:00 [flows] ok 7.1 s: python3.14
+2026-09-21T16:12:41+00:00 [flows] wise: nll 4.1783, tail conflicts 3 -> 3, unordered pairs 0
+2026-09-21T16:12:41+00:00 [flows] done in 69.2 s
+2026-09-21T16:12:41+00:00 [hardness] begin
+2026-09-21T16:12:41+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/fb_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:12:41+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/covid.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/covid_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:12:41+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/books_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:12:41+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/osm_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:12:50+00:00 [hardness] ok 8.8 s: scaleli_hardness
+2026-09-21T16:12:50+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/genome.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/genome_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:12:50+00:00 [hardness] ok 9.0 s: scaleli_hardness
+2026-09-21T16:12:50+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/history.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/history_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:12:52+00:00 [hardness] ok 11.0 s: scaleli_hardness
+2026-09-21T16:12:52+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/libio.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/libio_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:12:52+00:00 [hardness] ok 11.2 s: scaleli_hardness
+2026-09-21T16:12:52+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/planet.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/planet_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:12:58+00:00 [hardness] ok 7.9 s: scaleli_hardness
+2026-09-21T16:12:58+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/stack.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/stack_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:12:59+00:00 [hardness] ok 9.5 s: scaleli_hardness
+2026-09-21T16:12:59+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/wise.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/wise_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:00+00:00 [hardness] ok 8.3 s: scaleli_hardness
+2026-09-21T16:13:00+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/books_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/books_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:09+00:00 [hardness] ok 10.7 s: scaleli_hardness
+2026-09-21T16:13:09+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/books_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:09+00:00 [hardness] ok 8.3 s: scaleli_hardness
+2026-09-21T16:13:09+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/fb_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/fb_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:11+00:00 [hardness] ok 11.6 s: scaleli_hardness
+2026-09-21T16:13:11+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/fb_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:12+00:00 [hardness] ok 19.2 s: scaleli_hardness
+2026-09-21T16:13:12+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/osm_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/osm_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:23+00:00 [hardness] ok 12.3 s: scaleli_hardness
+2026-09-21T16:13:23+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/osm_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:26+00:00 [hardness] ok 17.2 s: scaleli_hardness
+2026-09-21T16:13:26+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/covid_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/covid_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:28+00:00 [hardness] ok 18.9 s: scaleli_hardness
+2026-09-21T16:13:28+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/covid_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:31+00:00 [hardness] ok 19.9 s: scaleli_hardness
+2026-09-21T16:13:31+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/genome_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/genome_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:43+00:00 [hardness] ok 15.3 s: scaleli_hardness
+2026-09-21T16:13:43+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/genome_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:43+00:00 [hardness] ok 19.8 s: scaleli_hardness
+2026-09-21T16:13:43+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/history_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/history_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:48+00:00 [hardness] ok 22.3 s: scaleli_hardness
+2026-09-21T16:13:48+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/history_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:53+00:00 [hardness] ok 21.7 s: scaleli_hardness
+2026-09-21T16:13:53+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/libio_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/libio_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:13:57+00:00 [hardness] ok 14.4 s: scaleli_hardness
+2026-09-21T16:13:57+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/libio_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:14:02+00:00 [hardness] ok 14.1 s: scaleli_hardness
+2026-09-21T16:14:02+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/planet_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/planet_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:14:05+00:00 [hardness] ok 22.4 s: scaleli_hardness
+2026-09-21T16:14:05+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/planet_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:14:06+00:00 [hardness] ok 9.2 s: scaleli_hardness
+2026-09-21T16:14:06+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/stack_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/stack_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:14:10+00:00 [hardness] ok 17.3 s: scaleli_hardness
+2026-09-21T16:14:10+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/stack_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:14:14+00:00 [hardness] ok 3.2 s: scaleli_hardness
+2026-09-21T16:14:14+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/wise_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/wise_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:14:14+00:00 [hardness] ok 7.2 s: scaleli_hardness
+2026-09-21T16:14:14+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/wise_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:14:18+00:00 [hardness] ok 12.8 s: scaleli_hardness
+2026-09-21T16:14:21+00:00 [hardness] ok 19.0 s: scaleli_hardness
+2026-09-21T16:14:24+00:00 [hardness] ok 10.4 s: scaleli_hardness
+2026-09-21T16:14:26+00:00 [hardness] ok 12.5 s: scaleli_hardness
+2026-09-21T16:14:26+00:00 [hardness] books: full CD=246 PLA-32=262604, full_flow CD=32252603 PLA-32=262890, sample CD=27 PLA-32=5789, sample_flow CD=26 PLA-32=5789, sample_flow_csv CD=26 PLA-32=4730, sample_csv CD=26 PLA-32=4730
+2026-09-21T16:14:26+00:00 [hardness] fb: WARNING full_flow: the flow collapses 117,328,682 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:14:26+00:00 [hardness] fb: full CD=110 PLA-32=1055308, full_flow CD=83901921 PLA-32=515386, sample CD=96 PLA-32=10599, sample_flow CD=89 PLA-32=10599, sample_flow_csv CD=86 PLA-32=11033, sample_csv CD=85 PLA-32=11034
+2026-09-21T16:14:26+00:00 [hardness] osm: WARNING full_flow: the flow collapses 168,160,900 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:14:26+00:00 [hardness] osm: full CD=4107 PLA-32=661115, full_flow CD=200000000 PLA-32=94181, sample CD=152 PLA-32=4919, sample_flow CD=164 PLA-32=4918, sample_flow_csv CD=149 PLA-32=4859, sample_csv CD=141 PLA-32=4856
+2026-09-21T16:14:26+00:00 [hardness] covid: WARNING full_flow: the flow collapses 117,332,396 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:14:26+00:00 [hardness] covid: full CD=27 PLA-32=81908, full_flow CD=86771080 PLA-32=49390, sample CD=24 PLA-32=827, sample_flow CD=23 PLA-32=827, sample_flow_csv CD=22 PLA-32=489, sample_csv CD=22 PLA-32=490
+2026-09-21T16:14:26+00:00 [hardness] genome: WARNING full_flow: the flow collapses 137,931,015 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:14:26+00:00 [hardness] genome: full CD=585 PLA-32=1290208, full_flow CD=108444969 PLA-32=478472, sample CD=171 PLA-32=12719, sample_flow CD=160 PLA-32=12719, sample_flow_csv CD=167 PLA-32=12330, sample_csv CD=142 PLA-32=12337
+2026-09-21T16:14:26+00:00 [hardness] history: WARNING full_flow: the flow collapses 113,383,014 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:14:26+00:00 [hardness] history: full CD=8 PLA-32=105468, full_flow CD=84133569 PLA-32=60572, sample CD=8 PLA-32=943, sample_flow CD=8 PLA-32=943, sample_flow_csv CD=20 PLA-32=418, sample_csv CD=21 PLA-32=422
+2026-09-21T16:14:26+00:00 [hardness] libio: WARNING full_flow: the flow collapses 116,966,482 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:14:26+00:00 [hardness] libio: full CD=2 PLA-32=145808, full_flow CD=78352449 PLA-32=59701, sample CD=2 PLA-32=1057, sample_flow CD=2 PLA-32=1058, sample_flow_csv CD=20 PLA-32=944, sample_csv CD=31 PLA-32=941
+2026-09-21T16:14:26+00:00 [hardness] planet: full CD=21 PLA-32=613597, full_flow CD=3530248 PLA-32=613611, sample CD=49 PLA-32=8498, sample_flow CD=47 PLA-32=8498, sample_flow_csv CD=190 PLA-32=8636, sample_csv CD=124 PLA-32=8628
+2026-09-21T16:14:26+00:00 [hardness] stack: WARNING full_flow: the flow collapses 108,368,526 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:14:26+00:00 [hardness] stack: full CD=1 PLA-32=17833, full_flow CD=82728514 PLA-32=17359, sample CD=1 PLA-32=144, sample_flow CD=1 PLA-32=146, sample_flow_csv CD=10 PLA-32=88, sample_csv CD=6 PLA-32=86
+2026-09-21T16:14:26+00:00 [hardness] wise: WARNING full_flow: the flow collapses 116,686,531 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:14:26+00:00 [hardness] wise: full CD=10 PLA-32=79035, full_flow CD=83164902 PLA-32=44677, sample CD=8 PLA-32=805, sample_flow CD=7 PLA-32=807, sample_flow_csv CD=10 PLA-32=317, sample_csv CD=16 PLA-32=315
+2026-09-21T16:14:26+00:00 [hardness] done in 105.1 s
+2026-09-21T16:14:26+00:00 [sweep] begin
+2026-09-21T16:14:26+00:00 [sweep] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/run_suite.py --binary /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_bench --config /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/configs/aidb.json --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/sweep --timeout 14400 --resume
+2026-09-21T16:16:19+00:00 [pipeline] start steps=['verify-downloads', 'sort', 'sample', 'flows', 'hardness', 'sweep', 'throughput', 'scores', 'report'] datasets=['books', 'fb', 'osm', 'covid', 'genome', 'history', 'libio', 'planet', 'stack', 'wise'] results=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window dry_run=False variants=['sorted_vector', 'raw_rank', 'packed_rank', 'packed_rank_flow', 'packed_rank_flow_forced', 'packed_rank_vp10', 'packed_rank_flow_vp10', 'packed_byte', 'packed_rank_fusion_auto', 'packed_rank_flow_costsel']
+2026-09-21T16:16:19+00:00 [verify-downloads] begin
+2026-09-21T16:16:19+00:00 [verify-downloads] books: keep provenance (200,000,000 keys, sha256 c71eb78eebb746f0…)
+2026-09-21T16:16:19+00:00 [verify-downloads] fb: keep provenance (200,000,000 keys, sha256 22d5fd6f608e528c…)
+2026-09-21T16:16:19+00:00 [verify-downloads] osm: keep provenance (200,000,000 keys, sha256 1d1f5681cbfcd377…)
+2026-09-21T16:16:19+00:00 [verify-downloads] covid: keep provenance (200,000,000 keys, sha256 96834e0f0a9a697a…)
+2026-09-21T16:16:19+00:00 [verify-downloads] genome: keep provenance (200,000,000 keys, sha256 6862bff81727ec2b…)
+2026-09-21T16:16:19+00:00 [verify-downloads] history: keep provenance (200,000,000 keys, sha256 2556096e02969666…)
+2026-09-21T16:16:19+00:00 [verify-downloads] libio: keep provenance (200,000,000 keys, sha256 0d0c99a064a1142c…)
+2026-09-21T16:16:19+00:00 [verify-downloads] planet: keep provenance (200,000,000 keys, sha256 0e4a90c81e6e36f1…)
+2026-09-21T16:16:19+00:00 [verify-downloads] stack: keep provenance (200,000,000 keys, sha256 34f9a3ae69ac17ed…)
+2026-09-21T16:16:19+00:00 [verify-downloads] wise: keep provenance (200,000,000 keys, sha256 87e34fb1503881b1…)
+2026-09-21T16:16:19+00:00 [verify-downloads] done in 0.0 s
+2026-09-21T16:16:19+00:00 [sort] begin
+2026-09-21T16:16:19+00:00 [sort] books: keep audit (sorted on disk, duplicates=0)
+2026-09-21T16:16:19+00:00 [sort] fb: keep audit (sorted on disk, duplicates=0)
+2026-09-21T16:16:19+00:00 [sort] osm: keep audit (sorted on disk, duplicates=0)
+2026-09-21T16:16:19+00:00 [sort] covid: keep audit (sorted=False, duplicates=None, using covid.sorted)
+2026-09-21T16:16:19+00:00 [sort] genome: keep audit (sorted=False, duplicates=None, using genome.sorted)
+2026-09-21T16:16:19+00:00 [sort] history: keep audit (sorted=False, duplicates=None, using history.sorted)
+2026-09-21T16:16:19+00:00 [sort] libio: keep audit (sorted=False, duplicates=None, using libio.sorted)
+2026-09-21T16:16:19+00:00 [sort] planet: keep audit (sorted=False, duplicates=None, using planet.sorted)
+2026-09-21T16:16:19+00:00 [sort] stack: keep audit (sorted=False, duplicates=None, using stack.sorted)
+2026-09-21T16:16:19+00:00 [sort] wise: keep audit (sorted=False, duplicates=None, using wise.sorted)
+2026-09-21T16:16:19+00:00 [sort] done in 0.0 s
+2026-09-21T16:16:19+00:00 [sample] begin
+2026-09-21T16:16:19+00:00 [sample] books: keep books_2M_window_s42 (2,000,000 keys)
+2026-09-21T16:16:19+00:00 [sample] fb: keep fb_2M_window_s42 (2,000,000 keys)
+2026-09-21T16:16:20+00:00 [sample] osm: keep osm_2M_window_s42 (2,000,000 keys)
+2026-09-21T16:16:20+00:00 [sample] covid: keep covid_2M_window_s42 (2,000,000 keys)
+2026-09-21T16:16:20+00:00 [sample] genome: keep genome_2M_window_s42 (2,000,000 keys)
+2026-09-21T16:16:20+00:00 [sample] history: keep history_2M_window_s42 (2,000,000 keys)
+2026-09-21T16:16:20+00:00 [sample] libio: keep libio_2M_window_s42 (2,000,000 keys)
+2026-09-21T16:16:20+00:00 [sample] planet: keep planet_2M_window_s42 (2,000,000 keys)
+2026-09-21T16:16:20+00:00 [sample] stack: keep stack_2M_window_s42 (2,000,000 keys)
+2026-09-21T16:16:21+00:00 [sample] wise: keep wise_2M_window_s42 (2,000,000 keys)
+2026-09-21T16:16:21+00:00 [sample] done in 1.4 s
+2026-09-21T16:16:21+00:00 [flows] begin
+2026-09-21T16:16:21+00:00 [flows] keep flows/books_training.json
+2026-09-21T16:16:21+00:00 [flows] books: nll 4.1814, tail conflicts 11 -> 11, unordered pairs 0
+2026-09-21T16:16:21+00:00 [flows] keep flows/fb_training.json
+2026-09-21T16:16:21+00:00 [flows] fb: nll 4.1721, tail conflicts 31 -> 31, unordered pairs 0
+2026-09-21T16:16:21+00:00 [flows] keep flows/osm_training.json
+2026-09-21T16:16:21+00:00 [flows] osm: nll 4.1628, tail conflicts 15 -> 14, unordered pairs 0
+2026-09-21T16:16:21+00:00 [flows] keep flows/covid_training.json
+2026-09-21T16:16:21+00:00 [flows] covid: nll 4.1543, tail conflicts 3 -> 3, unordered pairs 0
+2026-09-21T16:16:21+00:00 [flows] keep flows/genome_training.json
+2026-09-21T16:16:21+00:00 [flows] genome: nll 4.1544, tail conflicts 67 -> 67, unordered pairs 0
+2026-09-21T16:16:21+00:00 [flows] keep flows/history_training.json
+2026-09-21T16:16:21+00:00 [flows] history: nll 4.1913, tail conflicts 3 -> 3, unordered pairs 0
+2026-09-21T16:16:21+00:00 [flows] keep flows/libio_training.json
+2026-09-21T16:16:21+00:00 [flows] libio: nll 4.1874, tail conflicts 2 -> 2, unordered pairs 0
+2026-09-21T16:16:21+00:00 [flows] keep flows/planet_training.json
+2026-09-21T16:16:21+00:00 [flows] planet: nll 4.1799, tail conflicts 52 -> 52, unordered pairs 0
+2026-09-21T16:16:21+00:00 [flows] keep flows/stack_training.json
+2026-09-21T16:16:21+00:00 [flows] stack: nll 4.2061, tail conflicts 1 -> 1, unordered pairs 0
+2026-09-21T16:16:21+00:00 [flows] keep flows/wise_training.json
+2026-09-21T16:16:21+00:00 [flows] wise: nll 4.1783, tail conflicts 3 -> 3, unordered pairs 0
+2026-09-21T16:16:21+00:00 [flows] done in 0.0 s
+2026-09-21T16:16:21+00:00 [hardness] begin
+2026-09-21T16:16:21+00:00 [hardness] redo hardness/fb_full.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:21+00:00 [hardness] redo hardness/books_full.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:21+00:00 [hardness] redo hardness/covid_full.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:21+00:00 [hardness] redo hardness/osm_full.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:21+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/fb_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:21+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/books_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:21+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/covid.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/covid_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:21+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/osm_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:30+00:00 [hardness] ok 9.2 s: scaleli_hardness
+2026-09-21T16:16:30+00:00 [hardness] redo hardness/genome_full.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:30+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/genome.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/genome_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:30+00:00 [hardness] ok 9.4 s: scaleli_hardness
+2026-09-21T16:16:30+00:00 [hardness] redo hardness/history_full.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:30+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/history.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/history_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:32+00:00 [hardness] ok 11.5 s: scaleli_hardness
+2026-09-21T16:16:32+00:00 [hardness] redo hardness/libio_full.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:32+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/libio.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/libio_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:32+00:00 [hardness] ok 11.7 s: scaleli_hardness
+2026-09-21T16:16:32+00:00 [hardness] redo hardness/planet_full.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:32+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/planet.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/planet_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:39+00:00 [hardness] ok 8.6 s: scaleli_hardness
+2026-09-21T16:16:39+00:00 [hardness] redo hardness/stack_full.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:39+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/stack.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/stack_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:40+00:00 [hardness] ok 10.2 s: scaleli_hardness
+2026-09-21T16:16:40+00:00 [hardness] redo hardness/wise_full.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:40+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/wise.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/wise_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:41+00:00 [hardness] ok 9.0 s: scaleli_hardness
+2026-09-21T16:16:41+00:00 [hardness] redo hardness/books_sample_flow.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:41+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/books_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/books_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:49+00:00 [hardness] ok 8.3 s: scaleli_hardness
+2026-09-21T16:16:49+00:00 [hardness] redo hardness/books_sample_csv.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:49+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/books_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:50+00:00 [hardness] ok 11.4 s: scaleli_hardness
+2026-09-21T16:16:50+00:00 [hardness] redo hardness/fb_sample_flow.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:50+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/fb_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/fb_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:52+00:00 [hardness] ok 19.3 s: scaleli_hardness
+2026-09-21T16:16:52+00:00 [hardness] redo hardness/fb_sample_csv.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:52+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/fb_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:16:52+00:00 [hardness] ok 11.6 s: scaleli_hardness
+2026-09-21T16:16:52+00:00 [hardness] redo hardness/osm_sample_flow.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:16:52+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/osm_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/osm_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:04+00:00 [hardness] ok 12.5 s: scaleli_hardness
+2026-09-21T16:17:04+00:00 [hardness] redo hardness/osm_sample_csv.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:04+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/osm_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:08+00:00 [hardness] ok 17.8 s: scaleli_hardness
+2026-09-21T16:17:08+00:00 [hardness] redo hardness/covid_sample_flow.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:08+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/covid_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/covid_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:08+00:00 [hardness] ok 18.6 s: scaleli_hardness
+2026-09-21T16:17:08+00:00 [hardness] redo hardness/covid_sample_csv.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:08+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/covid_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:12+00:00 [hardness] ok 20.3 s: scaleli_hardness
+2026-09-21T16:17:12+00:00 [hardness] redo hardness/genome_sample_flow.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:12+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/genome_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/genome_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:23+00:00 [hardness] ok 15.5 s: scaleli_hardness
+2026-09-21T16:17:23+00:00 [hardness] redo hardness/genome_sample_csv.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:23+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/genome_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:24+00:00 [hardness] ok 20.0 s: scaleli_hardness
+2026-09-21T16:17:24+00:00 [hardness] redo hardness/history_sample_flow.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:24+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/history_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/history_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:30+00:00 [hardness] ok 21.9 s: scaleli_hardness
+2026-09-21T16:17:30+00:00 [hardness] redo hardness/history_sample_csv.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:30+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/history_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:33+00:00 [hardness] ok 21.4 s: scaleli_hardness
+2026-09-21T16:17:33+00:00 [hardness] redo hardness/libio_sample_flow.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:33+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/libio_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/libio_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:37+00:00 [hardness] ok 13.9 s: scaleli_hardness
+2026-09-21T16:17:37+00:00 [hardness] redo hardness/libio_sample_csv.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:37+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/libio_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:43+00:00 [hardness] ok 13.9 s: scaleli_hardness
+2026-09-21T16:17:43+00:00 [hardness] redo hardness/planet_sample_flow.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:43+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/planet_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/planet_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:46+00:00 [hardness] ok 22.0 s: scaleli_hardness
+2026-09-21T16:17:46+00:00 [hardness] redo hardness/planet_sample_csv.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:46+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/planet_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:47+00:00 [hardness] ok 9.3 s: scaleli_hardness
+2026-09-21T16:17:47+00:00 [hardness] redo hardness/stack_sample_flow.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:47+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/stack_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/stack_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:51+00:00 [hardness] ok 17.8 s: scaleli_hardness
+2026-09-21T16:17:51+00:00 [hardness] redo hardness/stack_sample_csv.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:51+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/stack_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:54+00:00 [hardness] ok 7.5 s: scaleli_hardness
+2026-09-21T16:17:54+00:00 [hardness] redo hardness/wise_sample_flow.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:54+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/wise_2M_window_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/flows/wise_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:17:55+00:00 [hardness] ok 3.4 s: scaleli_hardness
+2026-09-21T16:17:55+00:00 [hardness] redo hardness/wise_sample_csv.json: same arguments, different binary/script sha256 (scaleli_hardness 1a414ce41813…)
+2026-09-21T16:17:55+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/wise_2M_window_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T16:18:00+00:00 [hardness] ok 13.6 s: scaleli_hardness
+2026-09-21T16:18:03+00:00 [hardness] ok 20.0 s: scaleli_hardness
+2026-09-21T16:18:06+00:00 [hardness] ok 11.6 s: scaleli_hardness
+2026-09-21T16:18:08+00:00 [hardness] ok 13.9 s: scaleli_hardness
+2026-09-21T16:18:08+00:00 [hardness] books: full CD=246 PLA-32=262604, full_flow CD=32252603 PLA-32=262890, sample CD=27 PLA-32=5789, sample_flow CD=26 PLA-32=5789, sample_flow_csv CD=26 PLA-32=4730, sample_csv CD=26 PLA-32=4730
+2026-09-21T16:18:08+00:00 [hardness] fb: WARNING full_flow: the flow collapses 117,328,682 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:18:08+00:00 [hardness] fb: full CD=110 PLA-32=1055308, full_flow CD=83901921 PLA-32=515386, sample CD=96 PLA-32=10599, sample_flow CD=89 PLA-32=10599, sample_flow_csv CD=86 PLA-32=11033, sample_csv CD=85 PLA-32=11034
+2026-09-21T16:18:08+00:00 [hardness] osm: WARNING full_flow: the flow collapses 168,160,900 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:18:08+00:00 [hardness] osm: full CD=4107 PLA-32=661115, full_flow CD=200000000 PLA-32=94181, sample CD=152 PLA-32=4919, sample_flow CD=164 PLA-32=4918, sample_flow_csv CD=149 PLA-32=4859, sample_csv CD=141 PLA-32=4856
+2026-09-21T16:18:08+00:00 [hardness] covid: WARNING full_flow: the flow collapses 117,332,396 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:18:08+00:00 [hardness] covid: full CD=27 PLA-32=81908, full_flow CD=86771080 PLA-32=49390, sample CD=24 PLA-32=827, sample_flow CD=23 PLA-32=827, sample_flow_csv CD=22 PLA-32=489, sample_csv CD=22 PLA-32=490
+2026-09-21T16:18:08+00:00 [hardness] genome: WARNING full_flow: the flow collapses 137,931,015 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:18:08+00:00 [hardness] genome: full CD=585 PLA-32=1290208, full_flow CD=108444969 PLA-32=478472, sample CD=171 PLA-32=12719, sample_flow CD=160 PLA-32=12719, sample_flow_csv CD=167 PLA-32=12330, sample_csv CD=142 PLA-32=12337
+2026-09-21T16:18:08+00:00 [hardness] history: WARNING full_flow: the flow collapses 113,383,014 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:18:08+00:00 [hardness] history: full CD=8 PLA-32=105468, full_flow CD=84133569 PLA-32=60572, sample CD=8 PLA-32=943, sample_flow CD=8 PLA-32=943, sample_flow_csv CD=20 PLA-32=418, sample_csv CD=21 PLA-32=422
+2026-09-21T16:18:08+00:00 [hardness] libio: WARNING full_flow: the flow collapses 116,966,482 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:18:08+00:00 [hardness] libio: full CD=2 PLA-32=145808, full_flow CD=78352449 PLA-32=59701, sample CD=2 PLA-32=1057, sample_flow CD=2 PLA-32=1058, sample_flow_csv CD=20 PLA-32=944, sample_csv CD=31 PLA-32=941
+2026-09-21T16:18:08+00:00 [hardness] planet: full CD=21 PLA-32=613597, full_flow CD=3530248 PLA-32=613611, sample CD=49 PLA-32=8498, sample_flow CD=47 PLA-32=8498, sample_flow_csv CD=190 PLA-32=8636, sample_csv CD=124 PLA-32=8628
+2026-09-21T16:18:08+00:00 [hardness] stack: WARNING full_flow: the flow collapses 108,368,526 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:18:08+00:00 [hardness] stack: full CD=1 PLA-32=17833, full_flow CD=82728514 PLA-32=17359, sample CD=1 PLA-32=144, sample_flow CD=1 PLA-32=146, sample_flow_csv CD=10 PLA-32=88, sample_csv CD=6 PLA-32=86
+2026-09-21T16:18:08+00:00 [hardness] wise: WARNING full_flow: the flow collapses 116,686,531 of 200,000,000 keys onto duplicate feature values; its metrics describe a degenerate sequence
+2026-09-21T16:18:08+00:00 [hardness] wise: full CD=10 PLA-32=79035, full_flow CD=83164902 PLA-32=44677, sample CD=8 PLA-32=805, sample_flow CD=7 PLA-32=807, sample_flow_csv CD=10 PLA-32=317, sample_csv CD=16 PLA-32=315
+2026-09-21T16:18:08+00:00 [hardness] done in 107.5 s
+2026-09-21T16:18:08+00:00 [sweep] begin
+2026-09-21T16:18:08+00:00 [sweep] resuming incomplete sweep in results/aidb_window/sweep/results.jsonl; run_suite --resume appends the missing jobs
+2026-09-21T16:18:08+00:00 [sweep] incomplete sweep moved to results.partial-20260921T181808.jsonl
+2026-09-21T16:18:08+00:00 [sweep] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/run_suite.py --binary /Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_bench --config /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/configs/aidb.json --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/sweep --timeout 14400 --resume
+2026-09-21T16:38:01+00:00 [sweep] ok 1193.2 s: python3.14
+2026-09-21T16:38:01+00:00 [sweep] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/summarize.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/sweep/results.jsonl --baseline packed_rank --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/sweep/summary.csv
+2026-09-21T16:38:03+00:00 [sweep] ok 1.4 s: python3.14
+2026-09-21T16:38:03+00:00 [sweep] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/sweep_report.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/sweep/summary.csv --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/sweep/sweep_report.html
+2026-09-21T16:38:03+00:00 [sweep] ok 0.1 s: python3.14
+2026-09-21T16:38:03+00:00 [sweep] done in 1194.7 s
+2026-09-21T16:38:03+00:00 [throughput] begin
+2026-09-21T16:38:03+00:00 [throughput] sorted_vector: books 5.28, covid 2.85, fb 4.93, genome 3.18, history 4.54, libio 3.30, osm 4.52, planet 2.96, stack 5.25, wise 5.82 MOPS
+2026-09-21T16:38:03+00:00 [throughput] raw_rank: books 3.36, covid 3.33, fb 2.88, genome 3.11, history 3.25, libio 3.37, osm 3.11, planet 3.04, stack 3.23, wise 3.77 MOPS
+2026-09-21T16:38:03+00:00 [throughput] packed_rank: books 2.42, covid 2.58, fb 2.81, genome 2.55, history 3.18, libio 3.12, osm 2.45, planet 2.74, stack 3.25, wise 2.90 MOPS
+2026-09-21T16:38:03+00:00 [throughput] packed_rank_flow: books 2.46, covid 2.39, fb 2.85, genome 2.50, history 3.02, libio 3.47, osm 2.21, planet 3.05, stack 3.40, wise 2.77 MOPS
+2026-09-21T16:38:03+00:00 [throughput] packed_rank_flow_forced: books 2.06, covid 2.47, fb 2.83, genome 2.21, history 2.78, libio 3.25, osm 1.88, planet 2.94, stack 3.39, wise 2.80 MOPS
+2026-09-21T16:38:03+00:00 [throughput] packed_rank_vp10: books 2.63, covid 2.38, fb 2.78, genome 2.36, history 3.28, libio 3.21, osm 2.61, planet 2.99, stack 3.38, wise 2.68 MOPS
+2026-09-21T16:38:03+00:00 [throughput] packed_rank_flow_vp10: books 2.53, covid 2.40, fb 2.97, genome 2.40, history 3.00, libio 3.27, osm 2.36, planet 2.84, stack 3.50, wise 2.86 MOPS
+2026-09-21T16:38:03+00:00 [throughput] packed_byte: books 2.35, covid 2.53, fb 2.89, genome 2.55, history 3.17, libio 3.44, osm 2.33, planet 3.08, stack 3.30, wise 2.78 MOPS
+2026-09-21T16:38:03+00:00 [throughput] packed_rank_fusion_auto: books 2.24, covid 2.33, fb 2.78, genome 2.38, history 3.09, libio 3.04, osm 2.26, planet 3.17, stack 3.16, wise 2.75 MOPS
+2026-09-21T16:38:03+00:00 [throughput] packed_rank_flow_costsel: books 2.49, covid 2.69, fb 2.80, genome 2.45, history 3.29, libio 3.32, osm 2.25, planet 3.12, stack 3.43, wise 3.20 MOPS
+2026-09-21T16:38:03+00:00 [throughput] done in 0.0 s
+2026-09-21T16:38:03+00:00 [scores] begin
+2026-09-21T16:38:03+00:00 [scores] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/aidb_scores.py --hardness /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/hardness.json --throughput /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/throughput.json --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/scores.json
+2026-09-21T16:38:03+00:00 [scores] ok 0.1 s: python3.14
+2026-09-21T16:38:03+00:00 [scores] full: PLA-32 Conf=-0.20 Cov=1.00, CD Conf=0.28 Cov=1.00, PLA-32·PLA-4096 Conf=-0.09 Cov=0.47, CD·PLA-32 Conf=0.25 Cov=0.56
+2026-09-21T16:38:03+00:00 [scores] full_flow: PLA-32 Conf=-0.32 Cov=1.00, CD Conf=-0.18 Cov=1.00, PLA-32·PLA-4096 Conf=-0.25 Cov=0.64, CD·PLA-32 Conf=0.15 Cov=-0.07
+2026-09-21T16:38:03+00:00 [scores] sample: PLA-32 Conf=-0.26 Cov=1.00, CD Conf=0.04 Cov=0.96, PLA-32·PLA-4096 Conf=-0.16 Cov=0.42, CD·PLA-32 Conf=-0.04 Cov=0.69
+2026-09-21T16:38:03+00:00 [scores] sample_flow: PLA-32 Conf=-0.26 Cov=1.00, CD Conf=0.05 Cov=1.00, PLA-32·PLA-4096 Conf=-0.14 Cov=0.42, CD·PLA-32 Conf=-0.01 Cov=0.64
+2026-09-21T16:38:03+00:00 [scores] sample_csv: PLA-32 Conf=-0.19 Cov=1.00, CD Conf=-0.18 Cov=1.00, PLA-32·PLA-4096 Conf=-0.14 Cov=0.51, CD·PLA-32 Conf=-0.14 Cov=0.82
+2026-09-21T16:38:03+00:00 [scores] sample_flow_csv: PLA-32 Conf=-0.19 Cov=1.00, CD Conf=-0.14 Cov=0.91, PLA-32·PLA-4096 Conf=-0.14 Cov=0.51, CD·PLA-32 Conf=-0.12 Cov=0.82
+2026-09-21T16:38:03+00:00 [scores] done in 0.1 s
+2026-09-21T16:38:03+00:00 [report] begin
+2026-09-21T16:38:03+00:00 [report] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/aidb_report.py --results /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/report.html
+2026-09-21T16:38:03+00:00 [report] ok 0.1 s: python3.14
+2026-09-21T16:38:03+00:00 [report] wrote /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/report.html
+2026-09-21T16:38:03+00:00 [report] done in 0.1 s
+2026-09-21T16:38:03+00:00 [pipeline] finished
+2026-09-21T20:52:07+00:00 [pipeline] start steps=['report'] datasets=['books', 'fb', 'osm', 'covid', 'genome', 'history', 'libio', 'planet', 'stack', 'wise'] results=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window dry_run=False variants=['sorted_vector', 'raw_rank', 'packed_rank', 'packed_rank_flow', 'packed_rank_flow_forced', 'packed_rank_vp10', 'packed_rank_flow_vp10', 'packed_byte']
+2026-09-21T20:52:07+00:00 [report] begin
+2026-09-21T20:52:07+00:00 [report] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/aidb_report.py --results /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/report.html
+2026-09-21T20:52:07+00:00 [report] ok 0.1 s: python3.14
+2026-09-21T20:52:07+00:00 [report] wrote /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/report.html
+2026-09-21T20:52:07+00:00 [report] done in 0.1 s
+2026-09-21T20:52:07+00:00 [pipeline] finished
+2026-09-21T21:49:40+00:00 [pipeline] start steps=['report'] datasets=['books', 'fb', 'osm', 'covid', 'genome', 'history', 'libio', 'planet', 'stack', 'wise'] results=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window dry_run=False variants=['sorted_vector', 'raw_rank', 'packed_rank', 'packed_rank_flow', 'packed_rank_flow_forced', 'packed_rank_vp10', 'packed_rank_flow_vp10', 'packed_byte']
+2026-09-21T21:49:40+00:00 [report] begin
+2026-09-21T21:49:40+00:00 [report] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/aidb_report.py --results /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/report.html
+2026-09-21T21:49:40+00:00 [report] ok 0.1 s: python3.14
+2026-09-21T21:49:40+00:00 [report] wrote /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/report.html
+2026-09-21T21:49:40+00:00 [report] done in 0.1 s
+2026-09-21T21:49:40+00:00 [pipeline] finished
+2026-09-22T03:08:09+00:00 [pipeline] start steps=['report'] datasets=['books', 'fb', 'osm', 'covid', 'genome', 'history', 'libio', 'planet', 'stack', 'wise'] results=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window dry_run=False variants=['sorted_vector', 'raw_rank', 'packed_rank', 'packed_rank_flow', 'packed_rank_flow_forced', 'packed_rank_vp10', 'packed_rank_flow_vp10', 'packed_byte']
+2026-09-22T03:08:09+00:00 [report] begin
+2026-09-22T03:08:09+00:00 [report] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/aidb_report.py --results /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/report.html
+2026-09-22T03:08:09+00:00 [report] ok 0.1 s: python3.14
+2026-09-22T03:08:09+00:00 [report] wrote /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_window/report.html
+2026-09-22T03:08:09+00:00 [report] done in 0.1 s
+2026-09-22T03:08:09+00:00 [pipeline] finished

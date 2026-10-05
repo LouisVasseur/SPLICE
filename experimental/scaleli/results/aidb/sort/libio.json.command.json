@@ -1,0 +1,13 @@
+[
+  "/Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness",
+  "--data",
+  "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/libio",
+  "--dtype",
+  "uint64",
+  "--check-sorted",
+  "0",
+  "--sort-only",
+  "1",
+  "--write-sorted",
+  "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/libio.sorted"
+]

@@ -1,0 +1,4 @@
+WARNING: Ignored `gap: min(4vw, 1.5em)` at 4:32, invalid value.
+WARNING: Ignored `overflow-x: auto` at 5:28, unknown property.
+WARNING: Ignored `user-select: none` at 42:32, unknown property.
+/mnt/data/scaleli/docs/TECHNICAL_SPEC.pdf

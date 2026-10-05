@@ -1,0 +1,70 @@
+{
+ "dataset": "planet",
+ "mode": "uniform",
+ "k": 1,
+ "order": "TGV",
+ "pert": "+x3@0.001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.9744114636642784,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.9744114636642784,
+   "virt": 300,
+   "gaps": [
+    312
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model": 2.902763561924258,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.902763561924258,
+   "virt": 303,
+   "gaps": [
+    312
+   ]
+  },
+  {
+   "round": 3,
+   "accepted": true,
+   "model": 2.8505629477993857,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.8505629477993857,
+   "virt": 316,
+   "gaps": [
+    312
+   ]
+  },
+  {
+   "round": 4,
+   "accepted": true,
+   "model": 2.81985670419652,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.81985670419652,
+   "virt": 330,
+   "gaps": [
+    312
+   ]
+  },
+  {
+   "round": 5,
+   "accepted": false,
+   "model": 2.824974411463664,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.824974411463664,
+   "virt": 330,
+   "gaps": [
+    312
+   ]
+  }
+ ],
+ "seconds": 11.439659118652344
+}

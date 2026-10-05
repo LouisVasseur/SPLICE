@@ -1,0 +1,82 @@
+{
+ "books": {
+  "raw": 4,
+  "mono": 4,
+  "free": 3,
+  "unord": 65,
+  "mono_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2m/books_mono.txt",
+  "free_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/books_s64_t2000.txt"
+ },
+ "fb": {
+  "raw": 8,
+  "mono": 8,
+  "free": 3,
+  "unord": 513,
+  "mono_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2m/fb_mono.txt",
+  "free_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/fb_s512_t2000.txt"
+ },
+ "osm": {
+  "raw": 99,
+  "mono": 99,
+  "free": 6,
+  "unord": 321,
+  "mono_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2m/osm_mono.txt",
+  "free_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/osm_s512_t2000.txt"
+ },
+ "covid": {
+  "raw": 3,
+  "mono": 3,
+  "free": 3,
+  "unord": 65,
+  "mono_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2m/covid_mono.txt",
+  "free_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/covid_s64_t2000.txt"
+ },
+ "genome": {
+  "raw": 5,
+  "mono": 5,
+  "free": 4,
+  "unord": 65,
+  "mono_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2m/genome_mono.txt",
+  "free_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/genome_s64_t2000.txt"
+ },
+ "history": {
+  "raw": 3,
+  "mono": 3,
+  "free": 3,
+  "unord": 65,
+  "mono_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2m/history_mono.txt",
+  "free_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/history_s64_t2000.txt"
+ },
+ "libio": {
+  "raw": 3,
+  "mono": 3,
+  "free": 3,
+  "unord": 65,
+  "mono_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2m/libio_mono.txt",
+  "free_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/libio_s64_t2000.txt"
+ },
+ "planet": {
+  "raw": 18,
+  "mono": 9,
+  "free": 3,
+  "unord": 513,
+  "mono_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2m/planet_mono.txt",
+  "free_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/planet_s512_t2000.txt"
+ },
+ "stack": {
+  "raw": 3,
+  "mono": 3,
+  "free": 3,
+  "unord": 65,
+  "mono_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2m/stack_mono.txt",
+  "free_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/stack_s64_t2000.txt"
+ },
+ "wise": {
+  "raw": 3,
+  "mono": 3,
+  "free": 3,
+  "unord": 65,
+  "mono_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2m/wise_mono.txt",
+  "free_path": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/wise_s64_t2000.txt"
+ }
+}

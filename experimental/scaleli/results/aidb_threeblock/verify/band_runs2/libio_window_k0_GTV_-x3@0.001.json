@@ -1,0 +1,40 @@
+{
+ "dataset": "libio",
+ "mode": "window",
+ "k": 0,
+ "order": "GTV",
+ "pert": "-x3@0.001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.482088024564995,
+   "gapT": 0.0,
+   "k_eff": 0,
+   "total": 2.482088024564995,
+   "virt": 20,
+   "gaps": []
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model": 2.4779938587512795,
+   "gapT": 0.0,
+   "k_eff": 0,
+   "total": 2.4779938587512795,
+   "virt": 20,
+   "gaps": []
+  },
+  {
+   "round": 3,
+   "accepted": false,
+   "model": 2.4779938587512795,
+   "gapT": 0.0,
+   "k_eff": 0,
+   "total": 2.4779938587512795,
+   "virt": 20,
+   "gaps": []
+  }
+ ],
+ "seconds": 0.5819089412689209
+}

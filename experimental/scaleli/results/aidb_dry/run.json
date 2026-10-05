@@ -1,0 +1,70 @@
+{
+  "label": "Reduced-scale, single-host, clean-room controls of this repository's NFL-style transform and CSV-style virtual points under the AIDB 2026 hardness protocol. Not a reproduction of the paper, NFL/AFLI or CSV.",
+  "started_utc": "2026-09-21T18:37:49+00:00",
+  "finished_utc": "2026-09-21T18:38:39+00:00",
+  "status": "finished",
+  "dry_run": true,
+  "steps": [
+    "verify-downloads",
+    "sort",
+    "sample",
+    "flows",
+    "hardness",
+    "sweep",
+    "throughput",
+    "scores",
+    "report"
+  ],
+  "datasets": [
+    "dense_sparse_fixture",
+    "lognormal",
+    "clustered",
+    "locally_hard",
+    "shuffled_dups"
+  ],
+  "settings": {
+    "sample": 20000,
+    "sample_seed": 42,
+    "sample_mode": "uniform",
+    "ops": 20000,
+    "warmup": 2000,
+    "seeds": [
+      11,
+      29
+    ],
+    "alpha": 0.1,
+    "region_keys": 4096,
+    "flow_sample": 4096,
+    "flow_steps": 200,
+    "jobs": 1,
+    "force": true,
+    "build_threads": null,
+    "extra_variants": [
+      "fusion"
+    ]
+  },
+  "variants": [
+    "sorted_vector",
+    "raw_rank",
+    "packed_rank",
+    "packed_rank_flow",
+    "packed_rank_flow_forced",
+    "packed_rank_vp10",
+    "packed_rank_flow_vp10",
+    "packed_byte",
+    "packed_rank_fusion_auto",
+    "packed_rank_flow_costsel"
+  ],
+  "paths": {
+    "data_dir": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data",
+    "samples_dir": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples",
+    "results": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry",
+    "binary_dir": "/Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli",
+    "config": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/aidb.json"
+  },
+  "binaries": {
+    "scaleli_bench": "837daca73c112453c068ec016dbad748a3168e5fe0fa269ad4d18350695615b8",
+    "scaleli_hardness": "c5fb742016a6ff1d750efc6168072dd532be0342e603e13876dfa773977562f8"
+  },
+  "scale_note": "Hardness metrics use the full files (sorted copies for the seven GRE files served unsorted); index runs use uniform samples; paper protocol is 200M keys, 20M warm-up and 100M measured lookups per run."
+}

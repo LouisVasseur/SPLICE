@@ -1,0 +1,45 @@
+CD per dataset: gap1 (L=2N) vs gap0 (L=N), D and CD
+  books    L=2N: D=245 CD=246   L=N: D=245 CD=246   ratio=1.00
+  covid    L=2N: D=27 CD=27   L=N: D=34 CD=34   ratio=1.26
+  fb       L=2N: D=114 CD=110   L=N: D=171 CD=166   ratio=1.51
+  genome   L=2N: D=585 CD=585   L=N: D=1047 CD=1047   ratio=1.79
+  history  L=2N: D=9 CD=8   L=N: D=12 CD=11   ratio=1.38
+  libio    L=2N: D=2 CD=2   L=N: D=3 CD=3   ratio=1.50
+  osm      L=2N: D=4106 CD=4107   L=N: D=7726 CD=7727   ratio=1.88
+  planet   L=2N: D=22 CD=21   L=N: D=38 CD=37   ratio=1.76
+  stack    L=2N: D=1 CD=1   L=N: D=2 CD=2   ratio=2.00
+  wise     L=2N: D=10 CD=10   L=N: D=14 CD=14   ratio=1.40
+
+=== coverage with CD at gap 1 (L = 2N) ===
+  CD                       Cov=1.000 (|C|=45, |U|=0)
+  RMSE·CD                  Cov=0.422 (|C|=32, |U|=13)   != paper 0.47
+  ME·CD                    Cov=0.511 (|C|=34, |U|=11)   != paper 0.56
+  CD·PLA-32                Cov=0.556 (|C|=35, |U|=10)   != paper 0.60
+  CD·PLA-4096              Cov=0.378 (|C|=31, |U|=14)   != paper 0.42
+  RMSE·ME·CD               Cov=0.378 (|C|=31, |U|=14)   != paper 0.42
+  RMSE·CD·PLA-32           Cov=0.289 (|C|=29, |U|=16)   != paper 0.33
+  RMSE·CD·PLA-4096         Cov=0.111 (|C|=25, |U|=20)   != paper 0.16
+  ME·CD·PLA-32             Cov=0.333 (|C|=30, |U|=15)   != paper 0.38
+  ME·CD·PLA-4096           Cov=0.156 (|C|=26, |U|=19)   != paper 0.20
+  CD·PLA-32·PLA-4096       Cov=0.200 (|C|=27, |U|=18)   != paper 0.24
+  CD-containing metrics disagreeing with Table 2: 10
+
+=== coverage with CD at gap 0 (L = N) ===
+  CD                       Cov=1.000 (|C|=45, |U|=0)
+  RMSE·CD                  Cov=0.467 (|C|=33, |U|=12)
+  ME·CD                    Cov=0.556 (|C|=35, |U|=10)
+  CD·PLA-32                Cov=0.600 (|C|=36, |U|=9)
+  CD·PLA-4096              Cov=0.422 (|C|=32, |U|=13)
+  RMSE·ME·CD               Cov=0.422 (|C|=32, |U|=13)
+  RMSE·CD·PLA-32           Cov=0.333 (|C|=30, |U|=15)
+  RMSE·CD·PLA-4096         Cov=0.156 (|C|=26, |U|=19)
+  ME·CD·PLA-32             Cov=0.378 (|C|=31, |U|=14)
+  ME·CD·PLA-4096           Cov=0.200 (|C|=27, |U|=18)
+  CD·PLA-32·PLA-4096       Cov=0.244 (|C|=28, |U|=17)
+  CD-containing metrics disagreeing with Table 2: 0
+
+pairs ordered differently by CD at L=2N vs L=N:
+  (covid, planet): L=2N 27 vs 21; L=N 34 vs 37
+
+CD-scalar orderings: L=2N ['stack', 'libio', 'history', 'wise', 'planet', 'covid', 'fb', 'books', 'genome', 'osm'] 
+                     L=N  ['stack', 'libio', 'history', 'wise', 'covid', 'planet', 'fb', 'books', 'genome', 'osm']

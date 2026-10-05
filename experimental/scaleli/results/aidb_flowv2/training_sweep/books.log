@@ -1,0 +1,21 @@
+books {"sample": 4096, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": true, "tag": "baseline-pipeline", "nll": 3.6103645067577133, "tcd_raw": 4, "tcd_flow": 4, "ratio": 1.0, "seconds": 2.38, "unordered": 0}
+books {"sample": 4096, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "baseline-nomono", "nll": -0.33323383252509153, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 2.4, "unordered": 65}
+books {"sample": 4096, "steps": 2000, "shifts": 8, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 1.5083461539230227, "tcd_raw": 4, "tcd_flow": 4, "ratio": 1.0, "seconds": 23.83, "unordered": 0}
+books {"sample": 4096, "steps": 2000, "shifts": 8, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.2975519708171725, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 23.94, "unordered": 9}
+books {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 3.6068056624714653, "tcd_raw": 4, "tcd_flow": 4, "ratio": 1.0, "seconds": 23.99, "unordered": 0}
+books {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.3490399791546193, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 23.94, "unordered": 65}
+books {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 5.832704635208213, "tcd_raw": 4, "tcd_flow": 4, "ratio": 1.0, "seconds": 24.03, "unordered": 0}
+books {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.36846872687113436, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 24.02, "unordered": 515}
+books {"sample": 4096, "steps": 2000, "shifts": 65536, "lr": 0.05, "monotone": true, "tag": "grid", "nll": 20.88392961963857, "tcd_raw": 4, "tcd_flow": 4, "ratio": 1.0, "seconds": 24.01, "unordered": 0}
+books {"sample": 4096, "steps": 2000, "shifts": 65536, "lr": 0.05, "monotone": false, "tag": "grid", "nll": -0.37376852226391055, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 28.44, "unordered": 45026}
+books {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.3, "monotone": true, "tag": "grid-bigLR", "nll": 3.606705229609907, "tcd_raw": 4, "tcd_flow": 4, "ratio": 1.0, "seconds": 46.75, "unordered": 0}
+books {"sample": 4096, "steps": 2000, "shifts": 64, "lr": 0.3, "monotone": false, "tag": "grid-bigLR", "nll": -0.7010509445533523, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 46.63, "unordered": 65}
+books {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.3, "monotone": true, "tag": "grid-bigLR", "nll": 5.83261521369742, "tcd_raw": 4, "tcd_flow": 4, "ratio": 1.0, "seconds": 47.12, "unordered": 0}
+books {"sample": 4096, "steps": 2000, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "grid-bigLR", "nll": -0.717998785147463, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 47.55, "unordered": 515}
+books {"sample": 4096, "steps": 10000, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "long", "nll": -0.3503152730019735, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 146.04, "unordered": 65}
+books {"sample": 4096, "steps": 10000, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "long", "nll": -0.7321957224086785, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 208.18, "unordered": 515}
+books {"sample": 65536, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "data65k", "nll": -0.3338727260788326, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 55.18, "unordered": 64}
+books {"sample": 65536, "steps": 200, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "data65k", "nll": -0.6708201047577459, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 46.79, "unordered": 512}
+books {"sample": 200000, "steps": 200, "shifts": 64, "lr": 0.05, "monotone": false, "tag": "data200k", "nll": -0.33452956230768555, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 152.05, "unordered": 64}
+books {"sample": 200000, "steps": 200, "shifts": 512, "lr": 0.3, "monotone": false, "tag": "data200k", "nll": -0.6697218383908269, "tcd_raw": 4, "tcd_flow": 3, "ratio": 0.8, "seconds": 143.85, "unordered": 511}
+DONE books best long 3 raw 4

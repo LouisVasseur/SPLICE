@@ -1,0 +1,72 @@
+{
+  "sorted_vector": {
+    "clustered": 20.33825883675,
+    "dense_sparse_fixture": 21.474468159100002,
+    "locally_hard": 20.56936677235,
+    "lognormal": 20.49183467045,
+    "shuffled_dups": 20.6033765737
+  },
+  "raw_rank": {
+    "clustered": 9.354446598420001,
+    "dense_sparse_fixture": 10.78827043585,
+    "locally_hard": 10.85407732975,
+    "lognormal": 9.007322870595,
+    "shuffled_dups": 9.0548165479
+  },
+  "packed_rank": {
+    "clustered": 3.978398205355,
+    "dense_sparse_fixture": 5.02015961899,
+    "locally_hard": 3.26904865689,
+    "lognormal": 4.351045252525001,
+    "shuffled_dups": 4.35987120193
+  },
+  "packed_rank_flow": {
+    "clustered": 3.8649652899499998,
+    "dense_sparse_fixture": 4.994989367620001,
+    "locally_hard": 3.336723046025,
+    "lognormal": 4.22671347678,
+    "shuffled_dups": 4.224162383095
+  },
+  "packed_rank_flow_forced": {
+    "clustered": 3.43923519462,
+    "dense_sparse_fixture": 4.2609310663599995,
+    "locally_hard": 2.860805056435,
+    "lognormal": 3.89399544777,
+    "shuffled_dups": 3.91294082893
+  },
+  "packed_rank_vp10": {
+    "clustered": 3.964198745925,
+    "dense_sparse_fixture": 5.02275285049,
+    "locally_hard": 3.36161763306,
+    "lognormal": 4.420161414035,
+    "shuffled_dups": 4.46480208269
+  },
+  "packed_rank_flow_vp10": {
+    "clustered": 3.945471127655,
+    "dense_sparse_fixture": 4.96236294039,
+    "locally_hard": 3.2879008554749998,
+    "lognormal": 4.3552816042349995,
+    "shuffled_dups": 4.291646407395
+  },
+  "packed_byte": {
+    "clustered": 3.952846862865,
+    "dense_sparse_fixture": 4.918756293955,
+    "locally_hard": 3.308110499295,
+    "lognormal": 4.37733272645,
+    "shuffled_dups": 4.34469936544
+  },
+  "packed_rank_fusion_auto": {
+    "clustered": 3.9917836512599996,
+    "dense_sparse_fixture": 4.979227517295,
+    "locally_hard": 3.251369754245,
+    "lognormal": 4.47476334199,
+    "shuffled_dups": 4.426236610225001
+  },
+  "packed_rank_flow_costsel": {
+    "clustered": 3.965019916065,
+    "dense_sparse_fixture": 5.0375742638,
+    "locally_hard": 3.33447970952,
+    "lognormal": 4.361109406545,
+    "shuffled_dups": 4.3283436824349995
+  }
+}

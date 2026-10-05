@@ -1,0 +1,34 @@
+{
+ "dataset": "covid",
+ "mode": "uniform",
+ "k": 1,
+ "order": "TGV",
+ "pert": "+x2@0.0001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.3715455475946774,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.3715455475946774,
+   "virt": 60,
+   "gaps": [
+    107
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": false,
+   "model": 2.376663254861822,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.376663254861822,
+   "virt": 60,
+   "gaps": [
+    107
+   ]
+  }
+ ],
+ "seconds": 0.6361470222473145
+}

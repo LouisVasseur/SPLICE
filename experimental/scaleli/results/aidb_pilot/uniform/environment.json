@@ -1,0 +1,103 @@
+{
+  "timestamp_utc": "2026-09-21T15:13:22.992075+00:00",
+  "platform": "macOS-15.7.5-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "python": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 17.0.0 (clang-1700.6.4.2)]",
+  "cpu": "unavailable",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin",
+  "affinity": null,
+  "binary_sha256": "ba3dce102fd56efca952925443b25936d609cec68df6689129d6964f2f4854ee",
+  "git_commit": "HEAD",
+  "warning": "Shared-host exploratory results; CPU governor, NUMA binding and isolation not controlled by this script.",
+  "config": {
+    "description": "pilot uniform",
+    "datasets": [
+      {
+        "name": "fb",
+        "data": "data/samples/fb_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_pilot/flows/fb_uniform_2D2H2L.txt"
+      },
+      {
+        "name": "osm",
+        "data": "data/samples/osm_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_pilot/flows/osm_uniform_2D2H2L.txt"
+      },
+      {
+        "name": "planet",
+        "data": "data/samples/planet_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_pilot/flows/planet_uniform_2D2H2L.txt"
+      }
+    ],
+    "profiles": [
+      "read_only"
+    ],
+    "variants": [
+      {
+        "name": "sorted_vector",
+        "index": "sorted_vector"
+      },
+      {
+        "name": "packed_rank",
+        "policy": "min_bytes",
+        "routing": "rank"
+      },
+      {
+        "name": "packed_rank_flow",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "flow": "$flow",
+        "flow-bypass": 1
+      },
+      {
+        "name": "packed_rank_flow_forced",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "flow": "$flow",
+        "flow-bypass": 0
+      },
+      {
+        "name": "packed_rank_vp10",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "virtual-alpha": 0.1
+      },
+      {
+        "name": "packed_rank_flow_vp10",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "flow": "$flow",
+        "flow-bypass": 1,
+        "virtual-alpha": 0.1
+      },
+      {
+        "name": "packed_rank_fusion_auto",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "flow": "$flow",
+        "virtual-alpha": 0.1,
+        "fusion": "auto"
+      }
+    ],
+    "seeds": [
+      11
+    ],
+    "repeats": 1,
+    "common": {
+      "load-ratio": 1,
+      "miss": 0,
+      "query-distribution": "uniform",
+      "ops": 1000000,
+      "warmup": 200000,
+      "verify": 0,
+      "instrument": 1,
+      "latency": 0
+    }
+  },
+  "requested_cpu": null
+}

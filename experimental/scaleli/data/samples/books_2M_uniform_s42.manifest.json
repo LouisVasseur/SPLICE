@@ -1,0 +1,11 @@
+{
+  "source": "data/external/gre/books",
+  "source_count": 200000000,
+  "source_sha256": "c71eb78eebb746f0e525e47d3d7e6b097f680c45cf17f1ead1d1f22a8950f939",
+  "mode": "uniform",
+  "seed": 42,
+  "sample_count": 2000000,
+  "dtype": "uint64",
+  "sample_sha256": "c2484df60c8b2f3100c408330453e0aca321ba5af6d0d23312a63bdd567f3eca",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

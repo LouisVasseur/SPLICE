@@ -1,0 +1,247 @@
+{
+  "timestamp_utc": "2026-09-21T17:14:38.816398+00:00",
+  "platform": "macOS-15.7.5-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "python": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 17.0.0 (clang-1700.6.4.2)]",
+  "cpu": "unavailable",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin",
+  "affinity": null,
+  "binary_sha256": "837daca73c112453c068ec016dbad748a3168e5fe0fa269ad4d18350695615b8",
+  "git_commit": "HEAD",
+  "warning": "Shared-host exploratory results; CPU governor, NUMA binding and isolation not controlled by this script.",
+  "config": {
+    "description": "Final sweep: performance-core QoS, 5M lookups per run, 4 query seeds; controls, region virtual points, fused selector, and the root ablation (raw / flow / virtual fences / fusion) on the 2M uniform and window samples.",
+    "datasets": [
+      {
+        "name": "books_uniform",
+        "data": "data/samples/books_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/books_2D2H2L.txt"
+      },
+      {
+        "name": "fb_uniform",
+        "data": "data/samples/fb_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/fb_2D2H2L.txt"
+      },
+      {
+        "name": "osm_uniform",
+        "data": "data/samples/osm_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/osm_2D2H2L.txt"
+      },
+      {
+        "name": "covid_uniform",
+        "data": "data/samples/covid_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/covid_2D2H2L.txt"
+      },
+      {
+        "name": "genome_uniform",
+        "data": "data/samples/genome_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/genome_2D2H2L.txt"
+      },
+      {
+        "name": "history_uniform",
+        "data": "data/samples/history_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/history_2D2H2L.txt"
+      },
+      {
+        "name": "libio_uniform",
+        "data": "data/samples/libio_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/libio_2D2H2L.txt"
+      },
+      {
+        "name": "planet_uniform",
+        "data": "data/samples/planet_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/planet_2D2H2L.txt"
+      },
+      {
+        "name": "stack_uniform",
+        "data": "data/samples/stack_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/stack_2D2H2L.txt"
+      },
+      {
+        "name": "wise_uniform",
+        "data": "data/samples/wise_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb/flows/wise_2D2H2L.txt"
+      },
+      {
+        "name": "books_window",
+        "data": "data/samples/books_2M_window_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_window/flows/books_2D2H2L.txt"
+      },
+      {
+        "name": "fb_window",
+        "data": "data/samples/fb_2M_window_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_window/flows/fb_2D2H2L.txt"
+      },
+      {
+        "name": "osm_window",
+        "data": "data/samples/osm_2M_window_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_window/flows/osm_2D2H2L.txt"
+      },
+      {
+        "name": "covid_window",
+        "data": "data/samples/covid_2M_window_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_window/flows/covid_2D2H2L.txt"
+      },
+      {
+        "name": "genome_window",
+        "data": "data/samples/genome_2M_window_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_window/flows/genome_2D2H2L.txt"
+      },
+      {
+        "name": "history_window",
+        "data": "data/samples/history_2M_window_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_window/flows/history_2D2H2L.txt"
+      },
+      {
+        "name": "libio_window",
+        "data": "data/samples/libio_2M_window_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_window/flows/libio_2D2H2L.txt"
+      },
+      {
+        "name": "planet_window",
+        "data": "data/samples/planet_2M_window_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_window/flows/planet_2D2H2L.txt"
+      },
+      {
+        "name": "stack_window",
+        "data": "data/samples/stack_2M_window_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_window/flows/stack_2D2H2L.txt"
+      },
+      {
+        "name": "wise_window",
+        "data": "data/samples/wise_2M_window_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "results/aidb_window/flows/wise_2D2H2L.txt"
+      }
+    ],
+    "profiles": [
+      "read_only"
+    ],
+    "variants": [
+      {
+        "name": "sorted_vector",
+        "index": "sorted_vector"
+      },
+      {
+        "name": "raw_rank",
+        "policy": "raw",
+        "routing": "rank"
+      },
+      {
+        "name": "packed_rank",
+        "policy": "min_bytes",
+        "routing": "rank"
+      },
+      {
+        "name": "packed_rank_vp10",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "virtual-alpha": 0.1
+      },
+      {
+        "name": "packed_rank_fusion_auto",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "flow": "$flow",
+        "virtual-alpha": 0.1,
+        "fusion": "auto"
+      },
+      {
+        "name": "packed_rank_root_raw",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model"
+      },
+      {
+        "name": "packed_rank_root_flow",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model",
+        "flow": "$flow"
+      },
+      {
+        "name": "packed_rank_root_vf4",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model",
+        "root-alpha": 4
+      },
+      {
+        "name": "packed_rank_root_fusion",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model",
+        "root-alpha": 4,
+        "flow": "$flow"
+      },
+      {
+        "name": "packed_rank_vp10_root_fusion",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "virtual-alpha": 0.1,
+        "root": "model",
+        "root-alpha": 4,
+        "flow": "$flow"
+      }
+    ],
+    "seeds": [
+      11,
+      29,
+      47,
+      61
+    ],
+    "repeats": 1,
+    "common": {
+      "load-ratio": 1,
+      "miss": 0,
+      "query-distribution": "uniform",
+      "ops": 5000000,
+      "warmup": 500000,
+      "verify": 0,
+      "instrument": 1,
+      "latency": 0,
+      "build-threads": 16,
+      "qos": 1
+    }
+  },
+  "requested_cpu": null
+}

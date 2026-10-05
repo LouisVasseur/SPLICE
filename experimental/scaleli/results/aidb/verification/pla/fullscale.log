@@ -1,0 +1,87 @@
+=== hardness books full (sorted) ===
+[hardness] read 200000000 keys
+[hardness] sorted=true duplicates=0
+[hardness] original metrics done
+        3.31 real         8.77 user         0.40 sys
+          1601667072  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               97951  page reclaims
+                   8  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                   0  voluntary context switches
+                 353  involuntary context switches
+        142027408017  instructions retired
+         25761302186  cycles elapsed
+          1602096960  peak memory footprint
+=== hardness wise full (unsorted, --check-sorted 0) ===
+[hardness] read 200000000 keys
+[hardness] sorted=false duplicates=0
+[hardness] original metrics done
+       20.17 real        25.24 user         0.46 sys
+          1601667072  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               97956  page reclaims
+                   1  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                   3  voluntary context switches
+                1152  involuntary context switches
+        148606021642  instructions retired
+         72049217144  cycles elapsed
+          1602113344  peak memory footprint
+=== pgm_ref books full ===
+eps 32: 262604 (2531.6 ms)
+eps 4096: 97 (1646.6 ms)
+        4.74 real         4.35 user         0.38 sys
+          1601257472  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               97917  page reclaims
+                   3  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                   2  voluntary context switches
+                 302  involuntary context switches
+         66978751772  instructions retired
+         13264481690  cycles elapsed
+          1601818176  peak memory footprint
+=== pgm_ref wise full --sort 1 ===
+eps 32: 79035 (2562.1 ms)
+eps 4096: 382 (2248.2 ms)
+       22.71 real        21.90 user         0.67 sys
+          1601257472  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               97916  page reclaims
+                   1  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                   2  voluntary context switches
+                7490  involuntary context switches
+         95932786981  instructions retired
+         63096216344  cycles elapsed
+          1601818176  peak memory footprint
+=== DONE ===

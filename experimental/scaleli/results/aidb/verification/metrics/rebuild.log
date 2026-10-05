@@ -1,0 +1,4 @@
+[ 50%] Building CXX object experimental/scaleli/CMakeFiles/scaleli_hardness.dir/src/hardness.cpp.o
+[100%] Linking CXX executable scaleli_hardness
+[100%] Built target scaleli_hardness
+REBUILD_EXIT=0

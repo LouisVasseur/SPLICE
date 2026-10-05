@@ -1,0 +1,1 @@
+{"data":"/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/shuffled_dups","keys":50500,"sorted":false,"duplicates":500,"written":"/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/shuffled_dups.sorted","written_keys":50000,"threads":16,"read_ns":224083,"sort_ns":2480333,"elapsed_ns":3893708}

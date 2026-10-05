@@ -1,0 +1,8 @@
+one() {
+  name=$1; url="https://www.cse.cuhk.edu.hk/mlsys/gre/$name"
+  if [ -f "$name" ]; then echo "$(date +%T) $name already present"; return 0; fi
+  echo "$(date +%T) start $name"
+  if curl -sS -L --fail -C - --retry 8 --retry-delay 15 --retry-all-errors -o "$name.part" "$url"; then
+    mv "$name.part" "$name"; echo "$(date +%T) done $name $(wc -c < "$name" | tr -d " ") bytes"
+  else echo "$(date +%T) FAILED $name"; fi
+}

@@ -1,0 +1,51 @@
+{
+  "status": "LOCAL EXPERIMENTAL MAP; not LeCo/LA-vector benchmark",
+  "dataset": "bundled synthetic fixture",
+  "keys": 16384,
+  "source_rows": 16384,
+  "operations_per_trace": 10000,
+  "seeds": [
+    11,
+    29,
+    47
+  ],
+  "load_ratio": 1,
+  "verified": true,
+  "trace_pairing_verified": true,
+  "summary": [
+    {
+      "variant": "raw_rank",
+      "bytes_per_record": 16.61865234375,
+      "throughput_ops_s": 7849891.23976,
+      "read_p99_ns": 200
+    },
+    {
+      "variant": "packed_rank",
+      "bytes_per_record": 10.11865234375,
+      "throughput_ops_s": 4754239.11731,
+      "read_p99_ns": 340
+    },
+    {
+      "variant": "packed_byte",
+      "bytes_per_record": 10.11865234375,
+      "throughput_ops_s": 4700080.79439,
+      "read_p99_ns": 271
+    },
+    {
+      "variant": "packed_binary",
+      "bytes_per_record": 10.11865234375,
+      "throughput_ops_s": 4804592.42162,
+      "read_p99_ns": 301
+    }
+  ],
+  "warning": "Three small process runs; memory includes values and metadata. Not comparable to the keys-only contract of lesson 02. No statistical superiority claim.",
+  "lesson": "04",
+  "title": "Compression: real encodings in the experimental map",
+  "environment": {
+    "system": "Linux-6.18.35-x86_64-with-glibc2.41",
+    "python": "3.13.5",
+    "fixture_sha256": "621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca",
+    "radix_binary_sha256": "bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863",
+    "experimental_binary_sha256": "6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884"
+  }
+}

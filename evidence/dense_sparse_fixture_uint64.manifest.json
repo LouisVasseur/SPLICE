@@ -1,0 +1,8 @@
+{
+  "type": "synthetic fixture",
+  "count": 16384,
+  "dtype": "uint64",
+  "format": "sosd",
+  "sha256": "621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca",
+  "generator": "Deterministic alternating 128-key dense/sparse intervals; not a real dataset and not bit-identical to C++ MT19937 generator."
+}

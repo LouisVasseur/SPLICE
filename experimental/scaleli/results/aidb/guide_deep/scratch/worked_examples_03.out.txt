@@ -1,0 +1,92 @@
+=== A. toy keys [1, 2, 3, 4, 10, 20, 30, 100] ranks [0, 1, 2, 3, 4, 5, 6, 7]
+OLS: mean(k)=21.25, mean(r)=3.5, Sxx=7817.5, Sxy=445.0, w=Sxy/Sxx=0.056924, b=2.290374
+residuals r_i - f(k_i): [-2.3473, -1.4042, -0.4611, 0.4819, 1.1404, 1.5712, 2.0019, -0.9827]
+RMSE = sqrt(sum e^2 / n) = 1.443477   ME = max|e| = 2.347298
+  FMCD: size=8 gap=5 L=48; start D=1, U_T=(k[6]-k[1])/(L-2)+1e-6=0.608697
+  FMCD: final D=1, U_T=0.608697, a=1/U_T=1.642854, anchor=(k[6]+k[1])/2=16.0, base=L/2=24.0
+  predicted slots PREDICT_POS(k) = clamp(floor(a*(k-anchor)+base), 0, L-1): [0, 1, 2, 4, 14, 30, 46, 47]
+  conflict degree CD = longest run of equal slots = 1
+=== A2. second toy (dense cluster) [10, 11, 12, 13, 14, 60, 61, 100]
+  FMCD: size=8 gap=5 L=48; start D=1, U_T=(k[6]-k[1])/(L-2)+1e-6=1.086958
+  FMCD: gap k[1]-k[0] < U_T -> D=2, U_T=(k[5]-k[2])/(L-2)+1e-6=1.043479
+  FMCD: final D=2, U_T=1.043479, a=1/U_T=0.958332, anchor=(k[5]+k[2])/2=36.0, base=L/2=24.0
+  predicted slots: [0, 0, 1, 1, 2, 46, 47, 47]
+  conflict degree CD = 2  (LIPP's own bound D = 2)
+  OLS: w=0.062646 b=1.299555 residuals=[-1.926, -0.989, -0.051, 0.886, 1.823, -0.058, 0.879, -0.564] RMSE=1.112085 ME=1.926016
+  PLA-0: 3 segments; segment starts at ranks [0, 4, 7] (rank n=8 is PGM's sentinel point (x_last+1, n))
+  PLA-1: 2 segments; segment starts at ranks [0, 5] (rank n=8 is PGM's sentinel point (x_last+1, n))
+  PLA-2: 1 segments; segment starts at ranks [0] (rank n=8 is PGM's sentinel point (x_last+1, n))
+  toy2 PLA-0: 3 segments; segment starts at ranks [0, 5, 7]
+  toy2 PLA-1: 2 segments; segment starts at ranks [0, 5]
+  toy2 PLA-2: 1 segments; segment starts at ranks [0]
+=== B. fixture dense_sparse_fixture_uint64: 16384 keys, sorted=True
+  python PLA port: eps=32 -> 107 segments (verification/pla verdict: 107 at 32, 1 at 4096)
+  python PLA port: eps=4096 -> 1 segments (verification/pla verdict: 107 at 32, 1 at 4096)
+=== C. coverage toy {'A': {'x': 1, 'y': 1}, 'B': {'x': 2, 'y': 3}, 'C': {'x': 3, 'y': 2}, 'D': {'x': 3, 'y': 4}}
+  dims=['x']: comparable (harder, easier) = [('B', 'A'), ('C', 'A'), ('D', 'A'), ('C', 'B'), ('D', 'B')]; incomparable = [('C', 'D')]; Cov = (5-1)/6 = 0.6667
+  dims=['y']: comparable (harder, easier) = [('B', 'A'), ('C', 'A'), ('D', 'A'), ('B', 'C'), ('D', 'B'), ('D', 'C')]; incomparable = []; Cov = (6-0)/6 = 1.0000
+  dims=['x', 'y']: comparable (harder, easier) = [('B', 'A'), ('C', 'A'), ('D', 'A'), ('D', 'B'), ('D', 'C')]; incomparable = [('B', 'C')]; Cov = (5-1)/6 = 0.6667
+=== C. real full-file hardness table
+  books    {'RMSE': 18053637.47705111, 'ME': 96380337.87058854, 'CD': 246.0, 'PLA-32': 262604.0, 'PLA-4096': 97.0}
+  covid    {'RMSE': 1795722.481759676, 'ME': 8133078.025962055, 'CD': 27.0, 'PLA-32': 81908.0, 'PLA-4096': 850.0}
+  fb       {'RMSE': 57735023.667034544, 'ME': 99999995.54065111, 'CD': 110.0, 'PLA-32': 1055308.0, 'PLA-4096': 1687.0}
+  genome   {'RMSE': 7531940.124627509, 'ME': 19622982.479450524, 'CD': 585.0, 'PLA-32': 1290208.0, 'PLA-4096': 1426.0}
+  history  {'RMSE': 815542.6657631118, 'ME': 2303085.17866714, 'CD': 8.0, 'PLA-32': 105468.0, 'PLA-4096': 468.0}
+  libio    {'RMSE': 3445772.8895729836, 'ME': 11828007.17763635, 'CD': 2.0, 'PLA-32': 145808.0, 'PLA-4096': 639.0}
+  osm      {'RMSE': 24177498.46715493, 'ME': 67384214.81235945, 'CD': 4107.0, 'PLA-32': 661115.0, 'PLA-4096': 5495.0}
+  planet   {'RMSE': 29771622.180880297, 'ME': 60462049.517017394, 'CD': 21.0, 'PLA-32': 613597.0, 'PLA-4096': 2314.0}
+  stack    {'RMSE': 839727.0277638616, 'ME': 2444699.9800324095, 'CD': 1.0, 'PLA-32': 17833.0, 'PLA-4096': 133.0}
+  wise     {'RMSE': 2200401.5910767177, 'ME': 4988460.571139708, 'CD': 10.0, 'PLA-32': 79035.0, 'PLA-4096': 382.0}
+  PLA-32·PLA-4096: |C|=33 |U|=12 Cov=0.4667; incomparable: [('books', 'covid'), ('books', 'history'), ('books', 'libio'), ('books', 'stack'), ('books', 'wise'), ('covid', 'history'), ('covid', 'libio'), ('fb', 'genome'), ('fb', 'osm'), ('fb', 'planet'), ('genome', 'osm'), ('genome', 'planet')]
+  CD·PLA-32: |C|=35 |U|=10 Cov=0.5556; incomparable: [('books', 'fb'), ('books', 'planet'), ('covid', 'history'), ('covid', 'libio'), ('covid', 'planet'), ('fb', 'osm'), ('genome', 'osm'), ('history', 'libio'), ('history', 'wise'), ('libio', 'wise')]
+  RMSE·ME: |C|=41 |U|=4 Cov=0.8222; incomparable: [('books', 'osm'), ('books', 'planet'), ('covid', 'wise'), ('osm', 'planet')]
+  comparable partners per dataset under PLA-32·PLA-4096: {'books': 4, 'covid': 6, 'fb': 6, 'genome': 6, 'history': 7, 'libio': 7, 'osm': 7, 'planet': 7, 'stack': 8, 'wise': 8}
+  comparable partners per dataset under CD·PLA-32: {'books': 7, 'covid': 6, 'fb': 7, 'genome': 8, 'history': 6, 'libio': 6, 'osm': 7, 'planet': 7, 'stack': 9, 'wise': 7}
+  pairs ordered identically by RMSE, ME, PLA-32, PLA-4096 but reversed/tied by our CD: [('books', 'fb', 'CD reversed', 246.0, 110.0), ('covid', 'planet', 'CD reversed', 27.0, 21.0), ('history', 'libio', 'CD reversed', 8.0, 2.0), ('libio', 'wise', 'CD reversed', 2.0, 10.0)]
+=== D. conformance toy: hardness as in C (dims x,y), two indexes
+  index I1: throughput {'A': 10.0, 'B': 8.0, 'C': 9.0, 'D': 5.0}
+  std = 1.870829; p_hat = {A: 5.3452, B: 4.2762, C: 4.8107, D: 2.6726}
+    (B harder than A): delta = -1.0690, w = sigmoid(delta) = 0.2556  conforming
+    (C harder than A): delta = -0.5345, w = sigmoid(delta) = 0.3695  conforming
+    (D harder than A): delta = -2.6726, w = sigmoid(delta) = 0.0646  conforming
+    (D harder than B): delta = -1.6036, w = sigmoid(delta) = 0.1675  conforming
+    (D harder than C): delta = -2.1381, w = sigmoid(delta) = 0.1054  conforming
+  R = 0.962589, P = 0.000000, Conf_I = (R-P)/(R+P) = 1.000000
+  index I2: throughput {'A': 6.0, 'B': 7.0, 'C': 5.0, 'D': 4.0}
+  std = 1.118034; p_hat = {A: 5.3666, B: 6.2610, C: 4.4721, D: 3.5777}
+    (B harder than A): delta = +0.8944, w = sigmoid(delta) = 0.7098  VIOLATING
+    (C harder than A): delta = -0.8944, w = sigmoid(delta) = 0.2902  conforming
+    (D harder than A): delta = -1.7889, w = sigmoid(delta) = 0.1432  conforming
+    (D harder than B): delta = -2.6833, w = sigmoid(delta) = 0.0640  conforming
+    (D harder than C): delta = -0.8944, w = sigmoid(delta) = 0.2902  conforming
+  R = 0.787574, P = 0.709803, Conf_I = (R-P)/(R+P) = 0.051938
+  Conf = mean = 0.525969; Cov(x·y) = 0.6667
+=== D. real: packed_rank throughput (median of 3 seeds, MOPS) vs scalar CD on full-file hardness
+  std(packed_rank) = 0.320381 MOPS; p_hat = {books: 6.692, covid: 6.921, fb: 8.234, genome: 7.728, history: 8.789, libio: 8.816, osm: 6.029, planet: 8.705, stack: 9.182, wise: 7.747}
+  |C|=45: conforming 40, violating 5; R=9.934451 P=3.559665 Conf_packed_rank(CD) = 0.472412  (scores.json: 0.4724122609070333)
+    violating: genome (CD 585) harder than books (CD 246) but faster: delta=+1.0361, w=0.7381
+    violating: fb (CD 110) harder than covid (CD 27) but faster: delta=+1.3132, w=0.7881
+    violating: genome (CD 585) harder than covid (CD 27) but faster: delta=+0.8067, w=0.6914
+    violating: fb (CD 110) harder than wise (CD 10) but faster: delta=+0.4870, w=0.6194
+    violating: planet (CD 21) harder than wise (CD 10) but faster: delta=+0.9580, w=0.7227
+    easiest conforming (smallest w): osm > stack: delta=-3.1525, w=0.0410
+    easiest conforming (smallest w): osm > libio: delta=-2.7862, w=0.0581
+    easiest conforming (smallest w): osm > history: delta=-2.7595, w=0.0596
+  paper anecdote LIPP: libio 7.1 MOPS vs history 5.6 MOPS (libio harder under GRE) -> violating pair with delta = 1.5/sigma_LIPP
+    if sigma_LIPP were 0.5: delta=3.000, w=0.9526
+    if sigma_LIPP were 1.0: delta=1.500, w=0.8176
+    if sigma_LIPP were 1.5: delta=1.000, w=0.7311
+    if sigma_LIPP were 2.0: delta=0.750, w=0.6792
+=== E. Table 2 coverage -> (|C|, |U|) with |C|+|U| = 45
+  Cov=1.00: [(45, 0)]
+  Cov=0.82: [(41, 4)]
+  Cov=0.60: [(36, 9)]
+  Cov=0.56: [(35, 10)]
+  Cov=0.51: [(34, 11)]
+  Cov=0.47: [(33, 12)]
+  Cov=0.42: [(32, 13)]
+  Cov=0.38: [(31, 14)]
+  Cov=0.33: [(30, 15)]
+  Cov=0.24: [(28, 17)]
+  Cov=0.20: [(27, 18)]
+  Cov=0.16: [(26, 19)]

@@ -1,0 +1,158 @@
+{
+  "timestamp_utc": "2026-09-22T11:25:32.712811+00:00",
+  "platform": "macOS-15.7.5-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "python": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 17.0.0 (clang-1700.6.4.2)]",
+  "cpu": "unavailable",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin",
+  "affinity": null,
+  "binary_sha256": "c63ceab046fe50b2074b95f5b9aaffe2391b023a51bd9b48c19f143d47c258af",
+  "git_commit": "HEAD",
+  "warning": "Shared-host exploratory results; CPU governor, NUMA binding and isolation not controlled by this script.",
+  "config": {
+    "description": "Retrained NFL-style flows (fractional feature enabled): does a flow that actually lowers the tail conflict degree lower probes in our map?",
+    "profiles": [
+      "read_only"
+    ],
+    "seeds": [
+      11,
+      29
+    ],
+    "repeats": 1,
+    "common": {
+      "load-ratio": 1,
+      "miss": 0,
+      "query-distribution": "uniform",
+      "ops": 1000000,
+      "warmup": 200000,
+      "verify": 0,
+      "instrument": 1,
+      "latency": 0,
+      "build-threads": 16,
+      "qos": 1
+    },
+    "datasets": [
+      {
+        "name": "books",
+        "data": "data/samples/books_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/books_s64_t2000.txt"
+      },
+      {
+        "name": "fb",
+        "data": "data/samples/fb_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/fb_s512_t2000.txt"
+      },
+      {
+        "name": "osm",
+        "data": "data/samples/osm_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/osm_s512_t2000.txt"
+      },
+      {
+        "name": "covid",
+        "data": "data/samples/covid_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/covid_s64_t2000.txt"
+      },
+      {
+        "name": "genome",
+        "data": "data/samples/genome_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/genome_s64_t2000.txt"
+      },
+      {
+        "name": "history",
+        "data": "data/samples/history_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/history_s64_t2000.txt"
+      },
+      {
+        "name": "libio",
+        "data": "data/samples/libio_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/libio_s64_t2000.txt"
+      },
+      {
+        "name": "planet",
+        "data": "data/samples/planet_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/planet_s512_t2000.txt"
+      },
+      {
+        "name": "stack",
+        "data": "data/samples/stack_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/stack_s64_t2000.txt"
+      },
+      {
+        "name": "wise",
+        "data": "data/samples/wise_2M_uniform_s42",
+        "format": "sosd",
+        "dtype": "uint64",
+        "flow_weights": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/flows_v2/wise_s64_t2000.txt"
+      }
+    ],
+    "variants": [
+      {
+        "name": "packed_rank",
+        "policy": "min_bytes",
+        "routing": "rank"
+      },
+      {
+        "name": "packed_rank_flow_forced",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "flow": "$flow",
+        "flow-bypass": 0
+      },
+      {
+        "name": "packed_rank_flow",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "flow": "$flow",
+        "flow-bypass": 1
+      },
+      {
+        "name": "packed_rank_vp10",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "virtual-alpha": 0.1
+      },
+      {
+        "name": "packed_rank_fusion_auto",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "flow": "$flow",
+        "virtual-alpha": 0.1,
+        "fusion": "auto"
+      },
+      {
+        "name": "packed_rank_root_flow",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model",
+        "flow": "$flow"
+      },
+      {
+        "name": "packed_rank_root_fusion",
+        "policy": "min_bytes",
+        "routing": "rank",
+        "root": "model",
+        "root-alpha": 4,
+        "flow": "$flow"
+      }
+    ]
+  },
+  "requested_cpu": null
+}

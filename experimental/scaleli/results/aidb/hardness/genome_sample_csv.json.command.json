@@ -1,0 +1,15 @@
+[
+  "/Users/louisvasseur/Downloads/scaleli_sota/build-fusion/experimental/scaleli/scaleli_hardness",
+  "--data",
+  "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/samples/genome_2M_uniform_s42",
+  "--virtual-alpha",
+  "0.1",
+  "--dtype",
+  "uint64",
+  "--region-keys",
+  "4096",
+  "--pla-eps",
+  "32,4096",
+  "--check-sorted",
+  "1"
+]

@@ -1,0 +1,9 @@
+build/
+build-*/
+results/local/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+
+# Datasets stay on each machine and research results are tracked: see experimental/scaleli/.gitignore.

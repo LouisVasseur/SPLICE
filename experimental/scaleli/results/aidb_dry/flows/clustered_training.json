@@ -1,0 +1,17 @@
+{
+  "weights": "results/aidb_dry/flows/clustered_2D2H2L.txt",
+  "keys": 20000,
+  "training_keys": 4096,
+  "steps": 200,
+  "seed": 1000000007,
+  "shifts": 64,
+  "monotone": true,
+  "best_nll": 4.175961343188934,
+  "train_seconds": 2.378121852874756,
+  "unordered_transformed_pairs": 0,
+  "tail_conflict_degree_raw": 442,
+  "tail_conflict_degree_transformed": 442,
+  "note": "Stand-in trainer (1-D likelihood, Adam), not the official BNAF; format-compatible with luffy06/NFL weights.",
+  "dataset": "clustered",
+  "source": "results/aidb_dry/samples/clustered_20K_uniform_s42"
+}

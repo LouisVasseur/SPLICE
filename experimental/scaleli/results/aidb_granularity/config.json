@@ -1,0 +1,178 @@
+{
+ "description": "Granularity ablation: does the NFL-style transform start to matter when regions grow (per-region linear models absorb global curvature at 4096 keys)? Reduced-scale controls, read-only, uniform 2M samples.",
+ "datasets": [
+  {
+   "name": "fb",
+   "data": "data/samples/fb_2M_uniform_s42",
+   "format": "sosd",
+   "dtype": "uint64",
+   "flow_weights": "results/aidb/flows/fb_2D2H2L.txt"
+  },
+  {
+   "name": "osm",
+   "data": "data/samples/osm_2M_uniform_s42",
+   "format": "sosd",
+   "dtype": "uint64",
+   "flow_weights": "results/aidb/flows/osm_2D2H2L.txt"
+  },
+  {
+   "name": "planet",
+   "data": "data/samples/planet_2M_uniform_s42",
+   "format": "sosd",
+   "dtype": "uint64",
+   "flow_weights": "results/aidb/flows/planet_2D2H2L.txt"
+  },
+  {
+   "name": "covid",
+   "data": "data/samples/covid_2M_uniform_s42",
+   "format": "sosd",
+   "dtype": "uint64",
+   "flow_weights": "results/aidb/flows/covid_2D2H2L.txt"
+  },
+  {
+   "name": "genome",
+   "data": "data/samples/genome_2M_uniform_s42",
+   "format": "sosd",
+   "dtype": "uint64",
+   "flow_weights": "results/aidb/flows/genome_2D2H2L.txt"
+  }
+ ],
+ "profiles": [
+  "read_only"
+ ],
+ "variants": [
+  {
+   "name": "packed_rank_r4096",
+   "region-keys": 4096,
+   "policy": "min_bytes",
+   "routing": "rank"
+  },
+  {
+   "name": "packed_rank_flow_forced_r4096",
+   "region-keys": 4096,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "flow-bypass": 0
+  },
+  {
+   "name": "packed_rank_vp10_r4096",
+   "region-keys": 4096,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "virtual-alpha": 0.1
+  },
+  {
+   "name": "packed_rank_flow_vp10_r4096",
+   "region-keys": 4096,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "flow-bypass": 0,
+   "virtual-alpha": 0.1
+  },
+  {
+   "name": "packed_rank_fusion_auto_r4096",
+   "region-keys": 4096,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "virtual-alpha": 0.1,
+   "fusion": "auto"
+  },
+  {
+   "name": "packed_rank_r16384",
+   "region-keys": 16384,
+   "policy": "min_bytes",
+   "routing": "rank"
+  },
+  {
+   "name": "packed_rank_flow_forced_r16384",
+   "region-keys": 16384,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "flow-bypass": 0
+  },
+  {
+   "name": "packed_rank_vp10_r16384",
+   "region-keys": 16384,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "virtual-alpha": 0.1
+  },
+  {
+   "name": "packed_rank_flow_vp10_r16384",
+   "region-keys": 16384,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "flow-bypass": 0,
+   "virtual-alpha": 0.1
+  },
+  {
+   "name": "packed_rank_fusion_auto_r16384",
+   "region-keys": 16384,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "virtual-alpha": 0.1,
+   "fusion": "auto"
+  },
+  {
+   "name": "packed_rank_r32768",
+   "region-keys": 32768,
+   "policy": "min_bytes",
+   "routing": "rank"
+  },
+  {
+   "name": "packed_rank_flow_forced_r32768",
+   "region-keys": 32768,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "flow-bypass": 0
+  },
+  {
+   "name": "packed_rank_vp10_r32768",
+   "region-keys": 32768,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "virtual-alpha": 0.1
+  },
+  {
+   "name": "packed_rank_flow_vp10_r32768",
+   "region-keys": 32768,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "flow-bypass": 0,
+   "virtual-alpha": 0.1
+  },
+  {
+   "name": "packed_rank_fusion_auto_r32768",
+   "region-keys": 32768,
+   "policy": "min_bytes",
+   "routing": "rank",
+   "flow": "$flow",
+   "virtual-alpha": 0.1,
+   "fusion": "auto"
+  }
+ ],
+ "seeds": [
+  11,
+  29
+ ],
+ "repeats": 1,
+ "common": {
+  "load-ratio": 1,
+  "miss": 0,
+  "query-distribution": "uniform",
+  "ops": 1000000,
+  "warmup": 200000,
+  "verify": 0,
+  "instrument": 1,
+  "latency": 0,
+  "build-threads": 16
+ }
+}

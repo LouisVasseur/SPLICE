@@ -1,0 +1,21 @@
+osm free rc=0 wall=119s 18:23:26
+osm mono rc=0 wall=27s 18:23:53
+planet free rc=0 wall=15s 18:24:08
+planet mono rc=0 wall=14s 18:24:22
+fb free rc=0 wall=15s 18:24:37
+fb mono rc=0 wall=15s 18:24:52
+books free rc=0 wall=13s 18:25:05
+books mono rc=0 wall=11s 18:25:16
+genome free rc=0 wall=18s 18:25:34
+genome mono rc=0 wall=15s 18:25:49
+covid free rc=0 wall=12s 18:26:01
+covid mono rc=0 wall=12s 18:26:13
+history free rc=0 wall=12s 18:26:25
+history mono rc=0 wall=11s 18:26:36
+libio free rc=0 wall=13s 18:26:49
+libio mono rc=0 wall=11s 18:27:00
+stack free rc=0 wall=12s 18:27:12
+stack mono rc=0 wall=9s 18:27:21
+wise free rc=0 wall=12s 18:27:33
+wise mono rc=0 wall=11s 18:27:44
+PHASE_DONE flow

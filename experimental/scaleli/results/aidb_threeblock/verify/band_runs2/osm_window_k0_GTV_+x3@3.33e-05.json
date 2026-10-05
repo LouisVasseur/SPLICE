@@ -1,0 +1,30 @@
+{
+ "dataset": "osm",
+ "mode": "window",
+ "k": 0,
+ "order": "GTV",
+ "pert": "+x3@3.33e-05",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 3.5271238485158647,
+   "gapT": 0.0,
+   "k_eff": 0,
+   "total": 3.5271238485158647,
+   "virt": 807,
+   "gaps": []
+  },
+  {
+   "round": 2,
+   "accepted": false,
+   "model": 3.5301944728761514,
+   "gapT": 0.0,
+   "k_eff": 0,
+   "total": 3.5301944728761514,
+   "virt": 810,
+   "gaps": []
+  }
+ ],
+ "seconds": 16.079739809036255
+}

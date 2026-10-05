@@ -1,0 +1,58 @@
+{
+ "dataset": "covid",
+ "mode": "uniform",
+ "k": 1,
+ "order": "GTV",
+ "pert": "-x2@0.0001",
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model": 2.474923234390993,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.474923234390993,
+   "virt": 49,
+   "gaps": [
+    485
+   ]
+  },
+  {
+   "round": 2,
+   "accepted": true,
+   "model": 2.427840327533265,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.427840327533265,
+   "virt": 54,
+   "gaps": [
+    107
+   ]
+  },
+  {
+   "round": 3,
+   "accepted": true,
+   "model": 2.366427840327533,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.366427840327533,
+   "virt": 61,
+   "gaps": [
+    107
+   ]
+  },
+  {
+   "round": 4,
+   "accepted": false,
+   "model": 2.3725690890481066,
+   "gapT": 1.0,
+   "k_eff": 1,
+   "total": 3.3725690890481066,
+   "virt": 61,
+   "gaps": [
+    107
+   ]
+  }
+ ],
+ "seconds": 1.2914209365844727
+}

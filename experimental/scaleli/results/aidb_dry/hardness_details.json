@@ -1,0 +1,527 @@
+{
+  "dense_sparse_fixture": {
+    "full": {
+      "data": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/dense_sparse_fixture",
+      "keys": 16384,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 1025,
+      "max": 490506239,
+      "sort_ns": 0,
+      "elapsed_ns": 1950750
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 0.000203305175601696,
+        "intercept": -14.757767557874464,
+        "capacity": 98304,
+        "gap": 5,
+        "d": 129,
+        "ut": 4918.713933575126,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "duplicates": 0,
+      "unordered_pairs": 0,
+      "transform_ns": 286000,
+      "fmcd": {
+        "slope": 58498.5420694137,
+        "intercept": -14.97349363467967,
+        "capacity": 98304,
+        "gap": 5,
+        "d": 129,
+        "ut": 1.7094443119854364e-05,
+        "ut_epsilon": 1.0392106983569547e-10,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 129
+      }
+    },
+    "sample": {
+      "data": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/dense_sparse_fixture_16384_uniform_s42",
+      "keys": 16384,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 1025,
+      "max": 490506239,
+      "elapsed_ns": 132931000
+    },
+    "sample_flow": {
+      "duplicates": 0,
+      "unordered_pairs": 0,
+      "transform_ns": 212875,
+      "fmcd": {
+        "slope": 58498.5420694137,
+        "intercept": -14.97349363467967,
+        "capacity": 98304,
+        "gap": 5,
+        "d": 129,
+        "ut": 1.7094443119854364e-05,
+        "ut_epsilon": 1.0392106983569547e-10,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 129
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 1636,
+      "smoothing_ns": 130109459,
+      "regions": 4,
+      "fmcd": {
+        "slope": 64141.51122138077,
+        "intercept": -16.514352593656024,
+        "capacity": 108120,
+        "gap": 5,
+        "d": 129,
+        "ut": 1.559052758436821e-05,
+        "ut_epsilon": 9.448575876120755e-11,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 129
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 1636,
+      "smoothing_ns": 107678292,
+      "regions": 4,
+      "fmcd": {
+        "slope": 0.0002226150937748653,
+        "intercept": -15.698676504683858,
+        "capacity": 108120,
+        "gap": 5,
+        "d": 129,
+        "ut": 4492.05839120378,
+        "ut_epsilon": 0.027221555802208777,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 129
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096,
+    "cd_note": "CD on transformed/smoothed features uses U_T + 1e-6 * mean gap (fmcd.ut_epsilon), not LIPP's absolute 1e-6; fmcd.conflict_degree_lipp_epsilon is the literal-constant value. CD carries +-1 rounding uncertainty (floor of a double product, as in LIPP)."
+  },
+  "lognormal": {
+    "full": {
+      "data": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/lognormal",
+      "keys": 50000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 541491,
+      "max": 4531558328965,
+      "sort_ns": 0,
+      "elapsed_ns": 5139375
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 8.944202032790986e-07,
+        "intercept": -2.004406521755504,
+        "capacity": 300000,
+        "gap": 5,
+        "d": 98,
+        "ut": 1118042.7234691565,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "duplicates": 1,
+      "unordered_pairs": 0,
+      "transform_ns": 312833,
+      "fmcd": {
+        "slope": 28937.082349665103,
+        "intercept": -0.2489714414425749,
+        "capacity": 300000,
+        "gap": 5,
+        "d": 56,
+        "ut": 3.4557734187447316e-05,
+        "ut_epsilon": 2.087017091904356e-10,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 53
+      }
+    },
+    "sample": {
+      "data": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/lognormal_20K_uniform_s42",
+      "keys": 20000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 541491,
+      "max": 1973775439977,
+      "elapsed_ns": 90979667
+    },
+    "sample_flow": {
+      "duplicates": 0,
+      "unordered_pairs": 0,
+      "transform_ns": 221958,
+      "fmcd": {
+        "slope": 12257.780256375414,
+        "intercept": -0.7690120461844743,
+        "capacity": 120000,
+        "gap": 5,
+        "d": 49,
+        "ut": 8.158083919638618e-05,
+        "ut_epsilon": 5.217699261234001e-10,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 49
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 1997,
+      "smoothing_ns": 87005750,
+      "regions": 5,
+      "fmcd": {
+        "slope": 13393.541222473536,
+        "intercept": -0.9269897443694866,
+        "capacity": 131982,
+        "gap": 5,
+        "d": 48,
+        "ut": 7.466285304158856e-05,
+        "ut_epsilon": 4.74398833994448e-10,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 48
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 1997,
+      "smoothing_ns": 87069667,
+      "regions": 5,
+      "fmcd": {
+        "slope": 3.3595107104610105e-07,
+        "intercept": 1.0345005497273891,
+        "capacity": 131982,
+        "gap": 5,
+        "d": 103,
+        "ut": 2976623.937784007,
+        "ut_epsilon": 89.73335599590835,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 103
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096,
+    "cd_note": "CD on transformed/smoothed features uses U_T + 1e-6 * mean gap (fmcd.ut_epsilon), not LIPP's absolute 1e-6; fmcd.conflict_degree_lipp_epsilon is the literal-constant value. CD carries +-1 rounding uncertainty (floor of a double product, as in LIPP)."
+  },
+  "clustered": {
+    "full": {
+      "data": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/clustered",
+      "keys": 50000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 1000001024,
+      "max": 49003221101,
+      "sort_ns": 0,
+      "elapsed_ns": 4535250
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 6.521258307912425e-06,
+        "intercept": -13041.969555363705,
+        "capacity": 300000,
+        "gap": 5,
+        "d": 1024,
+        "ut": 153344.63883859225,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "duplicates": 0,
+      "unordered_pairs": 0,
+      "transform_ns": 321625,
+      "fmcd": {
+        "slope": 185762.41059992686,
+        "intercept": -6820.591828029581,
+        "capacity": 300000,
+        "gap": 5,
+        "d": 1024,
+        "ut": 5.383220409179992e-06,
+        "ut_epsilon": 3.367501107789017e-11,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 1024
+      }
+    },
+    "sample": {
+      "data": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/clustered_20K_uniform_s42",
+      "keys": 20000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 1000001024,
+      "max": 49003220814,
+      "elapsed_ns": 158047833
+    },
+    "sample_flow": {
+      "duplicates": 0,
+      "unordered_pairs": 0,
+      "transform_ns": 237083,
+      "fmcd": {
+        "slope": 74304.24648865873,
+        "intercept": -2727.630086580297,
+        "capacity": 120000,
+        "gap": 5,
+        "d": 443,
+        "ut": 1.3458181022704172e-05,
+        "ut_epsilon": 8.419005298830843e-11,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 430
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 1319,
+      "smoothing_ns": 154117667,
+      "regions": 5,
+      "fmcd": {
+        "slope": 79204.67450662989,
+        "intercept": -2907.573817338546,
+        "capacity": 127914,
+        "gap": 5,
+        "d": 443,
+        "ut": 1.2625517448673995e-05,
+        "ut_epsilon": 7.898099585857868e-11,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 430
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 1320,
+      "smoothing_ns": 133685916,
+      "regions": 5,
+      "fmcd": {
+        "slope": 2.780622384344013e-06,
+        "intercept": -2779.421344893224,
+        "capacity": 127920,
+        "gap": 5,
+        "d": 443,
+        "ut": 359631.71613318997,
+        "ut_epsilon": 2.2516637642478536,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 443
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096,
+    "cd_note": "CD on transformed/smoothed features uses U_T + 1e-6 * mean gap (fmcd.ut_epsilon), not LIPP's absolute 1e-6; fmcd.conflict_degree_lipp_epsilon is the literal-constant value. CD carries +-1 rounding uncertainty (floor of a double product, as in LIPP)."
+  },
+  "locally_hard": {
+    "full": {
+      "data": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/locally_hard",
+      "keys": 50000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 10001024,
+      "max": 62500044774,
+      "sort_ns": 0,
+      "elapsed_ns": 3192542
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 4.802269728933735e-06,
+        "intercept": -95.05034499841923,
+        "capacity": 300000,
+        "gap": 5,
+        "d": 8,
+        "ut": 208234.86735344902,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "duplicates": 0,
+      "unordered_pairs": 0,
+      "transform_ns": 316208,
+      "fmcd": {
+        "slope": 177953.6251533006,
+        "intercept": 1.900302798359902,
+        "capacity": 300000,
+        "gap": 5,
+        "d": 8,
+        "ut": 5.619441577200443e-06,
+        "ut_epsilon": 3.3727464547925465e-11,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 8
+      }
+    },
+    "sample": {
+      "data": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/locally_hard_20K_uniform_s42",
+      "keys": 20000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 10001024,
+      "max": 62500044771,
+      "elapsed_ns": 154751917
+    },
+    "sample_flow": {
+      "duplicates": 0,
+      "unordered_pairs": 0,
+      "transform_ns": 308208,
+      "fmcd": {
+        "slope": 71203.055733985,
+        "intercept": -18.758628843354057,
+        "capacity": 120000,
+        "gap": 5,
+        "d": 8,
+        "ut": 1.4044341070641763e-05,
+        "ut_epsilon": 8.432119105245156e-11,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 8
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 1483,
+      "smoothing_ns": 151284667,
+      "regions": 5,
+      "fmcd": {
+        "slope": 76482.85031429301,
+        "intercept": -20.223756481584243,
+        "capacity": 128898,
+        "gap": 5,
+        "d": 8,
+        "ut": 1.3074826525040233e-05,
+        "ut_epsilon": 7.850011636989007e-11,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 8
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 1393,
+      "smoothing_ns": 146884167,
+      "regions": 5,
+      "fmcd": {
+        "slope": 2.055326493172472e-06,
+        "intercept": -39.721234302606476,
+        "capacity": 128358,
+        "gap": 5,
+        "d": 8,
+        "ut": 486540.70451671316,
+        "ut_epsilon": 2.921187534919596,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 8
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096,
+    "cd_note": "CD on transformed/smoothed features uses U_T + 1e-6 * mean gap (fmcd.ut_epsilon), not LIPP's absolute 1e-6; fmcd.conflict_degree_lipp_epsilon is the literal-constant value. CD carries +-1 rounding uncertainty (floor of a double product, as in LIPP)."
+  },
+  "shuffled_dups": {
+    "full": {
+      "data": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/shuffled_dups.sorted",
+      "keys": 50000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 181726,
+      "max": 3405177024172,
+      "sort_ns": 0,
+      "elapsed_ns": 5062250
+    },
+    "full_original": {
+      "fmcd": {
+        "slope": 9.891876013324397e-07,
+        "intercept": -2.657841504329901,
+        "capacity": 300000,
+        "gap": 5,
+        "d": 108,
+        "ut": 1010930.5845048967,
+        "ut_epsilon": 1e-06,
+        "fallback": false,
+        "degenerate": false
+      }
+    },
+    "full_flow": {
+      "duplicates": 4,
+      "unordered_pairs": 0,
+      "transform_ns": 282167,
+      "fmcd": {
+        "slope": 33848.76804107792,
+        "intercept": -1.19659847144298,
+        "capacity": 300000,
+        "gap": 5,
+        "d": 54,
+        "ut": 2.9543172702369192e-05,
+        "ut_epsilon": 1.7772585960568874e-10,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 53
+      }
+    },
+    "sample": {
+      "data": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/shuffled_dups_20K_uniform_s42",
+      "keys": 20000,
+      "sorted": true,
+      "duplicates": 0,
+      "min": 181726,
+      "max": 2562342963099,
+      "elapsed_ns": 87969167
+    },
+    "sample_flow": {
+      "duplicates": 0,
+      "unordered_pairs": 0,
+      "transform_ns": 304500,
+      "fmcd": {
+        "slope": 13761.751284586724,
+        "intercept": -1.6223250156017823,
+        "capacity": 120000,
+        "gap": 5,
+        "d": 46,
+        "ut": 7.266517024762745e-05,
+        "ut_epsilon": 4.443279791201975e-10,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 41
+      }
+    },
+    "sample_flow_csv": {
+      "virtual_points": 1997,
+      "smoothing_ns": 83774083,
+      "regions": 5,
+      "fmcd": {
+        "slope": 15061.044147527415,
+        "intercept": -1.6808668069131154,
+        "capacity": 131982,
+        "gap": 5,
+        "d": 42,
+        "ut": 6.639645898416485e-05,
+        "ut_epsilon": 4.0398778207059603e-10,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 42
+      }
+    },
+    "sample_csv": {
+      "virtual_points": 1997,
+      "smoothing_ns": 84512375,
+      "regions": 5,
+      "fmcd": {
+        "slope": 3.3679890852606485e-07,
+        "intercept": 1.1606555470057247,
+        "capacity": 131982,
+        "gap": 5,
+        "d": 107,
+        "ut": 2969130.762259017,
+        "ut_epsilon": 116.49130666362065,
+        "fallback": false,
+        "degenerate": false,
+        "conflict_degree_lipp_epsilon": 107
+      }
+    },
+    "alpha": 0.1,
+    "region_keys": 4096,
+    "cd_note": "CD on transformed/smoothed features uses U_T + 1e-6 * mean gap (fmcd.ut_epsilon), not LIPP's absolute 1e-6; fmcd.conflict_degree_lipp_epsilon is the literal-constant value. CD carries +-1 rounding uncertainty (floor of a double product, as in LIPP)."
+  }
+}

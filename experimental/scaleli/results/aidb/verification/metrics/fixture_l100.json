@@ -1,0 +1,7 @@
+{
+"schema":"scaleli_hardness/1","data":"/Users/louisvasseur/Downloads/scaleli_sota/evidence/dense_sparse_fixture_uint64","dtype":"uint64","limit":100,"keys":100,"sorted":true,"duplicates":0,"min":1025,"max":1223,"pla_eps":[32,4096],"flow_weights":null,"virtual_alpha":0,"region_keys":4096,"threads":1,"read_ns":52875,"original_metrics_ns":30125,"elapsed_ns":90750,
+"original":{"keys":100,"rmse":0.2350579192492781,"max_error":0.34279650824977637,"conflict_degree":1,"pla":{"32":1,"4096":1},"least_squares":{"slope":0.49991734858210768,"intercept":-0.156790234660762,"origin":1025},"fmcd":{"slope":3.0666572622510628,"intercept":-3148.45609140132,"capacity":600,"gap":5,"d":1,"ut":0.32608795652173911,"ut_epsilon":9.9999999999999995e-07,"fallback":false,"degenerate":false},"min":1025,"max":1223},
+"transformed":null,
+"smoothed":null,
+"note":"Reduced-scale, single-host, clean-room controls: FMCD ported from LIPP (MIT), PLA from PGM-index (Apache-2.0); not the paper's measurements and not NFL/CSV."
+}

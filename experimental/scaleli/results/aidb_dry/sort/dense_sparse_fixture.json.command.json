@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness",
+    "--data",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/dense_sparse_fixture",
+    "--dtype",
+    "uint64",
+    "--check-sorted",
+    "0",
+    "--sort-only",
+    "1",
+    "--write-sorted",
+    "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/dense_sparse_fixture.sorted"
+  ],
+  "sha256": {
+    "/Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness": "c5fb742016a6ff1d750efc6168072dd532be0342e603e13876dfa773977562f8"
+  }
+}

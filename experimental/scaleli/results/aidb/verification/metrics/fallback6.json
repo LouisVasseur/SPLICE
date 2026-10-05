@@ -1,0 +1,7 @@
+{
+"schema":"scaleli_hardness/1","data":"fallback6","dtype":"uint64","limit":0,"keys":1000,"sorted":true,"duplicates":0,"min":0,"max":1000399,"pla_eps":[32,4096],"flow_weights":null,"virtual_alpha":0,"region_keys":4096,"threads":16,"read_ns":127083,"original_metrics_ns":86667,"elapsed_ns":229000,
+"original":{"keys":1000,"rmse":146.65400684069681,"max_error":286.77844023542349,"conflict_degree":165,"pla":{"32":2,"4096":1},"least_squares":{"slope":0.00052290533244866684,"intercept":280.89953035090139,"origin":0},"fmcd":{"slope":0.0060971766386331413,"intercept":-99.60339625201415,"capacity":6000,"gap":5,"d":165,"ut":164.0103377789263,"ut_epsilon":9.9999999999999995e-07,"fallback":false,"degenerate":false},"min":0,"max":1000399},
+"transformed":null,
+"smoothed":null,
+"note":"Reduced-scale, single-host, clean-room controls: FMCD ported from LIPP (MIT), PLA from PGM-index (Apache-2.0); not the paper's measurements and not NFL/CSV."
+}

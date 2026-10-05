@@ -1,0 +1,32 @@
+removed stale sample covid_2M_uniform_s42.manifest.json
+removed stale sample covid_2M_uniform_s42
+removed stale flow covid_training.json
+removed stale flow covid_2D2H2L.txt
+removed stale sample genome_2M_uniform_s42
+removed stale sample genome_2M_uniform_s42.manifest.json
+removed stale flow genome_training.json
+removed stale flow genome_2D2H2L.txt
+removed stale sample history_2M_uniform_s42
+removed stale sample history_2M_uniform_s42.manifest.json
+removed stale flow history_2D2H2L.txt
+removed stale flow history_training.json
+removed stale sample libio_2M_uniform_s42
+removed stale sample libio_2M_uniform_s42.manifest.json
+removed stale flow libio_2D2H2L.txt
+removed stale flow libio_training.json
+removed stale sample planet_2M_uniform_s42.manifest.json
+removed stale sample planet_2M_uniform_s42
+removed stale flow planet_2D2H2L.txt
+removed stale flow planet_training.json
+removed stale sample stack_2M_uniform_s42
+removed stale sample stack_2M_uniform_s42.manifest.json
+removed stale flow stack_2D2H2L.txt
+removed stale flow stack_training.json
+removed stale sample wise_2M_uniform_s42
+removed stale sample wise_2M_uniform_s42.manifest.json
+removed stale flow wise_training.json
+removed stale flow wise_2D2H2L.txt
+  "log": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb/pipeline.log",
+  "label": "Reduced-scale, single-host, clean-room controls of this repository's NFL-style transform and CSV-style virtual points under the AIDB 2026 hardness protocol. Not a reproduction of the paper, NFL/AFLI or CSV."
+}
+PREP DONE 17:24:03

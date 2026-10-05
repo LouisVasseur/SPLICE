@@ -1,0 +1,11 @@
+{
+  "source": "data/external/gre/fb",
+  "source_count": 200000000,
+  "source_sha256": "22d5fd6f608e528c2ab60b77d4592efa5765516b75a75350f564feb85d573415",
+  "mode": "uniform",
+  "seed": 42,
+  "sample_count": 2000000,
+  "dtype": "uint64",
+  "sample_sha256": "7ecf95742784e7f3ef7bae5c5f3ac5c5924126a023927cb90e371d0074aeac06",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

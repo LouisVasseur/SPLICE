@@ -1,0 +1,11 @@
+{
+  "source": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/genome.sorted",
+  "source_count": 200000000,
+  "source_sha256": "2b0b5ae57a5cd00f504eb8226801ab8311cec1a2e3fb0ec3594b5bb38457c739",
+  "mode": "window",
+  "seed": 42,
+  "sample_count": 2000000,
+  "dtype": "uint64",
+  "sample_sha256": "61dc34adb69499a2c439240c3591b689a9fd967ce61e615ca3fbef6479651a2a",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

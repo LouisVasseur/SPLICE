@@ -1,0 +1,187 @@
+2026-09-21T18:37:49+00:00 [pipeline] start steps=['verify-downloads', 'sort', 'sample', 'flows', 'hardness', 'sweep', 'throughput', 'scores', 'report'] datasets=['dense_sparse_fixture', 'lognormal', 'clustered', 'locally_hard', 'shuffled_dups'] results=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry dry_run=True variants=['sorted_vector', 'raw_rank', 'packed_rank', 'packed_rank_flow', 'packed_rank_flow_forced', 'packed_rank_vp10', 'packed_rank_flow_vp10', 'packed_byte', 'packed_rank_fusion_auto', 'packed_rank_flow_costsel']
+2026-09-21T18:37:49+00:00 [verify-downloads] begin
+2026-09-21T18:37:49+00:00 [verify-downloads] dense_sparse_fixture: copied fixture dense_sparse_fixture_uint64
+2026-09-21T18:37:49+00:00 [verify-downloads] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_bench --distribution lognormal --n 50000 --seed 42 --ops 1 --profile read_only --load-ratio 1 --verify 0 --instrument 0 --warmup 0 --dump-keys /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/lognormal.part
+2026-09-21T18:37:49+00:00 [verify-downloads] ok 0.0 s: scaleli_bench
+2026-09-21T18:37:49+00:00 [verify-downloads] lognormal: generated 50,000 synthetic lognormal keys
+2026-09-21T18:37:49+00:00 [verify-downloads] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_bench --distribution clustered --n 50000 --seed 42 --ops 1 --profile read_only --load-ratio 1 --verify 0 --instrument 0 --warmup 0 --dump-keys /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/clustered.part
+2026-09-21T18:37:49+00:00 [verify-downloads] ok 0.0 s: scaleli_bench
+2026-09-21T18:37:49+00:00 [verify-downloads] clustered: generated 50,000 synthetic clustered keys
+2026-09-21T18:37:49+00:00 [verify-downloads] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_bench --distribution locally_hard --n 50000 --seed 42 --ops 1 --profile read_only --load-ratio 1 --verify 0 --instrument 0 --warmup 0 --dump-keys /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/locally_hard.part
+2026-09-21T18:37:49+00:00 [verify-downloads] ok 0.0 s: scaleli_bench
+2026-09-21T18:37:49+00:00 [verify-downloads] locally_hard: generated 50,000 synthetic locally_hard keys
+2026-09-21T18:37:49+00:00 [verify-downloads] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_bench --distribution lognormal --n 50000 --seed 7 --ops 1 --profile read_only --load-ratio 1 --verify 0 --instrument 0 --warmup 0 --dump-keys /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/shuffled_dups.part
+2026-09-21T18:37:49+00:00 [verify-downloads] ok 0.0 s: scaleli_bench
+2026-09-21T18:37:49+00:00 [verify-downloads] shuffled_dups: generated 50,000 synthetic lognormal keys, then shuffled with 500 duplicates appended (50,500 keys on disk)
+2026-09-21T18:37:49+00:00 [verify-downloads] dense_sparse_fixture: 16,384 keys, 131,080 bytes, sha256 621f0271a21d5cbb… (0.0 s)
+2026-09-21T18:37:49+00:00 [verify-downloads] lognormal: 50,000 keys, 400,008 bytes, sha256 984476070aa3b632… (0.0 s)
+2026-09-21T18:37:49+00:00 [verify-downloads] clustered: 50,000 keys, 400,008 bytes, sha256 85b7fc237c451912… (0.0 s)
+2026-09-21T18:37:49+00:00 [verify-downloads] locally_hard: 50,000 keys, 400,008 bytes, sha256 56d69ddbb6faea64… (0.0 s)
+2026-09-21T18:37:49+00:00 [verify-downloads] shuffled_dups: 50,500 keys, 404,008 bytes, sha256 ad66293a3866a30c… (0.0 s)
+2026-09-21T18:37:49+00:00 [verify-downloads] done in 0.1 s
+2026-09-21T18:37:49+00:00 [sort] begin
+2026-09-21T18:37:49+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/dense_sparse_fixture --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/dense_sparse_fixture.sorted
+2026-09-21T18:37:49+00:00 [sort] ok 0.0 s: scaleli_hardness
+2026-09-21T18:37:49+00:00 [sort] dense_sparse_fixture: sorted=True duplicates=0
+2026-09-21T18:37:49+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/lognormal --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/lognormal.sorted
+2026-09-21T18:37:49+00:00 [sort] ok 0.0 s: scaleli_hardness
+2026-09-21T18:37:49+00:00 [sort] lognormal: sorted=True duplicates=0
+2026-09-21T18:37:49+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/clustered --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/clustered.sorted
+2026-09-21T18:37:49+00:00 [sort] ok 0.0 s: scaleli_hardness
+2026-09-21T18:37:49+00:00 [sort] clustered: sorted=True duplicates=0
+2026-09-21T18:37:49+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/locally_hard --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/locally_hard.sorted
+2026-09-21T18:37:49+00:00 [sort] ok 0.0 s: scaleli_hardness
+2026-09-21T18:37:49+00:00 [sort] locally_hard: sorted=True duplicates=0
+2026-09-21T18:37:49+00:00 [sort] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/shuffled_dups --dtype uint64 --check-sorted 0 --sort-only 1 --write-sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/shuffled_dups.sorted
+2026-09-21T18:37:49+00:00 [sort] ok 0.0 s: scaleli_hardness
+2026-09-21T18:37:49+00:00 [sort] shuffled_dups: sorted=False duplicates=500 -> wrote shuffled_dups.sorted (50,000 keys, sort 0.0 s, sha256 c1ebf163142adb86…)
+2026-09-21T18:37:49+00:00 [sort] done in 0.0 s
+2026-09-21T18:37:49+00:00 [sample] begin
+2026-09-21T18:37:49+00:00 [sample] dense_sparse_fixture: redo sample: forced
+2026-09-21T18:37:49+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/dense_sparse_fixture /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/dense_sparse_fixture_16384_uniform_s42 --n 16384 --dtype uint64 --mode uniform --seed 42
+2026-09-21T18:37:50+00:00 [sample] ok 0.1 s: python3.14
+2026-09-21T18:37:50+00:00 [sample] dense_sparse_fixture: wrote dense_sparse_fixture_16384_uniform_s42 (16,384 keys from dense_sparse_fixture)
+2026-09-21T18:37:50+00:00 [sample] lognormal: redo sample: forced
+2026-09-21T18:37:50+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/lognormal /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/lognormal_20K_uniform_s42 --n 20000 --dtype uint64 --mode uniform --seed 42
+2026-09-21T18:37:50+00:00 [sample] ok 0.1 s: python3.14
+2026-09-21T18:37:50+00:00 [sample] lognormal: wrote lognormal_20K_uniform_s42 (20,000 keys from lognormal)
+2026-09-21T18:37:50+00:00 [sample] clustered: redo sample: forced
+2026-09-21T18:37:50+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/clustered /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/clustered_20K_uniform_s42 --n 20000 --dtype uint64 --mode uniform --seed 42
+2026-09-21T18:37:50+00:00 [sample] ok 0.1 s: python3.14
+2026-09-21T18:37:50+00:00 [sample] clustered: wrote clustered_20K_uniform_s42 (20,000 keys from clustered)
+2026-09-21T18:37:50+00:00 [sample] locally_hard: redo sample: forced
+2026-09-21T18:37:50+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/locally_hard /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/locally_hard_20K_uniform_s42 --n 20000 --dtype uint64 --mode uniform --seed 42
+2026-09-21T18:37:50+00:00 [sample] ok 0.1 s: python3.14
+2026-09-21T18:37:50+00:00 [sample] locally_hard: wrote locally_hard_20K_uniform_s42 (20,000 keys from locally_hard)
+2026-09-21T18:37:50+00:00 [sample] shuffled_dups: redo sample: forced
+2026-09-21T18:37:50+00:00 [sample] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/datasets.py sample /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/shuffled_dups.sorted /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/shuffled_dups_20K_uniform_s42 --n 20000 --dtype uint64 --mode uniform --seed 42
+2026-09-21T18:37:50+00:00 [sample] ok 0.1 s: python3.14
+2026-09-21T18:37:50+00:00 [sample] shuffled_dups: wrote shuffled_dups_20K_uniform_s42 (20,000 keys from shuffled_dups.sorted)
+2026-09-21T18:37:50+00:00 [sample] done in 0.6 s
+2026-09-21T18:37:50+00:00 [flows] begin
+2026-09-21T18:37:50+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/dense_sparse_fixture_16384_uniform_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/dense_sparse_fixture_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T18:37:52+00:00 [flows] ok 2.5 s: python3.14
+2026-09-21T18:37:52+00:00 [flows] dense_sparse_fixture: nll 4.1631, tail conflicts 2 -> 2, unordered pairs 0
+2026-09-21T18:37:52+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/lognormal_20K_uniform_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/lognormal_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T18:37:55+00:00 [flows] ok 2.5 s: python3.14
+2026-09-21T18:37:55+00:00 [flows] lognormal: nll 0.5579, tail conflicts 195 -> 81, unordered pairs 0
+2026-09-21T18:37:55+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/clustered_20K_uniform_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/clustered_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T18:37:57+00:00 [flows] ok 2.5 s: python3.14
+2026-09-21T18:37:57+00:00 [flows] clustered: nll 4.1760, tail conflicts 442 -> 442, unordered pairs 0
+2026-09-21T18:37:57+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/locally_hard_20K_uniform_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/locally_hard_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T18:38:00+00:00 [flows] ok 2.5 s: python3.14
+2026-09-21T18:38:00+00:00 [flows] locally_hard: nll 4.1744, tail conflicts 5 -> 5, unordered pairs 0
+2026-09-21T18:38:00+00:00 [flows] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/train_flow.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/shuffled_dups_20K_uniform_s42 --dtype uint64 --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/shuffled_dups_2D2H2L.txt --sample 4096 --steps 200 --monotone
+2026-09-21T18:38:02+00:00 [flows] ok 2.5 s: python3.14
+2026-09-21T18:38:02+00:00 [flows] shuffled_dups: nll 0.7084, tail conflicts 200 -> 68, unordered pairs 0
+2026-09-21T18:38:02+00:00 [flows] done in 12.4 s
+2026-09-21T18:38:02+00:00 [hardness] begin
+2026-09-21T18:38:02+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/dense_sparse_fixture --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/dense_sparse_fixture_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:02+00:00 [hardness] ok 0.0 s: scaleli_hardness
+2026-09-21T18:38:02+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/lognormal --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/lognormal_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:02+00:00 [hardness] ok 0.0 s: scaleli_hardness
+2026-09-21T18:38:02+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/clustered --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/clustered_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:03+00:00 [hardness] ok 0.0 s: scaleli_hardness
+2026-09-21T18:38:03+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/locally_hard --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/locally_hard_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:03+00:00 [hardness] ok 0.0 s: scaleli_hardness
+2026-09-21T18:38:03+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/data/shuffled_dups.sorted --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/shuffled_dups_2D2H2L.txt --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:03+00:00 [hardness] ok 0.0 s: scaleli_hardness
+2026-09-21T18:38:03+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/dense_sparse_fixture_16384_uniform_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/dense_sparse_fixture_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:03+00:00 [hardness] ok 0.1 s: scaleli_hardness
+2026-09-21T18:38:03+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/dense_sparse_fixture_16384_uniform_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:03+00:00 [hardness] ok 0.1 s: scaleli_hardness
+2026-09-21T18:38:03+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/lognormal_20K_uniform_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/lognormal_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:03+00:00 [hardness] ok 0.1 s: scaleli_hardness
+2026-09-21T18:38:03+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/lognormal_20K_uniform_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:03+00:00 [hardness] ok 0.1 s: scaleli_hardness
+2026-09-21T18:38:03+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/clustered_20K_uniform_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/clustered_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:03+00:00 [hardness] ok 0.2 s: scaleli_hardness
+2026-09-21T18:38:03+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/clustered_20K_uniform_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:03+00:00 [hardness] ok 0.1 s: scaleli_hardness
+2026-09-21T18:38:03+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/locally_hard_20K_uniform_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/locally_hard_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:03+00:00 [hardness] ok 0.2 s: scaleli_hardness
+2026-09-21T18:38:03+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/locally_hard_20K_uniform_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:04+00:00 [hardness] ok 0.2 s: scaleli_hardness
+2026-09-21T18:38:04+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/shuffled_dups_20K_uniform_s42 --flow /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/flows/shuffled_dups_2D2H2L.txt --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:04+00:00 [hardness] ok 0.1 s: scaleli_hardness
+2026-09-21T18:38:04+00:00 [hardness] run: /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_hardness --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/samples/shuffled_dups_20K_uniform_s42 --virtual-alpha 0.1 --dtype uint64 --region-keys 4096 --pla-eps 32,4096 --check-sorted 1
+2026-09-21T18:38:04+00:00 [hardness] ok 0.1 s: scaleli_hardness
+2026-09-21T18:38:04+00:00 [hardness] dense_sparse_fixture: full CD=129 PLA-32=107, full_flow CD=129 PLA-32=107, sample CD=129 PLA-32=107, sample_flow CD=129 PLA-32=107, sample_flow_csv CD=129 PLA-32=99, sample_csv CD=129 PLA-32=99
+2026-09-21T18:38:04+00:00 [hardness] lognormal: full CD=98 PLA-32=35, full_flow CD=56 PLA-32=33, sample CD=69 PLA-32=22, sample_flow CD=49 PLA-32=20, sample_flow_csv CD=48 PLA-32=23, sample_csv CD=103 PLA-32=24
+2026-09-21T18:38:04+00:00 [hardness] clustered: full CD=1024 PLA-32=49, full_flow CD=1024 PLA-32=49, sample CD=443 PLA-32=49, sample_flow CD=443 PLA-32=49, sample_flow_csv CD=443 PLA-32=86, sample_csv CD=430 PLA-32=86
+2026-09-21T18:38:04+00:00 [hardness] locally_hard: full CD=8 PLA-32=1, full_flow CD=8 PLA-32=4, sample CD=8 PLA-32=4, sample_flow CD=8 PLA-32=5, sample_flow_csv CD=8 PLA-32=3, sample_csv CD=8 PLA-32=3
+2026-09-21T18:38:04+00:00 [hardness] shuffled_dups: full CD=108 PLA-32=36, full_flow CD=54 PLA-32=34, sample CD=71 PLA-32=22, sample_flow CD=46 PLA-32=20, sample_flow_csv CD=42 PLA-32=23, sample_csv CD=107 PLA-32=24
+2026-09-21T18:38:04+00:00 [hardness] done in 1.3 s
+2026-09-21T18:38:04+00:00 [sweep] begin
+2026-09-21T18:38:04+00:00 [sweep] force: removed previous sweep
+2026-09-21T18:38:04+00:00 [sweep] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/run_suite.py --binary /Users/louisvasseur/Downloads/scaleli_sota/build-verify-final/experimental/scaleli/scaleli_bench --config /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/aidb.json --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/sweep --timeout 14400 --resume
+2026-09-21T18:38:38+00:00 [sweep] ok 34.1 s: python3.14
+2026-09-21T18:38:38+00:00 [sweep] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/summarize.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/sweep/results.jsonl --baseline packed_rank --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/sweep/summary.csv
+2026-09-21T18:38:39+00:00 [sweep] ok 0.6 s: python3.14
+2026-09-21T18:38:39+00:00 [sweep] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/sweep_report.py /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/sweep/summary.csv --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/sweep/sweep_report.html
+2026-09-21T18:38:39+00:00 [sweep] ok 0.1 s: python3.14
+2026-09-21T18:38:39+00:00 [sweep] done in 34.8 s
+2026-09-21T18:38:39+00:00 [throughput] begin
+2026-09-21T18:38:39+00:00 [throughput] sorted_vector: clustered 20.34, dense_sparse_fixture 21.47, locally_hard 20.57, lognormal 20.49, shuffled_dups 20.60 MOPS
+2026-09-21T18:38:39+00:00 [throughput] raw_rank: clustered 9.35, dense_sparse_fixture 10.79, locally_hard 10.85, lognormal 9.01, shuffled_dups 9.05 MOPS
+2026-09-21T18:38:39+00:00 [throughput] packed_rank: clustered 3.98, dense_sparse_fixture 5.02, locally_hard 3.27, lognormal 4.35, shuffled_dups 4.36 MOPS
+2026-09-21T18:38:39+00:00 [throughput] packed_rank_flow: clustered 3.86, dense_sparse_fixture 4.99, locally_hard 3.34, lognormal 4.23, shuffled_dups 4.22 MOPS
+2026-09-21T18:38:39+00:00 [throughput] packed_rank_flow_forced: clustered 3.44, dense_sparse_fixture 4.26, locally_hard 2.86, lognormal 3.89, shuffled_dups 3.91 MOPS
+2026-09-21T18:38:39+00:00 [throughput] packed_rank_vp10: clustered 3.96, dense_sparse_fixture 5.02, locally_hard 3.36, lognormal 4.42, shuffled_dups 4.46 MOPS
+2026-09-21T18:38:39+00:00 [throughput] packed_rank_flow_vp10: clustered 3.95, dense_sparse_fixture 4.96, locally_hard 3.29, lognormal 4.36, shuffled_dups 4.29 MOPS
+2026-09-21T18:38:39+00:00 [throughput] packed_byte: clustered 3.95, dense_sparse_fixture 4.92, locally_hard 3.31, lognormal 4.38, shuffled_dups 4.34 MOPS
+2026-09-21T18:38:39+00:00 [throughput] packed_rank_fusion_auto: clustered 3.99, dense_sparse_fixture 4.98, locally_hard 3.25, lognormal 4.47, shuffled_dups 4.43 MOPS
+2026-09-21T18:38:39+00:00 [throughput] packed_rank_flow_costsel: clustered 3.97, dense_sparse_fixture 5.04, locally_hard 3.33, lognormal 4.36, shuffled_dups 4.33 MOPS
+2026-09-21T18:38:39+00:00 [throughput] done in 0.0 s
+2026-09-21T18:38:39+00:00 [scores] begin
+2026-09-21T18:38:39+00:00 [scores] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/aidb_scores.py --hardness /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/hardness.json --throughput /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/throughput.json --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/scores.json
+2026-09-21T18:38:39+00:00 [scores] ok 0.1 s: python3.14
+2026-09-21T18:38:39+00:00 [scores] full: PLA-32 Conf=-0.70 Cov=1.00, CD Conf=-0.62 Cov=1.00, PLA-32·PLA-4096 Conf=-0.78 Cov=0.20, CD·PLA-32 Conf=-0.66 Cov=0.80
+2026-09-21T18:38:39+00:00 [scores] full_flow: PLA-32 Conf=-0.70 Cov=1.00, CD Conf=-0.61 Cov=1.00, PLA-32·PLA-4096 Conf=-0.78 Cov=0.20, CD·PLA-32 Conf=-0.71 Cov=0.60
+2026-09-21T18:38:39+00:00 [scores] sample: PLA-32 Conf=-0.75 Cov=0.80, CD Conf=-0.62 Cov=1.00, PLA-32·PLA-4096 Conf=-0.85 Cov=0.00, CD·PLA-32 Conf=-0.66 Cov=0.80
+2026-09-21T18:38:39+00:00 [scores] sample_flow: PLA-32 Conf=-0.75 Cov=0.80, CD Conf=-0.61 Cov=1.00, PLA-32·PLA-4096 Conf=-0.85 Cov=0.00, CD·PLA-32 Conf=-0.65 Cov=0.80
+2026-09-21T18:38:39+00:00 [scores] sample_csv: PLA-32 Conf=-0.75 Cov=0.80, CD Conf=-0.62 Cov=1.00, PLA-32·PLA-4096 Conf=-0.85 Cov=0.00, CD·PLA-32 Conf=-0.66 Cov=0.80
+2026-09-21T18:38:39+00:00 [scores] sample_flow_csv: PLA-32 Conf=-0.75 Cov=0.80, CD Conf=-0.61 Cov=1.00, PLA-32·PLA-4096 Conf=-0.85 Cov=0.00, CD·PLA-32 Conf=-0.65 Cov=0.80
+2026-09-21T18:38:39+00:00 [scores] done in 0.1 s
+2026-09-21T18:38:39+00:00 [report] begin
+2026-09-21T18:38:39+00:00 [report] run: /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/tools/aidb_report.py --results /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry --output /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/report.html
+2026-09-21T18:38:39+00:00 [report] ok 0.1 s: python3.14
+2026-09-21T18:38:39+00:00 [report] wrote /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/report.html
+2026-09-21T18:38:39+00:00 [report] done in 0.1 s
+2026-09-21T18:38:39+00:00 [pipeline] finished
+{
+  "results": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry",
+  "steps": [
+    "verify-downloads",
+    "sort",
+    "sample",
+    "flows",
+    "hardness",
+    "sweep",
+    "throughput",
+    "scores",
+    "report"
+  ],
+  "datasets": [
+    "dense_sparse_fixture",
+    "lognormal",
+    "clustered",
+    "locally_hard",
+    "shuffled_dups"
+  ],
+  "variants": [
+    "sorted_vector",
+    "raw_rank",
+    "packed_rank",
+    "packed_rank_flow",
+    "packed_rank_flow_forced",
+    "packed_rank_vp10",
+    "packed_rank_flow_vp10",
+    "packed_byte",
+    "packed_rank_fusion_auto",
+    "packed_rank_flow_costsel"
+  ],
+  "report": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/report.html",
+  "log": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/aidb_dry/pipeline.log",
+  "label": "Reduced-scale, single-host, clean-room controls of this repository's NFL-style transform and CSV-style virtual points under the AIDB 2026 hardness protocol. Not a reproduction of the paper, NFL/AFLI or CSV."
+}

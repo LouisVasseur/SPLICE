@@ -1,0 +1,21 @@
+17:09:28 sampled books
+17:09:36 flow books 4 -> 4 nll 3.61
+17:09:41 sampled fb
+17:09:48 flow fb 8 -> 8 nll 4.182
+17:09:54 sampled osm
+17:10:01 flow osm 99 -> 99 nll 3.924
+17:10:07 sampled covid
+17:10:15 flow covid 3 -> 3 nll 4.128
+17:10:20 sampled genome
+17:10:28 flow genome 5 -> 5 nll 4.317
+17:10:33 sampled history
+17:10:41 flow history 3 -> 3 nll 4.164
+17:10:46 sampled libio
+17:10:53 flow libio 3 -> 3 nll 4.224
+17:10:58 sampled planet
+17:11:06 flow planet 18 -> 9 nll 3.377
+17:11:11 sampled stack
+17:11:18 flow stack 3 -> 3 nll 4.19
+17:11:23 sampled wise
+17:11:31 flow wise 3 -> 3 nll 4.171
+17:11:31 ALL DONE

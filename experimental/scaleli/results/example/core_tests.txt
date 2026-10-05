@@ -1,0 +1,6 @@
+codec roundtrips / full-width arithmetic: PASS
+empty / duplicate / uint64 endpoint semantics: PASS
+45 randomized differential configurations: PASS
+adversarial / intentionally corrupted model predictions: PASS
+maintenance / hysteresis / memory accounting: PASS
+ASSERTIONS=762890 ALL TESTS PASSED

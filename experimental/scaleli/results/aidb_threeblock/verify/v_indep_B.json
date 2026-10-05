@@ -1,0 +1,38 @@
+[
+ {
+  "cell": "B books-uniform k=64 G->V",
+  "gaps_match": true,
+  "virt_indep": 223,
+  "virt_stored": 223,
+  "model_indep": 2.253838280450358,
+  "model_stored": 2.253838280450358,
+  "charge_indep": 7,
+  "charge_stored": 7.0,
+  "mono_violations": 0,
+  "V_seconds": 2.851907730102539
+ },
+ {
+  "cell": "B planet-uniform k=64 T->G->V",
+  "gaps_match": true,
+  "virt_indep": 312,
+  "virt_stored": 312,
+  "model_indep": 2.84646878198567,
+  "model_stored": 2.84646878198567,
+  "charge_indep": 7,
+  "charge_stored": 7.0,
+  "mono_violations": 0,
+  "V_seconds": 5.1434080600738525
+ },
+ {
+  "cell": "B osm-window k=64 G->V",
+  "gaps_match": true,
+  "virt_indep": 618,
+  "virt_stored": 618,
+  "model_indep": 3.367451381780962,
+  "model_stored": 3.367451381780962,
+  "charge_indep": 7,
+  "charge_stored": 7.0,
+  "mono_violations": 0,
+  "V_seconds": 12.606024980545044
+ }
+]

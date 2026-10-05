@@ -1,0 +1,136 @@
+{
+  "status": "ARCHIVED RESULTS AUDIT, not a fresh performance run",
+  "verified": true,
+  "audit_output": "PASS: 108 verified runs; 12 groups with matched traces and checksums\n\nCard 05: dense_sparse / read_only (medians of two runs)\nVariant              bytes/record     Mops/s   hit P99 ns\nadaptive_byte              15.052      6.470        286.0\nordered_map                48.006      8.335        205.5\npacked_binary              11.249      4.711        361.0\npacked_byte                11.249      4.622        350.5\npacked_rank                11.249      4.444        390.5\nraw_binary                 16.628      8.251        195.0\nraw_rank                   16.628      7.402        191.0\nsmooth_byte                15.052      6.320        285.5\nsorted_vector              16.002     13.356        290.5\n\nPASS: Card 06 stored size calculations and recorded logical-rank invariance\nPASS: Card 07 counts, cardinality and memory; final-drain-inclusive throughput = 810,430.3 ops/s\n\nNo benchmarks were run. Paper table values remain manually transcribed source evidence, not reproduced results.\n",
+  "mac_pilot": {
+    "provenance": "Transcribed from the JSON pasted by the user in this conversation. This is not a new measurement; no hardware metadata file was supplied for this run.",
+    "schema_version": 1,
+    "index": "scaleli",
+    "distribution": "dense_sparse",
+    "profile": "read_heavy",
+    "seed": 42,
+    "source_rows": 50000,
+    "unique_rows": 50000,
+    "initial_rows": 37500,
+    "final_rows": 39096,
+    "operations": 20000,
+    "trace_fingerprint": "6056907619755482120",
+    "result_checksum": "53401893602511524",
+    "verified": true,
+    "policy": "min_bytes",
+    "routing": "byte",
+    "region_keys": 4096,
+    "block_keys": 128,
+    "delta_limit": 64,
+    "restart_interval": 16,
+    "load_ratio": 0.75,
+    "query_distribution": "uniform",
+    "warmup_reads": 4096,
+    "build_ns": 2567375,
+    "elapsed_ns": 22269416,
+    "throughput_ops_s": 898092.702566,
+    "memory_before": {
+      "key_bytes": 103185,
+      "value_bytes": 300000,
+      "metadata_bytes": 18480,
+      "delta_bytes": 0,
+      "reserved_slack_bytes": 0,
+      "accounted_bytes": 421665,
+      "estimated": false
+    },
+    "memory_after": {
+      "key_bytes": 106625,
+      "value_bytes": 311264,
+      "metadata_bytes": 19488,
+      "delta_bytes": 8400,
+      "reserved_slack_bytes": 1392,
+      "accounted_bytes": 447169,
+      "estimated": false
+    },
+    "memory_after_drain": {
+      "key_bytes": 107113,
+      "value_bytes": 312768,
+      "metadata_bytes": 19488,
+      "delta_bytes": 0,
+      "reserved_slack_bytes": 0,
+      "accounted_bytes": 439369,
+      "estimated": false
+    },
+    "maintenance": {
+      "compactions": 47,
+      "splits": 0,
+      "bytes_rewritten": 2077552,
+      "max_rewrite_bytes": 45922,
+      "raw_bypasses": 0,
+      "drain_ns": 2408833,
+      "drain_additional_rewrite_bytes": 419881
+    },
+    "latency_ns": {
+      "read_hit": {
+        "count": 14396,
+        "p50": 375,
+        "p95": 708,
+        "p99": 917,
+        "max": 32042
+      },
+      "read_miss": {
+        "count": 1647,
+        "p50": 375,
+        "p95": 625,
+        "p99": 750,
+        "max": 3459
+      },
+      "insert": {
+        "count": 1991,
+        "p50": 458,
+        "p95": 750,
+        "p99": 253958,
+        "max": 317000
+      },
+      "update": {
+        "count": 987,
+        "p50": 458,
+        "p95": 792,
+        "p99": 251958,
+        "max": 286208
+      },
+      "erase": {
+        "count": 395,
+        "p50": 458,
+        "p95": 791,
+        "p99": 253417,
+        "max": 320916
+      },
+      "scan": {
+        "count": 584,
+        "p50": 2709,
+        "p95": 3459,
+        "p99": 7625,
+        "max": 17666
+      }
+    },
+    "compaction_operation_latency_ns": {
+      "count": 47,
+      "p50": 256875,
+      "p95": 291125,
+      "p99": 320916,
+      "max": 320916
+    },
+    "work_counters": {
+      "block_routes": 19896,
+      "correction_distance": 3907,
+      "max_correction_distance": 1,
+      "coordinate_probes": 100463
+    }
+  },
+  "warning": "Mac numbers are transcribed from the user, not measured in this runtime. Archived Linux results use a different generated dataset from the shipped binary fixture.",
+  "lesson": "07",
+  "title": "Evidence audit: archived suite and user Mac pilot",
+  "environment": {
+    "system": "Linux-6.18.35-x86_64-with-glibc2.41",
+    "python": "3.13.5",
+    "fixture_sha256": "621f0271a21d5cbb27638cdb9ea20f6e69dfbba98ebc2c3c54ae156d4259f9ca",
+    "radix_binary_sha256": "bf5d0a14fb9418a5f3a461d1451a65d4833401888b07774c782899ccfbd16863",
+    "experimental_binary_sha256": "6065d209ba168e01d4e3d95e5eec77cbec6adfac90400654462117c8c1f1f884"
+  }
+}

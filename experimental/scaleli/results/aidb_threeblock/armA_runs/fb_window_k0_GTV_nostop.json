@@ -1,0 +1,204 @@
+{
+ "dataset": "fb",
+ "mode": "window",
+ "k": 0,
+ "order": "GTV",
+ "nostop": true,
+ "rounds": [
+  {
+   "round": 1,
+   "accepted": true,
+   "model_probes": 2.412487205731832,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.412487205731832,
+   "total_charged": 9.312487205731832,
+   "total_charged_pwl": 2.8624872057318322,
+   "virtual_count": 31,
+   "sse": 194.4456591811031,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.16938139800964527,
+     0.0,
+     998.3028716724128
+    ],
+    [
+     0.19821477802002976,
+     0.0,
+     1677.3975431236386
+    ]
+   ],
+   "warp_sse": 1742.5444094240665,
+   "notes": [
+    "ok",
+    "V kept_previous=False"
+   ],
+   "seconds": 0.30834197998046875
+  },
+  {
+   "round": 2,
+   "accepted": false,
+   "model_probes": 2.412487205731832,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.412487205731832,
+   "total_charged": 9.312487205731832,
+   "total_charged_pwl": 2.8624872057318322,
+   "virtual_count": 31,
+   "sse": 189.5812429189682,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.19821477802002976,
+     0.0,
+     2354.95389601553
+    ],
+    [
+     0.2319563936016892,
+     0.0,
+     253.88721985918545
+    ]
+   ],
+   "warp_sse": 189.5811307951808,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.1506490707397461
+  },
+  {
+   "round": 3,
+   "accepted": false,
+   "model_probes": 2.412487205731832,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.412487205731832,
+   "total_charged": 9.312487205731832,
+   "total_charged_pwl": 2.8624872057318322,
+   "virtual_count": 31,
+   "sse": 189.5812429189682,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.19821477802002976,
+     0.0,
+     2354.95389601553
+    ],
+    [
+     0.2319563936016892,
+     0.0,
+     253.88721985918545
+    ]
+   ],
+   "warp_sse": 189.5811307951808,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.1167747974395752
+  },
+  {
+   "round": 4,
+   "accepted": false,
+   "model_probes": 2.412487205731832,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.412487205731832,
+   "total_charged": 9.312487205731832,
+   "total_charged_pwl": 2.8624872057318322,
+   "virtual_count": 31,
+   "sse": 189.5812429189682,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.19821477802002976,
+     0.0,
+     2354.95389601553
+    ],
+    [
+     0.2319563936016892,
+     0.0,
+     253.88721985918545
+    ]
+   ],
+   "warp_sse": 189.5811307951808,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.1203908920288086
+  },
+  {
+   "round": 5,
+   "accepted": false,
+   "model_probes": 2.412487205731832,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.412487205731832,
+   "total_charged": 9.312487205731832,
+   "total_charged_pwl": 2.8624872057318322,
+   "virtual_count": 31,
+   "sse": 189.5812429189682,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.19821477802002976,
+     0.0,
+     2354.95389601553
+    ],
+    [
+     0.2319563936016892,
+     0.0,
+     253.88721985918545
+    ]
+   ],
+   "warp_sse": 189.5811307951808,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.13434910774230957
+  },
+  {
+   "round": 6,
+   "accepted": false,
+   "model_probes": 2.412487205731832,
+   "gap_table_probes": 0.0,
+   "gap_k_eff": 0,
+   "total_uncharged": 2.412487205731832,
+   "total_charged": 9.312487205731832,
+   "total_charged_pwl": 2.8624872057318322,
+   "virtual_count": 31,
+   "sse": 189.5812429189682,
+   "gaps": [],
+   "gap_factors": [],
+   "warp_units": [
+    [
+     0.19821477802002976,
+     0.0,
+     2354.95389601553
+    ],
+    [
+     0.2319563936016892,
+     0.0,
+     253.88721985918545
+    ]
+   ],
+   "warp_sse": 189.5811307951808,
+   "notes": [
+    "ok",
+    "V kept_previous=True"
+   ],
+   "seconds": 0.1288459300994873
+  }
+ ],
+ "error": null,
+ "baseline_linear": 3.5844421699078812,
+ "seconds": 1.235698938369751
+}

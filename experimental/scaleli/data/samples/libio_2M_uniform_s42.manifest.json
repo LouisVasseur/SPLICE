@@ -1,0 +1,11 @@
+{
+  "source": "/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/libio.sorted",
+  "source_count": 200000000,
+  "source_sha256": "f9f868375134273548644708f42365b4d3e0b952b5ce211f205b822e9440aea0",
+  "mode": "uniform",
+  "seed": 42,
+  "sample_count": 2000000,
+  "dtype": "uint64",
+  "sample_sha256": "9156ef37030a4861635ec9f621b7678b7f058c2ce68400e4b67f0a9de7fdb237",
+  "warning": "A derived sample is NOT the full benchmark corpus; sampling changes local hardness."
+}

@@ -1,0 +1,51 @@
+=== I. Sawtooth: a 2D2H2L net with a NON-ZERO fractional row is not monotone ===
+weights as in fb_2D2H2L.txt except W0 row 1 = [0.5, 0.5] (hypothetical, --monotone off)
+   x      key            frac     u1       u2       z(real file)  z(hypothetical)  dz/dx(hyp, a.e.)
+ 15.90     19216769196  0.90000  0.54310  0.54316  0.43396       2.31476          1.78379
+ 15.99     19325457533  0.99000  0.58863  0.58869  0.43640       2.47166          1.70250
+ 16.00     19337534015  0.00000  0.09369  0.09375  0.43667       0.43667          2.34319
+ 16.01     19349610497  0.01000  0.09875  0.09881  0.43694       0.46009          2.34091
+ 16.50     19941358110  0.50000  0.34662  0.34668  0.45024       1.55796          2.10107
+jump at x=16: z(16^-) - z(16^+) = 2.05196
+closed form sum_h v_h*(tanh(u_h + W0[1,h]) - tanh(u_h)) with u_h = 16*W0[0,h]: 2.05196
+=> with a non-zero fractional row the composed map key -> z decreases at every integer of x (sawtooth);
+   train_flow.py --monotone zeroes W0[1,:], which is why fb_training.json has unordered_transformed_pairs = 0
+
+=== J. Jacobian formula check (analytic vs central finite difference), hypothetical weights, x=15.5 ===
+analytic dz/dx = 2.10923217; finite difference = 2.10923217; |diff| = 1.53e-09
+dz/dkey = dz/dx / var = 1.746562e-09 per key unit
+
+=== K. Why sigma^2 = 1e16 is 'flat' ===
+|z| = 1e+03: data term z^2/(2 sigma^2) = 5.000e-11; log-density offset ln sqrt(2 pi 1e16) = 19.340
+|z| = 1e+06: data term z^2/(2 sigma^2) = 5.000e-05; log-density offset ln sqrt(2 pi 1e16) = 19.340
+|z| = 1e+08: data term z^2/(2 sigma^2) = 5.000e-01; log-density offset ln sqrt(2 pi 1e16) = 19.340
+our trainer: sigma = 1, so for z ~ 1 the data term is 0.5, of the same order as -log|dz/dx|
+
+=== L. Batched P99 vs per-request P99 (illustration) ===
+batch of 256: one 10,000 ns lookup + 255 x 50 ns = 22750 ns; reported as 22750/256 = 88.8672 ns per operation
+per-request P99 of the same trace = 50 ns; max = 10000 ns
+
+=== M. Control vs forced flow, fence probes per operation (results/aidb/sweep/summary.csv) ===
+dataset  packed_rank  packed_rank_flow  packed_rank_flow_forced  forced-control  flow_region_fraction  preprocess_ns_per_key(flow)
+books    2.230642     2.230594          2.230558                 -0.000084       0.0532                28.87
+covid    3.063852     3.063821          3.063754                 -0.000098       0.0348                31.50
+fb       2.599879     2.599902          2.599933                 +0.000054       0.0838                29.88
+genome   3.297549     3.297557          3.297578                 +0.000029       0.0164                32.33
+history  2.458673     2.458677          2.458760                 +0.000087       0.0266                29.33
+libio    2.555318     2.555336          2.555368                 +0.000050       0.0429                31.24
+osm      5.076565     5.076247          5.076308                 -0.000257       0.0143                30.82
+planet   3.229126     3.228882          3.229667                 +0.000541       0.0879                32.12
+stack    2.291464     2.291464          2.291436                 -0.000028       0.0020                31.57
+wise     2.417157     2.417156          2.417249                 +0.000092       0.0082                26.95
+
+=== N. Training subsample of fb_2M_uniform_s42 (train_flow.py: seed 1000000007, sample 4096) ===
+full sample: n=2000000 min=97995 max=77308811965
+training subsample: min=15162980 max=77304647121 var=(max-min)/64=1207648189.703125
+full-sample keys below the subsample min: 408 (x < 0); above the subsample max: 102 (x > 64)
+x for the smallest full-sample key: -0.012475; for the largest: 64.003449
+
+=== O. Small arithmetic used in the text ===
+Table 2: (8.38-7.29)/8.38 = 0.1301; 8.38/7.29 = 1.1495; 169.53/7.29 = 23.26; 169.53/8.38 = 20.23
+fb regions: 41/489 = 0.0838; transform_ns 59765592 / 2e6 keys = 29.88 ns/key
+fb fence probes forced - control = 5.40e-05
+2H2L with biases would have 2*2+2 + 2*2+2 = 12 parameters; without: 8
