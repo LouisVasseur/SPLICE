@@ -7,6 +7,8 @@ set(SCALELI_EXTERNAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external" CACHE PATH "Fetc
 add_library(scaleli INTERFACE)
 target_include_directories(scaleli INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_features(scaleli INTERFACE cxx_std_20)
+find_package(Threads REQUIRED)
+target_link_libraries(scaleli INTERFACE Threads::Threads)   # bulk_load uses std::thread; older glibc (e.g. Ubuntu 18.04) needs -pthread at link time
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
  target_compile_options(scaleli INTERFACE -Wall -Wextra -Wconversion -Wno-sign-conversion -Wno-misleading-indentation)
  if(SCALELI_NATIVE)
