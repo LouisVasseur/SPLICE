@@ -79,6 +79,129 @@ python3 run_ba.py show B fb            # prints the exact bench command for one 
 python3 run_ba.py plan aa > plan_aa.json && python3 run_ba.py run plan_aa.json aa.jsonl
 ```
 
+## 5. GRE baselines
+
+GRE (gre4index/GRE, VLDB 2022) is the reference harness for the baseline indexes. GRE has no licence, so it is
+cloned and edited outside this repository; only the scripts below are committed.
+
+Build (inside the activated conda environment), only while no timed run is active: the -O3 compile on all cores
+would disturb it, and gre_lite.sh refuses while it sees one (`GRE_LITE_FORCE=1` overrides).
+
+```bash
+experimental/scaleli/tools/gre_lite.sh          # -> /tmp/louisvasseur/GRE/build/microbench and build/gre_lite_build.txt
+```
+
+Everything under `/tmp` (GRE, the conda env, the datasets) is lost if the server reboots: Ubuntu 18.04 empties
+`/tmp` at boot unless the admin changed it. On DIAS there is no home directory (`HOME=/tmp/louisvasseur`), so `~` and
+the results below are under `/tmp` too: push each results directory back to the repository as soon as it is done.
+
+Smoke test on a 10M-key prefix of fb. GRE exits 0 even on a wrong file or index name, so check the output, not the
+exit status: every line must show `success_read: 1000000` (`sortedarray` exists only in the patched build).
+
+```bash
+cd /tmp/louisvasseur/GRE && FB=/tmp/louisvasseur/SPLICE/experimental/scaleli/data/external/gre/fb
+for idx in btree alex lipp pgm artunsync sortedarray; do
+  OMP_NUM_THREADS=1 ./build/microbench --keys_file=$FB --keys_file_type=binary --read=1 --insert=0 \
+      --operations_num=1000000 --table_size=10000000 --init_table_ratio=0.5 --thread_num=1 --memory \
+      --index=$idx --output_path=smoke_fb_10m.csv > smoke_$idx.log 2>&1
+  echo "$idx: $(grep -E '^(Throughput|Memory|success_read)' smoke_$idx.log | tr '\n' ' ')"
+done
+```
+
+`tools/gre_run.sh` runs the timed grid: one process per run, single thread, read-only, every key bulk-loaded,
+100M lookups, in the order repeat -> dataset -> index. It copies the binary into OUTDIR/bin first (its shared
+libraries still come from the conda env, so do not update the env mid-grid), refuses to start while any GRE run
+(`--keys_file=` on a command line, whatever the binary is called) or SPLICE benchmark runs, records provenance (CPU,
+governors, memory, load, transparent huge pages, NUMA balancing, MALLOC_CONF, SPLICE and GRE versions, binary hash
+and ldd, command line), notes the load and any other benchmark at the start of every run, and checks every run.
+
+Three conditions, so that the warm-up and pinning effects can be told apart: GRE as published (no warm-up,
+unpinned), pinned to core 2 without warm-up, and AIDB-style 20M untimed lookups then 100M measured on core 2. They
+are interleaved in time, one repeat of each per round with the order rotated every round, so that drift on the
+shared server does not fall on one condition: each call runs one more repeat of one condition (`--resume` with a
+growing `--repeats` skips the repeats already done).
+
+```bash
+cd ~/SPLICE
+R=~/gre_results; mkdir -p $R
+D=fb,osm,books,covid,genome,history,libio,planet,stack,wise; I=btree,alex,pgm,artunsync,lipp,sortedarray
+export R D I
+nohup bash -c 'for k in 1 2 3; do
+  for j in 0 1 2; do
+    case $(( (k + j - 1) % 3 )) in
+      0) c=published a="--warmup 0 --pin -1";;
+      1) c=pinned    a="--warmup 0 --pin 2";;
+      2) c=warmup    a="--warmup 20000000 --pin 2";;
+    esac
+    rc=0; experimental/scaleli/tools/gre_run.sh $R/$c --datasets $D --indexes $I $a --repeats $k --resume \
+        >> $R/$c.out 2>&1 || rc=$?
+    [ $rc != 2 ] || { echo "gre_run.sh refused, see $R/$c.out"; exit 2; }   # 1 = some runs failed: go on
+  done
+done' > $R/grid.out 2>&1 &
+```
+
+`--warmup`, `--pin` and the `sortedarray` index need the patched build of `gre_lite.sh`; the script checks the binary
+before starting. `D=fb,osm` gives a first pass; time the first round before launching all ten datasets. Start the
+grid only after any other GRE run (such as a copy of the unpatched binary) has finished: the first call refuses, and
+the loop stops, while one is running.
+
+What to expect: from a fresh process the cold transient lasts at most about 375k lookups (aidb_ba/PROTOCOL.md), under
+0.4% of the 100M timed lookups, so the warm-up should change throughput by less than about 1%. Pinning (a migration
+loses the L2 that Goldmont shares per module) and drift on the shared server can be larger; compare warmup with
+pinned for the warm-up effect, and pinned with published for pinning. `--warmup` is for read-only runs only (the
+script refuses it otherwise): with inserts it pre-trains ALEX's cost model. The patched binary also purges the
+allocator before the timed region, which leaves read-only runs unchanged; with inserts it is only approximately
+comparable with unpatched GRE.
+
+Pages: SCALE-LI's protocol runs with transparent huge pages `never`
+(`cat /sys/kernel/mm/transparent_hugepage/enabled`). If the server uses another setting and you cannot change it,
+the report's provenance shows it; then only ratios to sortedarray, not absolute Mops/s, carry over to SCALE-LI
+(which also runs with the performance governor and an isolated core).
+
+Watching: `tail -f $R/grid.out $R/*.out` prints one line per run (throughput, success_read, index RSS, BUSY if
+another benchmark was running when it started, FAILED and the reason if a check fails);
+`column -t $R/published/runs.tsv | tail`; `free -g`. If the grid stops (kill, lost ssh session), start the same
+block again: every call has `--resume`, so runs that passed every check are skipped and the others rerun (the old
+log is kept as `*.log.prev`). After a reboot the env, GRE and the datasets under `/tmp` are gone: recreate them at
+the same paths before resuming, since the binary copies in `$R/*/bin` load their libraries from the env. Killing
+`gre_run.sh` also stops its current microbench; kill the `bash -c` loop first.
+
+Report (standard library, Python >= 3.6):
+
+```bash
+for c in published pinned warmup; do python3 experimental/scaleli/tools/gre_report.py $R/$c > $R/$c/report.md; echo $c $?; done
+```
+
+It lists every run's checks (exit status, throughput printed, success_read == operations_num, every warm-up key
+found, pinning confirmed; exit 1 if any fails), then per dataset and index: mean, min and max throughput in Mops/s,
+the geometric-mean ratio to the reference index (`--ref`, default sortedarray) with a 95% CI, each cell's own
+spread (flagged when it exceeds twice the pooled SD the CI assumes), index memory in bytes per key, peak RSS, and
+build time. A run that started beside another benchmark is listed under Warnings.
+
+Memory caveats:
+
+- "index RSS" is the process RSS after bulk load minus before it, both after a jemalloc purge. It counts nodes,
+  the index's own copies of keys and payloads, and allocator slack; GRE's own key arrays are allocated before and
+  are excluded. RSS is page-granular, so per-key values only mean something at full scale, not on the smoke prefix.
+  It is not SCALE-LI's "real B/key" (an unpurged RSS plateau during the run, `aidb_ba/memory_report.py`); the
+  report's "unpurged" column is the closer match. "peak GB" (VmHWM) shows the headroom left in the 67.5 GB.
+- GRE's `Memory:` is each wrapper's self-report: the STX B+tree reports 0, and ART excludes its 16-B key/payload
+  records. Do not compare it across indexes.
+- The sorted array needs exactly 16 B/key, and before building it allocates and frees another 16 B/key in small
+  blocks that only the purge can release. OK (within 2%) therefore means that the RSS delta tracks one resident
+  allocation and that the purge works; it does not prove that no other index keeps slack. WARN near +100% means the
+  purge did not work (or jemalloc is not the process's malloc: check the ldd row), and every index RSS of that
+  dataset then includes retained build temporaries.
+
+What to push back: each OUTDIR without `bin/` (the binary; its hash and build record are in provenance.txt), plus
+the `.out` file, under `experimental/scaleli/results/gre_<date>/` on a branch. Never the datasets or GRE itself.
+
+```bash
+G=experimental/scaleli/results/gre_$(date +%F); mkdir -p $G
+for c in published pinned warmup; do rsync -a --exclude bin/ $R/$c/ $G/$c/ && cp $R/$c.out $G/; done; cp $R/grid.out $G/
+git checkout -b gre-baselines-$(date +%F) && git add $G && git commit -m "GRE baselines $(date +%F)" && git push -u origin HEAD
+```
+
 ## Paths
 
 Every script finds the repository root by walking up to `walkthrough.py` (override with `SPLICE_ROOT`), so it
