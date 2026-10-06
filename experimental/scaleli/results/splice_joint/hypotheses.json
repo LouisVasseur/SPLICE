@@ -1,0 +1,143 @@
+{
+ "findings": "MERGED RANKING. This is a read-only synthesis of diag_blame, diag_headroom and diag_mechanisms. Scratch outputs are under /private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/joint/{diag_blame,diag_headroom,diag_mechanisms}/.\n\nI re-checked two code facts in /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/include/splice/:\n- make_plan (cost.hpp:601-615) puts every tier-1 unit in section A, then every FENCED bbytes in section B (b = a_end).\n- fixed_point (cost.hpp:836-866) varies only the three P scalars. It breaks on `st.choice == fp.sel.choice` and rejects any move that does not pass `e2 + 10 < ed_sel`.\n- The Seg16 kind field is 2 bits and all 4 values are used (layout.hpp:25-32: 0 = FENCED, 1-3 = DIRECT W1/2/4). A new mode needs a bit stolen from pre:6 or base:24.\n\nCOMMON ROOT CAUSE, agreed by all three diagnoses:\n- G, T and V act at disjoint scales. T works at 12k-50k keys (endpoint chord, knots from the eps-PLA proxy). V works at the entry: 9.5x leaf headroom over cbar. G works only at the two ends of the key range, and only the root router feels it.\n- On the hard data every segment is FENCED. FENCED has a fixed floor of 2 dependent lines plus 2 walks, because entries and data sit in different regions.\n- The only part of J that G, T or V can move is overcap: fb 0.08, osm 0.29, planet 0.14, genome 0. Bytes are free (lambda = 0 at every chosen hard cell).\n- So the small ablation results (histtree within 0.03 D, exc=0 = 0) are a property of the layout family, as Louis assumed, not of the data.\n- The outer loop cannot iterate because Fit (T, G) and the candidate caches (V) are frozen before fixed_point runs.\n\nHEADROOM on the hard sets (fb / osm / genome / planet): today E[D] is 4.52 / 4.61 / 4.43 / 4.28. The floor of 1 line plus 1 walk is about 2.33-2.38. Each gap breaks down as:\n- second dependent line: about 1.0\n- second walk (region B): 0.94-1.05\n- overcap plus router child: 0-0.29\n- compute constant: about 0.15\n\nCONFLICTS RESOLVED\n(a) DIRECT with a stash on clusters: diag_blame and diag_mechanisms call it dead; diag_headroom measures -0.43 osm and -0.46 planet.\n- Both are right. It fails on fb (stash 0.52-0.64) and genome (stash 0.64 even at 262k knots). It pays on osm and planet (41% / 39% of keys DIRECT at today's K).\n- Kept as H6, conditional on beating PAGED per segment. The cluster-redirect variant is folded into it, because PAGED already acts as a page-granular redirect.\n\n(b) Per-entry co-location (diag_blame) and PAGED (diag_mechanisms) attack the same second walk. PAGED dominates on bytes and D where it was measured (fb, osm). Co-located FENCED stays as the per-segment fallback candidate, and both go into the same selection.\n\n(c) FENCED overcap-targeted T training (headroom H3) is merged into J-trained T (H3 here). Under PAGED, T's gradient becomes page overload, which is measured: histtree vs PLA is +0.09 D on osm under PAGED against +0.019 under FENCED. This is the first measured sign that the components cooperate.\n\nGAPS AND CAVEATS\n- Unmeasured: PAGED on genome and planet, and anything under the shared-L2 simulation. All PAGED and co-location numbers use default walk and residency constants.\n- Excluded costs: spill second-walk cost is assumed 2.44-2.9 D; metadata is about 0.1 B/key; tier-1 record misses beyond record_miss0 are not counted.\n- PAGED header capacity: 61 u16 fences do not fit a 2-line header (56 slots). Use 60 data lines or a 3-line header.\n- books spans 2^63, so its compact relative keys likely overflow u32 and PAGED must use fast lines there. stack stays DIRECT (PAGED 2.56 > 2.33).\n\nRecommended order: H1 + H2 as one candidate family, then H8 (fair-ablation harness, needed to judge everything else), then H3, H4, H5, H7 trained jointly inside the H7 outer loop. Then H6 on osm and planet only.",
+ "hypotheses": [
+  {
+   "id": "H1-PAGED-mode",
+   "components": [
+    "G",
+    "T",
+    "V"
+   ],
+   "mechanism": "Add a third per-segment candidate, PAGED, which puts G, T and V at the same 4 KiB page scale.\n- T maps x to a slot in a run of pages.\n- Each page holds an in-page fence header (V: virtual boundaries that give the exact line, plus per-segment slack alpha) and 60-62 data lines (248 keys fast, 310 compact).\n- Keys stay in their predicted page (cumulative max plus a backward clamp inside the page).\n- An overloaded page keeps C keys. G spills the rest to a co-located FENCED child, with the boundary key stored in the header.\n- The header and the predicted W-line window are fetched under ONE walk. A window miss costs 1 more line in the same page.\n- A resident key costs 1 walk + 1 line, against 2 walks + 2 lines in FENCED.",
+   "defect_fixed": "make_plan (cost.hpp:601-615) puts entries in section A and data in section B, so every FENCED lookup pays a second walk (0.94-1.05 D, the largest single headroom term). G, T and V act at disjoint scales, so each one is absorbed by the others and every ablation looks free. Bytes have no use (lambda = 0).",
+   "expected": "Scratch paged.cpp over all 200M keys, default constants:\n- fb: fast alpha 0.25 gives 3.79-3.95 vs 4.52 (-0.57 to -0.73 D) at 20.7 B/key; compact alpha 0.5 gives 3.65-3.78 at 19.9 B/key.\n- osm: fast gives 3.66-3.80 vs 4.61 (-0.81 to -0.95) at 20.7; compact gives 3.51-3.63 at 19.9.\n- genome and planet: not measured. Bounded by the B walk (1.02 / 0.94) minus extra misses, so about -0.5 to -0.8 is the estimate.\n- books (W4, fast): -0.5 (2.79 vs 3.30). stack: unchanged, because selection keeps DIRECT.\n- Hard-set mean about -0.7 D at 20-21 B/key, under the 22 B/key cap.",
+   "implementation": "cost.hpp:\n- eval_paged_seg(f, j, q, kpl, Sum*): group keys by pred/C, clamp inside the page, keep C, and build the spill with Builder::node next to the page.\n- PagedCache and CandDesc kind; teach make_cell, select_cell, make_plan, walk_plan and fill_arena/fill_records about pages.\n- Tag spill lines as their own region so P is simulated per region.\n\nlayout.hpp (C++17, integer only, no stores):\n- Seg16 kind needs a 5th value: steal 1 bit from pre:6 (check with static_assert), or store base in 4 KiB units for paged segments.\n- paged_lookup<W>: issue header lines 0-1 and the clamped window together. On a miss, run fence_count<NV> over the header and take one dependent line. If x > header.boundary, call fenced_lookup on the spill child.\n- Header: 56 u16 fences, so use 60 data lines or a 3-line header.\n\ntools/splice_count.cpp: add mode=paged to the grid and the ablation rows.",
+   "test": "splice_count --verify --parity on all 10 datasets with mode=auto including PAGED, using the shared-L2 simulation (E[D] 4K/2048):\n- Exact count/walker parity; all 200M keys found and 10M absent keys rejected.\n- Walks per lookup on fb, osm, genome and planet fall from about 2.0 to about 1.0-1.3.\n- Accept if the hard windows drop by >= 0.3 D at <= 22 B/key and no dataset rises.\n- arm64/x86 layout hash identical; tests/test_splice*.cpp pass, including test_splice_cxx17.",
+   "priority": 1
+  },
+  {
+   "id": "H2-colocated-FENCED-fallback",
+   "components": [
+    "V",
+    "G",
+    "T"
+   ],
+   "mechanism": "For segments that stay FENCED, put k = 2^lk directory entries and their groups' data lines in one 4 KiB page.\n- Entry address = R + (p >> lk)*4096 + (p & (k-1))*EB: shifts and masks only.\n- A per-page knapsack spills the LARGEST groups first (G) to a shared spill region.\n- k is chosen per segment by the bytes Lagrangian (V).\n- T's slope and knots set the per-page byte variance, which decides the co-located share.\n- line_off is absolute, so fenced_lookup is unchanged.",
+   "defect_fixed": "Same two-region floor as H1, for segments where PAGED loses (heavy fine-scale noise such as genome, if its PAGED spill is high).",
+   "expected": "diag_blame, chord T, greedy in-order spill (a lower bound; the knapsack should do better):\n- fb: -0.43 D at 21.8 B/key (-0.36 at 20.8).\n- osm: -0.38 at 22.0 (-0.44 at 22.6).\n- genome: -0.58 at 19.9 (-0.83 at 22.5).\n- planet: -0.73 at 21.7.\n- Mean about -0.5 D within or near the cap.\nWhere PAGED wins (fb, osm) it is superseded. Its incremental value is per segment, likely genome-heavy: 0 to -0.2 D over H1.",
+   "implementation": "cost.hpp:\n- eval_fenced_seg_paged(lk in {1,2,3,4}) with the knapsack spill.\n- make_plan/fill_arena lay pages out per segment: Qpad entries interleaved with their groups' data, aligned via Builder org.\n- lk is cell-wide in View (no Seg16 change) or per segment via the same stolen bit as H1.\n\nlayout.hpp: only the entry-address line (around 405-412) changes.\n\nsplice_count: offer it as a candidate alongside FENCED, PAGED and DIRECT.",
+   "test": "--verify --parity exact. On fb, walks fall from 2.045 to about 1.6 or below. Report the per-segment candidate mix (DIRECT / PAGED / coloc / FENCED) and E[D] at <= 22 B/key against H1 alone. Keep it if the mixed selection beats H1 by >= 0.05 D on any hard window.",
+   "priority": 2
+  },
+  {
+   "id": "H3-T-trained-on-J",
+   "components": [
+    "T",
+    "G",
+    "V"
+   ],
+   "mechanism": "Replace the eps-PLA knots and the endpoint chord with knots and slopes trained on the exact J.\n- Local moves: shift a knot by +-2^i keys (or +-1/64 to 1/4 of the segment), split, merge, and per-segment slope multipliers m*(1 +- 2^-k).\n- Option: the PLA's own intercept as a base offset.\n- Each move is scored by the exact delta, min over candidates of (cand_cost + lambda*bytes), recomputed only for the 1-2 segments it touches.\n- Start from the PLA knots. K1 stays fixed by the L2 budget, so knots migrate from smooth regions to page or group overload boundaries.\n- Under PAGED or co-location, T's slope sets page overload (G's spill) and the slack V needs. Under FENCED the target is group overcap.",
+   "defect_fixed": "Knots come from the eps-PLA proxy (bisect_param, cost.hpp:141-153; make_fit 254-262), and J sees T only through the grid K1 in {4k, 8k, 16k}. The fitted slope is discarded for the chord sp = last - knot (268-272, 303-306). So T never sees J, which is why histtree lands within 0.03 D.",
+   "expected": "Measured signal under PAGED:\n- osm: histtree vs PLA +0.09 D (spill 0.298 vs 0.252). K1 4k->16k gives spill 0.252->0.212.\n\nPredicted on top of H1:\n- osm -0.05 to -0.15 D; fb 0 to -0.05; planet about -0.05 to -0.1 (overcap 0.14 today); genome about 0.\n- Under today's FENCED layout: bounded by overcap, osm 0.29 / planet 0.14 / fb 0.08 / genome 0.\n- Bytes unchanged at the same K1.",
+   "implementation": "cost.hpp:\n- refine_knots(Fit&, Cell&) after make_fit: deterministic sweep (segments ascending, fixed move list), accepting a move only on an integer J drop of more than 10 milli-D.\n- Rebuild pre/sp and build_router once per sweep. The slope goes in Seg16.m (0.32 fixed point) with the chord only as the initialiser.\n- Requires per-segment Sum terms that depend only on the segment (true today, 548-553).\n\nsplice_count.cpp: tier1=pla_j, and report moves accepted per sweep.",
+   "test": "Same cell, H1 with the chord vs with trained T, through the fixed point with simulation. Fair T ablation (H8): equi-width or histtree knots with the chord, the other components and the grid re-optimised. T earns its place if the mean delta over the hard windows is >= 0.05 D. Refinement build time should stay under about 2x the current grid wall time. Parity exact.",
+   "priority": 3
+  },
+  {
+   "id": "H4-G-spill-set-trained-on-J",
+   "components": [
+    "G",
+    "T",
+    "V"
+   ],
+   "mechanism": "Make G's in-segment choice an optimised set instead of a fixed rule.\n- Which keys or groups leave the primary layout (PAGED spill, co-location spill, cluster ranges) is chosen per page by the J delta: a knapsack that spills the largest or most clustered groups.\n- Exceptions (router and segment ends) are chosen by J instead of the 2x-span rule, with no hard 64-per-end cap.\n- Spilled cluster keys are removed from T's fit set (virtual holes), so T's slope fits the non-cluster density. V then sizes slack for the residual only.",
+   "defect_fixed": "choose_exceptions (cost.hpp:91-97) uses a span rule, ends only, at most 64 per end (params.hpp:106). There is no in-segment G at all, and DirectPlace is a linear-probe chain. Measured: exc=0 hurts only through the root router on fb (+0.24 D, router_child_milli 2999 vs 0). The 'no gap table' decision (SPLICE_DESIGN.md:229, 252) was measured at the root under a different cost structure.",
+   "expected": "Bounded by the spill share times its cost: fb 0.27-0.34 and osm 0.25-0.31 spill at about 2.4-2.9 D each. A 10-20% relative spill cut over greedy in-order spill gives -0.07 to -0.17 D on fb and osm; planet similar; genome about 0. J-chosen router exceptions: 0 to -0.03. Bytes: neutral to +0.5 B/key.",
+   "implementation": "cost.hpp:\n- Per-page spill selection inside eval_paged_seg / eval_fenced_seg_paged (sort groups by load, greedy-by-ratio knapsack).\n- choose_exceptions_j: try exception counts on a geometric grid and score each by its router plus segment J.\n- KeySrc view that skips spilled ranges, for T re-fitting (used by H7).\n\nlayout.hpp: unchanged beyond H1 (the spill boundary is already in the header).",
+   "test": "Report spill share and E[D] for greedy vs J-chosen spill on fb, osm, planet and genome. Fair G ablation (H8): in-order spill, span-rule exceptions, no cluster removal, T and V re-optimised. G earns its place if the mean is >= 0.05 D. Parity exact.",
+   "priority": 4
+  },
+  {
+   "id": "H5-per-segment-V-density",
+   "components": [
+    "V",
+    "G",
+    "T"
+   ],
+   "mechanism": "Let V's slack follow density per segment under the bytes Lagrangian:\n- alpha in {1/8, 1/4, 1/2, 3/4, 1}\n- page key capacity (fast 4 or compact 5 keys per line)\n- PAGED window W, co-location k, FENCED cbar in {12, 16, 24, 32, 48}\nHeavy-cluster segments buy slack where it cuts spill; smooth segments drop to low alpha or high cbar, which frees bytes for co-location. A better T slope allows less slack, so V trades directly against T and G.",
+   "defect_fixed": "alpha_mask offers {0.25, 0.5} globally and cbar is one value per cell (splice_count.cpp:167, 185; fenced_walk 456). The 9.5x leaf headroom is unpriced. Since lambda = 0, V never trades bytes against lines or walks.",
+   "expected": "fb: alpha 0.25->0.5 globally cuts spill 0.34->0.30 (-0.09 D for +4.1 B/key). A per-segment allocation should capture most of that for +1-2 B/key: fb and osm -0.05 to -0.1 D within the cap; books -0.05 (spill 0.012->0.003); co-location fallback segments (genome) could reach the 0.83 D point at <= 22 B/key. Alone, without H1/H2: about 0.",
+   "implementation": "params.hpp: allow alpha_mask bits 3-4.\ncost.hpp: build PagedCache / FencedCache entries for each (q, kpl, W, cbar) and offer them as separate candidates. select_cell already solves the multiple-choice Lagrangian.\nSeg16: no change for cbar (Q implied); alpha is already encoded via units and slope.\nsplice_count.cpp: grid axis plus a histogram of chosen alpha, cbar and k.",
+   "test": "Bytes vs E[D] Pareto front from splice_count. Accept if E[D] at the 22 B/key cap improves by >= 0.05 D on fb or osm. Fair V ablation (H8): one global alpha/cbar, k = 1, T and G re-optimised.",
+   "priority": 5
+  },
+  {
+   "id": "H6-order-free-DIRECT-with-stash-or-redirect",
+   "components": [
+    "G",
+    "T",
+    "V"
+   ],
+   "mechanism": "A second DIRECT family:\n- Keys are order-free within a line (the eq4 compare ignores order).\n- With a 2-line window, a line's overflow goes to the next line. Keys that still do not fit go to a bounded stash (G): either a co-located FENCED or PAGED child reached by an overflow marker (a reserved key value or a per-line bit), or a sentinel redirect line (e.g. k[0] > k[3]) carrying a line_off.\n- T re-fits the slope over the non-stashed mass. V picks alpha in {1/8 .. 1} and the window per segment.\n- Each segment chooses among DIRECT+stash, PAGED, coloc FENCED and FENCED.\n- The cluster-redirect variant is folded in here.",
+   "defect_fixed": "DIRECT is a cumulative-max linear probe (DirectPlace, cost.hpp:318-324), so one cluster drags every later key (mode=direct +158 D fb, +251 osm). G and V cannot trade with T inside DIRECT, and the mode is all-or-nothing per segment.",
+   "expected": "diag_headroom hr3 at today's K and the 22 B/key cap, with the stash fallback costed as today's FENCED (+4.1 D):\n- osm -0.43 (41% of keys DIRECT); planet -0.46 (39%); fb -0.02; genome -0.01.\n- Refuted for fb and genome: stash share 0.52-0.64 for any alpha and window, and no fb segment under a 30% stash.\nOn top of H1 the fallback is cheaper but the baseline is lower too: about -0.1 to -0.3 on osm and planet, 0 on fb and genome.",
+   "implementation": "cost.hpp: DirectPlace variant (order-free buckets plus overflow-to-next plus stash list) with the same Sum fields; stash built by Builder::node co-located.\nlayout.hpp: direct_lookup checks the window; on a miss with the line's overflow marker set, it jumps to the stash child. Absent keys need the marker because sorted-scan termination no longer holds. Integer compare only, no stores.\nNeeds a kind value: the same stolen bit as H1, or a flag in pre.",
+   "test": "Prototype first in scratch (extend hr3 / paged.cpp) with the H1 fallback cost. Promote to the repo only if it beats H1 per segment by >= 0.1 D on osm or planet. Then splice_count --verify --parity with the absent-key check. Fair ablation: force linear-probe DIRECT.",
+   "priority": 6
+  },
+  {
+   "id": "H7-outer-loop-over-GTV",
+   "components": [
+    "G",
+    "T",
+    "V"
+   ],
+   "mechanism": "Turn fixed_point into an alternating loop over the components. Each iteration:\n(a) select with the simulated per-region P.\n(b) walk the plan and rank segments by marginal J (lines + walks x P, spill, overcap).\n(c) G: re-choose the spill and stash set and exceptions (H4) for the top segments; spilled keys become virtual holes in T's fit set.\n(d) T: run H3 moves on those segments against the new targets.\n(e) V: re-pick alpha, cbar, k and W (H5).\n(f) re-evaluate only the invalidated per-segment Sum caches, then re-select.\nStop when J falls by <= 0.01 D or the plan hash repeats.",
+   "defect_fixed": "fixed_point (cost.hpp:836-866) varies only P. Fit and the candidate caches are frozen before it runs (build.hpp:179-190; splice_count 267-273). On hard data the choice is P-invariant, so it breaks at the `st.choice == fp.sel.choice` check with iters = 1, or rejects at `e2 + 10 < ed_sel`. V's placement never reaches T or G. The synthesis states this by design ('no G/T/V alternation', splice_synthesis.md section 2 item 4).",
+   "expected": "An enabler that saves nothing on its own. With H1+H3+H4+H5: an extra -0.05 to -0.1 D on fb, osm and planet beyond one-shot training, with outer_iters > 1 and a strictly decreasing ed_hist.",
+   "implementation": "cost.hpp: FixedPoint gets per-segment Sum caches that can be invalidated, a move log, and the 10 milli-D acceptance applied to the joint move set. Bounded by params.outer; deterministic order; integer scores.\nsplice_count.cpp: write ed_hist, per-iteration move counts by class (G/T/V) and outer_iters to <ds>.json.",
+   "test": "outer_iters > 1 on the hard windows with a monotone ed_hist. Ablation: outer=1 vs outer=4 must differ by >= 0.05 D on average for the loop to earn its place. Same layout_hash with 1 and 16 threads and on arm64/x86. Parity exact.",
+   "priority": 7
+  },
+  {
+   "id": "H8-fair-ablation-harness",
+   "components": [
+    "G",
+    "T",
+    "V"
+   ],
+   "mechanism": "Define neutral values and re-optimise the other two components on J, re-running the full grid (K1, entry, cbar, compact, mode, alpha) and the fixed point.\n- T neutral: equi-width knots in key space, chord slope, no moves.\n- G neutral: no exceptions, in-order spill, no stash or redirect, no virtual holes.\n- V neutral: one global alpha/cbar, k = 1 (no co-location slack), fixed W.\nReport the delta against the jointly optimised result per hard window and on average.",
+   "defect_fixed": "Stage-3 ablations (splice_count.cpp:300-334) keep the chosen cell's k1, entry, cbar and compact and only re-run the fixed point. tier1=histtree swaps one adaptive T for another. exc=0 can only show the router effect. There is no V ablation. So the 'earns its place' rule cannot be evaluated today.",
+   "expected": "0 D by itself, but required to accept or reject H1-H7.\n- Prediction under today's layout: T and G about 0, apart from fb's router +0.24, which confirms the layout is the blocker.\n- Prediction under H1+H3+H4+H5: each of T, G and V >= 0.05 D on the hard-window mean (T on osm at least +0.09 is already seen).",
+   "implementation": "splice_count.cpp: --ablate {T,G,V} flag that runs run_grid with that component held neutral. Neutral T needs an equi-width knot builder in cost.hpp (a few lines next to pla_starts / histtree). Output to results/splice_h/<ds>.json under an 'ablate' key.",
+   "test": "Run on the fb, osm, genome and planet windows and at full scale, before and after each of H1-H7. Earns its place = mean delta >= 0.05 D. Counts only, so runs can be parallel; no timed runs.",
+   "priority": 8
+  },
+  {
+   "id": "H9-tier1-capacity-for-shape",
+   "components": [
+    "T",
+    "V"
+   ],
+   "mechanism": "Give T more in-segment budget:\n- 8-B delta records (32-bit key delta, 16-bit slope, 16-bit base) so K1 can reach 32k-64k within L2.\n- Or a richer record that carries 1-2 interior slope breaks, so T can follow shape below the segment scale (helps PAGED overload and DIRECT pieces).",
+   "defect_fixed": "Tier-1 is 16-B records capped at 16k (record_miss0 = 155*k1/16384, cost.hpp:813). T has no budget for shape inside 12k-50k-key segments.",
+   "expected": "hr3 model, today's K -> 65k knots before record misses: osm -0.22, planet -0.12, fb -0.045, genome about 0. The 16-B records at 64k extrapolate to about +0.6 D record misses, which cancels the gain. With 8-B records, probably -0.05 to -0.1 net on osm and planet; the H1-H6 interaction is untested. Splitting at the largest gap vs the median: <= 0.02 D, so knots at holes do not help on their own.",
+   "implementation": "layout.hpp: alternate Seg8 record for a tier1 variant (C++17, integer decode, identical bytes on arm64/x86).\ncost.hpp: record_miss from the shared-L2 simulation at k1 = 32768/65536.\nsplice_count: extend the K1 grid.",
+   "test": "Exact record_miss and E[D] at k1 = 32k/64k under the shared-L2 simulation on osm and planet, after H1 and H3. Keep only if net >= 0.05 D.",
+   "priority": 9
+  },
+  {
+   "id": "H10-router-G-by-J",
+   "components": [
+    "G",
+    "T"
+   ],
+   "mechanism": "Choose root-router exceptions and the rtop shift jointly on J (router child levels x d_router_child against exception bytes and lines) instead of the 2x-span rule. Optionally let interior extreme keys become router exceptions when they collapse a segment's chord.",
+   "defect_fixed": "On fb, 21 outliers stretch the span and collapse rtop's shift. With exc=0 each lookup pays about 3 router child levels x 80 = +0.24 D. G's only measured effect today is incidental to the span rule, not trained.",
+   "expected": "fb 0 to -0.03 D relative to today's chosen exceptions (most of the 0.24 is already captured). osm router child is 0.084 and planet 0.051, which may drop by -0.02 to -0.05 if outliers drive them. Bytes about 0.",
+   "implementation": "cost.hpp: choose_exceptions_j scores candidate counts on a geometric grid by router J plus end-segment J. splice_count: report router_child_milli before and after.",
+   "test": "splice_count on fb, osm and planet: router_child_milli and E[D]; parity exact. Low priority; fold into H4 if it is implemented there.",
+   "priority": 10
+  }
+ ]
+}

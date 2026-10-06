@@ -1,0 +1,10 @@
+{"file":"/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb","eps":179200,"tier1":1,"K":3490,
+ {"kpl":4,"alpha":0.25,"B_per_key_arena":20.68,"empty_pages":0.0052,"ov_page_key_share":0.6962,"spill_share":0.3423,"w1":{"hit":0.1017,"miss":0.5560,"ED":3.784},"w2":{"hit":0.1516,"miss":0.5062,"ED":3.784},"w4":{"hit":0.2135,"miss":0.4443,"ED":3.822}},
+ {"kpl":4,"alpha":0.50,"B_per_key_arena":24.81,"empty_pages":0.0079,"ov_page_key_share":0.6391,"spill_share":0.2963,"w1":{"hit":0.1234,"miss":0.5804,"ED":3.696},"w2":{"hit":0.1810,"miss":0.5228,"ED":3.689},"w4":{"hit":0.2501,"miss":0.4537,"ED":3.720}},
+ {"kpl":4,"alpha":0.75,"B_per_key_arena":28.94,"empty_pages":0.0108,"ov_page_key_share":0.5887,"spill_share":0.2600,"w1":{"hit":0.1436,"miss":0.5965,"ED":3.624},"w2":{"hit":0.2081,"miss":0.5319,"ED":3.609},"w4":{"hit":0.2832,"miss":0.4568,"ED":3.634}},
+ {"kpl":4,"alpha":1.00,"B_per_key_arena":33.07,"empty_pages":0.0142,"ov_page_key_share":0.5447,"spill_share":0.2304,"w1":{"hit":0.1625,"miss":0.6070,"ED":3.562},"w2":{"hit":0.2331,"miss":0.5364,"ED":3.542},"w4":{"hit":0.3132,"miss":0.4563,"ED":3.562}},
+ {"kpl":5,"alpha":0.25,"B_per_key_arena":16.55,"empty_pages":0.0031,"ov_page_key_share":0.6841,"spill_share":0.3204,"w1":{"hit":0.1037,"miss":0.5760,"ED":3.751},"w2":{"hit":0.1560,"miss":0.5236,"ED":3.748},"w4":{"hit":0.2205,"miss":0.4591,"ED":3.784}},
+ {"kpl":5,"alpha":0.50,"B_per_key_arena":19.86,"empty_pages":0.0047,"ov_page_key_share":0.6227,"spill_share":0.2738,"w1":{"hit":0.1264,"miss":0.5998,"ED":3.661},"w2":{"hit":0.1872,"miss":0.5390,"ED":3.650},"w4":{"hit":0.2594,"miss":0.4668,"ED":3.678}},
+ {"kpl":5,"alpha":0.75,"B_per_key_arena":23.16,"empty_pages":0.0067,"ov_page_key_share":0.5689,"spill_share":0.2371,"w1":{"hit":0.1476,"miss":0.6153,"ED":3.587},"w2":{"hit":0.2159,"miss":0.5470,"ED":3.569},"w4":{"hit":0.2944,"miss":0.4685,"ED":3.590}},
+ {"kpl":5,"alpha":1.00,"B_per_key_arena":26.46,"empty_pages":0.0089,"ov_page_key_share":0.5229,"spill_share":0.2078,"w1":{"hit":0.1676,"miss":0.6246,"ED":3.525},"w2":{"hit":0.2425,"miss":0.5497,"ED":3.500},"w4":{"hit":0.3262,"miss":0.4660,"ED":3.516}}
+}

@@ -1,0 +1,11 @@
+# Alternative: single contiguous 12.5M blocks that validate (books has none; see WINDOWS.md)
+fb 50000000,12500000
+fb end,12500000
+osm 0,12500000
+covid 50000000,12500000
+genome 112500000,12500000
+history 175000000,12500000
+libio 25000000,12500000
+planet 75000000,12500000
+stack 112500000,12500000
+wise 100000000,12500000

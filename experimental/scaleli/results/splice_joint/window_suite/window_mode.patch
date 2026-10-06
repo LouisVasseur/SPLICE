@@ -1,0 +1,502 @@
+diff -ruN a/include/splice/cost.hpp b/include/splice/cost.hpp
+--- a/include/splice/cost.hpp	2026-10-06 05:43:32
++++ b/include/splice/cost.hpp	2026-10-06 07:31:38
+@@ -244,6 +244,10 @@
+ inline Fit make_fit(const KeySrc& ks, const SpliceParams& p, unsigned threads) {
+     Fit f; f.ks = ks; f.n = ks.n; f.tier1 = p.tier1; f.k1 = p.k1; f.rbits = p.router_bits; f.rleaf = p.router_leaf;
+     if (!ks.n) throw std::logic_error("make_fit needs keys");
++    // Window mode: the top table and the segment budget shrink with n, so knots per bucket stay as at scale_as.
++    const unsigned ssh = scale_shift(p, ks.n);
++    f.rbits = std::uint8_t(std::max<int>(4, int(p.router_bits) - int(ssh)));
++    const std::uint64_t k1t = p.scale_as > ks.n ? std::max<std::uint64_t>(1, std::uint64_t(u128(p.k1) * ks.n / p.scale_as)) : p.k1;
+     const long long t0 = now_ns();
+     choose_exceptions(ks, p.exc, f.bb, f.bt);
+     const std::size_t a = f.bb, b = f.n - f.bt;
+@@ -254,11 +258,19 @@
+     if (p.tier1 == TIER1_PLA) {
+         auto segs = [&](std::uint64_t e, std::vector<std::size_t>* o) { return pla_starts(ks, a, b, e, o); };
+         if (p.eps) { f.eps = p.eps; f.passes = 1; segs(p.eps, &st); }
+-        else f.eps = bisect_param(1, p.k1, segs, st, f.passes);
++        else f.eps = bisect_param(1, k1t, segs, st, f.passes);
++    } else if (p.tier1 == TIER1_EQUAL) {
++        // No model: a knot every T keys (T = eps); one slope per segment as for the other families.
++        auto segs = [&](std::uint64_t T, std::vector<std::size_t>* o) {
++            if (o) { o->clear(); for (std::size_t i = a; i < b; i += T) o->push_back(i); }
++            return std::size_t((b - a + T - 1) / T);
++        };
++        if (p.eps) { f.eps = p.eps; f.passes = 1; segs(p.eps, &st); }
++        else f.eps = bisect_param(1, k1t, segs, st, f.passes);
+     } else {
+         auto segs = [&](std::uint64_t T, std::vector<std::size_t>* o) { return histtree_starts(ks, a, b, T, o); };
+         if (p.eps) { f.eps = p.eps; f.passes = 1; segs(p.eps, &st); }
+-        else f.eps = bisect_param(16, p.k1, segs, st, f.passes);
++        else f.eps = bisect_param(16, k1t, segs, st, f.passes);
+     }
+     if (st.empty() || st[0] != a) throw std::logic_error("tier-1 must start at the first bulk key");
+     if (st.size() >= (1u << 27) - 16) throw std::runtime_error("too many tier-1 segments (reduce k1 or raise eps)");
+@@ -543,6 +555,10 @@
+ }
+ 
+ // ---------------------------------------------------------------- selection
++// The arena's mapping granule: 2 MiB, or 2 MiB x n/scale_as in window mode (16 KiB multiple: arm64 pages).
++inline std::uint64_t arena_granule(const SpliceParams& p, std::uint64_t n) noexcept {
++    return p.scale_as > n ? std::max<std::uint64_t>(16384, roundup(scaled_bytes(p, 2ull << 20, n), 16384)) : 2ull << 20;
++}
+ struct PVals { std::int64_t ad, ae, b; };   // milli-probability that a 4 KiB walk misses L2, per region
+ inline PVals default_p(const SpliceParams& p) { return PVals{p.p0_ad, p.p0_ae, p.p0_b}; }
+ inline std::uint64_t cand_cost(const Cell& c, std::size_t j, std::size_t k, const PVals& P) {
+@@ -577,7 +593,7 @@
+             for (std::size_t k = 0; k < nc; ++k) { const u128 v = u128(J[j * nc + k]) + u128(lam) * B[j * nc + k]; if (v < bc) { bc = v; best = k; } }
+             s.choice[j] = std::uint8_t(best); arena += B[j * nc + best]; s.J += J[j * nc + best];
+         }
+-        s.bytes = roundup(arena, 2ull << 20) + f.meta_bytes();
++        s.bytes = roundup(arena, arena_granule(c.p, f.n)) + f.meta_bytes();
+         return u128(s.bytes) * 10 <= cap;
+     };
+     Selection s;
+@@ -612,7 +628,7 @@
+     pl.b_end = b;
+     if (pl.b_end > ARENA_LIMIT) throw std::runtime_error("arena exceeds 8 GiB");
+     if (pl.b_end / 64 > 0xFFFFFFFFull) throw std::runtime_error("line_off exceeds 2^32");
+-    pl.arena_bytes = roundup(std::max<std::uint64_t>(pl.b_end, 1), 2ull << 20);
++    pl.arena_bytes = roundup(std::max<std::uint64_t>(pl.b_end, 1), arena_granule(c.p, f.n));
+     pl.total_bytes = pl.arena_bytes + f.meta_bytes();
+     if (pl.total_bytes != s.bytes) throw std::logic_error("plan bytes differ from the selection's");
+     return pl;
+@@ -746,12 +762,13 @@
+ };
+ struct LRU {
+     unsigned lg; std::vector<std::uint64_t> tag, ts; std::uint64_t clk = 0;
+-    explicit LRU(unsigned l2kb) {
+-        const std::size_t sets = std::size_t(l2kb) * 1024 / 64 / 16;
++    std::uint64_t sets;
++    // Any set count (window mode scales the capacity); for 2^lg sets the multiply-high index is the old >> (64 - lg).
++    explicit LRU(std::uint64_t bytes) : sets(std::max<std::uint64_t>(1, bytes / 64 / 16)) {
+         lg = bitlen(sets) - 1; tag.assign(sets * 16, 0); ts.assign(sets * 16, 0);
+     }
+     bool access(std::uint64_t id) noexcept {   // ts == 0 marks an empty way
+-        const std::size_t s = std::size_t((id * 0x9E3779B97F4A7C15ULL) >> (64 - lg)) * 16;
++        const std::size_t s = std::size_t((u128(id * 0x9E3779B97F4A7C15ULL) * sets) >> 64) * 16;
+         std::uint64_t* T = &tag[s]; std::uint64_t* A = &ts[s];
+         ++clk; unsigned v = 0;
+         for (unsigned w = 0; w < 16; ++w) { if (A[w] && T[w] == id) { A[w] = clk; return true; } if (A[w] < A[v]) v = w; }
+@@ -761,10 +778,10 @@
+ // Replays the traces in draw order: a GRE ops line every 4th lookup, routing, records, then the arena
+ // lines with the page-table line of each distinct page of the lookup inserted before its first access
+ // (the STLB is assumed to miss: its reach is under 0.1% of the arena).
+-inline SimOut simulate(const Traces& tr, const Draws& d, bool thp, unsigned l2kb, const PVals& prev) {
++inline SimOut simulate(const Traces& tr, const Draws& d, bool thp, unsigned l2kb, const PVals& prev, std::uint64_t l2_bytes = 0) {
+     const long long t0 = now_ns();
+     SimOut o; o.thp = thp; o.l2 = l2kb;
+-    LRU c(l2kb);
++    LRU c(l2_bytes ? l2_bytes : std::uint64_t(l2kb) * 1024);
+     std::uint64_t pages[64]; unsigned np = 0;
+     const std::uint64_t LINE_MASK = (1ull << 52) - 1;
+     for (std::size_t q = 0; q < d.pos.size(); ++q) {
+@@ -841,7 +858,7 @@
+     auto evaluate = [&](const Selection& s, WalkOut& w, SimOut& so) {
+         const Plan pl = make_plan(c, s);
+         w = walk_plan(c, pl, simulate_on ? &draws->uniq : nullptr, threads); fp.walk_ns += w.ns;
+-        if (simulate_on) { so = simulate(w.tr, *draws, false, p.l2, P); fp.sim_ns += so.ns; return std::make_pair(pl, expected_d(w.tot, p, so)); }
++        if (simulate_on) { so = simulate(w.tr, *draws, false, p.l2, P, scaled_bytes(p, std::uint64_t(p.l2) * 1024, c.fit->n)); fp.sim_ns += so.ns; return std::make_pair(pl, expected_d(w.tot, p, so)); }
+         const std::int64_t P0[REG_N] = {P.ad, P.ae, P.b};
+         so = SimOut{}; for (int r = 0; r < REG_N; ++r) so.P[r] = P0[r];
+         so.record_milli = record_miss0(p);
+@@ -866,9 +883,14 @@
+         }
+     // Reporting arms on the accepted plan.
+     const bool thp[4] = {false, false, true, true}; const unsigned l2[4] = {2048, 1024, 2048, 1024};
+-    if (simulate_on) {
++    if (simulate_on && p.scale_as) {
++        // Window mode prices the selection arm only: its replay is rep[0] (same traces, draws and L2); the
++        // other arms are left at -1, which saves three replays per evaluation.
++        fp.rep[0] = fp.sim; fp.ed[0] = fp.ed_sel;
++        for (int k = 1; k < 4; ++k) { fp.rep[k].thp = thp[k]; fp.rep[k].l2 = l2[k]; fp.ed[k] = -1; }
++    } else if (simulate_on) {
+         const PVals Pd = default_p(p);
+-        par_for(4, std::min(threads, 4u), [&](std::size_t k) { fp.rep[k] = simulate(fp.traces, *draws, thp[k], l2[k], Pd); });
++        par_for(4, std::min(threads, 4u), [&](std::size_t k) { fp.rep[k] = simulate(fp.traces, *draws, thp[k], l2[k], Pd, scaled_bytes(p, std::uint64_t(l2[k]) * 1024, c.fit->n)); });
+         for (int k = 0; k < 4; ++k) { fp.ed[k] = expected_d(fp.counts, p, fp.rep[k]); fp.sim_ns += fp.rep[k].ns; }
+     } else {
+         const std::int64_t P0[REG_N] = {p.p0_ad, p.p0_ae, p.p0_b};
+diff -ruN a/include/splice/params.hpp b/include/splice/params.hpp
+--- a/include/splice/params.hpp	2026-10-06 03:35:37
++++ b/include/splice/params.hpp	2026-10-06 07:10:30
+@@ -12,14 +12,15 @@
+ 
+ namespace splice {
+ 
+-enum : std::uint8_t { TIER1_PLA = 0, TIER1_HISTTREE = 1 };
++// TIER1_EQUAL: knots every eps keys, no model at all (the fair T-neutral ablation).
++enum : std::uint8_t { TIER1_PLA = 0, TIER1_HISTTREE = 1, TIER1_EQUAL = 2 };
+ enum : std::uint8_t { MODE_AUTO = 0, MODE_DIRECT = 1, MODE_FENCED = 2 };
+ 
+ struct SpliceParams {
+     std::uint32_t k1 = 16384;
+     std::uint64_t eps = 0;                  // 0 = bisect to k1
+     std::uint8_t tier1 = TIER1_PLA, mode = MODE_AUTO;
+-    std::uint8_t alpha_mask = 0x6;          // bit q set = alpha q/4 offered (q = 1..4); default 0.25, 0.5
++    std::uint8_t alpha_mask = 0x6;          // bit q set = alpha q/4 offered (q = 0..4; 0 = no slack); default 0.25, 0.5
+     std::uint8_t w_mask = 0x7;              // bit 0,1,2 = window 1,2,4 lines
+     std::uint8_t entry = 2, compact = 0;
+     std::uint32_t cbar = 24;
+@@ -29,14 +30,31 @@
+     std::uint32_t exc = 64, outer = 4;
+     std::uint64_t sim = 3000000, warm = 1000000, seed = 42;
+     std::uint32_t threads = 0;              // 0 = env SPLICE_BUILD_THREADS or 16
++    // Window mode: n keys priced as a scale_as-key index (0 = off). L2 capacity, the arena's 2 MiB rounding and
++    // the router's top bits shrink by n/scale_as, so metadata residency, page-table pressure and bytes/key
++    // match the full-scale index while per-lookup counts stay local (splice_count --window).
++    std::uint64_t scale_as = 0;
+     std::uint8_t verify = 0, hash = 1, thp = 0;
+     // Cost constants in milli-D (D = one serialized DRAM access).
+     std::int64_t d_tau = 50, d_walk_hit = 90, d_walk_hit_thp = 150, d_router_child = 80;
+     std::int64_t d_c_direct = 300, d_c_fenced = 450, d_c_exc = 200, p0_ad = 940, p0_ae = 810, p0_b = 940;
+-    std::vector<unsigned> alphas() const { std::vector<unsigned> a; for (unsigned q = 1; q <= 4; ++q) if (alpha_mask >> q & 1) a.push_back(q); return a; }
++    std::vector<unsigned> alphas() const { std::vector<unsigned> a; for (unsigned q = 0; q <= 4; ++q) if (alpha_mask >> q & 1) a.push_back(q); return a; }
+     std::vector<unsigned> windows() const { std::vector<unsigned> w; for (unsigned i = 0; i < 3; ++i) if (w_mask >> i & 1) w.push_back(1u << i); return w; }
+ };
+ 
++// Window-mode scaling, all integer. scale_shift: round(log2(scale_as / n)), 0 when off; scaled_bytes: b * n / scale_as.
++inline unsigned scale_shift(const SpliceParams& p, std::uint64_t n) {
++    if (!p.scale_as || !n || p.scale_as <= n) return 0;
++    unsigned s = 0;
++    while (s < 40 && (static_cast<unsigned __int128>(n) << (s + 1)) <= p.scale_as) ++s;   // n 2^s <= scale_as < n 2^(s+1)
++    const auto lo = static_cast<unsigned __int128>(n) << s;
++    return static_cast<unsigned __int128>(p.scale_as) * p.scale_as > lo * (lo * 2) ? s + 1 : s;   // nearer power, in log
++}
++inline std::uint64_t scaled_bytes(const SpliceParams& p, std::uint64_t b, std::uint64_t n) {
++    if (!p.scale_as || p.scale_as <= n) return b;
++    return std::uint64_t(static_cast<unsigned __int128>(b) * n / p.scale_as);
++}
++
+ namespace detail {
+ [[noreturn]] inline void bad(const std::string& why) { throw std::invalid_argument("SPLICE_ARGS: " + why); }
+ inline std::uint64_t parse_u(std::string_view k, std::string_view v, std::uint64_t lo, std::uint64_t hi) {
+@@ -80,13 +98,13 @@
+         };
+         if (k == "k1") p.k1 = std::uint32_t(parse_u(k, v, 1, 65536));
+         else if (k == "eps") p.eps = parse_u(k, v, 0, 1ull << 40);
+-        else if (k == "tier1") p.tier1 = std::uint8_t(one_of({"pla", "histtree"}));
++        else if (k == "tier1") p.tier1 = std::uint8_t(one_of({"pla", "histtree", "equal"}));
+         else if (k == "mode") p.mode = std::uint8_t(one_of({"auto", "direct", "fenced"}));
+         else if (k == "alpha") {
+             std::uint8_t m = 0;
+             split(v, ',', [&](std::string_view a) {
+-                if (a == "0.25") m |= 2; else if (a == "0.5") m |= 4; else if (a == "0.75") m |= 8; else if (a == "1") m |= 16;
+-                else bad("alpha value '" + std::string(a) + "' not in 0.25,0.5,0.75,1");
++                if (a == "0") m |= 1; else if (a == "0.25") m |= 2; else if (a == "0.5") m |= 4; else if (a == "0.75") m |= 8; else if (a == "1") m |= 16;
++                else bad("alpha value '" + std::string(a) + "' not in 0,0.25,0.5,0.75,1");
+             });
+             p.alpha_mask = m;
+         } else if (k == "w") {
+@@ -102,6 +120,7 @@
+         else if (k == "cap") p.cap_tenths = parse_tenths(k, v);
+         else if (k == "l2") { p.l2 = std::uint32_t(parse_u(k, v, 1024, 2048)); if (p.l2 != 1024 && p.l2 != 2048) bad("l2 must be 1024 or 2048"); }
+         else if (k == "router_bits") p.router_bits = std::uint8_t(parse_u(k, v, 8, 16));
++        else if (k == "scale_as") p.scale_as = parse_u(k, v, 0, 1ull << 40);
+         else if (k == "router_leaf") { p.router_leaf = std::uint8_t(parse_u(k, v, 4, 8)); if (p.router_leaf != 4 && p.router_leaf != 8) bad("router_leaf must be 4 or 8"); }
+         else if (k == "exc") p.exc = std::uint32_t(parse_u(k, v, 0, 64));
+         else if (k == "outer") p.outer = std::uint32_t(parse_u(k, v, 1, 8));
+@@ -132,17 +151,18 @@
+ // Canonical one-line form, every key in a fixed order. With cell_only, the machine- and run-specific
+ // keys (threads, verify, hash, thp) are left out: that form is what results/splice_h/args holds.
+ inline std::string format_params(const SpliceParams& p, bool cell_only = false) {
+-    static const char* const qa[5] = {"", "0.25", "0.5", "0.75", "1"};
++    static const char* const qa[5] = {"0", "0.25", "0.5", "0.75", "1"};
+     std::string a, w;
+-    for (unsigned q = 1; q <= 4; ++q) if (p.alpha_mask >> q & 1) { if (!a.empty()) a += ','; a += qa[q]; }
++    for (unsigned q = 0; q <= 4; ++q) if (p.alpha_mask >> q & 1) { if (!a.empty()) a += ','; a += qa[q]; }
+     for (unsigned i = 0; i < 3; ++i) if (p.w_mask >> i & 1) { if (!w.empty()) w += ','; w += std::to_string(1u << i); }
+     auto s = [](auto v) { return std::to_string(v); };
+-    std::string r = "k1=" + s(p.k1) + " eps=" + s(p.eps) + " tier1=" + (p.tier1 == TIER1_PLA ? "pla" : "histtree")
++    std::string r = "k1=" + s(p.k1) + " eps=" + s(p.eps) + " tier1=" + (p.tier1 == TIER1_PLA ? "pla" : p.tier1 == TIER1_HISTTREE ? "histtree" : "equal")
+         + " mode=" + (p.mode == MODE_AUTO ? "auto" : p.mode == MODE_DIRECT ? "direct" : "fenced") + " alpha=" + a + " w=" + w
+         + " entry=" + s(unsigned(p.entry)) + " cbar=" + s(p.cbar) + " compact=" + s(unsigned(p.compact))
+         + " cap=" + s(p.cap_tenths / 10) + "." + s(p.cap_tenths % 10) + " l2=" + s(p.l2)
+         + " router_bits=" + s(unsigned(p.router_bits)) + " router_leaf=" + s(unsigned(p.router_leaf)) + " exc=" + s(p.exc)
+         + " outer=" + s(p.outer) + " sim=" + s(p.sim) + " warm=" + s(p.warm) + " seed=" + s(p.seed);
++    if (p.scale_as) r += " scale_as=" + s(p.scale_as);   // only in window mode: full-scale args strings are unchanged
+     if (!cell_only) r += " threads=" + s(p.threads) + " verify=" + s(unsigned(p.verify)) + " hash=" + s(unsigned(p.hash)) + " thp=" + s(unsigned(p.thp));
+     r += " d_tau=" + s(p.d_tau) + " d_walk_hit=" + s(p.d_walk_hit) + " d_walk_hit_thp=" + s(p.d_walk_hit_thp)
+         + " d_router_child=" + s(p.d_router_child) + " d_c_direct=" + s(p.d_c_direct) + " d_c_fenced=" + s(p.d_c_fenced)
+diff -ruN a/tools/splice_count.cpp b/tools/splice_count.cpp
+--- a/tools/splice_count.cpp	2026-10-06 05:47:56
++++ b/tools/splice_count.cpp	2026-10-06 07:37:31
+@@ -4,6 +4,10 @@
+ //   splice_count --dataset fb --data DIR [--out results/splice_h] [--threads 16] [--grid pruned|cell]
+ //                [--args "k=v ..."] [--verify] [--parity] [--hash] [--perturb]
+ //   splice_count --samples DIR --hash-samples [--args "k=v ..."]     (one "hash <sample> <layout_hash>" line each)
++//   splice_count --dataset fb --data DIR --window OFF,LEN [--scale-as 200000000] --args "k=v ..."
++//                [--variants joint,G0,T0,V0] [--reopt] [--rows OUT.json] [--verify] [--parity]
++//       Window mode: keys [OFF, OFF+LEN) (OFF may be "end") priced as a scale_as-key index; no grid, one row
++//       per variant: joint = the args cell, G0/T0/V0 = that component neutral, the others re-optimized on J.
+ #include "splice/build.hpp"
+ #include <cinttypes>
+ #include <cmath>
+@@ -11,6 +15,7 @@
+ #include <filesystem>
+ #include <iostream>
+ #include <map>
++#include <memory>
+ #include <sys/stat.h>
+ 
+ using namespace splice;
+@@ -44,7 +49,7 @@
+     for (auto b : bad) if (b) return b;
+     return 0;
+ }
+-void map_file(Mapped& m, const std::string& path, const std::string& ds, unsigned threads) {
++void map_file(Mapped& m, const std::string& path, const std::string& ds, unsigned threads, bool check = true) {
+     const int fd = ::open(path.c_str(), O_RDONLY);
+     if (fd < 0) throw std::runtime_error("cannot open " + path);
+     struct stat st{}; ::fstat(fd, &st);
+@@ -56,7 +61,8 @@
+     const auto* w = static_cast<const std::uint64_t*>(m.base);
+     m.n = std::size_t(w[0]); m.keys = w + 1;
+     if (8 + 8 * m.n != m.bytes) throw std::runtime_error(path + ": size does not match the SOSD header");
+-    if (const std::size_t d = first_descent(m.keys, m.n, threads))
++    if (check)
++     if (const std::size_t d = first_descent(m.keys, m.n, threads))
+         throw std::runtime_error(path + " is not strictly increasing at " + std::to_string(d) + (ds.empty() ? "" : "; use " + ds + ".sorted"));
+ }
+ 
+@@ -148,6 +154,7 @@
+ struct Opts {
+     std::string dataset, data, out = "results/splice_h", grid = "pruned", args, samples;
+     unsigned threads = 16; bool verify = false, parity = false, hash = false, perturb = false, hash_samples = false;
++    std::string window, variants = "joint,G0,T0,V0", rows; std::uint64_t scale_as = 200000000; bool reopt = false;
+ };
+ 
+ struct GridResult {
+@@ -502,6 +509,204 @@
+     return 0;
+ }
+ 
++// ---------------------------------------------------------------- window mode (counts only)
++// Neutral settings of the fair ablations. Each variant keeps every other degree of freedom and is
++// re-optimized on J by the fixed point (per-segment candidates, lambda, residency) and, with --reopt, by the
++// tier-1 resolution sweep below. Extend here when G, T or V gain new mechanisms.
++//   G0: no exceptions (and, when they exist, no knot breaks at holes, hole maps or stashes).
++//   T0: model-free knots, one every T keys (T matched to the joint's segment count), one slope each.
++//   V0: no slack and no fences: DIRECT only, alpha 0, one-line window.
++SpliceParams neutral(const SpliceParams& j, const std::string& v, std::uint64_t joint_k, std::uint64_t nb) {
++    SpliceParams p = j;
++    if (v == "G0") p.exc = 0;
++    else if (v == "T0") { p.tier1 = TIER1_EQUAL; p.eps = std::max<std::uint64_t>(1, (nb + joint_k - 1) / std::max<std::uint64_t>(1, joint_k)); }
++    else if (v == "V0") { p.mode = MODE_DIRECT; p.alpha_mask = 1; p.w_mask = 1; }
++    else if (v != "joint") throw std::invalid_argument("variant must be joint, G0, T0 or V0: " + v);
++    return p;
++}
++std::string verify_window(const Index& ix, const std::uint64_t* k, std::size_t n, unsigned threads) {
++    std::atomic<std::uint64_t> found{0}, absent_false{0}, absent_true{0};
++    const std::size_t ch = 1u << 18, nc = (n + ch - 1) / ch;
++    par_for(nc, threads, [&](std::size_t c) {
++        std::uint64_t f = 0;
++        for (std::size_t i = c * ch; i < std::min(n, (c + 1) * ch); ++i) { std::uint64_t v; f += ix.get(k[i], v) && v == k[i]; }
++        found += f;
++    });
++    // Absent keys inside the window's key range (outside it only the range check would run).
++    const std::uint64_t lo = k[0], w = k[n - 1] - k[0];
++    const std::size_t na = 1000000, ac = 16;
++    par_for(ac, threads, [&](std::size_t c) {
++        std::uint64_t ok = 0, bad = 0, s = 0x5eed0000ull + c;
++        for (std::size_t got = 0, tries = 0; got < na / ac && tries < 64 * na; ++tries) {
++            const std::uint64_t x = lo + std::uint64_t((u128(splitmix64(s)) * (u128(w) + 1)) >> 64);
++            const std::size_t u = std::size_t(std::upper_bound(k, k + n, x) - k);
++            if (u && k[u - 1] == x) continue;
++            std::uint64_t v; (ix.get(x, v) ? bad : ok) += 1; ++got;
++        }
++        absent_false += ok; absent_true += bad;
++    });
++    const bool pass = found == n && absent_true == 0;
++    if (!pass) std::cerr << "splice_count: window verify FAILED\n";
++    std::ostringstream o;
++    o << "{\"found\":" << found.load() << ",\"n\":" << n << ",\"absent_false\":" << absent_false.load() << ",\"absent_true\":" << absent_true.load()
++      << ",\"pass\":" << (pass ? "true" : "false") << '}';
++    return o.str();
++}
++bool parity_window(const Index& ix, const std::uint64_t* k, std::size_t n, unsigned threads) {
++    const std::size_t ch = 1u << 18, nc = (n + ch - 1) / ch;
++    std::vector<CountTotals> part(nc);
++    par_for(nc, threads, [&](std::size_t c) {
++        Count cnt(ix.view());
++        for (std::size_t i = c * ch; i < std::min(n, (c + 1) * ch); ++i) { std::uint64_t v; get_impl(ix.view(), k[i], v, cnt); }
++        part[c] = cnt.core.t;
++    });
++    CountTotals t; for (auto& x : part) t += x;
++    const bool eq = t == ix.plan_counts();
++    if (!eq) std::cerr << "splice_count: window parity FAILED\n";
++    return eq;
++}
++int run_window(const Opts& o) {
++    const long long t0 = now_ns();
++    std::string path = o.data + "/" + o.dataset;
++    if (needs_sorted(o.dataset)) path += ".sorted";
++    Mapped m; map_file(m, path, o.dataset, o.threads, false);   // Index::build checks the window's keys
++    const auto comma = o.window.find(',');
++    if (comma == std::string::npos) throw std::invalid_argument("--window takes OFF,LEN");
++    const std::string offs = o.window.substr(0, comma);
++    std::size_t len = std::size_t(std::stoull(o.window.substr(comma + 1)));
++    if (len < 1000 || len > m.n) throw std::invalid_argument("--window LEN out of range");
++    // OFF "sC": C contiguous runs of LEN/C keys, one centred in each n/C stratum, concatenated (still sorted).
++    // Runs stay far longer than a segment, so clustering survives; one byte budget spans them, as at full scale.
++    std::size_t off = 0; unsigned cbits = 0;
++    const std::uint64_t* wk = m.keys;
++    if (!offs.empty() && offs[0] == 's') {
++        const std::size_t C = std::size_t(std::stoull(offs.substr(1))), run = C ? len / C : 0, strat = C ? m.n / C : 0;
++        if (C < 1 || (C & (C - 1)) || run < 1000 || run > strat) throw std::invalid_argument("--window sC,LEN needs C a power of 2 and LEN/C in [1000, n/C]");
++        cbits = bitlen(C) - 1;
++        m.own.reserve(run * C);
++        for (std::size_t b = 0; b < C; ++b) { const std::uint64_t* r = m.keys + b * strat + (strat - run) / 2; m.own.insert(m.own.end(), r, r + run); }
++        wk = m.own.data(); len = m.own.size();
++    } else {
++        off = offs == "end" ? m.n - len : std::size_t(std::stoull(offs));
++        if (off + len > m.n) throw std::invalid_argument("--window past the end of " + path);
++        wk += off;
++    }
++    const KeySrc ks{wk, nullptr, 1, len};
++    SpliceParams base = parse_params(o.args, false);
++    base.threads = o.threads; base.scale_as = o.scale_as > len ? o.scale_as : 0; base.hash = 0; base.verify = 0;
++    // The C runs span the whole key range at 1/C of its density: the top table keeps C times more buckets than
++    // a contiguous window's, so the knots per bucket (and the child levels) stay those of the full-scale router.
++    base.router_bits = std::uint8_t(base.router_bits + cbits);
++    std::vector<std::string> vars;
++    detail::split(o.variants, ',', [&](std::string_view v) { if (!v.empty()) vars.emplace_back(v); });
++    const std::string wname = o.dataset + "@" + offs + "+" + std::to_string(len);
++    std::ostringstream rows;
++    rows << "{\"window\":" << q(wname) << ",\"dataset\":" << q(o.dataset) << ",\"off\":" << off << ",\"len\":" << len
++         << ",\"scale_as\":" << base.scale_as << ",\"scale_shift\":" << scale_shift(base, len) << ",\"router_bits_eff\":" << std::max<int>(4, int(base.router_bits) - int(scale_shift(base, len))) << ",\"args\":" << q(format_params(base, true)) << ",\"variants\":[";
++    std::uint64_t joint_k = 0, joint_nb = len;
++    bool first = true;
++    std::string joint_body; std::uint64_t joint_exc = ~0ull;
++    for (const auto& v : vars) {
++        const long long tv = now_ns();
++        if (v != "joint" && !joint_k) {   // T0 needs the joint's segment count
++            Fit f = make_fit(ks, base, o.threads); joint_k = f.K(); joint_nb = f.n - f.bb - f.bt;
++        }
++        const SpliceParams p0 = neutral(base, v, joint_k, joint_nb);
++        // A neutral that only zeroes exc is the joint itself when the joint kept no exceptions: same params
++        // otherwise, same fits, same search, so its row is copied (deterministic) instead of recomputed.
++        if (v == "G0" && joint_exc == 0) {
++            SpliceParams t = base; t.exc = 0;
++            if (format_params(t) == format_params(p0)) {
++                rows << (first ? "" : ",") << "{\"variant\":\"G0\",\"same_as_joint\":true," << joint_body << ",\"variant_wall_s\":" << fmt_s(secs(now_ns() - tv)) << '}';
++                first = false;
++                continue;
++            }
++        }
++        // --reopt: the tier-1 resolution (PLA eps, or T keys per knot) is re-trained on J for every variant
++        // alike, over eps x 2^k. Stage-1 J (exact counts, default residency; cheap) only screens out
++        // pathological points (more than 5 D above its best: long DIRECT scans cost minutes to walk); it
++        // misranks small eps by up to ~2.7 D (record misses), so the search itself runs on the full J.
++        SpliceParams pe = p0;
++        if (!pe.eps) { Fit f = make_fit(ks, pe, o.threads); pe.eps = f.eps; }
++        std::vector<SpliceParams> cands{pe};
++        std::string s1log;
++        std::map<int, std::pair<std::uint64_t, std::int64_t>> s1;   // k -> (cap violated, stage-1 E[D])
++        if (o.reopt) {
++            auto eps_at = [&](int k) { return k < 0 ? std::max<std::uint64_t>(1, pe.eps >> -k) : pe.eps << k; };
++            auto probe = [&](int k) {
++                SpliceParams q2 = pe; q2.eps = eps_at(k);
++                FitBundle b; b.fit = make_fit(ks, q2, o.threads);
++                if (q2.mode != MODE_FENCED) for (unsigned qa : q2.alphas()) b.direct.emplace(qa, eval_direct(b.fit, qa, o.threads));
++                if (q2.mode != MODE_DIRECT) b.fenced[{q2.entry, q2.cbar}] = eval_fenced(b.fit, q2.entry, q2.cbar, 1u << q2.compact, o.threads);
++                const Cell c = bundle_cell(b, q2);
++                const Selection sl = select_cell(c, default_p(q2), o.threads);
++                s1[k] = {sl.cap_violated ? 1 : 0, stage1_ed(c, sl, default_p(q2))};
++                s1log += (s1log.empty() ? "" : ",") + std::string("[") + std::to_string(q2.eps) + ',' + std::to_string(s1[k].second) + ',' + std::to_string(s1[k].first) + ']';
++                return s1[k];
++            };
++            auto bestv = probe(0);
++            for (int dir : {-1, 1}) {   // walk while stage-1 J improves; two worse steps in a row stop it
++                int worse = 0;
++                for (int k = dir; worse < 2 && k >= -8 && k <= 4; k += dir) {
++                    if (dir < 0 && eps_at(k) == eps_at(k + 1)) break;
++                    const auto r = probe(k);
++                    if (r < bestv) { bestv = r; worse = 0; } else ++worse;
++                }
++            }
++        }
++        std::unique_ptr<Index> best; SpliceParams bp; std::string tried;
++        std::map<int, std::pair<std::uint64_t, std::int64_t>> full;
++        auto key = [](const Stats& s) { return std::make_pair(std::uint64_t(s.cap_violated), s.ed_milli[0]); };
++        auto run = [&](const SpliceParams& c, int k) {
++            auto ix = std::make_unique<Index>();
++            ix->build(Input{wk, nullptr, 1, len}, c);
++            const Stats& st = ix->stats();
++            tried += (tried.empty() ? "" : ",") + std::string("[") + std::to_string(c.eps) + ',' + std::to_string(st.ed_milli[0]) + ',' + std::to_string(st.cap_violated) + ']';
++            full[k] = key(st);
++            if (!best || key(st) < key(best->stats())) { best = std::move(ix); bp = c; }
++            return full[k];
++        };
++        if (!o.reopt) run(cands[0], 0);
++        else {
++            std::pair<std::uint64_t, std::int64_t> lo{~0ull, INT64_MAX};
++            for (auto& [k, r] : s1) lo = std::min(lo, r);
++            auto ok = [&](int k) { auto it = s1.find(k); return it != s1.end() && it->second.first == lo.first && it->second.second <= lo.second + 5000; };
++            int k0 = 0;
++            if (!ok(0)) for (auto& [k, r] : s1) if (r == lo) k0 = k;
++            auto at = [&](int k) { SpliceParams q2 = pe; q2.eps = k < 0 ? std::max<std::uint64_t>(1, pe.eps >> -k) : pe.eps << k; return q2; };
++            auto bk = run(at(k0), k0);
++            int dir = 0;
++            for (int d : {-1, 1}) if (ok(k0 + d)) { const auto r = run(at(k0 + d), k0 + d); if (r < bk) { bk = r; dir = d; } }
++            for (int k = k0 + 2 * dir; dir && ok(k); k += dir) {   // continue downhill on the full J
++                const auto r = run(at(k), k);
++                if (r < bk) bk = r; else break;
++            }
++        }
++        const Stats& st = best->stats();
++        if (v == "joint") { joint_k = st.segments; joint_nb = len - st.exceptions; joint_exc = st.exceptions; }
++        std::ostringstream body;
++        body << "\"splice_args\":" << q(format_params(bp, true))
++             << ",\"ed_milli\":" << st.ed_milli[0] << ",\"ed_milli_all\":[" << st.ed_milli[0] << ',' << st.ed_milli[1] << ',' << st.ed_milli[2] << ',' << st.ed_milli[3] << ']'
++             << ",\"bytes_per_key_milli\":" << st.bytes_per_key_milli << ",\"cap_violated\":" << st.cap_violated
++             << ",\"direct_key_ppm\":" << st.direct_key_ppm << ",\"fenced_key_ppm\":" << st.fenced_key_ppm << ",\"overcap_key_ppm\":" << st.overcap_key_ppm
++             << ",\"dep_lines_milli\":" << st.dep_lines_milli << ",\"par_lines_milli\":" << st.par_lines_milli << ",\"pages4k_milli\":" << st.pages4k_milli
++             << ",\"outer_iters\":" << st.outer_iters << ",\"segments\":" << st.segments << ",\"eps\":" << st.eps << ",\"exceptions\":" << st.exceptions
++             << ",\"router_child_milli\":" << st.router_child_milli << ",\"P\":[" << st.p_ad << ',' << st.p_ae << ',' << st.p_b << ']'
++             << ",\"router_miss_milli\":" << st.router_miss_milli << ",\"record_miss_milli\":" << st.record_miss_milli << ",\"reopt\":[" << tried << "],\"stage1\":[" << s1log << ']';
++        if (o.verify) body << ",\"verify\":" << verify_window(*best, wk, len, o.threads);
++        if (o.parity) body << ",\"parity\":" << (parity_window(*best, wk, len, o.threads) ? "true" : "false");
++        body << ",\"build_s\":" << fmt_s(secs(st.build_ns)) << ",\"stage_s\":[" << fmt_s(secs(st.fit_ns)) << ',' << fmt_s(secs(st.candidates_ns)) << ','
++             << fmt_s(secs(st.walk_ns)) << ',' << fmt_s(secs(st.sim_ns)) << ',' << fmt_s(secs(st.fill_ns)) << ']';
++        if (v == "joint") joint_body = body.str();
++        rows << (first ? "" : ",") << "{\"variant\":" << q(v) << ',' << body.str() << ",\"variant_wall_s\":" << fmt_s(secs(now_ns() - tv)) << '}';
++        first = false;
++    }
++    rows << "],\"wall_s\":" << fmt_s(secs(now_ns() - t0)) << "}";
++    if (!o.rows.empty()) std::ofstream(o.rows) << rows.str() << '\n';
++    else std::cout << rows.str() << '\n';
++    return 0;
++}
++
+ int run_samples(const Opts& o) {
+     std::vector<std::string> names;
+     for (auto& e : fs::directory_iterator(o.samples)) {
+@@ -539,16 +744,24 @@
+             else if (a == "--hash") o.hash = true;
+             else if (a == "--perturb") o.perturb = true;
+             else if (a == "--hash-samples") o.hash_samples = true;
++            else if (a == "--window") o.window = val();
++            else if (a == "--scale-as") o.scale_as = std::stoull(val());
++            else if (a == "--variants") o.variants = val();
++            else if (a == "--rows") o.rows = val();
++            else if (a == "--reopt") o.reopt = true;
+             else if (a == "--help" || a == "-h") {
+                 std::cout << "splice_count --dataset NAME --data DIR [--out results/splice_h] [--threads 16] [--grid pruned|cell]\n"
+                              "             [--args \"k=v ...\"] [--verify] [--parity] [--hash] [--perturb]\n"
+-                             "splice_count --samples DIR --hash-samples [--args \"k=v ...\"]\n";
++                             "splice_count --samples DIR --hash-samples [--args \"k=v ...\"]\n"
++                             "splice_count --dataset NAME --data DIR --window OFF|end|sC,LEN [--scale-as N] --args \"k=v ...\"\n"
++                             "             [--variants joint,G0,T0,V0] [--reopt] [--rows OUT.json] [--verify] [--parity]\n";
+                 return 0;
+             } else throw std::invalid_argument("unknown option " + a);
+         }
+         if (o.threads == 0 || o.threads > 1024) throw std::invalid_argument("--threads must be in [1,1024]");
+         if (o.hash_samples) { if (o.samples.empty()) throw std::invalid_argument("--hash-samples needs --samples DIR"); return run_samples(o); }
+         if (o.dataset.empty() || o.data.empty()) throw std::invalid_argument("--dataset and --data are required");
++        if (!o.window.empty()) return run_window(o);
+         return run_dataset(o);
+     } catch (const std::exception& e) {
+         std::cerr << "splice_count: " << e.what() << '\n';

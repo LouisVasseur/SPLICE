@@ -1,0 +1,10 @@
+{"file":"/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/stack.sorted","eps":34,"tier1":0,"K":16279,
+ {"kpl":4,"alpha":0.25,"B_per_key_arena":20.81,"empty_pages":0.0884,"ov_page_key_share":0.0000,"spill_share":0.0000,"w1":{"hit":0.9799,"miss":0.0201,"ED":2.534},"w2":{"hit":0.9997,"miss":0.0003,"ED":2.564},"w4":{"hit":0.9999,"miss":0.0001,"ED":2.664}},
+ {"kpl":4,"alpha":0.50,"B_per_key_arena":24.94,"empty_pages":0.2086,"ov_page_key_share":0.0000,"spill_share":0.0000,"w1":{"hit":0.9994,"miss":0.0006,"ED":2.515},"w2":{"hit":1.0000,"miss":0.0000,"ED":2.564},"w4":{"hit":1.0000,"miss":0.0000,"ED":2.664}},
+ {"kpl":4,"alpha":0.75,"B_per_key_arena":29.07,"empty_pages":0.3197,"ov_page_key_share":0.0000,"spill_share":0.0000,"w1":{"hit":0.9998,"miss":0.0002,"ED":2.514},"w2":{"hit":1.0000,"miss":0.0000,"ED":2.564},"w4":{"hit":1.0000,"miss":0.0000,"ED":2.664}},
+ {"kpl":4,"alpha":1.00,"B_per_key_arena":33.20,"empty_pages":0.4043,"ov_page_key_share":0.0000,"spill_share":0.0000,"w1":{"hit":0.9999,"miss":0.0001,"ED":2.514},"w2":{"hit":1.0000,"miss":0.0000,"ED":2.564},"w4":{"hit":1.0000,"miss":0.0000,"ED":2.664}},
+ {"kpl":5,"alpha":0.25,"B_per_key_arena":16.68,"empty_pages":0.0883,"ov_page_key_share":0.0000,"spill_share":0.0000,"w1":{"hit":0.9843,"miss":0.0157,"ED":2.530},"w2":{"hit":0.9998,"miss":0.0002,"ED":2.564},"w4":{"hit":0.9999,"miss":0.0001,"ED":2.664}},
+ {"kpl":5,"alpha":0.50,"B_per_key_arena":19.99,"empty_pages":0.2084,"ov_page_key_share":0.0000,"spill_share":0.0000,"w1":{"hit":0.9996,"miss":0.0004,"ED":2.514},"w2":{"hit":1.0000,"miss":0.0000,"ED":2.564},"w4":{"hit":1.0000,"miss":0.0000,"ED":2.664}},
+ {"kpl":5,"alpha":0.75,"B_per_key_arena":23.29,"empty_pages":0.3193,"ov_page_key_share":0.0000,"spill_share":0.0000,"w1":{"hit":0.9999,"miss":0.0001,"ED":2.514},"w2":{"hit":1.0000,"miss":0.0000,"ED":2.564},"w4":{"hit":1.0000,"miss":0.0000,"ED":2.664}},
+ {"kpl":5,"alpha":1.00,"B_per_key_arena":26.59,"empty_pages":0.4038,"ov_page_key_share":0.0000,"spill_share":0.0000,"w1":{"hit":0.9999,"miss":0.0001,"ED":2.514},"w2":{"hit":1.0000,"miss":0.0000,"ED":2.564},"w4":{"hit":1.0000,"miss":0.0000,"ED":2.664}}
+}

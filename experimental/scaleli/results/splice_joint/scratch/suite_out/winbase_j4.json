@@ -1,0 +1,5612 @@
+{
+ "tree": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/joint/winbase",
+ "args_dir": "/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/joint/ref_full/args",
+ "sim": "sim=500000 warm=125000",
+ "reopt": true,
+ "jobs": 4,
+ "threads": 1,
+ "build_s": 8,
+ "run_s": 100,
+ "hard_windows": [
+  "fb@end+12500000",
+  "fb@s16+12500000",
+  "genome@s16+12500000",
+  "osm@s16+12500000",
+  "planet@s16+12500000"
+ ],
+ "all_verify": true,
+ "all_parity": true,
+ "errors": [],
+ "summary": {
+  "d_G": {
+   "mean_hard": 0.079,
+   "mean_all": 0.036,
+   "earns_its_place": true
+  },
+  "d_T": {
+   "mean_hard": 0.068,
+   "mean_all": 0.095,
+   "earns_its_place": true
+  },
+  "d_V": {
+   "mean_hard": 6.18,
+   "mean_all": 5.223,
+   "earns_its_place": true
+  }
+ },
+ "rows": [
+  {
+   "window": "books@s16+12500000",
+   "hard": false,
+   "ed": 3.079,
+   "bytes_per_key": 21.989,
+   "d_G": 0.0,
+   "d_T": 0.128,
+   "d_V": 4.81,
+   "direct_share": 0.833389,
+   "lines": 1.407,
+   "walks": 1.209,
+   "outer_iters": 1,
+   "segments": 268,
+   "eps": 308,
+   "exceptions": 0,
+   "outer_iters_all": {
+    "V0": 1,
+    "joint": 1,
+    "G0": 1,
+    "T0": 1
+   },
+   "ed_all": {
+    "V0": 7.889,
+    "joint": 3.079,
+    "G0": 3.079,
+    "T0": 3.207
+   },
+   "bytes_per_key_all": {
+    "V0": 20.02,
+    "joint": 21.989,
+    "G0": 21.989,
+    "T0": 21.927
+   },
+   "cap_violated": {
+    "V0": 0,
+    "joint": 0,
+    "G0": 0,
+    "T0": 0
+   },
+   "verify": true,
+   "parity": true,
+   "wall_s": 38.4,
+   "variants": {
+    "V0": {
+     "variant": "V0",
+     "splice_args": "k1=16384 eps=9 tier1=pla mode=direct alpha=0 w=1 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 7889,
+     "ed_milli_all": [
+      7889,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 20020,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 2854,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1027,
+     "outer_iters": 1,
+     "segments": 113795,
+     "eps": 9,
+     "exceptions": 0,
+     "router_child_milli": 1022,
+     "P": [
+      943,
+      810,
+      940
+     ],
+     "router_miss_milli": 893,
+     "record_miss_milli": 2699,
+     "reopt": [
+      [
+       9,
+       7889,
+       0
+      ],
+      [
+       19,
+       9471,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       154,
+       37546,
+       0
+      ],
+      [
+       77,
+       19328,
+       0
+      ],
+      [
+       38,
+       10844,
+       0
+      ],
+      [
+       19,
+       6715,
+       0
+      ],
+      [
+       9,
+       4431,
+       0
+      ],
+      [
+       4,
+       3183,
+       1
+      ],
+      [
+       2,
+       2826,
+       1
+      ],
+      [
+       308,
+       63720,
+       0
+      ],
+      [
+       616,
+       110767,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.875,
+     "stage_s": [
+      0.679,
+      0.144,
+      0.468,
+      0.325,
+      0.097
+     ],
+     "variant_wall_s": 11.464
+    },
+    "joint": {
+     "variant": "joint",
+     "splice_args": "k1=16384 eps=308 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 3079,
+     "ed_milli_all": [
+      3079,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21989,
+     "cap_violated": 0,
+     "direct_key_ppm": 833389,
+     "fenced_key_ppm": 166610,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1407,
+     "par_lines_milli": 2666,
+     "pages4k_milli": 1209,
+     "outer_iters": 1,
+     "segments": 268,
+     "eps": 308,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      916,
+      839,
+      945
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 4,
+     "reopt": [
+      [
+       154,
+       3297,
+       0
+      ],
+      [
+       77,
+       3998,
+       0
+      ],
+      [
+       308,
+       3079,
+       0
+      ],
+      [
+       616,
+       3081,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       154,
+       3252,
+       0
+      ],
+      [
+       77,
+       3185,
+       0
+      ],
+      [
+       38,
+       3081,
+       0
+      ],
+      [
+       19,
+       2930,
+       0
+      ],
+      [
+       9,
+       3181,
+       1
+      ],
+      [
+       4,
+       3087,
+       1
+      ],
+      [
+       308,
+       3245,
+       0
+      ],
+      [
+       616,
+       3252,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.713,
+     "stage_s": [
+      0.217,
+      0.488,
+      0.458,
+      0.378,
+      0.068
+     ],
+     "variant_wall_s": 14.579
+    },
+    "G0": {
+     "variant": "G0",
+     "same_as_joint": true,
+     "splice_args": "k1=16384 eps=308 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 3079,
+     "ed_milli_all": [
+      3079,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21989,
+     "cap_violated": 0,
+     "direct_key_ppm": 833389,
+     "fenced_key_ppm": 166610,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1407,
+     "par_lines_milli": 2666,
+     "pages4k_milli": 1209,
+     "outer_iters": 1,
+     "segments": 268,
+     "eps": 308,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      916,
+      839,
+      945
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 4,
+     "reopt": [
+      [
+       154,
+       3297,
+       0
+      ],
+      [
+       77,
+       3998,
+       0
+      ],
+      [
+       308,
+       3079,
+       0
+      ],
+      [
+       616,
+       3081,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       154,
+       3252,
+       0
+      ],
+      [
+       77,
+       3185,
+       0
+      ],
+      [
+       38,
+       3081,
+       0
+      ],
+      [
+       19,
+       2930,
+       0
+      ],
+      [
+       9,
+       3181,
+       1
+      ],
+      [
+       4,
+       3087,
+       1
+      ],
+      [
+       308,
+       3245,
+       0
+      ],
+      [
+       616,
+       3252,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.713,
+     "stage_s": [
+      0.217,
+      0.488,
+      0.458,
+      0.378,
+      0.068
+     ],
+     "variant_wall_s": 0.0
+    },
+    "T0": {
+     "variant": "T0",
+     "splice_args": "k1=16384 eps=23321 tier1=equal mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 3207,
+     "ed_milli_all": [
+      3207,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21927,
+     "cap_violated": 0,
+     "direct_key_ppm": 802242,
+     "fenced_key_ppm": 197757,
+     "overcap_key_ppm": 27969,
+     "dep_lines_milli": 1450,
+     "par_lines_milli": 2634,
+     "pages4k_milli": 1267,
+     "outer_iters": 1,
+     "segments": 536,
+     "eps": 23321,
+     "exceptions": 0,
+     "router_child_milli": 390,
+     "P": [
+      917,
+      812,
+      907
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 9,
+     "reopt": [
+      [
+       46642,
+       3239,
+       0
+      ],
+      [
+       23321,
+       3207,
+       0
+      ],
+      [
+       93284,
+       3366,
+       0
+      ],
+      [
+       11660,
+       3300,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       46642,
+       3444,
+       0
+      ],
+      [
+       23321,
+       3378,
+       0
+      ],
+      [
+       11660,
+       3339,
+       0
+      ],
+      [
+       5830,
+       3316,
+       0
+      ],
+      [
+       2915,
+       3281,
+       0
+      ],
+      [
+       1457,
+       3236,
+       0
+      ],
+      [
+       728,
+       3183,
+       0
+      ],
+      [
+       364,
+       3136,
+       0
+      ],
+      [
+       182,
+       3148,
+       1
+      ],
+      [
+       93284,
+       3635,
+       0
+      ],
+      [
+       186568,
+       4007,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.068,
+     "stage_s": [
+      0.058,
+      0.433,
+      0.214,
+      0.2,
+      0.07
+     ],
+     "variant_wall_s": 12.2
+    }
+   }
+  },
+  {
+   "window": "covid@s16+12500000",
+   "hard": false,
+   "ed": 2.474,
+   "bytes_per_key": 21.821,
+   "d_G": 0.0,
+   "d_T": 0.115,
+   "d_V": 4.555,
+   "direct_share": 0.998128,
+   "lines": 1.07,
+   "walks": 1.023,
+   "outer_iters": 1,
+   "segments": 324,
+   "eps": 338,
+   "exceptions": 0,
+   "outer_iters_all": {
+    "V0": 1,
+    "joint": 1,
+    "G0": 1,
+    "T0": 1
+   },
+   "ed_all": {
+    "V0": 7.029,
+    "joint": 2.474,
+    "G0": 2.474,
+    "T0": 2.589
+   },
+   "bytes_per_key_all": {
+    "V0": 19.177,
+    "joint": 21.821,
+    "G0": 21.821,
+    "T0": 21.916
+   },
+   "cap_violated": {
+    "V0": 0,
+    "joint": 0,
+    "G0": 0,
+    "T0": 0
+   },
+   "verify": true,
+   "parity": true,
+   "wall_s": 29.3,
+   "variants": {
+    "V0": {
+     "variant": "V0",
+     "splice_args": "k1=16384 eps=5 tier1=pla mode=direct alpha=0 w=1 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 7029,
+     "ed_milli_all": [
+      7029,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 19177,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1956,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1014,
+     "outer_iters": 1,
+     "segments": 110796,
+     "eps": 5,
+     "exceptions": 0,
+     "router_child_milli": 1019,
+     "P": [
+      949,
+      810,
+      940
+     ],
+     "router_miss_milli": 920,
+     "record_miss_milli": 2718,
+     "reopt": [
+      [
+       5,
+       7029,
+       0
+      ],
+      [
+       10,
+       7732,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       169,
+       38092,
+       0
+      ],
+      [
+       84,
+       20455,
+       0
+      ],
+      [
+       42,
+       11431,
+       0
+      ],
+      [
+       21,
+       6976,
+       0
+      ],
+      [
+       10,
+       4613,
+       0
+      ],
+      [
+       5,
+       3523,
+       0
+      ],
+      [
+       2,
+       2902,
+       1
+      ],
+      [
+       1,
+       2705,
+       1
+      ],
+      [
+       338,
+       76121,
+       0
+      ],
+      [
+       676,
+       140946,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.116,
+     "stage_s": [
+      0.407,
+      0.073,
+      0.204,
+      0.256,
+      0.066
+     ],
+     "variant_wall_s": 7.417
+    },
+    "joint": {
+     "variant": "joint",
+     "splice_args": "k1=16384 eps=338 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2474,
+     "ed_milli_all": [
+      2474,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21821,
+     "cap_violated": 0,
+     "direct_key_ppm": 998128,
+     "fenced_key_ppm": 1871,
+     "overcap_key_ppm": 184,
+     "dep_lines_milli": 1070,
+     "par_lines_milli": 1332,
+     "pages4k_milli": 1023,
+     "outer_iters": 1,
+     "segments": 324,
+     "eps": 338,
+     "exceptions": 0,
+     "router_child_milli": 45,
+     "P": [
+      918,
+      855,
+      879
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 1,
+     "reopt": [
+      [
+       169,
+       2523,
+       0
+      ],
+      [
+       84,
+       2767,
+       0
+      ],
+      [
+       338,
+       2474,
+       0
+      ],
+      [
+       676,
+       2478,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       169,
+       2667,
+       0
+      ],
+      [
+       84,
+       2694,
+       0
+      ],
+      [
+       42,
+       2685,
+       0
+      ],
+      [
+       338,
+       2650,
+       0
+      ],
+      [
+       676,
+       2656,
+       0
+      ],
+      [
+       1352,
+       2665,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.359,
+     "stage_s": [
+      0.197,
+      0.43,
+      0.241,
+      0.312,
+      0.084
+     ],
+     "variant_wall_s": 10.236
+    },
+    "G0": {
+     "variant": "G0",
+     "same_as_joint": true,
+     "splice_args": "k1=16384 eps=338 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2474,
+     "ed_milli_all": [
+      2474,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21821,
+     "cap_violated": 0,
+     "direct_key_ppm": 998128,
+     "fenced_key_ppm": 1871,
+     "overcap_key_ppm": 184,
+     "dep_lines_milli": 1070,
+     "par_lines_milli": 1332,
+     "pages4k_milli": 1023,
+     "outer_iters": 1,
+     "segments": 324,
+     "eps": 338,
+     "exceptions": 0,
+     "router_child_milli": 45,
+     "P": [
+      918,
+      855,
+      879
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 1,
+     "reopt": [
+      [
+       169,
+       2523,
+       0
+      ],
+      [
+       84,
+       2767,
+       0
+      ],
+      [
+       338,
+       2474,
+       0
+      ],
+      [
+       676,
+       2478,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       169,
+       2667,
+       0
+      ],
+      [
+       84,
+       2694,
+       0
+      ],
+      [
+       42,
+       2685,
+       0
+      ],
+      [
+       338,
+       2650,
+       0
+      ],
+      [
+       676,
+       2656,
+       0
+      ],
+      [
+       1352,
+       2665,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.359,
+     "stage_s": [
+      0.197,
+      0.43,
+      0.241,
+      0.312,
+      0.084
+     ],
+     "variant_wall_s": 0.0
+    },
+    "T0": {
+     "variant": "T0",
+     "splice_args": "k1=16384 eps=19290 tier1=equal mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2589,
+     "ed_milli_all": [
+      2589,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21916,
+     "cap_violated": 0,
+     "direct_key_ppm": 964506,
+     "fenced_key_ppm": 35493,
+     "overcap_key_ppm": 26008,
+     "dep_lines_milli": 1125,
+     "par_lines_milli": 1209,
+     "pages4k_milli": 1079,
+     "outer_iters": 1,
+     "segments": 649,
+     "eps": 19290,
+     "exceptions": 0,
+     "router_child_milli": 288,
+     "P": [
+      922,
+      606,
+      752
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 4,
+     "reopt": [
+      [
+       38581,
+       2643,
+       0
+      ],
+      [
+       19290,
+       2589,
+       0
+      ],
+      [
+       77162,
+       2807,
+       0
+      ],
+      [
+       9645,
+       2654,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       38581,
+       2860,
+       0
+      ],
+      [
+       19290,
+       2776,
+       0
+      ],
+      [
+       9645,
+       2764,
+       0
+      ],
+      [
+       4822,
+       2724,
+       0
+      ],
+      [
+       2411,
+       2701,
+       0
+      ],
+      [
+       1205,
+       2683,
+       0
+      ],
+      [
+       602,
+       2670,
+       0
+      ],
+      [
+       301,
+       2659,
+       0
+      ],
+      [
+       150,
+       2737,
+       0
+      ],
+      [
+       77162,
+       3078,
+       0
+      ],
+      [
+       154324,
+       3478,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.241,
+     "stage_s": [
+      0.056,
+      0.437,
+      0.271,
+      0.303,
+      0.08
+     ],
+     "variant_wall_s": 11.568
+    }
+   }
+  },
+  {
+   "window": "fb@end+12500000",
+   "hard": true,
+   "ed": 4.514,
+   "bytes_per_key": 19.272,
+   "d_G": 0.394,
+   "d_T": 0.0,
+   "d_V": 5.786,
+   "direct_share": 0.0,
+   "lines": 2.079,
+   "walks": 2.046,
+   "outer_iters": 1,
+   "segments": 18,
+   "eps": 10240,
+   "exceptions": 21,
+   "outer_iters_all": {
+    "V0": 1,
+    "joint": 1,
+    "G0": 1,
+    "T0": 1
+   },
+   "ed_all": {
+    "V0": 10.3,
+    "joint": 4.514,
+    "G0": 4.908,
+    "T0": 4.514
+   },
+   "bytes_per_key_all": {
+    "V0": 21.64,
+    "joint": 19.272,
+    "G0": 19.295,
+    "T0": 19.272
+   },
+   "cap_violated": {
+    "V0": 0,
+    "joint": 0,
+    "G0": 0,
+    "T0": 0
+   },
+   "verify": true,
+   "parity": true,
+   "wall_s": 52.4,
+   "variants": {
+    "V0": {
+     "variant": "V0",
+     "splice_args": "k1=4096 eps=20 tier1=pla mode=direct alpha=0 w=1 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=11 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 10300,
+     "ed_milli_all": [
+      10300,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21640,
+     "cap_violated": 0,
+     "direct_key_ppm": 999998,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 4770,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1055,
+     "outer_iters": 1,
+     "segments": 106039,
+     "eps": 20,
+     "exceptions": 21,
+     "router_child_milli": 1184,
+     "P": [
+      931,
+      810,
+      940
+     ],
+     "router_miss_milli": 1313,
+     "record_miss_milli": 2744,
+     "reopt": [
+      [
+       20,
+       10300,
+       0
+      ],
+      [
+       40,
+       14019,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2560,
+       565564,
+       0
+      ],
+      [
+       1280,
+       284202,
+       0
+      ],
+      [
+       640,
+       135849,
+       0
+      ],
+      [
+       320,
+       67230,
+       0
+      ],
+      [
+       160,
+       34612,
+       0
+      ],
+      [
+       80,
+       18356,
+       0
+      ],
+      [
+       40,
+       10254,
+       0
+      ],
+      [
+       20,
+       6236,
+       0
+      ],
+      [
+       10,
+       4296,
+       1
+      ],
+      [
+       5120,
+       1077359,
+       0
+      ],
+      [
+       10240,
+       2095486,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.967,
+     "stage_s": [
+      0.327,
+      0.051,
+      0.21,
+      0.219,
+      0.061
+     ],
+     "variant_wall_s": 6.177
+    },
+    "joint": {
+     "variant": "joint",
+     "splice_args": "k1=4096 eps=10240 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=11 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4514,
+     "ed_milli_all": [
+      4514,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 19272,
+     "cap_violated": 0,
+     "direct_key_ppm": 0,
+     "fenced_key_ppm": 999998,
+     "overcap_key_ppm": 79271,
+     "dep_lines_milli": 2079,
+     "par_lines_milli": 1079,
+     "pages4k_milli": 2046,
+     "outer_iters": 1,
+     "segments": 18,
+     "eps": 10240,
+     "exceptions": 21,
+     "router_child_milli": 0,
+     "P": [
+      940,
+      813,
+      892
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       2560,
+       4521,
+       0
+      ],
+      [
+       1280,
+       4663,
+       0
+      ],
+      [
+       5120,
+       4516,
+       0
+      ],
+      [
+       10240,
+       4514,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2560,
+       4595,
+       0
+      ],
+      [
+       1280,
+       4667,
+       0
+      ],
+      [
+       640,
+       4656,
+       0
+      ],
+      [
+       5120,
+       4598,
+       0
+      ],
+      [
+       10240,
+       4599,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.241,
+     "stage_s": [
+      0.165,
+      0.396,
+      0.396,
+      0.149,
+      0.046
+     ],
+     "variant_wall_s": 9.227
+    },
+    "G0": {
+     "variant": "G0",
+     "splice_args": "k1=4096 eps=1280 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=11 router_leaf=8 exc=0 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4908,
+     "ed_milli_all": [
+      4908,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 19295,
+     "cap_violated": 0,
+     "direct_key_ppm": 1,
+     "fenced_key_ppm": 999998,
+     "overcap_key_ppm": 73522,
+     "dep_lines_milli": 2073,
+     "par_lines_milli": 1073,
+     "pages4k_milli": 2043,
+     "outer_iters": 1,
+     "segments": 821,
+     "eps": 1280,
+     "exceptions": 0,
+     "router_child_milli": 4036,
+     "P": [
+      940,
+      836,
+      902
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 46,
+     "reopt": [
+      [
+       2560,
+       4922,
+       0
+      ],
+      [
+       1280,
+       4908,
+       0
+      ],
+      [
+       5120,
+       4988,
+       0
+      ],
+      [
+       640,
+       5588,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2560,
+       4995,
+       0
+      ],
+      [
+       1280,
+       4912,
+       0
+      ],
+      [
+       640,
+       4896,
+       0
+      ],
+      [
+       320,
+       4867,
+       0
+      ],
+      [
+       160,
+       4752,
+       0
+      ],
+      [
+       80,
+       4775,
+       0
+      ],
+      [
+       40,
+       4631,
+       0
+      ],
+      [
+       20,
+       4512,
+       0
+      ],
+      [
+       10,
+       4450,
+       1
+      ],
+      [
+       5120,
+       5070,
+       0
+      ],
+      [
+       10240,
+       5319,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.937,
+     "stage_s": [
+      0.527,
+      0.62,
+      0.438,
+      0.203,
+      0.046
+     ],
+     "variant_wall_s": 26.931
+    },
+    "T0": {
+     "variant": "T0",
+     "splice_args": "k1=4096 eps=1388888 tier1=equal mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=11 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4514,
+     "ed_milli_all": [
+      4514,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 19272,
+     "cap_violated": 0,
+     "direct_key_ppm": 0,
+     "fenced_key_ppm": 999998,
+     "overcap_key_ppm": 78091,
+     "dep_lines_milli": 2078,
+     "par_lines_milli": 1078,
+     "pages4k_milli": 2046,
+     "outer_iters": 1,
+     "segments": 9,
+     "eps": 1388888,
+     "exceptions": 21,
+     "router_child_milli": 0,
+     "P": [
+      940,
+      814,
+      893
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       694444,
+       4516,
+       0
+      ],
+      [
+       347222,
+       4515,
+       0
+      ],
+      [
+       1388888,
+       4514,
+       0
+      ],
+      [
+       2777776,
+       4514,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       694444,
+       4600,
+       0
+      ],
+      [
+       347222,
+       4601,
+       0
+      ],
+      [
+       173611,
+       4598,
+       0
+      ],
+      [
+       86805,
+       4596,
+       0
+      ],
+      [
+       43402,
+       4596,
+       0
+      ],
+      [
+       21701,
+       4615,
+       0
+      ],
+      [
+       1388888,
+       4597,
+       0
+      ],
+      [
+       2777776,
+       4599,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.142,
+     "stage_s": [
+      0.053,
+      0.395,
+      0.398,
+      0.157,
+      0.046
+     ],
+     "variant_wall_s": 9.994
+    }
+   }
+  },
+  {
+   "window": "fb@s16+12500000",
+   "hard": true,
+   "ed": 4.513,
+   "bytes_per_key": 19.273,
+   "d_G": 0.0,
+   "d_T": 0.0,
+   "d_V": 5.895,
+   "direct_share": 0.0,
+   "lines": 2.077,
+   "walks": 2.045,
+   "outer_iters": 1,
+   "segments": 16,
+   "eps": 20480,
+   "exceptions": 0,
+   "outer_iters_all": {
+    "V0": 1,
+    "joint": 1,
+    "G0": 1,
+    "T0": 1
+   },
+   "ed_all": {
+    "V0": 10.408,
+    "joint": 4.513,
+    "G0": 4.513,
+    "T0": 4.513
+   },
+   "bytes_per_key_all": {
+    "V0": 21.631,
+    "joint": 19.273,
+    "G0": 19.273,
+    "T0": 19.273
+   },
+   "cap_violated": {
+    "V0": 0,
+    "joint": 0,
+    "G0": 0,
+    "T0": 0
+   },
+   "verify": true,
+   "parity": true,
+   "wall_s": 36.4,
+   "variants": {
+    "V0": {
+     "variant": "V0",
+     "splice_args": "k1=4096 eps=20 tier1=pla mode=direct alpha=0 w=1 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 10408,
+     "ed_milli_all": [
+      10408,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21631,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 4772,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1055,
+     "outer_iters": 1,
+     "segments": 106014,
+     "eps": 20,
+     "exceptions": 0,
+     "router_child_milli": 1229,
+     "P": [
+      931,
+      810,
+      940
+     ],
+     "router_miss_milli": 1414,
+     "record_miss_milli": 2746,
+     "reopt": [
+      [
+       20,
+       10408,
+       0
+      ],
+      [
+       40,
+       14119,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2560,
+       544612,
+       0
+      ],
+      [
+       1280,
+       277726,
+       0
+      ],
+      [
+       640,
+       135265,
+       0
+      ],
+      [
+       320,
+       67374,
+       0
+      ],
+      [
+       160,
+       34699,
+       0
+      ],
+      [
+       80,
+       18368,
+       0
+      ],
+      [
+       40,
+       10253,
+       0
+      ],
+      [
+       20,
+       6241,
+       0
+      ],
+      [
+       10,
+       4296,
+       1
+      ],
+      [
+       5120,
+       1062753,
+       0
+      ],
+      [
+       10240,
+       2083572,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.973,
+     "stage_s": [
+      0.325,
+      0.05,
+      0.208,
+      0.228,
+      0.061
+     ],
+     "variant_wall_s": 6.224
+    },
+    "joint": {
+     "variant": "joint",
+     "splice_args": "k1=4096 eps=20480 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4513,
+     "ed_milli_all": [
+      4513,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 19273,
+     "cap_violated": 0,
+     "direct_key_ppm": 0,
+     "fenced_key_ppm": 1000000,
+     "overcap_key_ppm": 77467,
+     "dep_lines_milli": 2077,
+     "par_lines_milli": 1077,
+     "pages4k_milli": 2045,
+     "outer_iters": 1,
+     "segments": 16,
+     "eps": 20480,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      940,
+      813,
+      894
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       2560,
+       4524,
+       0
+      ],
+      [
+       1280,
+       4659,
+       0
+      ],
+      [
+       5120,
+       4521,
+       0
+      ],
+      [
+       10240,
+       4514,
+       0
+      ],
+      [
+       20480,
+       4513,
+       0
+      ],
+      [
+       40960,
+       4513,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2560,
+       4596,
+       0
+      ],
+      [
+       1280,
+       4659,
+       0
+      ],
+      [
+       640,
+       4654,
+       0
+      ],
+      [
+       5120,
+       4601,
+       0
+      ],
+      [
+       10240,
+       4595,
+       0
+      ],
+      [
+       20480,
+       4596,
+       0
+      ],
+      [
+       40960,
+       4596,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.477,
+     "stage_s": [
+      0.182,
+      0.395,
+      0.397,
+      0.324,
+      0.087
+     ],
+     "variant_wall_s": 15.916
+    },
+    "G0": {
+     "variant": "G0",
+     "same_as_joint": true,
+     "splice_args": "k1=4096 eps=20480 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4513,
+     "ed_milli_all": [
+      4513,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 19273,
+     "cap_violated": 0,
+     "direct_key_ppm": 0,
+     "fenced_key_ppm": 1000000,
+     "overcap_key_ppm": 77467,
+     "dep_lines_milli": 2077,
+     "par_lines_milli": 1077,
+     "pages4k_milli": 2045,
+     "outer_iters": 1,
+     "segments": 16,
+     "eps": 20480,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      940,
+      813,
+      894
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       2560,
+       4524,
+       0
+      ],
+      [
+       1280,
+       4659,
+       0
+      ],
+      [
+       5120,
+       4521,
+       0
+      ],
+      [
+       10240,
+       4514,
+       0
+      ],
+      [
+       20480,
+       4513,
+       0
+      ],
+      [
+       40960,
+       4513,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2560,
+       4596,
+       0
+      ],
+      [
+       1280,
+       4659,
+       0
+      ],
+      [
+       640,
+       4654,
+       0
+      ],
+      [
+       5120,
+       4601,
+       0
+      ],
+      [
+       10240,
+       4595,
+       0
+      ],
+      [
+       20480,
+       4596,
+       0
+      ],
+      [
+       40960,
+       4596,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.477,
+     "stage_s": [
+      0.182,
+      0.395,
+      0.397,
+      0.324,
+      0.087
+     ],
+     "variant_wall_s": 0.0
+    },
+    "T0": {
+     "variant": "T0",
+     "splice_args": "k1=4096 eps=781250 tier1=equal mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4513,
+     "ed_milli_all": [
+      4513,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 19273,
+     "cap_violated": 0,
+     "direct_key_ppm": 0,
+     "fenced_key_ppm": 1000000,
+     "overcap_key_ppm": 77467,
+     "dep_lines_milli": 2077,
+     "par_lines_milli": 1077,
+     "pages4k_milli": 2045,
+     "outer_iters": 1,
+     "segments": 16,
+     "eps": 781250,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      940,
+      813,
+      894
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       781250,
+       4513,
+       0
+      ],
+      [
+       390625,
+       4516,
+       0
+      ],
+      [
+       1562500,
+       4686,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       781250,
+       4596,
+       0
+      ],
+      [
+       390625,
+       4598,
+       0
+      ],
+      [
+       195312,
+       5036,
+       0
+      ],
+      [
+       1562500,
+       5647,
+       0
+      ],
+      [
+       3125000,
+       5875,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 2.659,
+     "stage_s": [
+      0.104,
+      0.892,
+      1.168,
+      0.262,
+      0.071
+     ],
+     "variant_wall_s": 14.134
+    }
+   }
+  },
+  {
+   "window": "genome@s16+12500000",
+   "hard": true,
+   "ed": 4.426,
+   "bytes_per_key": 19.042,
+   "d_G": 0.0,
+   "d_T": 0.084,
+   "d_V": 10.529,
+   "direct_share": 0.0,
+   "lines": 2.0,
+   "walks": 2.0,
+   "outer_iters": 1,
+   "segments": 82,
+   "eps": 5152,
+   "exceptions": 0,
+   "outer_iters_all": {
+    "V0": 1,
+    "joint": 1,
+    "G0": 1,
+    "T0": 1
+   },
+   "ed_all": {
+    "V0": 14.955,
+    "joint": 4.426,
+    "G0": 4.426,
+    "T0": 4.51
+   },
+   "bytes_per_key_all": {
+    "V0": 21.474,
+    "joint": 19.042,
+    "G0": 19.042,
+    "T0": 19.022
+   },
+   "cap_violated": {
+    "V0": 0,
+    "joint": 0,
+    "G0": 0,
+    "T0": 0
+   },
+   "verify": true,
+   "parity": true,
+   "wall_s": 26.7,
+   "variants": {
+    "V0": {
+     "variant": "V0",
+     "splice_args": "k1=4096 eps=40 tier1=pla mode=direct alpha=0 w=1 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 14955,
+     "ed_milli_all": [
+      14955,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21474,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 9686,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1131,
+     "outer_iters": 1,
+     "segments": 51043,
+     "eps": 40,
+     "exceptions": 0,
+     "router_child_milli": 1053,
+     "P": [
+      883,
+      810,
+      940
+     ],
+     "router_miss_milli": 1066,
+     "record_miss_milli": 2717,
+     "reopt": [
+      [
+       40,
+       14955,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       1288,
+       258888,
+       0
+      ],
+      [
+       644,
+       141469,
+       0
+      ],
+      [
+       322,
+       73420,
+       0
+      ],
+      [
+       161,
+       39214,
+       0
+      ],
+      [
+       80,
+       21018,
+       0
+      ],
+      [
+       40,
+       11235,
+       0
+      ],
+      [
+       20,
+       6784,
+       1
+      ],
+      [
+       10,
+       4712,
+       1
+      ],
+      [
+       2576,
+       548726,
+       0
+      ],
+      [
+       5152,
+       1075056,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.056,
+     "stage_s": [
+      0.287,
+      0.041,
+      0.298,
+      0.281,
+      0.052
+     ],
+     "variant_wall_s": 4.972
+    },
+    "joint": {
+     "variant": "joint",
+     "splice_args": "k1=4096 eps=5152 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4426,
+     "ed_milli_all": [
+      4426,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 19042,
+     "cap_violated": 0,
+     "direct_key_ppm": 0,
+     "fenced_key_ppm": 1000000,
+     "overcap_key_ppm": 547,
+     "dep_lines_milli": 2000,
+     "par_lines_milli": 1000,
+     "pages4k_milli": 2000,
+     "outer_iters": 1,
+     "segments": 82,
+     "eps": 5152,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      940,
+      817,
+      927
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       1288,
+       4434,
+       0
+      ],
+      [
+       644,
+       4464,
+       0
+      ],
+      [
+       2576,
+       4431,
+       0
+      ],
+      [
+       5152,
+       4426,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       1288,
+       4468,
+       0
+      ],
+      [
+       644,
+       4482,
+       0
+      ],
+      [
+       322,
+       4524,
+       0
+      ],
+      [
+       2576,
+       4469,
+       0
+      ],
+      [
+       5152,
+       4469,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.215,
+     "stage_s": [
+      0.183,
+      0.373,
+      0.372,
+      0.151,
+      0.044
+     ],
+     "variant_wall_s": 9.171
+    },
+    "G0": {
+     "variant": "G0",
+     "same_as_joint": true,
+     "splice_args": "k1=4096 eps=5152 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4426,
+     "ed_milli_all": [
+      4426,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 19042,
+     "cap_violated": 0,
+     "direct_key_ppm": 0,
+     "fenced_key_ppm": 1000000,
+     "overcap_key_ppm": 547,
+     "dep_lines_milli": 2000,
+     "par_lines_milli": 1000,
+     "pages4k_milli": 2000,
+     "outer_iters": 1,
+     "segments": 82,
+     "eps": 5152,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      940,
+      817,
+      927
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       1288,
+       4434,
+       0
+      ],
+      [
+       644,
+       4464,
+       0
+      ],
+      [
+       2576,
+       4431,
+       0
+      ],
+      [
+       5152,
+       4426,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       1288,
+       4468,
+       0
+      ],
+      [
+       644,
+       4482,
+       0
+      ],
+      [
+       322,
+       4524,
+       0
+      ],
+      [
+       2576,
+       4469,
+       0
+      ],
+      [
+       5152,
+       4469,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.215,
+     "stage_s": [
+      0.183,
+      0.373,
+      0.372,
+      0.151,
+      0.044
+     ],
+     "variant_wall_s": 0.0
+    },
+    "T0": {
+     "variant": "T0",
+     "splice_args": "k1=4096 eps=38110 tier1=equal mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4510,
+     "ed_milli_all": [
+      4510,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 19022,
+     "cap_violated": 0,
+     "direct_key_ppm": 0,
+     "fenced_key_ppm": 1000000,
+     "overcap_key_ppm": 48381,
+     "dep_lines_milli": 2055,
+     "par_lines_milli": 1049,
+     "pages4k_milli": 2047,
+     "outer_iters": 1,
+     "segments": 328,
+     "eps": 38110,
+     "exceptions": 0,
+     "router_child_milli": 28,
+     "P": [
+      940,
+      807,
+      915
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       152440,
+       4592,
+       0
+      ],
+      [
+       76220,
+       4549,
+       0
+      ],
+      [
+       304880,
+       4677,
+       0
+      ],
+      [
+       38110,
+       4510,
+       0
+      ],
+      [
+       19055,
+       4543,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       152440,
+       4860,
+       0
+      ],
+      [
+       76220,
+       4673,
+       0
+      ],
+      [
+       38110,
+       4576,
+       0
+      ],
+      [
+       19055,
+       4563,
+       0
+      ],
+      [
+       9527,
+       4560,
+       0
+      ],
+      [
+       4763,
+       4559,
+       0
+      ],
+      [
+       2381,
+       4555,
+       0
+      ],
+      [
+       1190,
+       4552,
+       0
+      ],
+      [
+       595,
+       4550,
+       0
+      ],
+      [
+       304880,
+       5222,
+       0
+      ],
+      [
+       609760,
+       5785,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.145,
+     "stage_s": [
+      0.053,
+      0.391,
+      0.386,
+      0.177,
+      0.044
+     ],
+     "variant_wall_s": 12.437
+    }
+   }
+  },
+  {
+   "window": "history@s16+12500000",
+   "hard": false,
+   "ed": 2.498,
+   "bytes_per_key": 21.968,
+   "d_G": 0.0,
+   "d_T": 0.108,
+   "d_V": 4.424,
+   "direct_share": 0.984851,
+   "lines": 1.072,
+   "walks": 1.035,
+   "outer_iters": 1,
+   "segments": 449,
+   "eps": 278,
+   "exceptions": 0,
+   "outer_iters_all": {
+    "V0": 1,
+    "joint": 1,
+    "G0": 1,
+    "T0": 2
+   },
+   "ed_all": {
+    "V0": 6.922,
+    "joint": 2.498,
+    "G0": 2.498,
+    "T0": 2.606
+   },
+   "bytes_per_key_all": {
+    "V0": 20.933,
+    "joint": 21.968,
+    "G0": 21.968,
+    "T0": 21.958
+   },
+   "cap_violated": {
+    "V0": 0,
+    "joint": 0,
+    "G0": 0,
+    "T0": 0
+   },
+   "verify": true,
+   "parity": true,
+   "wall_s": 28.5,
+   "variants": {
+    "V0": {
+     "variant": "V0",
+     "splice_args": "k1=16384 eps=4 tier1=pla mode=direct alpha=0 w=1 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 6922,
+     "ed_milli_all": [
+      6922,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 20933,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1727,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1010,
+     "outer_iters": 1,
+     "segments": 179810,
+     "eps": 4,
+     "exceptions": 0,
+     "router_child_milli": 1041,
+     "P": [
+      954,
+      810,
+      940
+     ],
+     "router_miss_milli": 1005,
+     "record_miss_milli": 2752,
+     "reopt": [
+      [
+       4,
+       6922,
+       0
+      ],
+      [
+       8,
+       7486,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       139,
+       34975,
+       0
+      ],
+      [
+       69,
+       18524,
+       0
+      ],
+      [
+       34,
+       10123,
+       0
+      ],
+      [
+       17,
+       6166,
+       0
+      ],
+      [
+       8,
+       4149,
+       0
+      ],
+      [
+       4,
+       3295,
+       0
+      ],
+      [
+       2,
+       2895,
+       1
+      ],
+      [
+       1,
+       2707,
+       1
+      ],
+      [
+       278,
+       72547,
+       0
+      ],
+      [
+       556,
+       140877,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.946,
+     "stage_s": [
+      0.34,
+      0.07,
+      0.149,
+      0.203,
+      0.078
+     ],
+     "variant_wall_s": 6.23
+    },
+    "joint": {
+     "variant": "joint",
+     "splice_args": "k1=16384 eps=278 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2498,
+     "ed_milli_all": [
+      2498,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21968,
+     "cap_violated": 0,
+     "direct_key_ppm": 984851,
+     "fenced_key_ppm": 15148,
+     "overcap_key_ppm": 78,
+     "dep_lines_milli": 1072,
+     "par_lines_milli": 1281,
+     "pages4k_milli": 1035,
+     "outer_iters": 1,
+     "segments": 449,
+     "eps": 278,
+     "exceptions": 0,
+     "router_child_milli": 152,
+     "P": [
+      920,
+      844,
+      919
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 2,
+     "reopt": [
+      [
+       139,
+       2576,
+       0
+      ],
+      [
+       69,
+       2909,
+       0
+      ],
+      [
+       278,
+       2498,
+       0
+      ],
+      [
+       556,
+       2501,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       139,
+       2721,
+       0
+      ],
+      [
+       69,
+       2720,
+       0
+      ],
+      [
+       34,
+       2701,
+       0
+      ],
+      [
+       17,
+       2680,
+       0
+      ],
+      [
+       8,
+       2662,
+       0
+      ],
+      [
+       4,
+       2960,
+       1
+      ],
+      [
+       2,
+       2694,
+       1
+      ],
+      [
+       278,
+       2671,
+       0
+      ],
+      [
+       556,
+       2678,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.328,
+     "stage_s": [
+      0.19,
+      0.424,
+      0.252,
+      0.288,
+      0.08
+     ],
+     "variant_wall_s": 12.284
+    },
+    "G0": {
+     "variant": "G0",
+     "same_as_joint": true,
+     "splice_args": "k1=16384 eps=278 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2498,
+     "ed_milli_all": [
+      2498,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21968,
+     "cap_violated": 0,
+     "direct_key_ppm": 984851,
+     "fenced_key_ppm": 15148,
+     "overcap_key_ppm": 78,
+     "dep_lines_milli": 1072,
+     "par_lines_milli": 1281,
+     "pages4k_milli": 1035,
+     "outer_iters": 1,
+     "segments": 449,
+     "eps": 278,
+     "exceptions": 0,
+     "router_child_milli": 152,
+     "P": [
+      920,
+      844,
+      919
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 2,
+     "reopt": [
+      [
+       139,
+       2576,
+       0
+      ],
+      [
+       69,
+       2909,
+       0
+      ],
+      [
+       278,
+       2498,
+       0
+      ],
+      [
+       556,
+       2501,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       139,
+       2721,
+       0
+      ],
+      [
+       69,
+       2720,
+       0
+      ],
+      [
+       34,
+       2701,
+       0
+      ],
+      [
+       17,
+       2680,
+       0
+      ],
+      [
+       8,
+       2662,
+       0
+      ],
+      [
+       4,
+       2960,
+       1
+      ],
+      [
+       2,
+       2694,
+       1
+      ],
+      [
+       278,
+       2671,
+       0
+      ],
+      [
+       556,
+       2678,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.328,
+     "stage_s": [
+      0.19,
+      0.424,
+      0.252,
+      0.288,
+      0.08
+     ],
+     "variant_wall_s": 0.0
+    },
+    "T0": {
+     "variant": "T0",
+     "splice_args": "k1=16384 eps=27840 tier1=equal mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2606,
+     "ed_milli_all": [
+      2606,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21958,
+     "cap_violated": 0,
+     "direct_key_ppm": 951001,
+     "fenced_key_ppm": 48998,
+     "overcap_key_ppm": 33403,
+     "dep_lines_milli": 1140,
+     "par_lines_milli": 1425,
+     "pages4k_milli": 1104,
+     "outer_iters": 2,
+     "segments": 449,
+     "eps": 27840,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      920,
+      575,
+      783
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 1,
+     "reopt": [
+      [
+       27840,
+       2606,
+       0
+      ],
+      [
+       13920,
+       2658,
+       0
+      ],
+      [
+       55680,
+       2701,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       27840,
+       2814,
+       0
+      ],
+      [
+       13920,
+       2821,
+       0
+      ],
+      [
+       6960,
+       2782,
+       0
+      ],
+      [
+       3480,
+       2762,
+       0
+      ],
+      [
+       1740,
+       2735,
+       0
+      ],
+      [
+       870,
+       2723,
+       0
+      ],
+      [
+       435,
+       2713,
+       0
+      ],
+      [
+       217,
+       2691,
+       0
+      ],
+      [
+       108,
+       2670,
+       1
+      ],
+      [
+       55680,
+       2936,
+       0
+      ],
+      [
+       111360,
+       3221,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.282,
+     "stage_s": [
+      0.05,
+      0.434,
+      0.298,
+      0.317,
+      0.076
+     ],
+     "variant_wall_s": 9.846
+    }
+   }
+  },
+  {
+   "window": "libio@s16+12500000",
+   "hard": false,
+   "ed": 2.724,
+   "bytes_per_key": 21.979,
+   "d_G": 0.0,
+   "d_T": 0.144,
+   "d_V": 4.079,
+   "direct_share": 0.881356,
+   "lines": 1.2,
+   "walks": 1.137,
+   "outer_iters": 1,
+   "segments": 515,
+   "eps": 596,
+   "exceptions": 0,
+   "outer_iters_all": {
+    "V0": 1,
+    "joint": 1,
+    "G0": 1,
+    "T0": 1
+   },
+   "ed_all": {
+    "V0": 6.803,
+    "joint": 2.724,
+    "G0": 2.724,
+    "T0": 2.868
+   },
+   "bytes_per_key_all": {
+    "V0": 18.934,
+    "joint": 21.979,
+    "G0": 21.979,
+    "T0": 21.989
+   },
+   "cap_violated": {
+    "V0": 0,
+    "joint": 0,
+    "G0": 0,
+    "T0": 0
+   },
+   "verify": true,
+   "parity": true,
+   "wall_s": 28.2,
+   "variants": {
+    "V0": {
+     "variant": "V0",
+     "splice_args": "k1=16384 eps=4 tier1=pla mode=direct alpha=0 w=1 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 6803,
+     "ed_milli_all": [
+      6803,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 18934,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1778,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1011,
+     "outer_iters": 1,
+     "segments": 110414,
+     "eps": 4,
+     "exceptions": 0,
+     "router_child_milli": 1012,
+     "P": [
+      949,
+      810,
+      940
+     ],
+     "router_miss_milli": 891,
+     "record_miss_milli": 2702,
+     "reopt": [
+      [
+       4,
+       6803,
+       0
+      ],
+      [
+       9,
+       7502,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       298,
+       67121,
+       0
+      ],
+      [
+       149,
+       34226,
+       0
+      ],
+      [
+       74,
+       18313,
+       0
+      ],
+      [
+       37,
+       10416,
+       0
+      ],
+      [
+       18,
+       6356,
+       0
+      ],
+      [
+       9,
+       4416,
+       0
+      ],
+      [
+       4,
+       3345,
+       0
+      ],
+      [
+       2,
+       2931,
+       1
+      ],
+      [
+       1,
+       2733,
+       1
+      ],
+      [
+       596,
+       131258,
+       0
+      ],
+      [
+       1192,
+       271335,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.835,
+     "stage_s": [
+      0.306,
+      0.061,
+      0.143,
+      0.175,
+      0.052
+     ],
+     "variant_wall_s": 6.079
+    },
+    "joint": {
+     "variant": "joint",
+     "splice_args": "k1=16384 eps=596 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2724,
+     "ed_milli_all": [
+      2724,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21979,
+     "cap_violated": 0,
+     "direct_key_ppm": 881356,
+     "fenced_key_ppm": 118643,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1200,
+     "par_lines_milli": 1245,
+     "pages4k_milli": 1137,
+     "outer_iters": 1,
+     "segments": 515,
+     "eps": 596,
+     "exceptions": 0,
+     "router_child_milli": 7,
+     "P": [
+      921,
+      798,
+      925
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 7,
+     "reopt": [
+      [
+       298,
+       2814,
+       0
+      ],
+      [
+       149,
+       3148,
+       0
+      ],
+      [
+       596,
+       2724,
+       0
+      ],
+      [
+       1192,
+       2761,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       298,
+       2860,
+       0
+      ],
+      [
+       149,
+       2808,
+       0
+      ],
+      [
+       74,
+       2742,
+       0
+      ],
+      [
+       37,
+       2687,
+       0
+      ],
+      [
+       18,
+       2646,
+       0
+      ],
+      [
+       9,
+       2630,
+       0
+      ],
+      [
+       4,
+       2738,
+       1
+      ],
+      [
+       2,
+       2793,
+       1
+      ],
+      [
+       596,
+       2891,
+       0
+      ],
+      [
+       1192,
+       2940,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.077,
+     "stage_s": [
+      0.221,
+      0.4,
+      0.148,
+      0.144,
+      0.073
+     ],
+     "variant_wall_s": 12.652
+    },
+    "G0": {
+     "variant": "G0",
+     "same_as_joint": true,
+     "splice_args": "k1=16384 eps=596 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2724,
+     "ed_milli_all": [
+      2724,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21979,
+     "cap_violated": 0,
+     "direct_key_ppm": 881356,
+     "fenced_key_ppm": 118643,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1200,
+     "par_lines_milli": 1245,
+     "pages4k_milli": 1137,
+     "outer_iters": 1,
+     "segments": 515,
+     "eps": 596,
+     "exceptions": 0,
+     "router_child_milli": 7,
+     "P": [
+      921,
+      798,
+      925
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 7,
+     "reopt": [
+      [
+       298,
+       2814,
+       0
+      ],
+      [
+       149,
+       3148,
+       0
+      ],
+      [
+       596,
+       2724,
+       0
+      ],
+      [
+       1192,
+       2761,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       298,
+       2860,
+       0
+      ],
+      [
+       149,
+       2808,
+       0
+      ],
+      [
+       74,
+       2742,
+       0
+      ],
+      [
+       37,
+       2687,
+       0
+      ],
+      [
+       18,
+       2646,
+       0
+      ],
+      [
+       9,
+       2630,
+       0
+      ],
+      [
+       4,
+       2738,
+       1
+      ],
+      [
+       2,
+       2793,
+       1
+      ],
+      [
+       596,
+       2891,
+       0
+      ],
+      [
+       1192,
+       2940,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.077,
+     "stage_s": [
+      0.221,
+      0.4,
+      0.148,
+      0.144,
+      0.073
+     ],
+     "variant_wall_s": 0.0
+    },
+    "T0": {
+     "variant": "T0",
+     "splice_args": "k1=16384 eps=24272 tier1=equal mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2868,
+     "ed_milli_all": [
+      2868,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21989,
+     "cap_violated": 0,
+     "direct_key_ppm": 831066,
+     "fenced_key_ppm": 168933,
+     "overcap_key_ppm": 29123,
+     "dep_lines_milli": 1283,
+     "par_lines_milli": 1303,
+     "pages4k_milli": 1217,
+     "outer_iters": 1,
+     "segments": 515,
+     "eps": 24272,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      922,
+      747,
+      872
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 1,
+     "reopt": [
+      [
+       24272,
+       2868,
+       0
+      ],
+      [
+       12136,
+       2895,
+       0
+      ],
+      [
+       48544,
+       2980,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       24272,
+       3061,
+       0
+      ],
+      [
+       12136,
+       3024,
+       0
+      ],
+      [
+       6068,
+       2991,
+       0
+      ],
+      [
+       3034,
+       2940,
+       0
+      ],
+      [
+       1517,
+       2889,
+       0
+      ],
+      [
+       758,
+       2820,
+       0
+      ],
+      [
+       379,
+       2754,
+       0
+      ],
+      [
+       189,
+       2700,
+       0
+      ],
+      [
+       94,
+       2718,
+       1
+      ],
+      [
+       48544,
+       3204,
+       0
+      ],
+      [
+       97088,
+       3422,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.951,
+     "stage_s": [
+      0.05,
+      0.409,
+      0.169,
+      0.161,
+      0.071
+     ],
+     "variant_wall_s": 9.382
+    }
+   }
+  },
+  {
+   "window": "osm@s16+12500000",
+   "hard": true,
+   "ed": 4.605,
+   "bytes_per_key": 21.161,
+   "d_G": 0.0,
+   "d_T": 0.119,
+   "d_V": 4.541,
+   "direct_share": 0.0,
+   "lines": 2.325,
+   "walks": 2.184,
+   "outer_iters": 1,
+   "segments": 144,
+   "eps": 10816,
+   "exceptions": 0,
+   "outer_iters_all": {
+    "V0": 1,
+    "joint": 1,
+    "G0": 1,
+    "T0": 1
+   },
+   "ed_all": {
+    "V0": 9.146,
+    "joint": 4.605,
+    "G0": 4.605,
+    "T0": 4.724
+   },
+   "bytes_per_key_all": {
+    "V0": 20.966,
+    "joint": 21.161,
+    "G0": 21.161,
+    "T0": 21.172
+   },
+   "cap_violated": {
+    "V0": 0,
+    "joint": 0,
+    "G0": 0,
+    "T0": 0
+   },
+   "verify": true,
+   "parity": true,
+   "wall_s": 44.8,
+   "variants": {
+    "V0": {
+     "variant": "V0",
+     "splice_args": "k1=8192 eps=10 tier1=pla mode=direct alpha=0 w=1 entry=1 cbar=16 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 9146,
+     "ed_milli_all": [
+      9146,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 20966,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 2871,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1027,
+     "outer_iters": 1,
+     "segments": 136138,
+     "eps": 10,
+     "exceptions": 0,
+     "router_child_milli": 1764,
+     "P": [
+      949,
+      810,
+      940
+     ],
+     "router_miss_milli": 2016,
+     "record_miss_milli": 2751,
+     "reopt": [
+      [
+       10,
+       9146,
+       0
+      ],
+      [
+       21,
+       11023,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2704,
+       537514,
+       0
+      ],
+      [
+       1352,
+       269070,
+       0
+      ],
+      [
+       676,
+       136038,
+       0
+      ],
+      [
+       338,
+       68736,
+       0
+      ],
+      [
+       169,
+       35755,
+       0
+      ],
+      [
+       84,
+       19132,
+       0
+      ],
+      [
+       42,
+       10832,
+       0
+      ],
+      [
+       21,
+       6609,
+       0
+      ],
+      [
+       10,
+       4422,
+       0
+      ],
+      [
+       5408,
+       1103006,
+       0
+      ],
+      [
+       10816,
+       2158771,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.801,
+     "stage_s": [
+      0.545,
+      0.109,
+      0.294,
+      0.536,
+      0.114
+     ],
+     "variant_wall_s": 9.352
+    },
+    "joint": {
+     "variant": "joint",
+     "splice_args": "k1=8192 eps=10816 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=1 cbar=16 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4605,
+     "ed_milli_all": [
+      4605,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21161,
+     "cap_violated": 0,
+     "direct_key_ppm": 0,
+     "fenced_key_ppm": 1000000,
+     "overcap_key_ppm": 299014,
+     "dep_lines_milli": 2325,
+     "par_lines_milli": 0,
+     "pages4k_milli": 2184,
+     "outer_iters": 1,
+     "segments": 144,
+     "eps": 10816,
+     "exceptions": 0,
+     "router_child_milli": 164,
+     "P": [
+      940,
+      649,
+      820
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       2704,
+       4645,
+       0
+      ],
+      [
+       1352,
+       4720,
+       0
+      ],
+      [
+       5408,
+       4610,
+       0
+      ],
+      [
+       10816,
+       4605,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2704,
+       4891,
+       0
+      ],
+      [
+       1352,
+       4830,
+       0
+      ],
+      [
+       676,
+       4763,
+       0
+      ],
+      [
+       338,
+       4662,
+       0
+      ],
+      [
+       169,
+       4491,
+       0
+      ],
+      [
+       84,
+       4253,
+       0
+      ],
+      [
+       42,
+       3967,
+       0
+      ],
+      [
+       21,
+       3605,
+       0
+      ],
+      [
+       10,
+       3682,
+       1
+      ],
+      [
+       5408,
+       4928,
+       0
+      ],
+      [
+       10816,
+       4984,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 2.251,
+     "stage_s": [
+      0.461,
+      0.74,
+      0.525,
+      0.319,
+      0.082
+     ],
+     "variant_wall_s": 21.093
+    },
+    "G0": {
+     "variant": "G0",
+     "same_as_joint": true,
+     "splice_args": "k1=8192 eps=10816 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=1 cbar=16 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4605,
+     "ed_milli_all": [
+      4605,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21161,
+     "cap_violated": 0,
+     "direct_key_ppm": 0,
+     "fenced_key_ppm": 1000000,
+     "overcap_key_ppm": 299014,
+     "dep_lines_milli": 2325,
+     "par_lines_milli": 0,
+     "pages4k_milli": 2184,
+     "outer_iters": 1,
+     "segments": 144,
+     "eps": 10816,
+     "exceptions": 0,
+     "router_child_milli": 164,
+     "P": [
+      940,
+      649,
+      820
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       2704,
+       4645,
+       0
+      ],
+      [
+       1352,
+       4720,
+       0
+      ],
+      [
+       5408,
+       4610,
+       0
+      ],
+      [
+       10816,
+       4605,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2704,
+       4891,
+       0
+      ],
+      [
+       1352,
+       4830,
+       0
+      ],
+      [
+       676,
+       4763,
+       0
+      ],
+      [
+       338,
+       4662,
+       0
+      ],
+      [
+       169,
+       4491,
+       0
+      ],
+      [
+       84,
+       4253,
+       0
+      ],
+      [
+       42,
+       3967,
+       0
+      ],
+      [
+       21,
+       3605,
+       0
+      ],
+      [
+       10,
+       3682,
+       1
+      ],
+      [
+       5408,
+       4928,
+       0
+      ],
+      [
+       10816,
+       4984,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 2.251,
+     "stage_s": [
+      0.461,
+      0.74,
+      0.525,
+      0.319,
+      0.082
+     ],
+     "variant_wall_s": 0.0
+    },
+    "T0": {
+     "variant": "T0",
+     "splice_args": "k1=8192 eps=21701 tier1=equal mode=auto alpha=0.25,0.5 w=1,2,4 entry=1 cbar=16 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4724,
+     "ed_milli_all": [
+      4724,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21172,
+     "cap_violated": 0,
+     "direct_key_ppm": 17360,
+     "fenced_key_ppm": 982639,
+     "overcap_key_ppm": 280135,
+     "dep_lines_milli": 2320,
+     "par_lines_milli": 52,
+     "pages4k_milli": 2172,
+     "outer_iters": 1,
+     "segments": 577,
+     "eps": 21701,
+     "exceptions": 0,
+     "router_child_milli": 984,
+     "P": [
+      903,
+      704,
+      825
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 5,
+     "reopt": [
+      [
+       86806,
+       4794,
+       0
+      ],
+      [
+       43403,
+       4742,
+       0
+      ],
+      [
+       173612,
+       4884,
+       0
+      ],
+      [
+       21701,
+       4724,
+       0
+      ],
+      [
+       10850,
+       4789,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       86806,
+       5360,
+       0
+      ],
+      [
+       43403,
+       5163,
+       0
+      ],
+      [
+       21701,
+       5033,
+       0
+      ],
+      [
+       10850,
+       4909,
+       0
+      ],
+      [
+       5425,
+       4770,
+       0
+      ],
+      [
+       2712,
+       4598,
+       0
+      ],
+      [
+       1356,
+       4388,
+       0
+      ],
+      [
+       678,
+       4172,
+       0
+      ],
+      [
+       339,
+       3890,
+       0
+      ],
+      [
+       173612,
+       5602,
+       0
+      ],
+      [
+       347224,
+       6058,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.894,
+     "stage_s": [
+      0.094,
+      0.477,
+      0.753,
+      0.364,
+      0.069
+     ],
+     "variant_wall_s": 14.256
+    }
+   }
+  },
+  {
+   "window": "planet@s16+12500000",
+   "hard": true,
+   "ed": 4.231,
+   "bytes_per_key": 18.77,
+   "d_G": 0.0,
+   "d_T": 0.139,
+   "d_V": 4.149,
+   "direct_share": 0.067193,
+   "lines": 2.028,
+   "walks": 1.977,
+   "outer_iters": 1,
+   "segments": 131,
+   "eps": 5216,
+   "exceptions": 0,
+   "outer_iters_all": {
+    "V0": 1,
+    "joint": 1,
+    "G0": 1,
+    "T0": 1
+   },
+   "ed_all": {
+    "V0": 8.38,
+    "joint": 4.231,
+    "G0": 4.231,
+    "T0": 4.37
+   },
+   "bytes_per_key_all": {
+    "V0": 21.472,
+    "joint": 18.77,
+    "G0": 18.77,
+    "T0": 18.665
+   },
+   "cap_violated": {
+    "V0": 0,
+    "joint": 0,
+    "G0": 0,
+    "T0": 0
+   },
+   "verify": true,
+   "parity": true,
+   "wall_s": 24.8,
+   "variants": {
+    "V0": {
+     "variant": "V0",
+     "splice_args": "k1=4096 eps=10 tier1=pla mode=direct alpha=0 w=1 entry=1 cbar=16 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 8380,
+     "ed_milli_all": [
+      8380,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21472,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 2800,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1025,
+     "outer_iters": 1,
+     "segments": 148137,
+     "eps": 10,
+     "exceptions": 0,
+     "router_child_milli": 1282,
+     "P": [
+      949,
+      810,
+      940
+     ],
+     "router_miss_milli": 1389,
+     "record_miss_milli": 2723,
+     "reopt": [
+      [
+       10,
+       8380,
+       0
+      ],
+      [
+       20,
+       10070,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2608,
+       536588,
+       0
+      ],
+      [
+       1304,
+       267575,
+       0
+      ],
+      [
+       652,
+       135346,
+       0
+      ],
+      [
+       326,
+       69891,
+       0
+      ],
+      [
+       163,
+       35492,
+       0
+      ],
+      [
+       81,
+       18732,
+       0
+      ],
+      [
+       40,
+       10280,
+       0
+      ],
+      [
+       20,
+       6247,
+       0
+      ],
+      [
+       10,
+       4275,
+       0
+      ],
+      [
+       5216,
+       1036092,
+       0
+      ],
+      [
+       10432,
+       2118870,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.935,
+     "stage_s": [
+      0.338,
+      0.061,
+      0.171,
+      0.207,
+      0.06
+     ],
+     "variant_wall_s": 5.963
+    },
+    "joint": {
+     "variant": "joint",
+     "splice_args": "k1=4096 eps=5216 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=1 cbar=16 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4231,
+     "ed_milli_all": [
+      4231,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 18770,
+     "cap_violated": 0,
+     "direct_key_ppm": 67193,
+     "fenced_key_ppm": 932806,
+     "overcap_key_ppm": 94346,
+     "dep_lines_milli": 2028,
+     "par_lines_milli": 67,
+     "pages4k_milli": 1977,
+     "outer_iters": 1,
+     "segments": 131,
+     "eps": 5216,
+     "exceptions": 0,
+     "router_child_milli": 59,
+     "P": [
+      930,
+      701,
+      879
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       2608,
+       4260,
+       0
+      ],
+      [
+       1304,
+       4288,
+       0
+      ],
+      [
+       5216,
+       4231,
+       0
+      ],
+      [
+       10432,
+       4232,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2608,
+       4437,
+       0
+      ],
+      [
+       1304,
+       4428,
+       0
+      ],
+      [
+       652,
+       4407,
+       0
+      ],
+      [
+       326,
+       4348,
+       0
+      ],
+      [
+       163,
+       4210,
+       0
+      ],
+      [
+       81,
+       3946,
+       0
+      ],
+      [
+       40,
+       3581,
+       0
+      ],
+      [
+       20,
+       3301,
+       0
+      ],
+      [
+       10,
+       4251,
+       1
+      ],
+      [
+       5216,
+       4430,
+       0
+      ],
+      [
+       10432,
+       4439,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.046,
+     "stage_s": [
+      0.207,
+      0.294,
+      0.263,
+      0.137,
+      0.055
+     ],
+     "variant_wall_s": 11.069
+    },
+    "G0": {
+     "variant": "G0",
+     "same_as_joint": true,
+     "splice_args": "k1=4096 eps=5216 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=1 cbar=16 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4231,
+     "ed_milli_all": [
+      4231,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 18770,
+     "cap_violated": 0,
+     "direct_key_ppm": 67193,
+     "fenced_key_ppm": 932806,
+     "overcap_key_ppm": 94346,
+     "dep_lines_milli": 2028,
+     "par_lines_milli": 67,
+     "pages4k_milli": 1977,
+     "outer_iters": 1,
+     "segments": 131,
+     "eps": 5216,
+     "exceptions": 0,
+     "router_child_milli": 59,
+     "P": [
+      930,
+      701,
+      879
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       2608,
+       4260,
+       0
+      ],
+      [
+       1304,
+       4288,
+       0
+      ],
+      [
+       5216,
+       4231,
+       0
+      ],
+      [
+       10432,
+       4232,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       2608,
+       4437,
+       0
+      ],
+      [
+       1304,
+       4428,
+       0
+      ],
+      [
+       652,
+       4407,
+       0
+      ],
+      [
+       326,
+       4348,
+       0
+      ],
+      [
+       163,
+       4210,
+       0
+      ],
+      [
+       81,
+       3946,
+       0
+      ],
+      [
+       40,
+       3581,
+       0
+      ],
+      [
+       20,
+       3301,
+       0
+      ],
+      [
+       10,
+       4251,
+       1
+      ],
+      [
+       5216,
+       4430,
+       0
+      ],
+      [
+       10432,
+       4439,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.046,
+     "stage_s": [
+      0.207,
+      0.294,
+      0.263,
+      0.137,
+      0.055
+     ],
+     "variant_wall_s": 0.0
+    },
+    "T0": {
+     "variant": "T0",
+     "splice_args": "k1=4096 eps=95420 tier1=equal mode=auto alpha=0.25,0.5 w=1,2,4 entry=1 cbar=16 compact=1 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 4370,
+     "ed_milli_all": [
+      4370,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 18665,
+     "cap_violated": 0,
+     "direct_key_ppm": 61068,
+     "fenced_key_ppm": 938931,
+     "overcap_key_ppm": 205527,
+     "dep_lines_milli": 2176,
+     "par_lines_milli": 61,
+     "pages4k_milli": 2103,
+     "outer_iters": 1,
+     "segments": 131,
+     "eps": 95420,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      936,
+      630,
+      825
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       95420,
+       4370,
+       0
+      ],
+      [
+       47710,
+       4401,
+       0
+      ],
+      [
+       190840,
+       4412,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       95420,
+       4702,
+       0
+      ],
+      [
+       47710,
+       4649,
+       0
+      ],
+      [
+       23855,
+       4567,
+       0
+      ],
+      [
+       11927,
+       4473,
+       0
+      ],
+      [
+       5963,
+       4397,
+       0
+      ],
+      [
+       2981,
+       4285,
+       0
+      ],
+      [
+       1490,
+       4130,
+       0
+      ],
+      [
+       745,
+       3921,
+       0
+      ],
+      [
+       372,
+       3651,
+       0
+      ],
+      [
+       190840,
+       4902,
+       0
+      ],
+      [
+       381680,
+       5211,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.935,
+     "stage_s": [
+      0.05,
+      0.312,
+      0.287,
+      0.14,
+      0.053
+     ],
+     "variant_wall_s": 7.663
+    }
+   }
+  },
+  {
+   "window": "stack@s16+12500000",
+   "hard": false,
+   "ed": 2.268,
+   "bytes_per_key": 20.982,
+   "d_G": 0.0,
+   "d_T": 0.105,
+   "d_V": 4.112,
+   "direct_share": 1.0,
+   "lines": 1.0,
+   "walks": 1.0,
+   "outer_iters": 1,
+   "segments": 69,
+   "eps": 272,
+   "exceptions": 0,
+   "outer_iters_all": {
+    "V0": 1,
+    "joint": 1,
+    "G0": 1,
+    "T0": 1
+   },
+   "ed_all": {
+    "V0": 6.38,
+    "joint": 2.268,
+    "G0": 2.268,
+    "T0": 2.373
+   },
+   "bytes_per_key_all": {
+    "V0": 21.685,
+    "joint": 20.982,
+    "G0": 20.982,
+    "T0": 21.014
+   },
+   "cap_violated": {
+    "V0": 0,
+    "joint": 0,
+    "G0": 0,
+    "T0": 0
+   },
+   "verify": true,
+   "parity": true,
+   "wall_s": 24.9,
+   "variants": {
+    "V0": {
+     "variant": "V0",
+     "splice_args": "k1=16384 eps=1 tier1=pla mode=direct alpha=0 w=1 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 6380,
+     "ed_milli_all": [
+      6380,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21685,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1211,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1002,
+     "outer_iters": 1,
+     "segments": 271411,
+     "eps": 1,
+     "exceptions": 0,
+     "router_child_milli": 1020,
+     "P": [
+      959,
+      810,
+      940
+     ],
+     "router_miss_milli": 979,
+     "record_miss_milli": 2757,
+     "reopt": [
+      [
+       1,
+       6380,
+       0
+      ],
+      [
+       2,
+       6425,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       34,
+       9940,
+       0
+      ],
+      [
+       17,
+       6465,
+       0
+      ],
+      [
+       8,
+       4378,
+       0
+      ],
+      [
+       4,
+       3447,
+       0
+      ],
+      [
+       2,
+       2997,
+       0
+      ],
+      [
+       1,
+       2778,
+       0
+      ],
+      [
+       68,
+       16850,
+       0
+      ],
+      [
+       136,
+       29482,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.787,
+     "stage_s": [
+      0.287,
+      0.052,
+      0.118,
+      0.166,
+      0.059
+     ],
+     "variant_wall_s": 4.353
+    },
+    "joint": {
+     "variant": "joint",
+     "splice_args": "k1=16384 eps=272 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2268,
+     "ed_milli_all": [
+      2268,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 20982,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1000,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1000,
+     "outer_iters": 1,
+     "segments": 69,
+     "eps": 272,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      878,
+      810,
+      940
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       34,
+       2329,
+       0
+      ],
+      [
+       17,
+       2727,
+       0
+      ],
+      [
+       68,
+       2274,
+       0
+      ],
+      [
+       136,
+       2270,
+       0
+      ],
+      [
+       272,
+       2268,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       34,
+       2521,
+       0
+      ],
+      [
+       17,
+       2562,
+       0
+      ],
+      [
+       8,
+       2567,
+       0
+      ],
+      [
+       68,
+       2485,
+       0
+      ],
+      [
+       136,
+       2485,
+       0
+      ],
+      [
+       272,
+       2485,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.887,
+     "stage_s": [
+      0.166,
+      0.365,
+      0.088,
+      0.107,
+      0.065
+     ],
+     "variant_wall_s": 8.29
+    },
+    "G0": {
+     "variant": "G0",
+     "same_as_joint": true,
+     "splice_args": "k1=16384 eps=272 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2268,
+     "ed_milli_all": [
+      2268,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 20982,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1000,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1000,
+     "outer_iters": 1,
+     "segments": 69,
+     "eps": 272,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      878,
+      810,
+      940
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       34,
+       2329,
+       0
+      ],
+      [
+       17,
+       2727,
+       0
+      ],
+      [
+       68,
+       2274,
+       0
+      ],
+      [
+       136,
+       2270,
+       0
+      ],
+      [
+       272,
+       2268,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       34,
+       2521,
+       0
+      ],
+      [
+       17,
+       2562,
+       0
+      ],
+      [
+       8,
+       2567,
+       0
+      ],
+      [
+       68,
+       2485,
+       0
+      ],
+      [
+       136,
+       2485,
+       0
+      ],
+      [
+       272,
+       2485,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.887,
+     "stage_s": [
+      0.166,
+      0.365,
+      0.088,
+      0.107,
+      0.065
+     ],
+     "variant_wall_s": 0.0
+    },
+    "T0": {
+     "variant": "T0",
+     "splice_args": "k1=16384 eps=22645 tier1=equal mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2373,
+     "ed_milli_all": [
+      2373,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21014,
+     "cap_violated": 0,
+     "direct_key_ppm": 972826,
+     "fenced_key_ppm": 27174,
+     "overcap_key_ppm": 27160,
+     "dep_lines_milli": 1058,
+     "par_lines_milli": 58,
+     "pages4k_milli": 1056,
+     "outer_iters": 1,
+     "segments": 552,
+     "eps": 22645,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      892,
+      368,
+      620
+     ],
+     "router_miss_milli": 0,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       181160,
+       2907,
+       0
+      ],
+      [
+       90580,
+       2614,
+       0
+      ],
+      [
+       362320,
+       3464,
+       0
+      ],
+      [
+       45290,
+       2451,
+       0
+      ],
+      [
+       22645,
+       2373,
+       0
+      ],
+      [
+       11322,
+       2410,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       181160,
+       3383,
+       0
+      ],
+      [
+       90580,
+       2937,
+       0
+      ],
+      [
+       45290,
+       2712,
+       0
+      ],
+      [
+       22645,
+       2606,
+       0
+      ],
+      [
+       11322,
+       2606,
+       0
+      ],
+      [
+       5661,
+       2590,
+       0
+      ],
+      [
+       2830,
+       2580,
+       0
+      ],
+      [
+       1415,
+       2575,
+       0
+      ],
+      [
+       707,
+       2574,
+       0
+      ],
+      [
+       362320,
+       4245,
+       0
+      ],
+      [
+       724640,
+       5872,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.013,
+     "stage_s": [
+      0.073,
+      0.505,
+      0.114,
+      0.134,
+      0.065
+     ],
+     "variant_wall_s": 12.108
+    }
+   }
+  },
+  {
+   "window": "wise@s16+12500000",
+   "hard": false,
+   "ed": 2.436,
+   "bytes_per_key": 21.874,
+   "d_G": 0.0,
+   "d_T": 0.098,
+   "d_V": 4.576,
+   "direct_share": 1.0,
+   "lines": 1.06,
+   "walks": 1.016,
+   "outer_iters": 1,
+   "segments": 392,
+   "eps": 188,
+   "exceptions": 0,
+   "outer_iters_all": {
+    "V0": 1,
+    "joint": 1,
+    "G0": 1,
+    "T0": 1
+   },
+   "ed_all": {
+    "V0": 7.012,
+    "joint": 2.436,
+    "G0": 2.436,
+    "T0": 2.534
+   },
+   "bytes_per_key_all": {
+    "V0": 19.208,
+    "joint": 21.874,
+    "G0": 21.874,
+    "T0": 21.854
+   },
+   "cap_violated": {
+    "V0": 0,
+    "joint": 0,
+    "G0": 0,
+    "T0": 0
+   },
+   "verify": true,
+   "parity": true,
+   "wall_s": 24.9,
+   "variants": {
+    "V0": {
+     "variant": "V0",
+     "splice_args": "k1=16384 eps=5 tier1=pla mode=direct alpha=0 w=1 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 7012,
+     "ed_milli_all": [
+      7012,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 19208,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1942,
+     "par_lines_milli": 0,
+     "pages4k_milli": 1013,
+     "outer_iters": 1,
+     "segments": 110815,
+     "eps": 5,
+     "exceptions": 0,
+     "router_child_milli": 1012,
+     "P": [
+      949,
+      810,
+      940
+     ],
+     "router_miss_milli": 916,
+     "record_miss_milli": 2719,
+     "reopt": [
+      [
+       5,
+       7012,
+       0
+      ],
+      [
+       11,
+       7908,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       94,
+       22219,
+       0
+      ],
+      [
+       47,
+       12763,
+       0
+      ],
+      [
+       23,
+       7426,
+       0
+      ],
+      [
+       11,
+       4819,
+       0
+      ],
+      [
+       5,
+       3509,
+       0
+      ],
+      [
+       2,
+       2896,
+       1
+      ],
+      [
+       1,
+       2706,
+       1
+      ],
+      [
+       188,
+       41912,
+       0
+      ],
+      [
+       376,
+       75454,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.87,
+     "stage_s": [
+      0.318,
+      0.065,
+      0.151,
+      0.188,
+      0.053
+     ],
+     "variant_wall_s": 5.57
+    },
+    "joint": {
+     "variant": "joint",
+     "splice_args": "k1=16384 eps=188 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2436,
+     "ed_milli_all": [
+      2436,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21874,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1060,
+     "par_lines_milli": 1004,
+     "pages4k_milli": 1016,
+     "outer_iters": 1,
+     "segments": 392,
+     "eps": 188,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      918,
+      810,
+      940
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       94,
+       2485,
+       0
+      ],
+      [
+       47,
+       3031,
+       0
+      ],
+      [
+       188,
+       2436,
+       0
+      ],
+      [
+       376,
+       2441,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       94,
+       2635,
+       0
+      ],
+      [
+       47,
+       2680,
+       0
+      ],
+      [
+       23,
+       2671,
+       0
+      ],
+      [
+       188,
+       2613,
+       0
+      ],
+      [
+       376,
+       2621,
+       0
+      ],
+      [
+       752,
+       2631,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.382,
+     "stage_s": [
+      0.202,
+      0.53,
+      0.178,
+      0.196,
+      0.137
+     ],
+     "variant_wall_s": 9.111
+    },
+    "G0": {
+     "variant": "G0",
+     "same_as_joint": true,
+     "splice_args": "k1=16384 eps=188 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2436,
+     "ed_milli_all": [
+      2436,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21874,
+     "cap_violated": 0,
+     "direct_key_ppm": 1000000,
+     "fenced_key_ppm": 0,
+     "overcap_key_ppm": 0,
+     "dep_lines_milli": 1060,
+     "par_lines_milli": 1004,
+     "pages4k_milli": 1016,
+     "outer_iters": 1,
+     "segments": 392,
+     "eps": 188,
+     "exceptions": 0,
+     "router_child_milli": 0,
+     "P": [
+      918,
+      810,
+      940
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 0,
+     "reopt": [
+      [
+       94,
+       2485,
+       0
+      ],
+      [
+       47,
+       3031,
+       0
+      ],
+      [
+       188,
+       2436,
+       0
+      ],
+      [
+       376,
+       2441,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       94,
+       2635,
+       0
+      ],
+      [
+       47,
+       2680,
+       0
+      ],
+      [
+       23,
+       2671,
+       0
+      ],
+      [
+       188,
+       2613,
+       0
+      ],
+      [
+       376,
+       2621,
+       0
+      ],
+      [
+       752,
+       2631,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 1.382,
+     "stage_s": [
+      0.202,
+      0.53,
+      0.178,
+      0.196,
+      0.137
+     ],
+     "variant_wall_s": 0.0
+    },
+    "T0": {
+     "variant": "T0",
+     "splice_args": "k1=16384 eps=15944 tier1=equal mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=15 router_leaf=8 exc=64 outer=4 sim=500000 warm=125000 seed=42 scale_as=200000000 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940",
+     "ed_milli": 2534,
+     "ed_milli_all": [
+      2534,
+      -1,
+      -1,
+      -1
+     ],
+     "bytes_per_key_milli": 21854,
+     "cap_violated": 0,
+     "direct_key_ppm": 979591,
+     "fenced_key_ppm": 20408,
+     "overcap_key_ppm": 19075,
+     "dep_lines_milli": 1111,
+     "par_lines_milli": 1034,
+     "pages4k_milli": 1063,
+     "outer_iters": 1,
+     "segments": 784,
+     "eps": 15944,
+     "exceptions": 0,
+     "router_child_milli": 85,
+     "P": [
+      922,
+      519,
+      601
+     ],
+     "router_miss_milli": 1,
+     "record_miss_milli": 7,
+     "reopt": [
+      [
+       31888,
+       2562,
+       0
+      ],
+      [
+       15944,
+       2534,
+       0
+      ],
+      [
+       63776,
+       2689,
+       0
+      ],
+      [
+       7972,
+       2671,
+       0
+      ]
+     ],
+     "stage1": [
+      [
+       31888,
+       2767,
+       0
+      ],
+      [
+       15944,
+       2721,
+       0
+      ],
+      [
+       7972,
+       2713,
+       0
+      ],
+      [
+       3986,
+       2695,
+       0
+      ],
+      [
+       1993,
+       2681,
+       0
+      ],
+      [
+       996,
+       2672,
+       0
+      ],
+      [
+       498,
+       2662,
+       0
+      ],
+      [
+       249,
+       2649,
+       0
+      ],
+      [
+       124,
+       2691,
+       0
+      ],
+      [
+       63776,
+       2938,
+       0
+      ],
+      [
+       127552,
+       3256,
+       0
+      ]
+     ],
+     "verify": {
+      "found": 12500000,
+      "n": 12500000,
+      "absent_false": 1000000,
+      "absent_true": 0,
+      "pass": true
+     },
+     "parity": true,
+     "build_s": 0.931,
+     "stage_s": [
+      0.054,
+      0.433,
+      0.131,
+      0.138,
+      0.083
+     ],
+     "variant_wall_s": 10.11
+    }
+   }
+  }
+ ]
+}
