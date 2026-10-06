@@ -202,6 +202,173 @@ for c in published pinned warmup; do rsync -a --exclude bin/ $R/$c/ $G/$c/ && cp
 git checkout -b gre-baselines-$(date +%F) && git add $G && git commit -m "GRE baselines $(date +%F)" && git push -u origin HEAD
 ```
 
+## 5b. SPLICE-H (splice, splice_thp)
+
+SPLICE-H is the read-only index of `experimental/scaleli/include/splice/` (design, evidence and kill criteria:
+`experimental/scaleli/docs/SPLICE_DESIGN.md`). In GRE it is the index `splice`, plus `splice_thp` (the same layout
+with `MADV_HUGEPAGE` on its arena). `scaleli_splice` is SCALE-LI's joint-root cell Jg0 from section 5, **not** this
+index. Each dataset's cell (tier-1 knots, eps, entry geometry, slack) was chosen offline on the Mac by `splice_count`
+over all 200M keys and is committed as `experimental/scaleli/results/splice_h/args/<ds>.args` (`<ds>.compact.args`
+for the compact arm, absent for books, covid and osm, where no cell meets 16.5 B/key: `--splice-arm compact` refuses
+those datasets); `gre_run.sh --splice-plan` hands it to the build, which then reproduces that layout with one
+PLA pass (its `splice_layout_hash` must equal the one in `results/splice_h/<ds>.json`). Without the args files,
+`--splice-plan none` builds with the defaults and the selection runs inside bulk_load (valid, but a longer build).
+
+The protocol follows AIDB (`results/splice_h/design_evidence/warmup_verified.json`): 20M untimed lookups then 100M
+timed, `OMP_NUM_THREADS=1` (gre_run.sh sets it; GRE's sampler depends on the OpenMP team size), one pinned core, a
+warm headline plus a cold W=0 companion with the same seed, at least 3 interleaved rounds, and a within-process
+check of the first-chunk transient. Every command below is run from the SPLICE checkout (`~/SPLICE`, i.e.
+`/tmp/louisvasseur/SPLICE` on DIAS).
+
+0) Machine state, once, before anything else:
+
+```bash
+R=~/splice_results; mkdir -p $R
+{ date -u; cat /sys/kernel/mm/transparent_hugepage/enabled /sys/kernel/mm/transparent_hugepage/defrag; grep -E 'AnonHugePages|HugePages_Total' /proc/meminfo; lscpu -e=CPU,CORE,SOCKET,NODE,CACHE; cat /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor; echo MALLOC_CONF=${MALLOC_CONF-}; } > $R/machine.txt
+```
+
+Pin to core 2. The CPU that shares core 2's L2 (the same L2 id in the CACHE column of `lscpu -e`) must stay idle:
+Goldmont shares 2 MB of L2 per module, and the cost model prices exactly that L2. Use the performance governor.
+
+THP decides what step 3 measures. With `enabled` = `[madvise]` or `[never]`, step 3 is the **4 KiB arm** (splice
+never asks for huge pages; jemalloc's default does not either). With `[always]`, every anonymous mapping, the plain
+`splice` arena included (2 MiB aligned), can get huge pages: step 3 is then a THP run for every index, there is no
+4 KiB arm, and the 4 KiB kill rule below cannot be applied; name the OUTDIRs `warm_thpalways`/`cold_thpalways`
+instead of `warm`/`cold` and ask for `madvise` before drawing the 4 KiB conclusion. gre_report.py warns when a
+`splice` (not `splice_thp`) log reports `splice_arena_anon_huge_bytes` above 0.
+
+1) Build (inside the activated conda environment, while no timed run is active). gre_lite.sh now builds `splice`,
+`splice_thp`, `trace_splice`, `trace_lipp` and `nullindex` (an O(1) get() that touches no memory: the harness
+baseline of step 8) next to the existing names; it stops with a CMake error if the checkout has no
+`experimental/scaleli/include/splice/layout.hpp`. Then check the read path as compiled by this GCC (no call, division,
+x87, FMA, BSF/BSR/LZCNT/TZCNT, indirect jump other than the segment-kind jump table, and no store except the
+out-parameter and the stack):
+
+```bash
+experimental/scaleli/tools/gre_lite.sh
+grep -E 'splice' /tmp/louisvasseur/GRE/build/gre_lite_build.txt   # cksums of the copied SPLICE files and headers
+experimental/scaleli/tools/splice_asm_check.sh g++ > $R/asm_check.txt; tail -3 $R/asm_check.txt   # must end in PASS
+```
+
+2) Smoke test on a 10M fb prefix, with build defaults and no per-dataset plan:
+
+```bash
+cd /tmp/louisvasseur/GRE && FB=/tmp/louisvasseur/SPLICE/experimental/scaleli/data/external/gre/fb; for idx in splice splice_thp trace_splice; do SPLICE_ARGS= OMP_NUM_THREADS=1 ./build/microbench --keys_file=$FB --keys_file_type=binary --read=1 --insert=0 --operations_num=1000000 --table_size=10000000 --init_table_ratio=1 --thread_num=1 --memory --index=$idx --output_path=smoke_splice.csv > smoke_$idx.log 2>&1; echo "$idx: $(grep -E '^(Throughput|success_read|splice_total_bytes|splice_layout_hash|trace_chunks_n)' smoke_$idx.log | tr '\n' ' ')"; done
+cd ~/SPLICE
+```
+
+Every line must show `success_read: 1000000`. A `splice_error:` line in a log names the problem (bad `SPLICE_ARGS`,
+`--thread_num` other than 1, unsorted input); the process then exits with status 2.
+
+3) Headline grid, warm (W=20M, pinned) and its cold companion (W=0, pinned), same seed, conditions alternating every
+round:
+
+```bash
+cd ~/SPLICE; R=~/splice_results; mkdir -p $R; D=fb,osm,books,covid,genome,history,libio,planet,stack,wise; I=splice,pgm,lipp,sortedarray,alex,btree,artunsync; P=experimental/scaleli/results/splice_h/args; export R D I P
+nohup bash -c 'for k in 1 2 3; do for j in 0 1; do case $(( (k + j) % 2 )) in 0) c=warm a="--warmup 20000000 --pin 2";; 1) c=cold a="--warmup 0 --pin 2";; esac; rc=0; experimental/scaleli/tools/gre_run.sh $R/$c --datasets $D --indexes $I $a --repeats $k --resume --splice-plan $P >> $R/$c.out 2>&1 || rc=$?; [ $rc != 2 ] || { echo "gre_run.sh refused, see $R/$c.out"; exit 2; }; done; done' > $R/grid.out 2>&1 &
+```
+
+Use 5 rounds (`k in 1 2 3 4 5`) if time allows; `--resume` skips what is done, so the same block with a larger range
+continues the grid. gre_run.sh refuses to start (exit 2) if any `<ds>.args` file is missing or malformed, and checks
+every splice log for `splice_index:` and the absence of `splice_error`. `D=fb,osm` with `k in 1` gives a first pass:
+time it before launching all ten datasets.
+
+4) THP arm, only if `/sys/kernel/mm/transparent_hugepage/enabled` shows `[madvise]` or `[always]`. It covers every
+index of the arm (jemalloc's `thp:always` for the others, `MADV_HUGEPAGE` for splice_thp). Run it after the grid of
+step 3, in the same shell (R, D and P exported):
+
+```bash
+cd ~/SPLICE; export MALLOC_CONF=thp:always; I=splice_thp,pgm,lipp,sortedarray; export I
+nohup bash -c 'for k in 1 2 3; do c=thp_warm a="--warmup 20000000 --pin 2"; rc=0; experimental/scaleli/tools/gre_run.sh $R/$c --datasets $D --indexes $I $a --repeats $k --resume --splice-plan $P >> $R/$c.out 2>&1 || rc=$?; [ $rc != 2 ] || { echo "gre_run.sh refused, see $R/$c.out"; exit 2; }; done' > $R/thp.out 2>&1 &
+unset MALLOC_CONF
+grep -h splice_arena_anon_huge_bytes $R/thp_warm/logs/*__splice_thp__*.log; grep AnonHugePages /proc/meminfo
+```
+
+Record `splice_arena_anon_huge_bytes` (gre_report.py prints its share of the arena) and `AnonHugePages`.
+
+5) Transient check (within process, paired; the trace_* indexes time every 1M get() calls and are never headline
+numbers):
+
+```bash
+cd ~/SPLICE; for k in 1 2 3; do for W in 0 1000000 20000000; do experimental/scaleli/tools/gre_run.sh $R/transient_w$W --datasets fb,osm --indexes trace_splice,trace_lipp --warmup $W --pin 2 --repeats $k --resume --splice-plan $P >> $R/transient.out 2>&1; done; done
+python3 experimental/scaleli/tools/gre_transient.py $R/transient_w0 $R/transient_w1000000 $R/transient_w20000000 > $R/transient.md
+```
+
+ACCEPT means: at W=20M the first timed chunk is within max(2 x chunk spread, 1%) of the run's median chunk, and at
+W=0 the transient lasts at most 2 chunks (2M lookups). INVESTIGATE (THP collapse, frequency, page faults) rather than
+enlarging the warm-up.
+
+6) Reports:
+
+```bash
+for c in warm cold; do python3 experimental/scaleli/tools/gre_report.py $R/$c > $R/$c/report.md; python3 experimental/scaleli/tools/gre_report.py $R/$c --ref pgm --splice-json experimental/scaleli/results/splice_h > $R/$c/report_vs_pgm.md; done
+```
+
+Besides section 5's tables, every dataset with splice runs gets a SPLICE check: index RSS against the index's own
+`splice_total_bytes` (OK within 3%, and 18-25 B/key unless the cell is compact), predicted E[D], and layout hashes
+that must agree between repeats, between splice and splice_thp, and (with `--splice-json`) with the Mac's
+`splice_count` result. Its findings are listed under Warnings.
+
+7) Ablations (design section 8, row 10), measured like the headline (warm, pinned, paired with the same rounds).
+The plan file fixes the cell; a global `SPLICE_ARGS` is appended after it and wins. `eps=0` makes bulk_load
+bisect eps again where the ablation changes the fit (Hist-Tree knots, K1, exceptions); the others keep the plan's
+eps. One OUTDIR per ablation, so `--resume` and the recorded `splice_args` never mix two of them:
+
+```bash
+cd ~/SPLICE; DA=fb,osm,books,stack; export DA
+nohup bash -c 'for k in 1 2 3; do for ab in "histtree:tier1=histtree eps=0" "direct:mode=direct" "fenced:mode=fenced" "k16k:k1=16384 eps=0" "exc0:exc=0 eps=0"; do n=${ab%%:*}; d=$DA; [ $n = direct ] && d=books,stack; SPLICE_ARGS="${ab#*:}" experimental/scaleli/tools/gre_run.sh $R/abl_$n --datasets $d --indexes splice --warmup 20000000 --pin 2 --repeats $k --resume --splice-plan $P >> $R/abl.out 2>&1; done; done' > $R/abl_loop.out 2>&1 &
+for n in histtree direct fenced k16k exc0; do python3 experimental/scaleli/tools/gre_report.py $R/abl_$n > $R/abl_$n/report.md; done
+```
+
+Compare each ablation's splice throughput with the warm grid's splice on the same dataset (step 3, same rounds).
+The Mac counts already put the Hist-Tree knots within 0.01 lines of the learned knots on most datasets
+(`results/splice_h/COUNTS.md`); a GRE difference inside the round-to-round spread confirms that the "learned
+knots" claim is dead. `mode=direct` runs on books and stack only: on fb and osm the cap-bound DIRECT-only layout
+costs about 160-250 D per lookup in the model (hours per run), and the counts already rule it out. Not implemented: the "static PGM with a parallel
+last-mile window" ablation of the design.
+
+8) Counter check (cost model, design section 8) on fb and stack. List the events first, then choose an L2-miss load
+event and a D-side page-walk event (on Goldmont, for example `MEM_LOAD_UOPS_RETIRED.L2_MISS` and
+`PAGE_WALKS.D_SIDE_COUNT` or `MEM_UOPS_RETIRED.DTLB_MISS_LOADS`; check every name against perf_events.txt). perf
+counts the whole process, and GRE draws its 100M lookup keys by random reads of the 1.6 GB key array before the
+timed loop (about one L2 miss and one walk per op), so the harness is subtracted with `nullindex`, whose get()
+touches no memory, at the same op counts; the build is subtracted with a 1-op run of each:
+
+```bash
+perf list | grep -i -E 'walk|dtlb|l2_miss' > $R/perf_events.txt
+EV=<l2-miss event>,<page-walk event>; MB=/tmp/louisvasseur/GRE/build/microbench; DATA=/tmp/louisvasseur/SPLICE/experimental/scaleli/data/external/gre
+for ds in fb stack; do for idx in splice nullindex; do for ops in 100000000 1; do SPLICE_ARGS="$(cat $P/$ds.args)" SPLICE_BUILD_THREADS=16 OMP_NUM_THREADS=1 perf stat -x, -o $R/perf_${ds}_${idx}_$ops.csv -e cycles,instructions,$EV $MB --keys_file=$DATA/$ds --keys_file_type=binary --read=1 --insert=0 --operations_num=$ops --table_size=-1 --init_table_ratio=1 --thread_num=1 --memory --index=$idx --pin_core=2 --output_path=$R/perf_out.csv > $R/perf_${ds}_${idx}_$ops.log 2>&1; done; done; done
+grep -h '^splice_stats' $R/perf_fb_splice_100000000.log $R/perf_stack_splice_100000000.log > $R/perf_expected.txt
+```
+
+Per lookup = [(splice at 100M - splice at 1) - (nullindex at 100M - nullindex at 1)] / 1e8. Expected, from the
+`splice_stats` line of the same log (all per lookup, milli): L2-miss loads = (`dep_lines_milli` +
+`par_lines_milli`)/1000 + the simulated `record_miss_milli` and `router_miss_milli`/1000 (the second line of a
+2-line entry and the extra lines of a DIRECT window are real loads that miss); walks = `pages4k_milli`/1000. The
+Mac's values for the committed cells are in `results/splice_h/COUNTS.md` ("Counter check" table). A deviation of
+more than 0.3 per lookup in either count invalidates the count model; within it, the D weighting (parallel lines at
+0.05 D, walks at their simulated miss probability) is what steps 3-5 test.
+
+Decision rules (`docs/SPLICE_DESIGN.md` section 8):
+
+- The headline is the warm 4 KiB arm; the cold arm is the GRE-as-published comparison.
+- Adopt SPLICE-H only if the lower 95% CI bound of splice/pgm on fb (report_vs_pgm.md) is above 1.15.
+- Kill the read-only claim if fb measures below 1.35 Mops/s on 4 KiB pages.
+- Report the margins on the other datasets only after PGM and LIPP have run there, in the same rounds.
+- Push results under `experimental/scaleli/results/splice_<date>/` without `bin/`:
+
+```bash
+G=experimental/scaleli/results/splice_$(date +%F); mkdir -p $G
+for c in warm cold thp_warm transient_w0 transient_w1000000 transient_w20000000 abl_histtree abl_direct abl_fenced abl_k16k abl_exc0; do [ -d $R/$c ] && rsync -a --exclude bin/ $R/$c/ $G/$c/; done
+cp $R/*.out $R/*.md $R/machine.txt $R/perf_* $G/ 2>/dev/null; git checkout -b splice-$(date +%F) && git add $G && git commit -m "SPLICE-H GRE runs $(date +%F)" && git push -u origin HEAD
+```
+
+Not implemented in this change: the rest of the calibration kit of the design (a pointer chase over 4 GB on 4 KiB
+pages and on THP for D and the walk cost; k adjacent independent lines, k = 1..10; an lfence A/B on the get() loop)
+and the static-PGM-with-window ablation. The O(1) harness index exists (`nullindex`): add it to step 3's index list
+for one round to measure the harness residual. Until the kit exists, D, the walk costs and the overlap credit stay
+estimates.
+
 ## Paths
 
 Every script finds the repository root by walking up to `walkthrough.py` (override with `SPLICE_ROOT`), so it

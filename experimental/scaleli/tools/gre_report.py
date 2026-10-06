@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Markdown report for a gre_run.sh OUTDIR: correctness of every run, throughput, index memory and build time.
 
-    python3 gre_report.py OUTDIR [--ref sortedarray|btree|...] > OUTDIR/report.md
+    python3 gre_report.py OUTDIR [--ref sortedarray|btree|...] [--splice-json DIR] > OUTDIR/report.md
 
 Reads OUTDIR/runs.tsv (the last row per repeat, dataset and index counts), OUTDIR/config.txt, OUTDIR/provenance.txt
 and each log. Logs from the unpatched GRE (no gre_lite_patch, rss_* or build_ns lines) are fine; those columns stay
@@ -10,9 +10,15 @@ within-cell SD of ln throughput over all cells of the dataset (df = runs - cells
 every cell; each cell's own SD is printed, and a cell whose SD exceeds twice the pooled one is flagged, since its CI
 is then too narrow. Only runs that pass every correctness check enter the statistics. Exit status 1 if any run
 fails a check, 2 if OUTDIR has no runs.
+SPLICE-H runs (splice, splice_thp, trace_splice) add a per-dataset SPLICE check: index RSS against the index's own
+splice_total_bytes (within 3%, and 18-25 B/key unless the cell is compact), predicted E[D], the AnonHugePages share of
+splice_thp's arena, and layout hashes that must agree between repeats (and, with --splice-json DIR, with
+splice_count's DIR/<ds>.json). Its findings go to Warnings; they never change the exit status. Without SPLICE runs
+the report is unchanged.
 Standard library only; runs on Python 3.6.
 """
 import argparse
+import json
 import math
 import os
 import re
@@ -36,6 +42,14 @@ RE_PATCH = re.compile(r'^gre_lite_patch: warmup_num=(\d+) pin_core=(-?\d+)\s*$')
 RE_TABLE = re.compile(r'^Table size is (\d+), Init table size is (\d+)\s*$')
 RE_TPUT = re.compile(r'^Throughput = (\d+)\s*$')
 RE_MEM = re.compile(r'^Memory: (-?\d+)\s*$')
+# SPLICE-H facade lines (integrations/gre_splice/README.md) and the trace_* chunk timer
+SPLICE_IDX = ('splice', 'splice_thp', 'trace_splice')
+SPLICE_BPK = (18.0, 25.0)  # fast cells: 22 B/key cap plus allocator and page slack; compact cells are exempt
+SPLICE_TOL = 0.03          # index RSS against the self-reported splice_total_bytes
+RE_SPLICE = re.compile(r'^(splice_total_bytes|splice_arena_bytes|splice_arena_anon_huge_bytes|splice_predicted_ed_milli|'
+                       r'splice_bulk_load_ns|splice_hash_ns|splice_keys|trace_chunks_n): (-?\d+)\s*$')
+RE_SPLICE_HEX = re.compile(r'^(splice_layout_hash|splice_full_hash): (0x[0-9a-fA-F]+)\s*$')
+RE_SPLICE_TEXT = re.compile(r'^(splice_args_effective|splice_index): (.*?)\s*$')
 RE_FLAG = re.compile(r'^(keys_file|read|insert|operations_num|table_size|init_table_ratio|index|thread_num|seed) = (.*?)\s*$')
 
 
@@ -83,6 +97,18 @@ def parse_log(path):
             m = RE_FLAG.match(line)
             if m and m.group(1) not in r['flags']:
                 r['flags'][m.group(1)] = m.group(2)
+                continue
+            if line.startswith('splice_') or line.startswith('trace_'):
+                m = RE_SPLICE.match(line)
+                if m:
+                    r[m.group(1)] = int(m.group(2))
+                    continue
+                m = RE_SPLICE_HEX.match(line) or RE_SPLICE_TEXT.match(line)
+                if m:
+                    r[m.group(1)] = m.group(2)
+                    continue
+            if 'splice_error' in line:
+                r['splice_error'] = line.strip()
     if r['throughputs']:
         r['throughput'] = r['throughputs'][-1]
     return r
@@ -186,6 +212,13 @@ def check_run(row, log, cfg):
             p.append(('warmup', 'no warmup_ns'))
     if want_pin >= 0 and log.get('pinned_core') != want_pin:
         p.append(('pin', 'pinning to core %d not confirmed' % want_pin))
+    if row.get('index') in SPLICE_IDX:
+        if 'splice_index' not in log:
+            p.append(('other', 'no splice_index line'))
+        if 'splice_error' in log:
+            p.append(('other', log['splice_error']))
+    if (row.get('index') or '').startswith('trace_') and 'trace_chunks_n' not in log:
+        p.append(('other', 'no trace_chunks_n line'))
     return p
 
 
@@ -257,10 +290,93 @@ def load_md(runs, out):
     return busy
 
 
+def splice_md(ds, cells, a, cfg, out, warn):
+    """SPLICE check of one dataset: memory against the self-report, predicted E[D], THP share, layout hashes."""
+    present = [ix for ix in SPLICE_IDX if ix in cells]
+    if not present:
+        return
+    want = None   # splice_count's layout hash of the chosen cell (--splice-json)
+    if a.splice_json:
+        path = os.path.join(a.splice_json, ds + '.json')
+        try:
+            with open(path, encoding='utf-8') as f:
+                j = json.load(f)
+            arm = cfg.get('splice_arm', 'fast')
+            if arm == 'compact':
+                want = j.get('compact_layout_hash') or ((j.get('chosen') or {}).get('compact') or {}).get('layout_hash')
+            else:
+                want = j.get('layout_hash')
+            if isinstance(want, int):
+                want = '0x%016x' % want
+            if not want:
+                warn.append('%s: --splice-json: %s has no layout hash for the %s arm; the identity check was not made'
+                            % (ds, path, arm))
+        except (IOError, OSError, ValueError) as e:
+            warn.append('%s: --splice-json: cannot read %s (%s)' % (ds, path, e))
+    out.append('\nSPLICE check (index RSS against the index\'s own splice_total_bytes, tolerance %.0f%%; %g-%g B/key '
+               'unless the cell is compact):\n' % (100 * SPLICE_TOL, SPLICE_BPK[0], SPLICE_BPK[1]))
+    out.append('| index | runs | index RSS B/key | self-reported B/key | deviation | predicted E[D] (D) | '
+               'bulk load s | hash s | AnonHugePages share | layout hash | verdict |')
+    out.append('|---|---|---|---|---|---|---|---|---|---|---|')
+    hashes = {}
+    for ix in present:
+        rs = [r['parsed'] for r in cells[ix]]
+        def per_key(field):
+            v = [p[field] / float(p['init_table_size']) for p in rs if field in p and p.get('init_table_size')]
+            return mean(v)
+        def avg(field, scale=1.0):
+            v = [p[field] / scale for p in rs if field in p]
+            return mean(v)
+        rss, selfr = per_key('index_rss_bytes'), per_key('splice_total_bytes')
+        compact = any('compact=1' in p.get('splice_args_effective', '').split() for p in rs)
+        dev = rss / selfr - 1 if rss is not None and selfr else None
+        problems = []
+        if dev is None:
+            problems.append('no index RSS or splice_total_bytes')
+        elif abs(dev) > SPLICE_TOL:
+            problems.append('index RSS %.3f B/key is %+.2f%% off its splice_total_bytes %.3f B/key'
+                            % (rss, 100 * dev, selfr))
+        if rss is not None and not compact and not SPLICE_BPK[0] <= rss <= SPLICE_BPK[1]:
+            problems.append('index RSS %.3f B/key outside %g-%g B/key' % (rss, SPLICE_BPK[0], SPLICE_BPK[1]))
+        huge = ''
+        sh = [p['splice_arena_anon_huge_bytes'] / float(p['splice_arena_bytes']) for p in rs
+              if p.get('splice_arena_anon_huge_bytes', -1) >= 0 and p.get('splice_arena_bytes')]
+        if ix == 'splice_thp':
+            huge = fmt(mean(sh), 3) if sh else 'not reported'
+        elif sh and max(sh) > 0:
+            # THP enabled=[always] gives the plain index huge pages too: this is then not a 4 KiB arm
+            huge = fmt(mean(sh), 3)
+            problems.append('arena has AnonHugePages (share %.3f) without MADV_HUGEPAGE: THP is [always], so this '
+                            'run is not a 4 KiB-page arm' % max(sh))
+        hs = sorted(set(p['splice_layout_hash'].lower() for p in rs if 'splice_layout_hash' in p))
+        hashes[ix] = hs
+        if len(hs) > 1:
+            problems.append('layout hash differs between repeats (%s)' % ', '.join(hs))
+        if want and hs and hs != [want.lower()]:
+            problems.append('layout hash %s != splice_count %s/%s.json %s%s'
+                            % (', '.join(hs), a.splice_json, ds, want.lower(),
+                               ' (global SPLICE_ARGS was set: %s)' % cfg['splice_args'] if cfg.get('splice_args') else ''))
+        ed = avg('splice_predicted_ed_milli', 1000.0)
+        hcol = ', '.join(hs) or '-'
+        if want and hs == [want.lower()]:
+            hcol += ' (= splice_count)'
+        out.append('| %s | %d | %s | %s | %s | %s | %s | %s | %s | %s | %s |' % (
+            ix + (' (compact)' if compact else ''), len(rs), fmt(rss, 3), fmt(selfr, 3),
+            '' if dev is None else '%+.2f%%' % (100 * dev), fmt(ed, 3), fmt(avg('splice_bulk_load_ns', 1e9), 2),
+            fmt(avg('splice_hash_ns', 1e9), 2), huge or 'n/a', hcol, 'WARN' if problems else 'OK'))
+        for m in problems:
+            warn.append('%s %s: SPLICE check: %s' % (ds, ix, m))
+    # splice_thp differs from splice only by MADV_HUGEPAGE: the layout must be the same
+    if hashes.get('splice') and hashes.get('splice_thp') and hashes['splice'] != hashes['splice_thp']:
+        warn.append('%s: splice and splice_thp layout hashes differ (%s vs %s); they must build one layout'
+                    % (ds, ', '.join(hashes['splice']), ', '.join(hashes['splice_thp'])))
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     ap.add_argument('outdir')
     ap.add_argument('--ref', help='reference index for throughput ratios (default sortedarray, else btree)')
+    ap.add_argument('--splice-json', help='splice_count results directory (results/splice_h): compare layout hashes')
     a = ap.parse_args()
     runs, retried = load_runs(a.outdir) or ([], 0)
     if not runs:
@@ -417,6 +533,7 @@ def main():
                                 'index RSS of this dataset includes retained build temporaries' % (ds, mean(v), 100 * dev))
             else:
                 out.append('\nMemory-method check: sortedarray ran but its logs have no index_rss_bytes.')
+        splice_md(ds, cells, a, cfg, out, warn)
         out.append('')
 
     out.append('## Notes\n')
@@ -433,6 +550,11 @@ def main():
                'like with like only.')
     out.append('- Throughput CIs pool the SD over the cells of a dataset (equal variance). With few repeats a cell '
                'flagged * has a CI that understates its spread; read its min and max.')
+    if any(r['index'] in SPLICE_IDX for r in runs):
+        out.append('- SPLICE: the self-reported splice_total_bytes is the arena (2 MiB rounded, every page written at '
+                   'build) plus records, router and exceptions, so index RSS should match it within a few percent. '
+                   'Predicted E[D] is splice_count\'s model in serialized DRAM accesses (4 KiB pages, 2 MB L2), an '
+                   'estimate, not a measurement. trace_* runs time every 1M get() calls and are not headline numbers.')
     if busy:
         warn.append('%d runs started beside another benchmark process; their timings may be disturbed' % len(busy))
     if warn:

@@ -1,0 +1,21 @@
+poisson {"n":2000000,"dups":0,"eps":4,"line":26005,"exp":20603,"exp_curved_segments":15712,"exp_abs_gamma_ge2":24,"gamma_hist":[4891,5235,4964,2784,1860,698,147,24,0,0,0,0,0,0,0,0,0]}
+books uniform {"n":2000000,"dups":0,"eps":4,"line":27340,"exp":21698,"exp_curved_segments":16880,"exp_abs_gamma_ge2":58,"gamma_hist":[4818,5459,5131,3094,2048,913,177,58,0,0,0,0,0,0,0,0,0]}
+books window {"n":2000000,"dups":0,"eps":4,"line":76158,"exp":57010,"exp_curved_segments":50894,"exp_abs_gamma_ge2":24044,"gamma_hist":[6116,3234,2845,3759,3776,7877,5359,11523,394,7531,0,2825,0,1113,0,658,0]}
+fb uniform {"n":2000000,"dups":0,"eps":4,"line":73783,"exp":55417,"exp_curved_segments":47760,"exp_abs_gamma_ge2":14028,"gamma_hist":[7657,4076,4484,4500,5983,7771,6918,8023,481,4085,0,1140,0,261,0,38,0]}
+fb window {"n":2000000,"dups":0,"eps":4,"line":83409,"exp":60637,"exp_curved_segments":53035,"exp_abs_gamma_ge2":21353,"gamma_hist":[7602,2823,3332,3094,5471,5825,11137,8154,1402,6384,0,3112,0,1408,0,893,0]}
+osm uniform {"n":2000000,"dups":0,"eps":4,"line":60755,"exp":44872,"exp_curved_segments":39010,"exp_abs_gamma_ge2":9994,"gamma_hist":[5862,3605,4042,3977,5448,5535,6409,4881,599,2466,0,1080,0,506,0,462,0]}
+osm window {"n":2000000,"dups":0,"eps":4,"line":52886,"exp":39330,"exp_curved_segments":33940,"exp_abs_gamma_ge2":5886,"gamma_hist":[5390,3962,4071,4435,5070,5627,4889,3720,316,1392,0,340,0,92,0,26,0]}
+covid uniform {"n":2000000,"dups":0,"eps":4,"line":27530,"exp":21716,"exp_curved_segments":17001,"exp_abs_gamma_ge2":89,"gamma_hist":[4715,5412,4843,3140,2213,1043,261,85,1,2,0,0,0,1,0,0,0]}
+covid window {"n":2000000,"dups":0,"eps":4,"line":25893,"exp":20539,"exp_curved_segments":15734,"exp_abs_gamma_ge2":36,"gamma_hist":[4805,5344,5031,2713,1809,672,129,29,0,5,0,1,0,1,0,0,0]}
+genome uniform {"n":2000000,"dups":0,"eps":4,"line":31686,"exp":24639,"exp_curved_segments":19762,"exp_abs_gamma_ge2":297,"gamma_hist":[4877,5101,5082,3918,3041,1839,484,219,13,31,0,19,0,5,0,10,0]}
+genome window {"n":2000000,"dups":0,"eps":4,"line":81304,"exp":54680,"exp_curved_segments":44821,"exp_abs_gamma_ge2":5076,"gamma_hist":[9859,134,2301,94,7647,71,29498,40,4597,29,0,36,0,69,0,305,0]}
+history uniform {"n":2000000,"dups":0,"eps":4,"line":28143,"exp":22076,"exp_curved_segments":17271,"exp_abs_gamma_ge2":296,"gamma_hist":[4805,5355,4907,3085,2218,998,412,191,11,65,0,24,0,4,0,1,0]}
+history window {"n":2000000,"dups":0,"eps":4,"line":28538,"exp":22506,"exp_curved_segments":17258,"exp_abs_gamma_ge2":349,"gamma_hist":[5248,5288,5052,2856,2167,1011,535,206,41,74,0,23,0,4,0,1,0]}
+libio uniform {"n":2000000,"dups":0,"eps":4,"line":31841,"exp":24735,"exp_curved_segments":19651,"exp_abs_gamma_ge2":456,"gamma_hist":[5084,5122,4955,3441,2885,1887,905,385,12,52,0,7,0,0,0,0,0]}
+libio window {"n":2000000,"dups":0,"eps":4,"line":15120,"exp":12675,"exp_curved_segments":7873,"exp_abs_gamma_ge2":192,"gamma_hist":[4802,3304,3330,441,394,91,121,41,22,34,0,35,0,30,0,30,0]}
+planet uniform {"n":2000000,"dups":0,"eps":4,"line":46573,"exp":35305,"exp_curved_segments":29751,"exp_abs_gamma_ge2":4208,"gamma_hist":[5554,4486,4506,4428,4454,4548,3121,2338,247,948,0,405,0,183,0,87,0]}
+planet window {"n":2000000,"dups":0,"eps":4,"line":77072,"exp":60414,"exp_curved_segments":46331,"exp_abs_gamma_ge2":21272,"gamma_hist":[14083,2366,4375,2085,5198,3604,7431,4949,2200,4434,0,3349,0,2605,0,3735,0]}
+stack uniform {"n":2000000,"dups":0,"eps":4,"line":25839,"exp":20531,"exp_curved_segments":15778,"exp_abs_gamma_ge2":22,"gamma_hist":[4753,5440,4933,2698,1863,677,145,20,0,1,0,0,0,1,0,0,0]}
+stack window {"n":2000000,"dups":0,"eps":4,"line":4857,"exp":4580,"exp_curved_segments":1323,"exp_abs_gamma_ge2":0,"gamma_hist":[3257,640,654,12,14,2,1,0,0,0,0,0,0,0,0,0,0]}
+wise uniform {"n":2000000,"dups":0,"eps":4,"line":26314,"exp":20867,"exp_curved_segments":16084,"exp_abs_gamma_ge2":32,"gamma_hist":[4783,5385,4937,2868,1926,781,155,32,0,0,0,0,0,0,0,0,0]}
+wise window {"n":2000000,"dups":0,"eps":4,"line":25951,"exp":20460,"exp_curved_segments":15921,"exp_abs_gamma_ge2":42,"gamma_hist":[4539,5378,4930,2733,1933,698,207,41,0,1,0,0,0,0,0,0,0]}

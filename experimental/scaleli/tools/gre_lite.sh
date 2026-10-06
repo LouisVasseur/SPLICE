@@ -7,6 +7,12 @@
 # SCALE-LI (SPLICE): scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice, the protocol cells of
 # results/aidb_ba/run_ba.py plus the joint G+T+V root, from integrations/gre/ (README.md 'GRE cells'). They
 # read SCALELI_FLOW (per-dataset flow file, cells _n _nc _j _jg0) and SCALELI_BUILD_THREADS (default 16).
+# SPLICE-H: splice and splice_thp (the same layout, plus MADV_HUGEPAGE on the arena), the read-only index of
+# integrations/gre_splice/ (docs/SPLICE_DESIGN.md), and trace_splice / trace_lipp, which wrap splice and lipp with a
+# timer on every 1,000,000th get() for the warm-up transient check (tools/gre_transient.py), never for headline
+# numbers. They read SPLICE_ARGS (per-dataset plan, results/splice_h/args) and SPLICE_BUILD_THREADS (default 16).
+# nullindex: an O(1) get() that touches no memory, the harness baseline subtracted in SERVER.md 5b's perf check.
+# scaleli_splice is SCALE-LI's joint-root cell Jg0, not the SPLICE index (splice).
 # GRE ships no licence file, so it is cloned OUTSIDE this repository and only edited locally; nothing of it is committed here.
 # Every edit starts from the pristine file (git checkout) and is recorded in DEST/build/gre_lite_build.txt:
 #  - ALEX: on CPUs without LZCNT/BMI1 (the Atom is Goldmont) ALEX_USE_LZCNT 0, ALEX's own documented switch, which only
@@ -38,6 +44,8 @@
 #        pinned.
 #    Every run also prints 'gre_lite_patch: warmup_num=W pin_core=K'. Unpatched GRE silently ignores unknown flags, so
 #    a log without that line came from an unpatched binary.
+#  - SPLICE-H (src/competitor/splice/, copied from integrations/gre_splice/): its build is a C++20 library like
+#    SCALE-LI's; microbench includes splice/layout.hpp (C++17) from SCALELI_INCLUDE so get() inlines into GRE's TU.
 #    The purges also hold at the defaults: the timed region starts with jemalloc's dirty pages released, where unpatched
 #    GRE starts with them cached. A read-only run allocates nothing in the timed loop, so it is unaffected; with inserts
 #    the patched and unpatched builds are comparable only approximately.
@@ -102,6 +110,8 @@ echo "   ALEX_USE_LZCNT=$ALEX_LZCNT (CPU $(grep -qw __LZCNT__ <<<"$MACROS" && ec
 cat > src/competitor/competitor.h <<'EOF'
 // Trimmed by SPLICE gre_lite.sh: ALEX, LIPP, PGM, STX B+tree, ART only (no AVX2 / MKL needed), plus SPLICE's sortedarray
 // and SCALE-LI (scaleli_*).
+// SPLICE-H: splice, splice_thp; trace_splice, trace_lipp time every 1M get() calls (transient check only);
+// nullindex is the O(1) harness baseline (perf subtraction only).
 // Original: competitor.h.full
 #include "./indexInterface.h"
 #include "./alex/alex.h"
@@ -111,6 +121,9 @@ cat > src/competitor/competitor.h <<'EOF'
 #include "btree/btree.h"
 #include "./sortedarray/sortedarray.h"
 #include "./scaleli/scaleli_interface.h"
+#include "./splice/splice_interface.h"
+#include "./splice/trace_interface.h"
+#include "./splice/null_interface.h"
 #include "iostream"
 
 template<class KEY_TYPE, class PAYLOAD_TYPE>
@@ -130,7 +143,12 @@ indexInterface<KEY_TYPE, PAYLOAD_TYPE> *get_index(std::string index_type) {
   else if (index_type == "scaleli_jg0") index = new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("Jg0");
   else if (index_type == "scaleli_splice") index = new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("Jg0");
   else if (index_type == "scaleli_cr") index = new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("Cr");
-  else { std::cout << "Could not find a matching index called " << index_type << " (gre_lite: alex lipp pgm btree artunsync sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice).\n"; exit(0); }
+  else if (index_type == "splice") index = new SpliceInterface<KEY_TYPE, PAYLOAD_TYPE>(false);
+  else if (index_type == "splice_thp") index = new SpliceInterface<KEY_TYPE, PAYLOAD_TYPE>(true);
+  else if (index_type == "trace_splice") index = new TraceInterface<KEY_TYPE, PAYLOAD_TYPE, SpliceInterface<KEY_TYPE, PAYLOAD_TYPE> >(new SpliceInterface<KEY_TYPE, PAYLOAD_TYPE>(false));
+  else if (index_type == "trace_lipp") index = new TraceInterface<KEY_TYPE, PAYLOAD_TYPE, LIPPInterface<KEY_TYPE, PAYLOAD_TYPE> >(new LIPPInterface<KEY_TYPE, PAYLOAD_TYPE>);
+  else if (index_type == "nullindex") index = new NullInterface<KEY_TYPE, PAYLOAD_TYPE>;
+  else { std::cout << "Could not find a matching index called " << index_type << " (gre_lite: alex lipp pgm btree artunsync sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice splice splice_thp trace_splice trace_lipp nullindex).\n"; exit(0); }
   return index;
 }
 EOF
@@ -162,6 +180,18 @@ target_include_directories(scaleli_gre PRIVATE ${SCALELI_INCLUDE})
 target_compile_options(scaleli_gre PRIVATE -ffp-contract=off)
 target_link_libraries(scaleli_gre PUBLIC Threads::Threads)
 target_link_libraries(microbench PUBLIC scaleli_gre)
+# SPLICE-H: the build is C++20 in its own TU (splice_gre.cpp); microbench sees only splice/layout.hpp, which is C++17,
+# so splice::get() inlines into GRE's TU. -ffp-contract=off as for scaleli_gre (the build's reporting doubles).
+if(NOT EXISTS "${SCALELI_INCLUDE}/splice/layout.hpp")
+  message(FATAL_ERROR "SCALELI_INCLUDE has no splice/layout.hpp: this SPLICE checkout predates SPLICE-H")
+endif()
+add_library(splice_gre STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/competitor/splice/splice_gre.cpp)
+set_target_properties(splice_gre PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
+target_include_directories(splice_gre PRIVATE ${SCALELI_INCLUDE})
+target_compile_options(splice_gre PRIVATE -ffp-contract=off)
+target_link_libraries(splice_gre PUBLIC Threads::Threads)
+target_include_directories(microbench PRIVATE ${SCALELI_INCLUDE})   # only splice/layout.hpp is included (C++17)
+target_link_libraries(microbench PUBLIC splice_gre)
 EOF
 
 # Our own code (MIT, SPLICE), written whole on every run.
@@ -170,6 +200,11 @@ mkdir -p src/competitor/sortedarray
 mkdir -p src/competitor/scaleli
 cp "$SCALELI_DIR"/integrations/gre/scaleli_interface.h "$SCALELI_DIR"/integrations/gre/scaleli_gre.hpp \
    "$SCALELI_DIR"/integrations/gre/scaleli_gre.cpp src/competitor/scaleli/
+# SPLICE-H wrapper, chunk timer and facade (SPLICE, MIT), likewise; include/splice is read in place.
+mkdir -p src/competitor/splice
+cp "$SCALELI_DIR"/integrations/gre_splice/splice_interface.h "$SCALELI_DIR"/integrations/gre_splice/trace_interface.h \
+   "$SCALELI_DIR"/integrations/gre_splice/splice_gre.hpp "$SCALELI_DIR"/integrations/gre_splice/splice_gre.cpp \
+   "$SCALELI_DIR"/integrations/gre_splice/null_interface.h src/competitor/splice/
 cat > src/competitor/sortedarray/sortedarray.h <<'EOF'
 // Written by SPLICE gre_lite.sh (MIT). A sorted array of (key, payload) pairs searched with std::lower_bound:
 // a binary-search throughput reference, and a check of the RSS memory method (exactly n records, 16 B each for uint64).
@@ -466,6 +501,8 @@ fi
   echo "  src/competitor/sortedarray/sortedarray.h: SPLICE, cksum $(cksum < src/competitor/sortedarray/sortedarray.h)"
   for f in src/competitor/scaleli/*; do echo "  $f: SPLICE, cksum $(cksum < "$f")"; done
   echo "  SCALE-LI headers $SCALELI_DIR/include/scaleli: cksum $(cat "$SCALELI_DIR"/include/scaleli/*.hpp | cksum)"
+  for f in src/competitor/splice/*; do echo "  $f: SPLICE, cksum $(cksum < "$f")"; done
+  echo "  SPLICE headers $SCALELI_DIR/include/splice: cksum $(cat "$SCALELI_DIR"/include/splice/*.hpp 2>/dev/null | cksum)"
   echo "  SPLICE $(git -C "$SCALELI_DIR" rev-parse HEAD 2>/dev/null || echo unknown) ($(git -C "$SCALELI_DIR" status --porcelain -- . 2>/dev/null | wc -l | tr -d ' ') uncommitted paths in experimental/scaleli)"
   echo "  src/competitor/competitor.h: trimmed + sortedarray, cksum $(cksum < src/competitor/competitor.h)"
   echo "  CMakeLists.txt: trimmed, cksum $(cksum < CMakeLists.txt)"
@@ -479,4 +516,4 @@ fi
 } > build/gre_lite_build.txt
 cat build/gre_lite_build.txt
 if [ "$EDIT_ONLY" = 1 ]; then echo "edited: $DEST (not built)"
-else echo "built: $DEST/build/microbench   (indexes: alex lipp pgm btree artunsync sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice)"; fi
+else echo "built: $DEST/build/microbench   (indexes: alex lipp pgm btree artunsync sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice splice splice_thp trace_splice trace_lipp nullindex)"; fi

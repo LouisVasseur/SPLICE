@@ -1,0 +1,1 @@
+k1=16384 eps=34 tier1=pla mode=auto alpha=0.25,0.5 w=1,2,4 entry=2 cbar=24 compact=0 cap=22.0 l2=2048 router_bits=11 router_leaf=8 exc=64 outer=4 sim=3000000 warm=1000000 seed=42 d_tau=50 d_walk_hit=90 d_walk_hit_thp=150 d_router_child=80 d_c_direct=300 d_c_fenced=450 d_c_exc=200 p0_ad=940 p0_ae=810 p0_b=940

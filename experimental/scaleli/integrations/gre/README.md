@@ -36,6 +36,10 @@ The GRE index names are lowercase because `gre_run.sh` accepts only `[a-z0-9_]` 
 | `scaleli_jg0` | Jg0 | J with `--root-joint-gap-charge 0` | The same joint root, with the gap table offered for free, so measured throughput decides whether learned compression pays. |
 | `scaleli_splice` | Jg0 | the same as `scaleli_jg0` | SPLICE as reported: compression and warp offered free at selection (N's convention), GRE measures their real cost. At gap charge 1 (J) compression is never chosen on the samples, so J tests only joint T+V. |
 
+**`scaleli_splice` is not the SPLICE index.** It is SCALE-LI's joint-root cell Jg0 under an older name, kept because
+earlier server runs use it. The SPLICE-H read-only index is the GRE index `splice` (and `splice_thp`), from
+`integrations/gre_splice/` (README.md there; design in `docs/SPLICE_DESIGN.md`).
+
 The joint root (J, Jg0) is one least-squares model of the root fences, fitted by alternating three blocks with a
 guard on the root's probe score (results/aidb_threeblock, arm A):
 

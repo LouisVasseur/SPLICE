@@ -21,3 +21,7 @@ data/samples/*
 # Compiled demos and key copies written by the reading-guide scratch scripts (sources are kept).
 results/aidb/guide_deep/scratch/*
 !results/aidb/guide_deep/scratch/*.*
+
+# gre_run.sh copies the GRE binary it timed into OUT/bin/ for provenance. GRE has no licence and STX is GPL-3, so only
+# the build record next to it (bin/gre_lite_build.txt) is committed.
+results/**/bin/microbench

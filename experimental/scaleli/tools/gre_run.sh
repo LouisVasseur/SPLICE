@@ -6,7 +6,9 @@
 #       [--gre DIR] [--data DIR] [--repeats 3] [--ops 100000000] [--warmup 0] [--init-ratio 1] [--pin -1]
 #       [--table-size -1] [--read 1 --insert 0] [--resume] [-- extra microbench flags]
 #       [--flows DIR] [--build-threads 16]   (SCALE-LI cells scaleli_b _n _c _nc _j _jg0, integrations/gre/)
+#       [--splice-plan DIR|none] [--splice-arm fast|compact]   (SPLICE-H: splice splice_thp trace_splice trace_lipp nullindex)
 #   defaults: --gre /tmp/louisvasseur/GRE, --data /tmp/louisvasseur/SPLICE/experimental/scaleli/data/external/gre
+#             --splice-plan experimental/scaleli/results/splice_h/args of this checkout, --splice-arm fast
 #
 # The standard conditions (read-only, single thread, every key bulk-loaded, 100M lookups of loaded keys):
 #   GRE as published:  --warmup 0 --pin -1         (no warm-up, unpinned; the unpatched binary runs this too)
@@ -18,6 +20,12 @@
 #   nohup experimental/scaleli/tools/gre_run.sh OUTDIR --datasets ... --indexes ... > OUTDIR.out 2>&1 &
 #   tail -f OUTDIR.out                         # one progress line per run
 # Then: python3 experimental/scaleli/tools/gre_report.py OUTDIR > OUTDIR/report.md
+# SPLICE-H (integrations/gre_splice/, SERVER.md 5b): splice and splice_thp build the cell of a per-dataset plan file,
+# DIR/<ds>.args (--splice-arm fast) or DIR/<ds>.compact.args (compact), written offline by splice_count; each is one
+# line of k=v tokens and must exist before the first run. The run gets SPLICE_ARGS="<plan line> $SPLICE_ARGS" (the
+# global SPLICE_ARGS last, so it wins) and SPLICE_BUILD_THREADS=--build-threads. --splice-plan none: SPLICE_ARGS
+# alone (build defaults, eps bisected inside bulk_load). trace_splice and trace_lipp time every 1M get() calls, for
+# tools/gre_transient.py only. scaleli_splice is SCALE-LI's joint-root cell Jg0, not the SPLICE index.
 # Stopped (kill, lost ssh session)? Rerun the same command with --resume: runs that passed every check are skipped,
 # the others rerun (the old log is kept as *.log.prev). --resume may also raise --repeats, which is how conditions are
 # interleaved in time (SERVER.md). Killing gre_run.sh also stops the microbench it started.
@@ -37,10 +45,10 @@ set -euo pipefail
 WARMUP_FLAG=warmup_num PIN_FLAG=pin_core
 # Processes that mean the machine is not quiet: any GRE run (whatever the binary's name) and SPLICE's own benchmarks.
 # '[-]-' keeps the pattern from starting with '-', which pgrep would read as an option.
-BUSY=${GRE_RUN_BUSY:-'[-]-keys_file=|scaleli_bench|scaleli_hardness'}
+BUSY=${GRE_RUN_BUSY:-'[-]-keys_file=|scaleli_bench|scaleli_hardness|splice_count'}
 
 die() { echo "gre_run.sh: $*" >&2; exit 2; }
-usage() { sed -n '3,9p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-2}"; }
+usage() { sed -n '3,11p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-2}"; }
 # Decimal integers only: bash arithmetic reads a leading 0 as octal (08 is an error, 010 is 8).
 int() { case $2 in 0|-1) ;; ''|-|*[!0-9-]*|?*-*|0*|-0*|???????????*) die "$1 must be an integer, got '$2'";; esac; }
 range() { [ "$2" -ge "$3" ] && [ "$2" -le "$4" ] || die "$1 must be in $3..$4, got $2"; }
@@ -61,6 +69,9 @@ DATASETS= INDEXES= REPEATS=3 OPS=100000000 WARMUP=0 INIT_RATIO=1 PIN=-1 TABLE_SI
 # SCALE-LI: the per-dataset NFL flow files (tracked in SPLICE) and run_ba.py's 16 build threads
 FLOWS=$(cd "$(dirname "$0")/.." && pwd)/results/aidb_flowv2/flows_free
 BUILD_THREADS=16
+# SPLICE-H: per-dataset cells chosen offline by splice_count (tracked in SPLICE)
+SPLICE_PLAN=$(cd "$(dirname "$0")/.." && pwd)/results/splice_h/args
+SPLICE_ARM=fast
 EXTRA=()
 while [ $# -gt 0 ]; do
   case $1 in --resume|--|-h|--help) ;; --*) [ $# -ge 2 ] && [ -n "$2" ] || die "$1 needs a value";; esac
@@ -79,6 +90,8 @@ while [ $# -gt 0 ]; do
     --insert) INSERT=$2; shift 2;;
     --flows) FLOWS=$2; shift 2;;
     --build-threads) BUILD_THREADS=$2; shift 2;;
+    --splice-plan) SPLICE_PLAN=$2; shift 2;;
+    --splice-arm) SPLICE_ARM=$2; shift 2;;
     --resume) RESUME=1; shift;;
     -h|--help) usage 0;;
     --) shift; EXTRA=("$@"); break;;
@@ -103,6 +116,8 @@ IFS=, read -r -a DS <<< "$DATASETS"
 IFS=, read -r -a IX <<< "$INDEXES"
 [ ${#DS[@]} -gt 0 ] && [ ${#IX[@]} -gt 0 ] || die "no name in --datasets or --indexes"
 for x in "${DS[@]}" "${IX[@]}"; do [ -n "$x" ] || die "empty name in --datasets or --indexes"; done
+case $SPLICE_ARM in fast|compact) ;; *) die "--splice-arm must be fast or compact, got '$SPLICE_ARM'";; esac
+case $SPLICE_PLAN in none|/*) ;; *) SPLICE_PLAN=$PWD/$SPLICE_PLAN;; esac
 
 # Check everything that would otherwise fail hours in: data files, binary, patch flags, index names.
 BUILD=$GRE/build
@@ -140,6 +155,33 @@ for idx in "${IX[@]}"; do
     [ -f "$f" ] && [ -r "$f" ] || die "$idx needs the flow file $f (--flows DIR)"
   done
 done
+# SPLICE-H: the plan file of every dataset, checked before the first run; recorded only when a splice index runs, so
+# other OUTDIRs resume as before. The plan's cksum is part of the config: a resumed grid never mixes two plans.
+splice_idx() { case $1 in splice|splice_thp|trace_splice) return 0;; *) return 1;; esac; }
+plan_file() { if [ "$SPLICE_ARM" = compact ]; then echo "$SPLICE_PLAN/$1.compact.args"; else echo "$SPLICE_PLAN/$1.args"; fi; }
+HAS_SPLICE=0
+for idx in "${IX[@]}"; do splice_idx "$idx" && HAS_SPLICE=1; done
+if [ "$HAS_SPLICE" = 1 ]; then
+  case ${SPLICE_ARGS-} in *[!a-z0-9_=.,\ ]*) die "SPLICE_ARGS may hold only k=v tokens of [a-z0-9_=.,] and spaces, got '$SPLICE_ARGS'";; esac
+  PLAN_CKSUM=none
+  if [ "$SPLICE_PLAN" != none ]; then
+    for ds in "${DS[@]}"; do
+      f=$(plan_file "$ds")
+      [ -f "$f" ] && [ -r "$f" ] || die "splice needs the plan file $f (splice_count; --splice-plan DIR or none)"
+      [ "$(grep -c '' "$f")" = 1 ] && grep -Eqx '[a-z0-9_=.,]+( [a-z0-9_=.,]+)*' "$f" \
+        || die "$f must be one line of k=v tokens ([a-z0-9_=.,], single spaces)"
+    done
+    PLAN_CKSUM=$(for ds in "${DS[@]}"; do cat "$(plan_file "$ds")"; done | cksum | tr ' ' '_')
+  fi
+  CONFIG="$CONFIG
+splice_plan=$SPLICE_PLAN
+splice_arm=$SPLICE_ARM
+splice_plan_cksum=$PLAN_CKSUM
+splice_args=${SPLICE_ARGS-}"
+  case $CONFIG in *"
+build_threads="*) ;; *) CONFIG="$CONFIG
+build_threads=$BUILD_THREADS";; esac
+fi
 NRUNS=0
 [ -f "$OUT/runs.tsv" ] && NRUNS=$(( $(wc -l < "$OUT/runs.tsv") - 1 ))
 if [ "$NRUNS" -gt 0 ] && [ "$RESUME" = 0 ]; then
@@ -202,6 +244,8 @@ splice_sha() {
   echo "$h ($(git -C "$d" status --porcelain | wc -l | tr -d ' ') uncommitted paths)"
 }
 datasets() { local d; for d in "${DS[@]}"; do ls -lL "$DATA/$d"; done; }
+splice_plan() { local d; [ "$HAS_SPLICE" = 1 ] || return 1; [ "$SPLICE_PLAN" != none ] || { echo none; return 0; }
+  for d in "${DS[@]}"; do echo "$d: $(cat "$(plan_file "$d")")"; done; }
 # Page and allocator policy: THP changes both the RSS method and TLB-bound throughput (SCALE-LI's protocol uses never).
 thp() {
   local d=/sys/kernel/mm/transparent_hugepage f
@@ -227,6 +271,7 @@ if [ "$NRUNS" -le 0 ] || [ ! -f "$OUT/provenance.txt" ]; then
     section ldd ldd "$BIN"
     section datasets datasets
     section config cat "$OUT/config.txt"
+    [ "$HAS_SPLICE" = 0 ] || section splice_plan splice_plan
     section command echo "$CMDLINE"
   } > "$OUT/provenance.txt"
 else
@@ -253,6 +298,11 @@ check_run() {
   case $log in *__scaleli_*)  # the facade prints scaleli_cell after bulk_load, scaleli_error on any failure
     grep -q '^scaleli_cell: ' "$log" || bad="${bad:+$bad, }no scaleli_cell line"
     ! grep -q 'scaleli_error' "$log" || bad="${bad:+$bad, }scaleli_error";; esac
+  case $log in *__splice__r*|*__splice_thp__r*|*__trace_splice__r*)  # splice_index after bulk_load, splice_error on failure
+    grep -q '^splice_index: ' "$log" || bad="${bad:+$bad, }no splice_index line"
+    ! grep -q 'splice_error' "$log" || bad="${bad:+$bad, }splice_error";; esac
+  case $log in *__trace_*)  # the chunk timer prints from memory_consumption (--memory)
+    grep -q '^trace_chunks_n: ' "$log" || bad="${bad:+$bad, }no trace_chunks_n line";; esac
   return 0
 }
 recorded_ok() {  # repeat dataset index: the last row for it passes the same checks as a fresh run
@@ -283,6 +333,11 @@ for r in $(seq 1 "$REPEATS"); do
       runenv=(OMP_NUM_THREADS=1)
       case $idx in scaleli_*) runenv+=(SCALELI_BUILD_THREADS="$BUILD_THREADS");; esac
       if flow_cell "$idx"; then runenv+=(SCALELI_FLOW="$FLOWS/${ds}_$(period "$ds")_t2000.txt"); fi
+      if splice_idx "$idx"; then
+        sa=${SPLICE_ARGS-}
+        [ "$SPLICE_PLAN" = none ] || sa="$(cat "$(plan_file "$ds")")${sa:+ $sa}"
+        runenv+=(SPLICE_ARGS="$sa" SPLICE_BUILD_THREADS="$BUILD_THREADS")
+      fi
       echo "cmd: ${runenv[*]} ${cmd[*]}" > "$log"
       l1=$(load1); nb=$(busy); bnote=
       [ "$nb" = 0 ] || bnote="  BUSY ($nb other benchmark processes at the start: pids $({ pgrep -f "$BUSY" || true; } | tr '\n' ' '))"
