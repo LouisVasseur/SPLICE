@@ -1,0 +1,70 @@
+2026-10-06 04:33:44 60 runs into /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub (warmup 20000000, pin -1, ops 100000000, init ratio 1)
+2026-10-06 04:36:19 [1/60] r1 fb       sortedarray    154.5s  0.998 Mops/s  success_read 100000000  index_rss_bytes 3202603520
+2026-10-06 04:37:27 [2/60] r1 fb       pgm             68.5s  3.737 Mops/s  success_read 100000000  index_rss_bytes 3236878592
+2026-10-06 04:38:36 [3/60] r1 fb       lipp            69.2s  6.527 Mops/s  success_read 100000000  index_rss_bytes 26759842496
+2026-10-06 04:40:16 [4/60] r1 fb       btree           99.1s  1.840 Mops/s  success_read 100000000  index_rss_bytes 3876068416
+2026-10-06 04:42:21 [5/60] r1 fb       alex           125.0s  2.231 Mops/s  success_read 100000000  index_rss_bytes 4830242560  BUSY (2 other benchmark processes at the start: pids 1380 1483 )
+gre_run.sh: interrupted, stopping the current run
+2026-10-06 05:19:21 60 runs into /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub (warmup 20000000, pin -1, ops 100000000, init ratio 1)
+2026-10-06 05:22:31 [6/60] r1 osm      sortedarray    189.6s  0.782 Mops/s  success_read 100000000  index_rss_bytes 3201734656
+2026-10-06 05:23:40 [7/60] r1 osm      pgm             69.8s  3.625 Mops/s  success_read 100000000  index_rss_bytes 3224197312
+/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/run200/gre_run.sh: line 291: 17915 Killed: 9               env "${runenv[@]}" "${cmd[@]}" >> "$log" 2>&1
+2026-10-06 05:26:10 [8/60] r1 osm      lipp           149.6s  - Mops/s  success_read -  FAILED (exit 137, no throughput, success_read missing != 100000000, warmup_success_read missing != 20000000)
+2026-10-06 05:28:15 [9/60] r1 osm      btree          124.5s  1.444 Mops/s  success_read 100000000  index_rss_bytes 3876347008
+2026-10-06 05:30:04 [10/60] r1 osm      alex           109.7s  3.055 Mops/s  success_read 100000000  index_rss_bytes 4905232768
+2026-10-06 05:32:21 [11/60] r1 books    sortedarray    136.3s  1.149 Mops/s  success_read 100000000  index_rss_bytes 3202570816
+2026-10-06 05:33:27 [12/60] r1 books    pgm             65.8s  4.452 Mops/s  success_read 100000000  index_rss_bytes 3214137408
+/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/run200/gre_run.sh: line 291: 21232 Killed: 9               env "${runenv[@]}" "${cmd[@]}" >> "$log" 2>&1
+2026-10-06 05:34:57 [13/60] r1 books    lipp            90.0s  - Mops/s  success_read -  FAILED (exit 137, no throughput, success_read missing != 100000000, warmup_success_read missing != 20000000)
+2026-10-06 05:36:57 [14/60] r1 books    btree          120.2s  1.551 Mops/s  success_read 100000000  index_rss_bytes 3876363392
+2026-10-06 05:38:20 [15/60] r1 books    alex            83.4s  6.219 Mops/s  success_read 100000000  index_rss_bytes 4638041344
+2026-10-06 05:41:26 [16/60] r1 stack.sorted sortedarray    185.2s  0.808 Mops/s  success_read 100000000  index_rss_bytes 3202210112
+2026-10-06 05:42:30 [17/60] r1 stack.sorted pgm             64.3s  4.676 Mops/s  success_read 100000000  index_rss_bytes 3202783360
+2026-10-06 05:43:17 [18/60] r1 stack.sorted lipp            47.2s  22.744 Mops/s  success_read 100000000  index_rss_bytes 8965063936
+2026-10-06 05:45:07 [19/60] r1 stack.sorted btree          110.0s  1.777 Mops/s  success_read 100000000  index_rss_bytes 3876330560
+2026-10-06 05:46:18 [20/60] r1 stack.sorted alex            70.4s  9.761 Mops/s  success_read 100000000  index_rss_bytes 4688766400
+2026-10-06 05:48:55 [21/60] r2 fb       sortedarray    157.4s  0.922 Mops/s  success_read 100000000  index_rss_bytes 3202849472
+2026-10-06 05:50:17 [22/60] r2 fb       pgm             82.1s  2.918 Mops/s  success_read 100000000  index_rss_bytes 3236993280
+2026-10-06 05:51:29 [23/60] r2 fb       lipp            71.6s  6.358 Mops/s  success_read 100000000  index_rss_bytes 26906168256
+2026-10-06 05:53:47 [24/60] r2 fb       btree          137.9s  1.210 Mops/s  success_read 100000000  index_rss_bytes 3876232320
+2026-10-06 05:56:10 [25/60] r2 fb       alex           142.4s  1.854 Mops/s  success_read 100000000  index_rss_bytes 4788250176
+2026-10-06 05:59:22 [26/60] r2 osm      sortedarray    192.7s  0.775 Mops/s  success_read 100000000  index_rss_bytes 3202029760
+2026-10-06 06:00:48 [27/60] r2 osm      pgm             86.0s  2.642 Mops/s  success_read 100000000  index_rss_bytes 3224295680
+/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/run200/gre_run.sh: line 291: 31725 Killed: 9               env "${runenv[@]}" "${cmd[@]}" >> "$log" 2>&1
+2026-10-06 06:03:24 [28/60] r2 osm      lipp           155.8s  - Mops/s  success_read -  FAILED (exit 137, no throughput, success_read missing != 100000000, warmup_success_read missing != 20000000)
+2026-10-06 06:05:41 [29/60] r2 osm      btree          136.4s  1.225 Mops/s  success_read 100000000  index_rss_bytes 3876134016
+2026-10-06 06:07:49 [30/60] r2 osm      alex           128.0s  2.213 Mops/s  success_read 100000000  index_rss_bytes 4899072256
+2026-10-06 06:10:59 [31/60] r2 books    sortedarray    190.4s  0.779 Mops/s  success_read 100000000  index_rss_bytes 3202226496
+2026-10-06 06:12:11 [32/60] r2 books    pgm             72.0s  3.875 Mops/s  success_read 100000000  index_rss_bytes 3214366912
+/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/run200/gre_run.sh: line 291: 35017 Killed: 9               env "${runenv[@]}" "${cmd[@]}" >> "$log" 2>&1
+2026-10-06 06:13:45 [33/60] r2 books    lipp            93.6s  - Mops/s  success_read -  FAILED (exit 137, no throughput, success_read missing != 100000000, warmup_success_read missing != 20000000)
+2026-10-06 06:16:01 [34/60] r2 books    btree          136.1s  1.213 Mops/s  success_read 100000000  index_rss_bytes 3876347008
+2026-10-06 06:17:24 [35/60] r2 books    alex            82.8s  6.440 Mops/s  success_read 100000000  index_rss_bytes 4638500032
+2026-10-06 06:20:36 [36/60] r2 stack.sorted sortedarray    192.2s  0.777 Mops/s  success_read 100000000  index_rss_bytes 3202505216
+2026-10-06 06:21:42 [37/60] r2 stack.sorted pgm             65.7s  4.674 Mops/s  success_read 100000000  index_rss_bytes 3202783360
+2026-10-06 06:22:28 [38/60] r2 stack.sorted lipp            46.3s  24.606 Mops/s  success_read 100000000  index_rss_bytes 8964654336
+2026-10-06 06:24:43 [39/60] r2 stack.sorted btree          134.7s  1.253 Mops/s  success_read 100000000  index_rss_bytes 3876297856
+2026-10-06 06:25:59 [40/60] r2 stack.sorted alex            75.9s  8.216 Mops/s  success_read 100000000  index_rss_bytes 4686898688
+2026-10-06 06:29:11 [41/60] r3 fb       sortedarray    191.5s  0.783 Mops/s  success_read 100000000  index_rss_bytes 3202177280
+2026-10-06 06:30:34 [42/60] r3 fb       pgm             83.0s  2.906 Mops/s  success_read 100000000  index_rss_bytes 3236960512
+2026-10-06 06:31:46 [43/60] r3 fb       lipp            72.5s  6.002 Mops/s  success_read 100000000  index_rss_bytes 27052215680
+2026-10-06 06:34:03 [44/60] r3 fb       btree          136.6s  1.219 Mops/s  success_read 100000000  index_rss_bytes 3876396224
+2026-10-06 06:36:25 [45/60] r3 fb       alex           141.8s  1.880 Mops/s  success_read 100000000  index_rss_bytes 4790396672
+2026-10-06 06:39:29 [46/60] r3 osm      sortedarray    183.8s  0.833 Mops/s  success_read 100000000  index_rss_bytes 3202275712
+2026-10-06 06:40:58 [47/60] r3 osm      pgm             89.7s  2.467 Mops/s  success_read 100000000  index_rss_bytes 3224066176
+/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/run200/gre_run.sh: line 291: 43405 Killed: 9               env "${runenv[@]}" "${cmd[@]}" >> "$log" 2>&1
+2026-10-06 06:43:36 [48/60] r3 osm      lipp           157.9s  - Mops/s  success_read -  FAILED (exit 137, no throughput, success_read missing != 100000000, warmup_success_read missing != 20000000)
+2026-10-06 06:45:49 [49/60] r3 osm      btree          132.7s  1.224 Mops/s  success_read 100000000  index_rss_bytes 3876445312
+2026-10-06 06:48:01 [50/60] r3 osm      alex           131.6s  2.194 Mops/s  success_read 100000000  index_rss_bytes 4901152960
+2026-10-06 06:51:07 [51/60] r3 books    sortedarray    186.6s  0.785 Mops/s  success_read 100000000  index_rss_bytes 3202390464
+2026-10-06 06:52:22 [52/60] r3 books    pgm             74.2s  3.570 Mops/s  success_read 100000000  index_rss_bytes 3214268544
+/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/run200/gre_run.sh: line 291: 48109 Killed: 9               env "${runenv[@]}" "${cmd[@]}" >> "$log" 2>&1
+2026-10-06 06:53:54 [53/60] r3 books    lipp            92.6s  - Mops/s  success_read -  FAILED (exit 137, no throughput, success_read missing != 100000000, warmup_success_read missing != 20000000)
+2026-10-06 06:56:03 [54/60] r3 books    btree          128.9s  1.385 Mops/s  success_read 100000000  index_rss_bytes 3876297856
+2026-10-06 06:57:27 [55/60] r3 books    alex            83.7s  6.361 Mops/s  success_read 100000000  index_rss_bytes 4638827776
+2026-10-06 07:00:13 [56/60] r3 stack.sorted sortedarray    166.2s  0.930 Mops/s  success_read 100000000  index_rss_bytes 3202685504
+2026-10-06 07:01:18 [57/60] r3 stack.sorted pgm             64.9s  4.973 Mops/s  success_read 100000000  index_rss_bytes 3202684992
+2026-10-06 07:02:02 [58/60] r3 stack.sorted lipp            43.6s  33.103 Mops/s  success_read 100000000  index_rss_bytes 8965014912
+2026-10-06 07:03:57 [59/60] r3 stack.sorted btree          115.2s  1.463 Mops/s  success_read 100000000  index_rss_bytes 3876641984
+2026-10-06 07:05:09 [60/60] r3 stack.sorted alex            71.2s  8.949 Mops/s  success_read 100000000  index_rss_bytes 4690814336
+2026-10-06 07:05:09 done: 55 runs, 5 skipped (already done), 6 failed

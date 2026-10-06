@@ -1,0 +1,56 @@
+cmd: OMP_NUM_THREADS=1 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub/bin/microbench --keys_file=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books --keys_file_type=binary --read=1 --insert=0 --operations_num=100000000 --table_size=-1 --init_table_ratio=1 --thread_num=1 --memory --index=sortedarray --output_path=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub/gre_out.csv --warmup_num=20000000
+keys_file = /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books
+keys_file_type = binary
+read = 1
+insert = 0
+delete = 0
+update = 0
+scan = 0
+scan_num = 100
+operations_num = 100000000
+table_size = -1
+init_table_ratio = 1
+del_table_ratio = 0.5
+thread_num = 1
+index = sortedarray
+sample_distribution = uniform
+latency_sample = 0
+latency_sample_ratio = 0.01
+error_bound = 64
+output_path = /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub/gre_out.csv
+seed = 1866
+memory = 1
+dataset_statistic = 0
+data_shift = 0
+gre_lite_patch: warmup_num=20000000 pin_core=-1
+[micro] Read:Insert:Update:Scan:Delete= 1:0:0:0:0
+Reading data from file.
+/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books
+200000000
+Table size is 200000000, Init table size is 200000000
+852858054610603968 3559962933956922368 2012320077846078592 4704779924357071872 1476271574826714240 744300816934331968 2379875207080990976 3050809722174284800 3873291058973013504 1387290748700802304 
+prepare init keys.
+table_size: 200000000
+init_keys.size(): 200000000
+sample keys.
+generate operations.
+operations.size(): 100000000
+rss_before_build_bytes: 8005009024
+bulk loading
+rss_after_build_unpurged_bytes: 11253012544
+rss_after_build_bytes: 11207399488
+index_rss_bytes: 3202390464
+build_ns: 955659167
+warmup_success_read: 20000000
+warmup_ns: 24408378292
+Begin running
+Finish running
+rss_after_run_bytes: 11207399488
+rss_peak_bytes: 11693709824
+Throughput = 785101
+Memory: 3200000000
+success_read: 100000000
+success_insert: 0
+success_update: 0
+success_remove: 0
+scan_not_enough: 0

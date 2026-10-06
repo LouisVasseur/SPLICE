@@ -1,0 +1,56 @@
+cmd: OMP_NUM_THREADS=1 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub/bin/microbench --keys_file=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm --keys_file_type=binary --read=1 --insert=0 --operations_num=100000000 --table_size=-1 --init_table_ratio=1 --thread_num=1 --memory --index=alex --output_path=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub/gre_out.csv --warmup_num=20000000
+keys_file = /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm
+keys_file_type = binary
+read = 1
+insert = 0
+delete = 0
+update = 0
+scan = 0
+scan_num = 100
+operations_num = 100000000
+table_size = -1
+init_table_ratio = 1
+del_table_ratio = 0.5
+thread_num = 1
+index = alex
+sample_distribution = uniform
+latency_sample = 0
+latency_sample_ratio = 0.01
+error_bound = 64
+output_path = /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub/gre_out.csv
+seed = 1866
+memory = 1
+dataset_statistic = 0
+data_shift = 0
+gre_lite_patch: warmup_num=20000000 pin_core=-1
+[micro] Read:Insert:Update:Scan:Delete= 1:0:0:0:0
+Reading data from file.
+/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm
+200000000
+Table size is 200000000, Init table size is 200000000
+4876406278542718301 6097910235977561413 5171832083820569975 9765832491840884451 5152647703620329665 4679731807558834103 5187440084303662619 5567092226475896465 6918425866904197721 5148579411970087495 
+prepare init keys.
+table_size: 200000000
+init_keys.size(): 200000000
+sample keys.
+generate operations.
+operations.size(): 100000000
+rss_before_build_bytes: 8005009024
+bulk loading
+rss_after_build_unpurged_bytes: 12971043520
+rss_after_build_bytes: 12904081280
+index_rss_bytes: 4899072256
+build_ns: 38443059833
+warmup_success_read: 20000000
+warmup_ns: 7830403667
+Begin running
+Finish running
+rss_after_run_bytes: 12904081280
+rss_peak_bytes: 13064169664
+Throughput = 2213462
+Memory: 4682247256
+success_read: 100000000
+success_insert: 0
+success_update: 0
+success_remove: 0
+scan_not_enough: 0

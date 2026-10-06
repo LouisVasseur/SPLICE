@@ -1,0 +1,39 @@
+## provenance_mac.txt: the macOS equivalents of provenance.txt's Linux-only sections (lscpu, free, nproc, ldd, git), taken at launch
+## date (first attempt; relaunched 2026-10-06T02:33:44Z after other benchmarks finished)
+2026-10-06T01:31:28Z
+## sw_vers
+ProductName:		macOS
+ProductVersion:		15.7.5
+BuildVersion:		24G624
+## cpu
+Apple M3 Max
+hw.perflevel0.physicalcpu: 12
+hw.perflevel1.physicalcpu: 4
+hw.ncpu: 16
+hw.perflevel0.l1dcachesize: 131072
+hw.perflevel0.l2cachesize: 16777216
+hw.perflevel1.l2cachesize: 4194304
+hw.pagesize: 16384
+hw.memsize: 68719476736
+## swap
+total = 5120.00M  used = 3580.50M  free = 1539.50M  (encrypted)
+## power
+Now drawing from 'AC Power'
+ -InternalBattery-0 (id=6619235)	36%; charging; 2:18 remaining present: true
+ powermode            1
+## otool -L bin/microbench
+/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub/bin/microbench:
+	/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 1900.180.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1351.0.0)
+## splice
+59d810f02ef0122c1f23fc55e820bff19019692b
+gre_run.sh = git show HEAD:experimental/scaleli/tools/gre_run.sh (cksum 1685871139 17082)
+14
+## launch
+nohup caffeinate -i gre_run.sh ... (caffeinate keeps the Mac from idle-sleeping mid-run; OMP_NUM_THREADS=1)
+## low_power_mode (NSProcessInfo.isLowPowerModeEnabled; pmset powermode 1 on AC and battery)
+true
+## thermal_state (0 = nominal)
+0
+## swap at relaunch
+total = 12288.00M  used = 10825.31M  free = 1462.69M  (encrypted)

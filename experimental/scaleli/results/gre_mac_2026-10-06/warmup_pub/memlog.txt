@@ -1,0 +1,429 @@
+2026-10-06 03:30:51 load 4.05 4.88 4.73 swap_used 3580.50M free+inactive 35.4GB compressor 4.7GB mb_rss 
+2026-10-06 03:31:21 load 4.94 4.99 4.78 swap_used 3580.50M free+inactive 32.3GB compressor 4.7GB mb_rss 3.0GB --warmup_num=20000000  
+2026-10-06 03:31:51 load 4.55 4.88 4.74 swap_used 3580.50M free+inactive 28.8GB compressor 4.7GB mb_rss 10.6GB --warmup_num=20000000  
+2026-10-06 03:32:04 load 4.73 4.91 4.75 swap_used 3580.50M free+inactive 28.9GB compressor 4.7GB mb 10.6GB fb/sortedarray lowpower true thermal 0
+2026-10-06 03:32:35 load 5.26 5.00 4.79 swap_used 3580.50M free+inactive 28.8GB compressor 4.7GB mb 10.6GB fb/sortedarray
+2026-10-06 03:33:05 load 5.20 5.02 4.81 swap_used 3580.50M free+inactive 28.8GB compressor 4.7GB mb 10.6GB fb/sortedarray
+2026-10-06 03:33:35 load 5.29 5.05 4.82 swap_used 3580.50M free+inactive 28.8GB compressor 4.7GB mb 10.6GB fb/sortedarray
+2026-10-06 03:34:05 load 5.83 5.19 4.88 swap_used 3580.50M free+inactive 32.8GB compressor 4.7GB mb 3.0GB fb/pgm
+2026-10-06 03:34:35 load 4.91 5.03 4.83 swap_used 3580.50M free+inactive 28.8GB compressor 4.7GB mb 10.6GB fb/pgm
+2026-10-06 03:35:05 load 4.75 4.99 4.82 swap_used 3580.50M free+inactive 34.1GB compressor 4.7GB mb 1.5GB fb/lipp
+2026-10-06 03:35:35 load 4.63 4.95 4.82 swap_used 3580.50M free+inactive 30.6GB compressor 4.7GB mb 6.1GB fb/lipp
+2026-10-06 03:36:05 load 4.69 4.95 4.82 swap_used 3580.50M free+inactive 22.9GB compressor 16.9GB mb 27.9GB fb/lipp
+2026-10-06 03:36:35 load 5.48 5.12 4.88 swap_used 3580.50M free+inactive 38.8GB compressor 15.0GB mb 3.0GB fb/btree
+2026-10-06 03:37:05 load 6.41 5.39 4.99 swap_used 3580.50M free+inactive 32.5GB compressor 14.4GB mb 11.2GB fb/btree lowpower true thermal 0
+2026-10-06 03:37:35 load 5.87 5.36 5.00 swap_used 3580.50M free+inactive 32.3GB compressor 14.2GB mb 11.2GB fb/btree
+2026-10-06 03:38:05 load 4.95 5.18 4.94 swap_used 3580.50M free+inactive 37.4GB compressor 14.2GB mb 0.0GB /$idx1.8GB fb/splice1.5GB fb/alex
+2026-10-06 03:38:36 load 5.19 5.24 4.97 swap_used 3580.50M free+inactive 34.1GB compressor 14.0GB mb 0.0GB /$idx7.5GB fb/alex0.4GB fb/trace_splice
+2026-10-06 03:39:06 load 5.65 5.34 5.02 swap_used 3580.50M free+inactive 32.4GB compressor 13.6GB mb 0.0GB /$idx10.2GB fb/alex0.6GB fb/scaleli_jg0
+2026-10-06 03:39:36 load 20.92 9.07 6.38 swap_used 3580.50M free+inactive 31.4GB compressor 13.5GB mb 0.0GB /$idx12.2GB fb/alex0.6GB fb/scaleli_jg0
+2026-10-06 03:40:06 load 38.11 14.37 8.39 swap_used 3580.50M free+inactive 31.4GB compressor 13.4GB mb 0.0GB /$idx12.2GB fb/alex0.6GB fb/scaleli_jg0
+2026-10-06 03:40:36 load 41.14 17.44 9.71 swap_used 3580.50M free+inactive 36.1GB compressor 13.4GB mb 0.0GB /$idx0.6GB fb/scaleli_jg03.0GB osm/sortedarray
+2026-10-06 03:41:06 load 56.78 23.27 12.09 swap_used 3580.50M free+inactive 31.4GB compressor 13.2GB mb 0.0GB /$idx0.6GB fb/scaleli_jg010.6GB osm/sortedarray
+2026-10-06 03:41:36 load 54.11 25.93 13.44 swap_used 3580.50M free+inactive 31.4GB compressor 13.2GB mb 0.0GB /$idx0.6GB fb/scaleli_jg010.6GB osm/sortedarray
+2026-10-06 03:42:06 load 55.63 28.94 14.96 swap_used 3580.50M free+inactive 31.1GB compressor 13.1GB mb 0.0GB /$idx0.7GB fb/scaleli_jg010.6GB osm/sortedarray lowpower true thermal 0
+2026-10-06 03:42:37 load 54.96 31.31 16.30 swap_used 3580.50M free+inactive 31.3GB compressor 13.1GB mb 0.0GB /$idx0.7GB fb/scaleli_jg010.6GB osm/sortedarray
+2026-10-06 03:43:07 load 58.25 34.15 17.84 swap_used 3580.50M free+inactive 37.5GB compressor 13.1GB mb 0.0GB /$idx0.7GB fb/scaleli_jg01.5GB osm/pgm
+2026-10-06 03:43:37 load 57.99 36.23 19.15 swap_used 3580.50M free+inactive 31.2GB compressor 13.1GB mb 0.0GB /$idx0.7GB fb/scaleli_jg010.5GB osm/pgm
+2026-10-06 03:44:07 load 60.69 38.94 20.72 swap_used 3580.50M free+inactive 31.3GB compressor 13.0GB mb 0.0GB /$idx0.7GB fb/scaleli_jg010.6GB osm/pgm
+2026-10-06 03:44:37 load 65.33 42.11 22.50 swap_used 3580.50M free+inactive 35.8GB compressor 13.0GB mb 0.0GB /$idx0.7GB fb/scaleli_jg03.0GB osm/lipp
+2026-10-06 03:45:07 load 67.25 44.54 24.04 swap_used 3580.50M free+inactive 24.2GB compressor 13.0GB mb 0.0GB /$idx0.7GB fb/scaleli_jg020.0GB osm/lipp
+2026-10-06 03:45:37 load 63.43 45.77 25.19 swap_used 3580.50M free+inactive 20.2GB compressor 22.3GB mb 0.0GB /$idx0.5GB fb/scaleli_jg018.3GB osm/lipp
+2026-10-06 03:46:07 load 86.18 52.82 28.45 swap_used 3580.50M free+inactive 13.6GB compressor 35.3GB mb 0.0GB /$idx0.2GB fb/scaleli_jg06.7GB osm/lipp
+2026-10-06 03:46:38 load 83.42 55.14 30.13 swap_used 9572.50M free+inactive 12.5GB compressor 37.4GB mb 0.0GB /$idx0.2GB fb/scaleli_jg06.0GB osm/lipp
+2026-10-06 03:47:08 load 84.53 58.32 32.16 swap_used 16474.44M free+inactive 12.5GB compressor 37.3GB mb 0.0GB /$idx0.2GB fb/scaleli_jg05.9GB osm/lipp lowpower true thermal 0
+2026-10-06 03:47:38 load 81.03 60.07 33.70 swap_used 23682.62M free+inactive 12.4GB compressor 37.2GB mb 0.0GB /$idx0.2GB fb/scaleli_jg06.1GB osm/lipp
+2026-10-06 03:48:08 load 77.03 61.04 35.10 swap_used 12956.56M free+inactive 47.7GB compressor 2.4GB mb 0.0GB /$idx0.2GB fb/scaleli_jg03.0GB osm/btree
+2026-10-06 03:48:38 load 82.81 63.67 36.93 swap_used 12908.56M free+inactive 43.2GB compressor 2.2GB mb 0.0GB /$idx0.2GB fb/scaleli_jg011.2GB osm/btree
+2026-10-06 03:49:08 load 85.01 66.06 38.73 swap_used 12884.56M free+inactive 47.6GB compressor 2.2GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:49:38 load 69.65 64.40 39.08 swap_used 12480.31M free+inactive 46.2GB compressor 2.3GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:50:09 load 65.33 63.92 39.79 swap_used 12160.31M free+inactive 44.5GB compressor 2.4GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:50:39 load 64.79 64.01 40.66 swap_used 12080.31M free+inactive 46.0GB compressor 2.3GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:51:09 load 62.67 63.65 41.34 swap_used 12008.31M free+inactive 45.1GB compressor 2.4GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:51:39 load 56.50 62.04 41.53 swap_used 11976.31M free+inactive 45.7GB compressor 2.3GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:52:09 load 57.38 61.57 42.06 swap_used 11968.31M free+inactive 45.2GB compressor 2.3GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0 lowpower true thermal 0
+2026-10-06 03:52:39 load 57.09 61.18 42.60 swap_used 11920.31M free+inactive 45.0GB compressor 2.3GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:53:09 load 54.70 60.32 42.94 swap_used 11912.31M free+inactive 45.4GB compressor 2.3GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:53:40 load 49.59 58.62 42.92 swap_used 11864.25M free+inactive 45.3GB compressor 2.3GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:54:10 load 47.02 57.05 42.89 swap_used 11832.25M free+inactive 45.1GB compressor 2.3GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:54:40 load 45.43 55.65 42.88 swap_used 11832.25M free+inactive 45.0GB compressor 2.3GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:55:10 load 44.86 54.62 42.95 swap_used 11792.25M free+inactive 44.8GB compressor 2.2GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:55:40 load 37.86 52.04 42.42 swap_used 11768.25M free+inactive 44.8GB compressor 2.2GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:56:10 load 36.09 50.27 42.11 swap_used 11768.25M free+inactive 44.9GB compressor 2.2GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:56:40 load 35.88 48.80 41.86 swap_used 11752.25M free+inactive 44.7GB compressor 2.1GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:57:11 load 36.45 47.73 41.71 swap_used 11680.25M free+inactive 44.8GB compressor 2.1GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0 lowpower true thermal 0
+2026-10-06 03:57:41 load 37.24 46.79 41.57 swap_used 11672.25M free+inactive 44.6GB compressor 2.1GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:58:11 load 34.00 45.07 41.13 swap_used 11664.25M free+inactive 44.8GB compressor 2.1GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:58:41 load 33.31 43.81 40.80 swap_used 11656.25M free+inactive 44.5GB compressor 2.1GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:59:11 load 36.39 43.47 40.78 swap_used 11656.25M free+inactive 44.2GB compressor 2.1GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 03:59:41 load 43.05 44.41 41.21 swap_used 11656.25M free+inactive 44.6GB compressor 2.1GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 04:00:11 load 45.54 44.93 41.51 swap_used 11640.25M free+inactive 44.7GB compressor 2.1GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 04:00:42 load 41.32 43.95 41.27 swap_used 11632.25M free+inactive 44.6GB compressor 2.1GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 04:01:12 load 40.73 43.54 41.22 swap_used 11632.25M free+inactive 44.6GB compressor 2.1GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 04:01:42 load 37.85 42.59 40.95 swap_used 11632.25M free+inactive 44.5GB compressor 2.0GB mb 0.0GB /$idx0.2GB fb/scaleli_jg0
+2026-10-06 04:02:12 load 34.41 41.28 40.53 swap_used 11632.25M free+inactive 44.5GB compressor 2.0GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0 lowpower true thermal 0
+2026-10-06 04:02:42 load 30.03 39.58 39.94 swap_used 11624.25M free+inactive 44.4GB compressor 2.0GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:03:12 load 33.14 39.55 39.93 swap_used 11616.25M free+inactive 44.5GB compressor 2.0GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:03:43 load 40.14 40.58 40.28 swap_used 11608.25M free+inactive 43.7GB compressor 2.0GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:04:13 load 38.65 40.19 40.15 swap_used 11545.31M free+inactive 43.6GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:04:43 load 55.98 43.80 41.43 swap_used 11529.31M free+inactive 43.8GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:05:13 load 70.63 48.56 43.25 swap_used 11529.31M free+inactive 41.8GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:05:43 load 61.03 48.42 43.38 swap_used 11457.31M free+inactive 42.3GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:06:13 load 68.17 51.41 44.64 swap_used 11425.31M free+inactive 41.8GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:06:43 load 61.90 51.60 44.95 swap_used 11409.31M free+inactive 42.0GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:07:13 load 65.20 53.52 45.89 swap_used 11393.31M free+inactive 41.1GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0 lowpower true thermal 0
+2026-10-06 04:07:44 load 57.08 52.73 45.87 swap_used 11385.31M free+inactive 38.7GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:08:14 load 55.75 52.85 46.15 swap_used 11385.31M free+inactive 44.2GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:08:44 load 48.20 51.28 45.81 swap_used 11385.31M free+inactive 44.0GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:09:14 load 48.33 50.99 45.89 swap_used 11385.31M free+inactive 43.9GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:09:44 load 46.65 50.28 45.81 swap_used 11385.31M free+inactive 43.5GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg01.0GB fb/splice
+2026-10-06 04:10:14 load 47.64 50.13 45.93 swap_used 11385.31M free+inactive 43.2GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg01.5GB fb/splice_thp
+2026-10-06 04:10:44 load 47.42 49.65 45.89 swap_used 11385.31M free+inactive 42.2GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg02.8GB fb/trace_lipp
+2026-10-06 04:11:14 load 44.22 48.65 45.66 swap_used 11385.31M free+inactive 42.8GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg01.1GB osm/splice_thp
+2026-10-06 04:11:44 load 43.92 48.12 45.56 swap_used 11377.31M free+inactive 41.6GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg03.1GB osm/trace_lipp
+2026-10-06 04:12:15 load 64.61 52.93 47.41 swap_used 11377.31M free+inactive 42.4GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg01.0GB fb/splice_thp lowpower true thermal 0
+2026-10-06 04:12:45 load 56.39 52.06 47.28 swap_used 11369.31M free+inactive 42.6GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg00.5GB fb/trace_splice
+2026-10-06 04:13:15 load 50.51 51.04 47.08 swap_used 11369.31M free+inactive 42.4GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg01.1GB osm/splice
+2026-10-06 04:13:45 load 47.30 50.27 46.94 swap_used 11369.31M free+inactive 43.0GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg00.0GB osm/trace_lipp
+2026-10-06 04:14:15 load 53.35 51.49 47.50 swap_used 11369.31M free+inactive 42.9GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:14:45 load 55.02 52.08 47.85 swap_used 11369.31M free+inactive 42.1GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:15:15 load 57.29 52.69 48.21 swap_used 11369.31M free+inactive 42.7GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:15:46 load 57.37 53.16 48.53 swap_used 11369.31M free+inactive 43.2GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:16:16 load 54.18 52.87 48.59 swap_used 11273.31M free+inactive 42.7GB compressor 2.1GB mb 0.0GB /$idx0.3GB fb/scaleli_jg0
+2026-10-06 04:16:46 load 48.83 51.75 48.33 swap_used 11241.31M free+inactive 43.2GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_jg0
+2026-10-06 04:17:16 load 49.61 51.60 48.39 swap_used 11241.31M free+inactive 43.4GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_jg0 lowpower true thermal 0
+2026-10-06 04:17:46 load 42.41 49.71 47.82 swap_used 11241.31M free+inactive 43.4GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_jg0
+2026-10-06 04:18:16 load 36.95 47.68 47.15 swap_used 11225.31M free+inactive 43.2GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_jg0
+2026-10-06 04:18:46 load 44.12 48.27 47.37 swap_used 11217.31M free+inactive 43.3GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_jg0
+2026-10-06 04:19:17 load 42.40 47.52 47.14 swap_used 11209.31M free+inactive 43.2GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_jg0
+2026-10-06 04:19:47 load 38.89 46.21 46.67 swap_used 11185.31M free+inactive 43.3GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_jg0
+2026-10-06 04:20:17 load 33.63 44.20 45.93 swap_used 11185.31M free+inactive 43.2GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_jg0
+2026-10-06 04:20:47 load 30.42 42.45 45.24 swap_used 11185.31M free+inactive 43.3GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_jg0
+2026-10-06 04:21:17 load 34.86 42.32 45.09 swap_used 11185.31M free+inactive 43.3GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_jg0
+2026-10-06 04:21:47 load 27.53 39.93 44.13 swap_used 11185.31M free+inactive 43.3GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_jg0
+2026-10-06 04:22:17 load 34.35 40.36 44.14 swap_used 11177.31M free+inactive 43.2GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_splice lowpower true thermal 0
+2026-10-06 04:22:48 load 42.45 41.78 44.52 swap_used 11145.31M free+inactive 43.2GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_splice
+2026-10-06 04:23:18 load 41.86 41.73 44.41 swap_used 11137.31M free+inactive 43.2GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_splice
+2026-10-06 04:23:48 load 50.93 43.89 45.09 swap_used 11129.31M free+inactive 42.7GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_splice
+2026-10-06 04:24:18 load 43.65 42.77 44.64 swap_used 11065.31M free+inactive 42.9GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_splice
+2026-10-06 04:24:48 load 42.14 42.46 44.47 swap_used 10921.31M free+inactive 43.0GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_splice
+2026-10-06 04:25:18 load 44.76 43.16 44.65 swap_used 10921.31M free+inactive 42.9GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_splice
+2026-10-06 04:25:49 load 47.01 43.87 44.86 swap_used 10921.31M free+inactive 42.6GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_splice
+2026-10-06 04:26:19 load 54.05 45.85 45.54 swap_used 10913.31M free+inactive 42.5GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_splice
+2026-10-06 04:26:49 load 56.26 47.00 45.96 swap_used 10913.31M free+inactive 42.3GB compressor 2.0GB mb 0.0GB /$idx0.1GB fb/scaleli_splice
+2026-10-06 04:27:19 load 44.65 45.34 45.41 swap_used 10905.31M free+inactive 42.6GB compressor 2.0GB mb  lowpower true thermal 0
+2026-10-06 04:27:49 load 28.79 41.42 43.98 swap_used 10905.31M free+inactive 42.6GB compressor 2.0GB mb 
+2026-10-06 04:28:19 load 19.01 37.83 42.59 swap_used 10889.31M free+inactive 42.6GB compressor 2.0GB mb 
+2026-10-06 04:28:49 load 13.20 34.61 41.26 swap_used 10881.31M free+inactive 42.7GB compressor 2.0GB mb 
+2026-10-06 04:29:19 load 9.79 31.73 39.98 swap_used 10881.31M free+inactive 42.4GB compressor 2.0GB mb 
+2026-10-06 04:29:50 load 11.20 30.11 39.12 swap_used 10865.31M free+inactive 42.7GB compressor 2.0GB mb 
+2026-10-06 04:30:20 load 9.60 27.87 37.99 swap_used 10857.31M free+inactive 41.7GB compressor 2.0GB mb 
+2026-10-06 04:30:50 load 10.06 26.24 37.04 swap_used 10849.31M free+inactive 42.6GB compressor 2.0GB mb 
+2026-10-06 04:31:20 load 7.17 23.99 35.85 swap_used 10849.31M free+inactive 42.7GB compressor 2.0GB mb 
+2026-10-06 04:31:50 load 6.49 22.20 34.79 swap_used 10833.31M free+inactive 42.6GB compressor 2.0GB mb 
+2026-10-06 04:32:20 load 7.57 21.06 33.95 swap_used 10825.31M free+inactive 41.2GB compressor 2.0GB mb  lowpower true thermal 0
+2026-10-06 04:32:50 load 6.19 19.45 32.92 swap_used 10825.31M free+inactive 42.8GB compressor 1.9GB mb 
+2026-10-06 04:33:20 load 5.19 17.93 31.90 swap_used 10825.31M free+inactive 42.7GB compressor 2.0GB mb 
+2026-10-06 04:33:50 load 4.75 16.39 30.77 swap_used 10825.31M free+inactive 42.7GB compressor 2.0GB mb 1.5GB fb/sortedarray
+2026-10-06 04:34:21 load 5.08 15.35 29.90 swap_used 10825.31M free+inactive 36.2GB compressor 1.9GB mb 10.5GB fb/sortedarray
+2026-10-06 04:34:51 load 5.96 14.58 29.11 swap_used 10825.31M free+inactive 36.6GB compressor 1.9GB mb 10.6GB fb/sortedarray
+2026-10-06 04:35:21 load 6.26 13.85 28.35 swap_used 10825.31M free+inactive 36.4GB compressor 1.9GB mb 10.6GB fb/sortedarray
+2026-10-06 04:35:51 load 5.04 12.82 27.47 swap_used 10825.31M free+inactive 37.0GB compressor 2.0GB mb 10.6GB fb/sortedarray
+2026-10-06 04:36:21 load 5.09 12.07 26.69 swap_used 10825.31M free+inactive 42.0GB compressor 1.9GB mb 1.5GB fb/pgm
+2026-10-06 04:36:51 load 4.65 11.30 25.90 swap_used 10825.31M free+inactive 36.0GB compressor 1.7GB mb 10.4GB fb/pgm
+2026-10-06 04:37:21 load 4.40 10.61 25.14 swap_used 10761.31M free+inactive 36.4GB compressor 1.7GB mb 10.6GB fb/pgm lowpower true thermal 0
+2026-10-06 04:37:51 load 5.54 10.30 24.53 swap_used 10665.31M free+inactive 40.1GB compressor 1.7GB mb 3.0GB fb/lipp
+2026-10-06 04:38:21 load 5.57 9.85 23.87 swap_used 10665.31M free+inactive 30.3GB compressor 2.3GB mb 30.9GB fb/lipp
+2026-10-06 04:38:51 load 15.59 12.05 24.19 swap_used 10633.31M free+inactive 52.5GB compressor 1.6GB mb 3.0GB fb/btree
+2026-10-06 04:39:21 load 11.74 11.45 23.55 swap_used 10633.31M free+inactive 43.0GB compressor 1.6GB mb 11.2GB fb/btree
+2026-10-06 04:39:52 load 9.51 10.92 22.94 swap_used 10633.31M free+inactive 42.3GB compressor 1.6GB mb 11.2GB fb/btree0.0GB fb/splice
+2026-10-06 04:40:22 load 9.53 10.86 22.50 swap_used 10625.31M free+inactive 45.9GB compressor 1.6GB mb 1.5GB fb/alex1.1GB fb/trace_lipp
+2026-10-06 04:40:52 load 10.28 10.88 22.11 swap_used 10625.31M free+inactive 47.6GB compressor 1.6GB mb 7.5GB fb/alex0.7GB osm/trace_splice
+2026-10-06 04:41:22 load 9.91 10.75 21.67 swap_used 10625.31M free+inactive 44.3GB compressor 1.6GB mb 11.0GB fb/alex
+2026-10-06 04:41:52 load 17.44 12.29 21.83 swap_used 10617.31M free+inactive 42.9GB compressor 1.6GB mb 12.2GB fb/alex
+2026-10-06 04:42:22 load 17.37 12.89 21.73 swap_used 10617.31M free+inactive 49.8GB compressor 1.6GB mb 1.5GB osm/sortedarray lowpower true thermal 0
+2026-10-06 04:42:52 load 14.39 12.65 21.34 swap_used 10617.31M free+inactive 39.8GB compressor 1.6GB mb 10.6GB osm/sortedarray2.8GB fb/lipp
+2026-10-06 04:43:22 load 11.09 12.02 20.81 swap_used 10617.31M free+inactive 42.7GB compressor 1.6GB mb 10.6GB osm/sortedarray0.2GB fb/artunsync
+2026-10-06 04:43:52 load 11.59 12.10 20.54 swap_used 10617.31M free+inactive 38.7GB compressor 1.6GB mb 10.6GB osm/sortedarray2.2GB osm/lipp
+2026-10-06 04:44:22 load 11.40 11.99 20.20 swap_used 10617.31M free+inactive 50.7GB compressor 1.6GB mb 
+2026-10-06 04:44:52 load 9.65 11.50 19.74 swap_used 10617.31M free+inactive 50.5GB compressor 1.6GB mb 
+2026-10-06 04:45:23 load 7.61 10.84 19.21 swap_used 10617.31M free+inactive 46.7GB compressor 1.6GB mb 
+2026-10-06 04:45:53 load 6.74 10.32 18.74 swap_used 10609.31M free+inactive 57.1GB compressor 1.6GB mb 
+2026-10-06 04:46:23 load 11.55 11.05 18.70 swap_used 10609.31M free+inactive 57.0GB compressor 1.6GB mb 
+2026-10-06 04:46:53 load 11.17 11.06 18.44 swap_used 10609.31M free+inactive 52.6GB compressor 1.6GB mb 
+2026-10-06 04:47:23 load 9.24 10.59 18.02 swap_used 10601.31M free+inactive 54.5GB compressor 1.6GB mb  lowpower true thermal 0
+2026-10-06 04:47:53 load 7.50 10.03 17.55 swap_used 10601.31M free+inactive 53.3GB compressor 1.6GB mb 
+2026-10-06 04:48:23 load 6.60 9.56 17.12 swap_used 10601.31M free+inactive 52.6GB compressor 1.6GB mb 
+2026-10-06 04:48:53 load 6.43 9.24 16.74 swap_used 10601.31M free+inactive 52.1GB compressor 1.6GB mb 
+2026-10-06 04:49:23 load 13.23 10.59 16.97 swap_used 10593.31M free+inactive 48.5GB compressor 1.6GB mb 
+2026-10-06 04:49:53 load 10.50 10.18 16.60 swap_used 10593.31M free+inactive 47.5GB compressor 1.6GB mb 
+2026-10-06 04:50:23 load 9.50 9.97 16.30 swap_used 10593.31M free+inactive 48.4GB compressor 1.6GB mb 
+2026-10-06 04:50:54 load 11.43 10.36 16.22 swap_used 10593.31M free+inactive 42.5GB compressor 1.6GB mb 
+2026-10-06 04:51:24 load 9.51 9.98 15.88 swap_used 10593.31M free+inactive 44.1GB compressor 1.6GB mb 
+2026-10-06 04:51:54 load 8.35 9.66 15.56 swap_used 10593.31M free+inactive 51.9GB compressor 1.6GB mb 
+2026-10-06 04:52:24 load 12.44 10.41 15.61 swap_used 10593.31M free+inactive 52.4GB compressor 1.6GB mb  lowpower true thermal 0
+2026-10-06 04:52:54 load 11.15 10.35 15.42 swap_used 10585.31M free+inactive 46.8GB compressor 1.6GB mb 
+2026-10-06 04:53:24 load 9.05 9.94 15.09 swap_used 10585.31M free+inactive 48.6GB compressor 1.6GB mb 
+2026-10-06 04:53:54 load 6.91 9.33 14.69 swap_used 10585.31M free+inactive 48.5GB compressor 1.6GB mb 
+2026-10-06 04:54:24 load 6.83 9.06 14.41 swap_used 10585.31M free+inactive 46.6GB compressor 1.6GB mb 
+2026-10-06 04:54:54 load 7.49 9.00 14.20 swap_used 10577.31M free+inactive 45.2GB compressor 1.6GB mb 
+2026-10-06 04:55:25 load 8.05 8.98 14.01 swap_used 10577.31M free+inactive 45.0GB compressor 1.6GB mb 
+2026-10-06 04:55:55 load 7.09 8.66 13.72 swap_used 10577.31M free+inactive 41.0GB compressor 1.6GB mb 
+2026-10-06 04:56:25 load 6.14 8.27 13.40 swap_used 10577.31M free+inactive 46.2GB compressor 1.6GB mb 
+2026-10-06 04:56:55 load 8.35 8.52 13.31 swap_used 10569.31M free+inactive 52.8GB compressor 1.6GB mb 0.5GB fb/splice
+2026-10-06 04:57:25 load 12.13 9.53 13.51 swap_used 10409.44M free+inactive 48.7GB compressor 1.6GB mb 0.2GB osm/splice lowpower true thermal 0
+2026-10-06 04:57:55 load 9.83 9.23 13.27 swap_used 10409.44M free+inactive 53.0GB compressor 1.6GB mb 
+2026-10-06 04:58:25 load 7.41 8.71 12.94 swap_used 10409.44M free+inactive 51.9GB compressor 1.6GB mb 
+2026-10-06 04:58:55 load 12.43 9.89 13.23 swap_used 10409.44M free+inactive 47.1GB compressor 1.6GB mb 
+2026-10-06 04:59:25 load 10.65 9.66 13.02 swap_used 10409.44M free+inactive 47.0GB compressor 1.6GB mb 
+2026-10-06 04:59:55 load 10.27 9.73 12.94 swap_used 10409.44M free+inactive 52.1GB compressor 1.6GB mb 
+2026-10-06 05:00:25 load 16.43 11.11 13.31 swap_used 10409.44M free+inactive 52.0GB compressor 1.6GB mb 
+2026-10-06 05:00:56 load 12.76 10.75 13.11 swap_used 10409.44M free+inactive 47.8GB compressor 1.6GB mb 
+2026-10-06 05:01:26 load 9.83 10.24 12.84 swap_used 10409.44M free+inactive 52.2GB compressor 1.6GB mb 
+2026-10-06 05:01:56 load 7.97 9.75 12.57 swap_used 10409.44M free+inactive 50.4GB compressor 1.6GB mb 
+2026-10-06 05:02:26 load 10.98 10.23 12.64 swap_used 10401.44M free+inactive 47.3GB compressor 1.6GB mb  lowpower true thermal 0
+2026-10-06 05:02:56 load 8.69 9.76 12.39 swap_used 10401.44M free+inactive 46.5GB compressor 1.6GB mb 
+2026-10-06 05:03:26 load 8.94 9.71 12.28 swap_used 10401.44M free+inactive 44.2GB compressor 1.6GB mb 
+2026-10-06 05:03:56 load 7.09 9.18 11.99 swap_used 10401.44M free+inactive 48.6GB compressor 1.6GB mb 
+2026-10-06 05:04:26 load 9.96 9.61 12.05 swap_used 10401.44M free+inactive 48.3GB compressor 1.6GB mb 
+2026-10-06 05:04:56 load 8.62 9.37 11.88 swap_used 10401.44M free+inactive 43.8GB compressor 1.6GB mb 
+2026-10-06 05:05:26 load 8.21 9.20 11.73 swap_used 10401.44M free+inactive 49.0GB compressor 1.6GB mb 
+2026-10-06 05:05:57 load 7.89 9.02 11.57 swap_used 10401.44M free+inactive 47.7GB compressor 1.6GB mb 
+2026-10-06 05:06:27 load 12.62 10.05 11.86 swap_used 10401.44M free+inactive 43.5GB compressor 1.6GB mb 
+2026-10-06 05:06:57 load 10.51 9.81 11.71 swap_used 10393.44M free+inactive 42.7GB compressor 1.6GB mb 
+2026-10-06 05:07:27 load 8.12 9.29 11.45 swap_used 10393.44M free+inactive 42.3GB compressor 1.6GB mb  lowpower true thermal 0
+2026-10-06 05:07:57 load 7.84 9.14 11.33 swap_used 10393.44M free+inactive 45.5GB compressor 1.6GB mb 
+2026-10-06 05:08:27 load 12.70 10.08 11.58 swap_used 10393.44M free+inactive 44.9GB compressor 1.6GB mb 
+2026-10-06 05:08:57 load 9.95 9.70 11.39 swap_used 10393.44M free+inactive 39.8GB compressor 1.6GB mb 
+2026-10-06 05:09:27 load 8.30 9.33 11.20 swap_used 10393.44M free+inactive 39.3GB compressor 1.6GB mb 
+2026-10-06 05:09:57 load 7.41 9.02 11.02 swap_used 10393.44M free+inactive 36.1GB compressor 1.6GB mb 
+2026-10-06 05:10:27 load 6.28 8.59 10.79 swap_used 10385.44M free+inactive 44.5GB compressor 1.6GB mb 
+2026-10-06 05:10:57 load 5.98 8.29 10.61 swap_used 10385.44M free+inactive 44.0GB compressor 1.6GB mb 
+2026-10-06 05:11:28 load 12.39 9.76 11.07 swap_used 10385.44M free+inactive 39.7GB compressor 1.6GB mb 
+2026-10-06 05:11:58 load 9.49 9.30 10.86 swap_used 10385.44M free+inactive 39.7GB compressor 1.6GB mb 
+2026-10-06 05:12:28 load 7.83 8.94 10.67 swap_used 10385.44M free+inactive 45.1GB compressor 1.6GB mb  lowpower true thermal 0
+2026-10-06 05:12:58 load 5.73 8.35 10.40 swap_used 10385.44M free+inactive 45.2GB compressor 1.6GB mb 
+2026-10-06 05:13:28 load 4.61 7.82 10.14 swap_used 10385.44M free+inactive 44.4GB compressor 1.6GB mb 
+2026-10-06 05:13:58 load 5.37 7.67 10.00 swap_used 10385.44M free+inactive 43.5GB compressor 1.6GB mb 
+2026-10-06 05:14:28 load 6.77 7.81 9.97 swap_used 10385.44M free+inactive 43.8GB compressor 1.6GB mb 
+2026-10-06 05:14:58 load 5.80 7.47 9.77 swap_used 10377.44M free+inactive 44.5GB compressor 1.6GB mb 
+2026-10-06 05:15:28 load 4.88 7.09 9.55 swap_used 10377.44M free+inactive 44.3GB compressor 1.6GB mb 
+2026-10-06 05:15:58 load 5.71 7.07 9.46 swap_used 10377.44M free+inactive 45.2GB compressor 1.6GB mb 
+2026-10-06 05:16:29 load 7.30 7.37 9.48 swap_used 10377.44M free+inactive 43.9GB compressor 1.6GB mb 
+2026-10-06 05:16:59 load 6.23 7.12 9.31 swap_used 10369.44M free+inactive 44.0GB compressor 1.6GB mb 
+2026-10-06 05:17:29 load 5.27 6.81 9.12 swap_used 10369.44M free+inactive 45.1GB compressor 1.6GB mb  lowpower true thermal 0
+2026-10-06 05:17:59 load 4.36 6.43 8.90 swap_used 10369.44M free+inactive 45.1GB compressor 1.6GB mb 
+2026-10-06 05:18:29 load 4.28 6.22 8.74 swap_used 10369.44M free+inactive 44.9GB compressor 1.6GB mb 
+2026-10-06 05:18:59 load 3.39 5.81 8.50 swap_used 10369.44M free+inactive 45.0GB compressor 1.6GB mb 
+2026-10-06 05:19:29 load 3.17 5.51 8.30 swap_used 10369.44M free+inactive 43.4GB compressor 1.6GB mb 1.5GB osm/sortedarray
+2026-10-06 05:19:59 load 3.12 5.27 8.11 swap_used 10369.44M free+inactive 33.7GB compressor 1.6GB mb 10.6GB osm/sortedarray
+2026-10-06 05:20:29 load 5.20 5.55 8.11 swap_used 10369.44M free+inactive 33.7GB compressor 1.6GB mb 10.6GB osm/sortedarray
+2026-10-06 05:20:59 load 5.68 5.63 8.05 swap_used 10369.44M free+inactive 33.7GB compressor 1.6GB mb 10.6GB osm/sortedarray
+2026-10-06 05:21:29 load 5.52 5.60 7.96 swap_used 10369.44M free+inactive 33.7GB compressor 1.6GB mb 10.6GB osm/sortedarray
+2026-10-06 05:22:00 load 5.31 5.54 7.85 swap_used 10369.44M free+inactive 33.7GB compressor 1.6GB mb 10.6GB osm/sortedarray
+2026-10-06 05:22:30 load 5.75 5.60 7.79 swap_used 10369.44M free+inactive 33.3GB compressor 1.6GB mb 10.6GB osm/sortedarray lowpower true thermal 0
+2026-10-06 05:23:00 load 5.68 5.59 7.71 swap_used 10369.44M free+inactive 37.5GB compressor 1.6GB mb 6.3GB osm/pgm
+2026-10-06 05:23:30 load 5.79 5.63 7.65 swap_used 10361.44M free+inactive 33.3GB compressor 1.6GB mb 10.6GB osm/pgm
+2026-10-06 05:24:00 load 5.88 5.66 7.59 swap_used 10353.44M free+inactive 41.4GB compressor 1.6GB mb 3.0GB osm/lipp
+2026-10-06 05:24:30 load 5.77 5.66 7.52 swap_used 10353.44M free+inactive 27.7GB compressor 7.4GB mb 30.9GB osm/lipp
+2026-10-06 05:25:00 load 6.43 5.85 7.53 swap_used 10353.44M free+inactive 20.4GB compressor 21.6GB mb 16.7GB osm/lipp
+2026-10-06 05:25:30 load 7.05 6.04 7.54 swap_used 11649.38M free+inactive 12.5GB compressor 37.4GB mb 4.1GB osm/lipp
+2026-10-06 05:26:00 load 7.09 6.16 7.53 swap_used 22391.94M free+inactive 12.4GB compressor 37.1GB mb 4.1GB osm/lipp
+2026-10-06 05:26:31 load 5.87 5.96 7.41 swap_used 12986.81M free+inactive 48.6GB compressor 0.7GB mb 3.0GB osm/btree
+2026-10-06 05:27:01 load 4.76 5.68 7.25 swap_used 12986.81M free+inactive 44.0GB compressor 0.7GB mb 11.2GB osm/btree
+2026-10-06 05:27:31 load 4.20 5.45 7.12 swap_used 12978.81M free+inactive 44.1GB compressor 0.7GB mb 11.2GB osm/btree lowpower true thermal 0
+2026-10-06 05:28:01 load 5.04 5.55 7.09 swap_used 12962.81M free+inactive 43.0GB compressor 0.7GB mb 11.2GB osm/btree
+2026-10-06 05:28:31 load 6.15 5.74 7.11 swap_used 12954.81M free+inactive 42.5GB compressor 0.6GB mb 3.0GB osm/alex
+2026-10-06 05:29:01 load 7.01 5.96 7.14 swap_used 12946.81M free+inactive 40.8GB compressor 0.6GB mb 7.5GB osm/alex
+2026-10-06 05:29:31 load 8.05 6.29 7.21 swap_used 12946.81M free+inactive 37.5GB compressor 0.6GB mb 12.2GB osm/alex
+2026-10-06 05:30:01 load 7.77 6.39 7.21 swap_used 12922.81M free+inactive 35.9GB compressor 0.6GB mb 12.2GB osm/alex
+2026-10-06 05:30:31 load 7.58 6.48 7.22 swap_used 12922.81M free+inactive 39.0GB compressor 0.6GB mb 3.9GB books/sortedarray
+2026-10-06 05:31:01 load 7.72 6.61 7.24 swap_used 12922.81M free+inactive 36.1GB compressor 0.6GB mb 10.6GB books/sortedarray
+2026-10-06 05:31:31 load 7.19 6.59 7.21 swap_used 12922.81M free+inactive 35.8GB compressor 0.6GB mb 10.6GB books/sortedarray
+2026-10-06 05:32:01 load 7.12 6.66 7.21 swap_used 12906.81M free+inactive 34.5GB compressor 0.6GB mb 10.6GB books/sortedarray
+2026-10-06 05:32:32 load 7.21 6.72 7.22 swap_used 12906.81M free+inactive 40.4GB compressor 0.6GB mb 3.0GB books/pgm lowpower true thermal 0
+2026-10-06 05:33:02 load 5.90 6.46 7.10 swap_used 12898.81M free+inactive 36.6GB compressor 0.6GB mb 10.6GB books/pgm
+2026-10-06 05:33:32 load 7.97 6.88 7.23 swap_used 12890.81M free+inactive 41.4GB compressor 0.6GB mb 1.5GB books/lipp
+2026-10-06 05:34:02 load 7.85 6.91 7.23 swap_used 12890.81M free+inactive 29.4GB compressor 0.6GB mb 21.1GB books/lipp
+2026-10-06 05:34:32 load 7.33 6.87 7.20 swap_used 12890.81M free+inactive 28.4GB compressor 5.8GB mb 33.0GB books/lipp
+2026-10-06 05:35:02 load 6.34 6.68 7.12 swap_used 12842.81M free+inactive 49.6GB compressor 1.2GB mb 1.5GB books/btree
+2026-10-06 05:35:32 load 5.60 6.46 7.02 swap_used 12842.81M free+inactive 46.0GB compressor 1.0GB mb 7.0GB books/btree
+2026-10-06 05:36:02 load 4.75 6.17 6.90 swap_used 12826.81M free+inactive 41.7GB compressor 1.0GB mb 11.2GB books/btree
+2026-10-06 05:36:32 load 6.15 6.39 6.95 swap_used 12826.81M free+inactive 43.1GB compressor 1.0GB mb 11.2GB books/btree
+2026-10-06 05:37:03 load 5.15 6.11 6.83 swap_used 12818.81M free+inactive 48.4GB compressor 1.0GB mb 1.5GB books/alex
+2026-10-06 05:37:33 load 4.76 5.91 6.73 swap_used 12818.81M free+inactive 45.0GB compressor 1.0GB mb 7.5GB books/alex lowpower true thermal 0
+2026-10-06 05:38:03 load 4.26 5.68 6.62 swap_used 12818.81M free+inactive 42.2GB compressor 1.0GB mb 11.9GB books/alex
+2026-10-06 05:38:33 load 4.38 5.59 6.56 swap_used 12818.81M free+inactive 46.2GB compressor 0.9GB mb 3.0GB stack.sorted/sortedarray
+2026-10-06 05:39:03 load 3.97 5.38 6.44 swap_used 12818.81M free+inactive 42.5GB compressor 0.9GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 05:39:33 load 3.93 5.23 6.35 swap_used 12794.81M free+inactive 41.9GB compressor 0.9GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 05:40:03 load 3.53 5.00 6.23 swap_used 12786.81M free+inactive 42.3GB compressor 0.9GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 05:40:33 load 3.62 4.87 6.14 swap_used 12602.81M free+inactive 42.0GB compressor 0.9GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 05:41:03 load 3.88 4.82 6.07 swap_used 12513.69M free+inactive 42.4GB compressor 0.9GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 05:41:33 load 4.16 4.78 6.01 swap_used 12505.69M free+inactive 47.2GB compressor 0.9GB mb 1.5GB stack.sorted/pgm
+2026-10-06 05:42:03 load 4.24 4.73 5.95 swap_used 12505.69M free+inactive 42.1GB compressor 0.9GB mb 10.5GB stack.sorted/pgm
+2026-10-06 05:42:33 load 4.00 4.63 5.87 swap_used 12505.69M free+inactive 47.1GB compressor 0.9GB mb 1.5GB stack.sorted/lipp lowpower true thermal 0
+2026-10-06 05:43:04 load 4.11 4.60 5.82 swap_used 12497.69M free+inactive 44.2GB compressor 0.8GB mb 6.4GB stack.sorted/lipp
+2026-10-06 05:43:34 load 3.63 4.43 5.71 swap_used 12489.69M free+inactive 45.9GB compressor 0.8GB mb 3.0GB stack.sorted/btree
+2026-10-06 05:44:04 load 3.87 4.40 5.66 swap_used 12481.69M free+inactive 41.5GB compressor 0.8GB mb 11.2GB stack.sorted/btree
+2026-10-06 05:44:34 load 5.08 4.66 5.71 swap_used 12481.69M free+inactive 40.7GB compressor 0.8GB mb 11.2GB stack.sorted/btree
+2026-10-06 05:45:04 load 5.15 4.74 5.70 swap_used 12481.69M free+inactive 41.0GB compressor 0.8GB mb 11.2GB stack.sorted/btree
+2026-10-06 05:45:34 load 5.03 4.75 5.67 swap_used 12481.69M free+inactive 45.7GB compressor 0.8GB mb 3.0GB stack.sorted/alex
+2026-10-06 05:46:04 load 4.47 4.64 5.60 swap_used 12481.69M free+inactive 41.0GB compressor 0.8GB mb 10.2GB stack.sorted/alex
+2026-10-06 05:46:34 load 5.98 4.98 5.68 swap_used 12481.69M free+inactive 44.2GB compressor 0.8GB mb 3.0GB fb/sortedarray
+2026-10-06 05:47:04 load 7.01 5.31 5.78 swap_used 12473.69M free+inactive 39.1GB compressor 0.8GB mb 10.6GB fb/sortedarray
+2026-10-06 05:47:34 load 6.28 5.32 5.77 swap_used 12473.69M free+inactive 41.1GB compressor 0.8GB mb 10.6GB fb/sortedarray lowpower true thermal 0
+2026-10-06 05:48:04 load 5.58 5.24 5.72 swap_used 12473.69M free+inactive 41.0GB compressor 0.8GB mb 10.6GB fb/sortedarray
+2026-10-06 05:48:35 load 5.61 5.27 5.71 swap_used 12465.69M free+inactive 39.3GB compressor 0.8GB mb 10.6GB fb/sortedarray
+2026-10-06 05:49:05 load 4.29 4.97 5.59 swap_used 12433.69M free+inactive 46.2GB compressor 0.7GB mb 1.5GB fb/pgm
+2026-10-06 05:49:35 load 5.47 5.22 5.66 swap_used 12385.69M free+inactive 40.4GB compressor 0.8GB mb 10.5GB fb/pgm
+2026-10-06 05:50:05 load 5.18 5.17 5.62 swap_used 12385.69M free+inactive 40.3GB compressor 0.8GB mb 10.6GB fb/pgm
+2026-10-06 05:50:35 load 4.53 5.00 5.54 swap_used 12385.69M free+inactive 44.6GB compressor 0.8GB mb 3.0GB fb/lipp
+2026-10-06 05:51:05 load 3.79 4.77 5.44 swap_used 12377.69M free+inactive 33.2GB compressor 0.8GB mb 32.8GB fb/lipp
+2026-10-06 05:51:35 load 4.04 4.73 5.40 swap_used 12377.69M free+inactive 48.6GB compressor 0.8GB mb 1.5GB fb/btree
+2026-10-06 05:52:05 load 4.27 4.73 5.38 swap_used 12377.69M free+inactive 44.3GB compressor 0.8GB mb 8.8GB fb/btree
+2026-10-06 05:52:35 load 4.11 4.65 5.33 swap_used 12377.69M free+inactive 43.5GB compressor 0.8GB mb 11.2GB fb/btree lowpower true thermal 0
+2026-10-06 05:53:05 load 3.68 4.50 5.25 swap_used 12369.69M free+inactive 43.5GB compressor 0.8GB mb 11.2GB fb/btree
+2026-10-06 05:53:35 load 4.02 4.50 5.22 swap_used 12361.69M free+inactive 43.4GB compressor 0.8GB mb 11.2GB fb/btree
+2026-10-06 05:54:06 load 4.55 4.58 5.23 swap_used 12361.69M free+inactive 47.7GB compressor 0.8GB mb 3.0GB fb/alex
+2026-10-06 05:54:36 load 4.20 4.49 5.17 swap_used 12361.69M free+inactive 45.2GB compressor 0.8GB mb 7.5GB fb/alex
+2026-10-06 05:55:06 load 3.67 4.33 5.09 swap_used 12361.69M free+inactive 42.6GB compressor 0.8GB mb 12.2GB fb/alex
+2026-10-06 05:55:36 load 3.52 4.22 5.02 swap_used 12361.69M free+inactive 42.6GB compressor 0.8GB mb 12.2GB fb/alex
+2026-10-06 05:56:06 load 3.90 4.23 5.00 swap_used 12345.69M free+inactive 42.5GB compressor 0.8GB mb 12.2GB fb/alex
+2026-10-06 05:56:36 load 3.62 4.13 4.93 swap_used 12345.69M free+inactive 46.7GB compressor 0.8GB mb 3.0GB osm/sortedarray
+2026-10-06 05:57:06 load 4.10 4.20 4.92 swap_used 12329.69M free+inactive 42.6GB compressor 0.8GB mb 10.6GB osm/sortedarray
+2026-10-06 05:57:36 load 4.66 4.31 4.94 swap_used 12329.69M free+inactive 42.6GB compressor 0.8GB mb 10.6GB osm/sortedarray lowpower true thermal 0
+2026-10-06 05:58:06 load 4.25 4.23 4.89 swap_used 12329.69M free+inactive 42.6GB compressor 0.8GB mb 10.6GB osm/sortedarray
+2026-10-06 05:58:36 load 4.04 4.18 4.84 swap_used 12329.69M free+inactive 42.4GB compressor 0.8GB mb 10.6GB osm/sortedarray
+2026-10-06 05:59:06 load 4.82 4.31 4.87 swap_used 12329.69M free+inactive 42.5GB compressor 0.8GB mb 10.6GB osm/sortedarray
+2026-10-06 05:59:36 load 4.34 4.25 4.82 swap_used 12313.69M free+inactive 46.5GB compressor 0.8GB mb 3.0GB osm/pgm
+2026-10-06 06:00:07 load 3.94 4.16 4.77 swap_used 12305.69M free+inactive 42.5GB compressor 0.8GB mb 10.6GB osm/pgm
+2026-10-06 06:00:37 load 3.17 3.95 4.67 swap_used 12305.69M free+inactive 42.5GB compressor 0.8GB mb 10.6GB osm/pgm
+2026-10-06 06:01:07 load 4.01 4.07 4.69 swap_used 12305.69M free+inactive 46.6GB compressor 0.8GB mb 3.0GB osm/lipp
+2026-10-06 06:01:37 load 4.55 4.19 4.71 swap_used 12281.69M free+inactive 30.1GB compressor 2.7GB mb 35.8GB osm/lipp
+2026-10-06 06:02:07 load 5.48 4.43 4.77 swap_used 12233.69M free+inactive 23.6GB compressor 15.5GB mb 23.3GB osm/lipp
+2026-10-06 06:02:37 load 5.06 4.43 4.76 swap_used 12185.69M free+inactive 14.8GB compressor 32.6GB mb 8.8GB osm/lipp lowpower true thermal 0
+2026-10-06 06:03:07 load 5.20 4.53 4.78 swap_used 19597.38M free+inactive 12.5GB compressor 37.3GB mb 7.1GB osm/lipp
+2026-10-06 06:03:37 load 5.35 4.62 4.81 swap_used 12986.25M free+inactive 48.6GB compressor 2.0GB mb 3.0GB osm/btree
+2026-10-06 06:04:07 load 5.71 4.77 4.85 swap_used 12986.25M free+inactive 44.3GB compressor 1.9GB mb 11.2GB osm/btree
+2026-10-06 06:04:38 load 5.64 4.84 4.87 swap_used 12970.25M free+inactive 43.9GB compressor 1.6GB mb 11.2GB osm/btree
+2026-10-06 06:05:08 load 4.99 4.76 4.84 swap_used 12970.25M free+inactive 44.0GB compressor 1.5GB mb 11.2GB osm/btree
+2026-10-06 06:05:38 load 5.54 4.90 4.88 swap_used 12954.25M free+inactive 43.9GB compressor 1.5GB mb 11.2GB osm/btree
+2026-10-06 06:06:08 load 4.61 4.73 4.82 swap_used 12954.25M free+inactive 48.3GB compressor 1.5GB mb 3.0GB osm/alex
+2026-10-06 06:06:38 load 4.39 4.66 4.79 swap_used 12890.25M free+inactive 45.6GB compressor 1.4GB mb 7.6GB osm/alex
+2026-10-06 06:07:08 load 4.78 4.72 4.81 swap_used 12890.25M free+inactive 43.2GB compressor 1.3GB mb 12.2GB osm/alex
+2026-10-06 06:07:38 load 4.02 4.54 4.74 swap_used 12778.25M free+inactive 42.9GB compressor 1.4GB mb 12.2GB osm/alex lowpower true thermal 0
+2026-10-06 06:08:08 load 3.98 4.50 4.72 swap_used 12762.25M free+inactive 47.0GB compressor 1.4GB mb 3.0GB books/sortedarray
+2026-10-06 06:08:38 load 4.36 4.53 4.72 swap_used 12762.25M free+inactive 42.9GB compressor 1.3GB mb 10.6GB books/sortedarray
+2026-10-06 06:09:08 load 4.32 4.50 4.70 swap_used 12762.25M free+inactive 42.8GB compressor 1.3GB mb 10.6GB books/sortedarray
+2026-10-06 06:09:38 load 4.34 4.48 4.69 swap_used 12690.25M free+inactive 42.9GB compressor 1.3GB mb 10.6GB books/sortedarray
+2026-10-06 06:10:08 load 4.55 4.49 4.68 swap_used 12690.25M free+inactive 42.8GB compressor 1.3GB mb 10.6GB books/sortedarray
+2026-10-06 06:10:39 load 4.14 4.39 4.64 swap_used 12658.25M free+inactive 42.7GB compressor 1.3GB mb 10.6GB books/sortedarray
+2026-10-06 06:11:09 load 4.00 4.34 4.61 swap_used 12658.25M free+inactive 47.5GB compressor 1.0GB mb 1.5GB books/pgm
+2026-10-06 06:11:39 load 4.51 4.41 4.62 swap_used 12650.25M free+inactive 42.8GB compressor 1.0GB mb 10.4GB books/pgm
+2026-10-06 06:12:09 load 4.36 4.37 4.60 swap_used 12650.25M free+inactive 42.7GB compressor 1.0GB mb 10.6GB books/pgm
+2026-10-06 06:12:39 load 4.49 4.38 4.59 swap_used 12634.25M free+inactive 46.8GB compressor 1.0GB mb 3.0GB books/lipp lowpower true thermal 0
+2026-10-06 06:13:09 load 3.94 4.25 4.54 swap_used 12634.25M free+inactive 29.8GB compressor 3.1GB mb 35.8GB books/lipp
+2026-10-06 06:13:39 load 4.73 4.39 4.58 swap_used 12634.25M free+inactive 28.1GB compressor 6.2GB mb 32.7GB books/lipp
+2026-10-06 06:14:09 load 4.98 4.48 4.60 swap_used 12610.25M free+inactive 48.1GB compressor 1.0GB mb 3.0GB books/btree
+2026-10-06 06:14:40 load 4.54 4.43 4.58 swap_used 12508.38M free+inactive 43.5GB compressor 1.0GB mb 11.2GB books/btree
+2026-10-06 06:15:10 load 4.36 4.41 4.57 swap_used 12508.38M free+inactive 43.5GB compressor 1.0GB mb 11.2GB books/btree
+2026-10-06 06:15:40 load 4.97 4.55 4.61 swap_used 12508.38M free+inactive 43.4GB compressor 1.0GB mb 11.2GB books/btree
+2026-10-06 06:16:10 load 4.77 4.54 4.60 swap_used 12508.38M free+inactive 48.5GB compressor 0.9GB mb 1.5GB books/alex
+2026-10-06 06:16:40 load 4.32 4.47 4.57 swap_used 12476.38M free+inactive 45.3GB compressor 0.9GB mb 7.5GB books/alex
+2026-10-06 06:17:10 load 3.59 4.28 4.50 swap_used 12436.38M free+inactive 42.7GB compressor 0.9GB mb 11.9GB books/alex
+2026-10-06 06:17:40 load 3.36 4.16 4.45 swap_used 12436.38M free+inactive 46.8GB compressor 0.9GB mb 3.0GB stack.sorted/sortedarray lowpower true thermal 0
+2026-10-06 06:18:10 load 3.85 4.19 4.45 swap_used 12436.38M free+inactive 42.6GB compressor 0.9GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 06:18:40 load 4.07 4.20 4.44 swap_used 12436.38M free+inactive 42.4GB compressor 0.9GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 06:19:10 load 3.67 4.09 4.39 swap_used 12420.38M free+inactive 42.5GB compressor 0.9GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 06:19:40 load 3.85 4.08 4.38 swap_used 12412.38M free+inactive 42.5GB compressor 0.9GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 06:20:10 load 3.88 4.07 4.36 swap_used 12404.38M free+inactive 42.6GB compressor 0.9GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 06:20:41 load 3.74 4.00 4.33 swap_used 12404.38M free+inactive 48.2GB compressor 0.9GB mb 1.5GB stack.sorted/pgm
+2026-10-06 06:21:11 load 4.24 4.11 4.35 swap_used 12404.38M free+inactive 44.8GB compressor 0.9GB mb 6.6GB stack.sorted/pgm
+2026-10-06 06:21:41 load 4.01 4.05 4.32 swap_used 12404.38M free+inactive 42.5GB compressor 0.9GB mb 10.6GB stack.sorted/pgm
+2026-10-06 06:22:11 load 3.78 4.00 4.29 swap_used 12404.38M free+inactive 46.6GB compressor 0.9GB mb 3.0GB stack.sorted/lipp
+2026-10-06 06:22:41 load 3.61 3.95 4.26 swap_used 12396.38M free+inactive 48.1GB compressor 0.9GB mb 1.5GB stack.sorted/btree lowpower true thermal 0
+2026-10-06 06:23:11 load 3.29 3.83 4.21 swap_used 12396.38M free+inactive 42.2GB compressor 0.9GB mb 11.2GB stack.sorted/btree
+2026-10-06 06:23:41 load 3.79 3.90 4.22 swap_used 12340.31M free+inactive 42.0GB compressor 0.9GB mb 11.2GB stack.sorted/btree
+2026-10-06 06:24:11 load 4.21 4.00 4.25 swap_used 12340.31M free+inactive 42.1GB compressor 0.9GB mb 11.2GB stack.sorted/btree
+2026-10-06 06:24:41 load 3.60 3.88 4.19 swap_used 12292.31M free+inactive 42.0GB compressor 0.9GB mb 11.2GB stack.sorted/btree
+2026-10-06 06:25:11 load 3.91 3.93 4.20 swap_used 12284.31M free+inactive 46.5GB compressor 0.8GB mb 3.0GB stack.sorted/alex
+2026-10-06 06:25:41 load 3.97 3.94 4.19 swap_used 12196.25M free+inactive 43.5GB compressor 0.9GB mb 7.5GB stack.sorted/alex
+2026-10-06 06:26:12 load 3.75 3.91 4.17 swap_used 12196.25M free+inactive 47.2GB compressor 0.9GB mb 1.5GB fb/sortedarray
+2026-10-06 06:26:42 load 4.13 3.99 4.19 swap_used 12196.25M free+inactive 41.0GB compressor 0.9GB mb 10.6GB fb/sortedarray
+2026-10-06 06:27:12 load 4.49 4.07 4.21 swap_used 12196.25M free+inactive 41.2GB compressor 0.9GB mb 10.6GB fb/sortedarray
+2026-10-06 06:27:42 load 4.24 4.06 4.20 swap_used 12180.25M free+inactive 41.2GB compressor 0.9GB mb 10.6GB fb/sortedarray lowpower true thermal 0
+2026-10-06 06:28:12 load 3.63 3.93 4.15 swap_used 12172.25M free+inactive 41.3GB compressor 0.9GB mb 10.6GB fb/sortedarray
+2026-10-06 06:28:42 load 6.33 4.48 4.34 swap_used 12172.25M free+inactive 41.1GB compressor 0.9GB mb 10.6GB fb/sortedarray
+2026-10-06 06:29:12 load 5.42 4.43 4.32 swap_used 12172.25M free+inactive 47.5GB compressor 0.9GB mb 1.5GB fb/pgm
+2026-10-06 06:29:42 load 4.87 4.39 4.31 swap_used 12156.25M free+inactive 43.1GB compressor 0.9GB mb 6.1GB fb/pgm
+2026-10-06 06:30:12 load 4.32 4.29 4.28 swap_used 12156.25M free+inactive 41.0GB compressor 0.9GB mb 10.6GB fb/pgm
+2026-10-06 06:30:42 load 4.04 4.23 4.25 swap_used 12156.25M free+inactive 47.5GB compressor 0.9GB mb 1.5GB fb/lipp
+2026-10-06 06:31:12 load 3.74 4.13 4.21 swap_used 12156.25M free+inactive 36.4GB compressor 0.9GB mb 16.3GB fb/lipp
+2026-10-06 06:31:42 load 4.07 4.16 4.22 swap_used 12156.25M free+inactive 32.5GB compressor 1.1GB mb 33.0GB fb/lipp
+2026-10-06 06:32:13 load 3.40 3.99 4.16 swap_used 12156.25M free+inactive 47.7GB compressor 1.1GB mb 3.0GB fb/btree
+2026-10-06 06:32:43 load 4.01 4.08 4.18 swap_used 12156.25M free+inactive 43.3GB compressor 1.1GB mb 11.2GB fb/btree lowpower true thermal 0
+2026-10-06 06:33:13 load 3.81 4.01 4.15 swap_used 12148.25M free+inactive 43.2GB compressor 1.1GB mb 11.2GB fb/btree
+2026-10-06 06:33:43 load 4.01 4.04 4.16 swap_used 12148.25M free+inactive 43.2GB compressor 1.1GB mb 11.2GB fb/btree
+2026-10-06 06:34:13 load 3.96 4.03 4.15 swap_used 12148.25M free+inactive 48.4GB compressor 1.1GB mb 1.5GB fb/alex
+2026-10-06 06:34:43 load 4.27 4.09 4.17 swap_used 12148.25M free+inactive 45.3GB compressor 1.1GB mb 7.5GB fb/alex
+2026-10-06 06:35:13 load 3.72 3.99 4.13 swap_used 12148.25M free+inactive 43.4GB compressor 1.1GB mb 10.9GB fb/alex
+2026-10-06 06:35:43 load 4.08 4.04 4.14 swap_used 12148.25M free+inactive 42.7GB compressor 1.1GB mb 12.2GB fb/alex
+2026-10-06 06:36:13 load 4.42 4.13 4.17 swap_used 12148.25M free+inactive 42.7GB compressor 1.1GB mb 12.2GB fb/alex
+2026-10-06 06:36:43 load 4.85 4.24 4.21 swap_used 12148.25M free+inactive 46.7GB compressor 1.1GB mb 3.0GB osm/sortedarray
+2026-10-06 06:37:13 load 4.65 4.25 4.21 swap_used 12132.25M free+inactive 42.6GB compressor 1.1GB mb 10.6GB osm/sortedarray
+2026-10-06 06:37:44 load 4.64 4.28 4.22 swap_used 12132.25M free+inactive 42.7GB compressor 1.1GB mb 10.6GB osm/sortedarray lowpower true thermal 0
+2026-10-06 06:38:14 load 4.63 4.31 4.23 swap_used 12124.25M free+inactive 42.6GB compressor 1.1GB mb 10.6GB osm/sortedarray
+2026-10-06 06:38:44 load 4.81 4.38 4.26 swap_used 11772.12M free+inactive 41.5GB compressor 1.3GB mb 10.6GB osm/sortedarray
+2026-10-06 06:39:14 load 4.77 4.40 4.27 swap_used 11724.12M free+inactive 41.2GB compressor 1.3GB mb 10.6GB osm/sortedarray
+2026-10-06 06:39:44 load 5.01 4.52 4.32 swap_used 11716.12M free+inactive 45.5GB compressor 1.3GB mb 3.0GB osm/pgm
+2026-10-06 06:40:14 load 5.16 4.58 4.35 swap_used 11716.12M free+inactive 41.3GB compressor 1.3GB mb 10.6GB osm/pgm
+2026-10-06 06:40:44 load 4.92 4.59 4.36 swap_used 11700.12M free+inactive 41.2GB compressor 1.3GB mb 10.6GB osm/pgm
+2026-10-06 06:41:14 load 4.91 4.62 4.38 swap_used 11700.12M free+inactive 45.4GB compressor 1.3GB mb 3.0GB osm/lipp
+2026-10-06 06:41:44 load 4.53 4.55 4.36 swap_used 11692.12M free+inactive 25.9GB compressor 1.3GB mb 30.3GB osm/lipp
+2026-10-06 06:42:14 load 4.58 4.55 4.36 swap_used 11692.12M free+inactive 24.2GB compressor 14.2GB mb 23.7GB osm/lipp
+2026-10-06 06:42:44 load 4.63 4.56 4.37 swap_used 11692.12M free+inactive 15.8GB compressor 31.0GB mb 8.3GB osm/lipp lowpower true thermal 0
+2026-10-06 06:43:15 load 5.31 4.70 4.42 swap_used 18118.81M free+inactive 12.4GB compressor 37.3GB mb 6.3GB osm/lipp
+2026-10-06 06:43:45 load 4.89 4.65 4.41 swap_used 12690.06M free+inactive 47.9GB compressor 2.2GB mb 1.5GB osm/btree
+2026-10-06 06:44:15 load 5.17 4.73 4.45 swap_used 11946.88M free+inactive 42.3GB compressor 2.3GB mb 11.2GB osm/btree
+2026-10-06 06:44:45 load 4.85 4.70 4.45 swap_used 11898.88M free+inactive 41.8GB compressor 2.2GB mb 11.2GB osm/btree
+2026-10-06 06:45:15 load 4.68 4.68 4.45 swap_used 11874.88M free+inactive 41.9GB compressor 2.1GB mb 11.2GB osm/btree
+2026-10-06 06:45:45 load 4.52 4.64 4.44 swap_used 11858.88M free+inactive 41.4GB compressor 2.1GB mb 11.2GB osm/btree
+2026-10-06 06:46:15 load 4.43 4.61 4.44 swap_used 11858.88M free+inactive 46.1GB compressor 2.1GB mb 3.0GB osm/alex
+2026-10-06 06:46:45 load 4.65 4.66 4.46 swap_used 11850.88M free+inactive 43.4GB compressor 2.1GB mb 7.5GB osm/alex
+2026-10-06 06:47:15 load 5.61 4.88 4.55 swap_used 11850.88M free+inactive 40.9GB compressor 1.9GB mb 12.2GB osm/alex
+2026-10-06 06:47:45 load 5.43 4.91 4.57 swap_used 11842.88M free+inactive 41.0GB compressor 1.9GB mb 12.2GB osm/alex lowpower true thermal 0
+2026-10-06 06:48:15 load 5.48 4.98 4.60 swap_used 11810.88M free+inactive 45.0GB compressor 1.9GB mb 3.0GB books/sortedarray
+2026-10-06 06:48:46 load 5.27 4.96 4.61 swap_used 11810.88M free+inactive 41.0GB compressor 1.8GB mb 10.6GB books/sortedarray
+2026-10-06 06:49:16 load 5.65 5.09 4.67 swap_used 11770.88M free+inactive 40.6GB compressor 1.8GB mb 10.6GB books/sortedarray
+2026-10-06 06:49:46 load 4.99 4.98 4.64 swap_used 11762.88M free+inactive 40.5GB compressor 1.8GB mb 10.6GB books/sortedarray
+2026-10-06 06:50:16 load 4.76 4.91 4.63 swap_used 11762.88M free+inactive 40.7GB compressor 1.7GB mb 10.6GB books/sortedarray
+2026-10-06 06:50:46 load 4.62 4.87 4.62 swap_used 11746.88M free+inactive 40.5GB compressor 1.7GB mb 10.6GB books/sortedarray
+2026-10-06 06:51:16 load 4.96 4.93 4.65 swap_used 11738.88M free+inactive 45.7GB compressor 1.7GB mb 1.5GB books/pgm
+2026-10-06 06:51:46 load 5.02 4.93 4.66 swap_used 11738.88M free+inactive 40.8GB compressor 1.7GB mb 10.4GB books/pgm
+2026-10-06 06:52:16 load 4.50 4.81 4.63 swap_used 11706.88M free+inactive 40.4GB compressor 1.4GB mb 10.6GB books/pgm
+2026-10-06 06:52:46 load 4.55 4.80 4.63 swap_used 11658.88M free+inactive 44.5GB compressor 1.4GB mb 3.0GB books/lipp lowpower true thermal 0
+2026-10-06 06:53:16 load 5.49 4.99 4.70 swap_used 11658.88M free+inactive 29.3GB compressor 4.2GB mb 33.1GB books/lipp
+2026-10-06 06:53:47 load 4.46 4.80 4.64 swap_used 11602.88M free+inactive 27.6GB compressor 7.5GB mb 29.7GB books/lipp
+2026-10-06 06:54:17 load 4.35 4.72 4.62 swap_used 11602.88M free+inactive 46.9GB compressor 1.4GB mb 3.0GB books/btree
+2026-10-06 06:54:47 load 3.97 4.60 4.58 swap_used 11594.88M free+inactive 42.3GB compressor 1.3GB mb 11.2GB books/btree
+2026-10-06 06:55:17 load 4.16 4.58 4.57 swap_used 11586.88M free+inactive 42.1GB compressor 1.3GB mb 11.2GB books/btree
+2026-10-06 06:55:47 load 4.78 4.68 4.60 swap_used 11525.19M free+inactive 40.1GB compressor 1.3GB mb 11.2GB books/btree
+2026-10-06 06:56:17 load 6.53 5.20 4.80 swap_used 11501.19M free+inactive 42.8GB compressor 1.3GB mb 3.0GB books/alex
+2026-10-06 06:56:47 load 6.39 5.29 4.85 swap_used 11493.12M free+inactive 40.0GB compressor 1.3GB mb 7.5GB books/alex
+2026-10-06 06:57:17 load 5.82 5.25 4.84 swap_used 11469.12M free+inactive 37.8GB compressor 1.3GB mb 11.9GB books/alex
+2026-10-06 06:57:47 load 8.30 5.82 5.06 swap_used 11469.12M free+inactive 41.6GB compressor 1.3GB mb 3.0GB stack.sorted/sortedarray lowpower true thermal 0
+2026-10-06 06:58:17 load 7.39 5.83 5.09 swap_used 11461.12M free+inactive 37.6GB compressor 1.3GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 06:58:47 load 6.88 5.88 5.13 swap_used 11453.12M free+inactive 37.4GB compressor 1.2GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 06:59:18 load 6.29 5.82 5.14 swap_used 11445.12M free+inactive 37.4GB compressor 1.2GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 06:59:48 load 5.98 5.79 5.15 swap_used 11437.12M free+inactive 37.4GB compressor 1.2GB mb 10.6GB stack.sorted/sortedarray
+2026-10-06 07:00:18 load 5.77 5.76 5.16 swap_used 11421.12M free+inactive 42.8GB compressor 1.2GB mb 1.5GB stack.sorted/pgm
+2026-10-06 07:00:48 load 4.94 5.56 5.11 swap_used 11421.12M free+inactive 39.8GB compressor 1.2GB mb 6.5GB stack.sorted/pgm
+2026-10-06 07:01:18 load 4.52 5.39 5.06 swap_used 11421.12M free+inactive 37.7GB compressor 1.2GB mb 10.6GB stack.sorted/pgm
+2026-10-06 07:01:48 load 5.05 5.45 5.09 swap_used 11421.12M free+inactive 39.6GB compressor 1.2GB mb 6.0GB stack.sorted/lipp
+2026-10-06 07:02:18 load 6.27 5.74 5.21 swap_used 11397.12M free+inactive 41.9GB compressor 1.2GB mb 3.0GB stack.sorted/btree
+2026-10-06 07:02:48 load 6.05 5.72 5.22 swap_used 11389.12M free+inactive 37.0GB compressor 1.2GB mb 11.2GB stack.sorted/btree lowpower true thermal 0
+2026-10-06 07:03:18 load 5.97 5.73 5.24 swap_used 11373.12M free+inactive 37.3GB compressor 1.2GB mb 11.2GB stack.sorted/btree
+2026-10-06 07:03:48 load 5.91 5.74 5.26 swap_used 11205.00M free+inactive 36.7GB compressor 1.3GB mb 11.2GB stack.sorted/btree
+2026-10-06 07:04:18 load 5.30 5.61 5.23 swap_used 11132.94M free+inactive 41.2GB compressor 1.3GB mb 3.0GB stack.sorted/alex
+2026-10-06 07:04:48 load 5.57 5.63 5.25 swap_used 11116.94M free+inactive 38.5GB compressor 1.4GB mb 7.5GB stack.sorted/alex
+2026-10-06 07:05:19 load 5.61 5.62 5.26 swap_used 11100.94M free+inactive 43.1GB compressor 1.4GB mb 

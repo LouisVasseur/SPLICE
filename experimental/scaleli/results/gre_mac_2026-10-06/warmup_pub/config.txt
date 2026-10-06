@@ -1,0 +1,13 @@
+gre=/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/gre_mac/GRE
+data=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre
+datasets=fb,osm,books,stack.sorted
+indexes=sortedarray,pgm,lipp,btree,alex
+ops=100000000
+warmup=20000000
+pin=-1
+init_ratio=1
+table_size=-1
+read=1
+insert=0
+extra=
+repeats=3

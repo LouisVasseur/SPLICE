@@ -1,0 +1,77 @@
+## date
+2026-10-06T02:33:44Z
+## hostname
+Louiss-MacBook-Pro.local
+## uname
+Darwin Louiss-MacBook-Pro.local 24.6.0 Darwin Kernel Version 24.6.0: Fri Feb 27 19:34:51 PST 2026; root:xnu-11417.140.69.709.8~1/RELEASE_ARM64_T6031 arm64
+## lscpu
+(unavailable)
+## governors
+(unavailable)
+## free
+(unavailable)
+## nproc
+(unavailable)
+## loadavg
+ 4:33  up 10 days,  2:16, 5 users, load averages: 4.51 16.75 31.07
+## thp
+(unavailable)
+## numa_balancing
+(unavailable)
+## malloc_conf
+MALLOC_CONF=(unset)
+## splice
+(unavailable)
+## gre_lite_build
+GRE e807edcef51df6732f07f94d4c797fb3897519ba, trimmed by SPLICE gre_lite.sh: competitor.h and CMakeLists.txt replaced (originals *.full)
+ f4365a73f910f43a71ee1da7924cd51219b42864 src/competitor/alex/src (f4365a7)
+ 808372ded6b8c5a6d3a1741090510b79042f2aa7 src/competitor/artsync/src (808372d)
+ eff5e36975b62327755b2e05fd19c882ea6b4b0c src/competitor/btree/src (stx-btree-0.9-18-geff5e36)
+ a1189c3956ebfef1335d252f8e13b91eb99fe8cf src/competitor/lipp/src (heads/main)
+ aac467887be5ba354ea2d23f7bc51f6e212f0f04 src/competitor/pgm/src (aac4678)
+ALEX_USE_LZCNT=0 (1 = as shipped)
+edits (each from the pristine file):
+  src/benchmark/benchmark.h: gre_lite_patch.h probes, --warmup_num, --pin_core; diff cksum 2814235834 4561
+  src/benchmark/gre_lite_patch.h: SPLICE, cksum 460516429 3661
+  src/competitor/sortedarray/sortedarray.h: SPLICE, cksum 2259561244 3414
+  src/competitor/scaleli/scaleli_gre.cpp: SPLICE, cksum 1891943914 9992
+  src/competitor/scaleli/scaleli_gre.hpp: SPLICE, cksum 3936764127 3291
+  src/competitor/scaleli/scaleli_interface.h: SPLICE, cksum 3501826812 2795
+  SCALE-LI headers /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/include/scaleli: cksum 2398828644 150457
+  SPLICE 59d810f02ef0122c1f23fc55e820bff19019692b (10 uncommitted paths in experimental/scaleli)
+  src/competitor/competitor.h: trimmed + sortedarray, cksum 4259127255 2194
+  CMakeLists.txt: trimmed, cksum 645182438 1710
+Apple clang version 17.0.0 (clang-1700.0.13.5)
+edit-only: not built
+## binary
+6ddeaf856bf5423b8fbc7caa105eb35683cfd1e1b8833da314ca60d9221030cc
+## ldd
+(unavailable)
+## datasets
+-rw-r--r--@ 1 louisvasseur  staff  1600000008 Sep 21 16:55 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb
+-rw-r--r--@ 1 louisvasseur  staff  1600000008 Sep 21 16:49 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/osm
+-rw-r--r--@ 1 louisvasseur  staff  1600000008 Sep 21 16:52 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/books
+-rw-r--r--@ 1 louisvasseur  staff  1600000008 Sep 21 17:19 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/stack.sorted
+## config
+gre=/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/gre_mac/GRE
+data=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre
+datasets=fb,osm,books,stack.sorted
+indexes=sortedarray,pgm,lipp,btree,alex
+ops=100000000
+warmup=20000000
+pin=-1
+init_ratio=1
+table_size=-1
+read=1
+insert=0
+extra=
+repeats=3
+## command
+/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/run200/gre_run.sh /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub --gre /private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/gre_mac/GRE --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre --datasets fb\,osm\,books\,stack.sorted --indexes sortedarray\,pgm\,lipp\,btree\,alex --repeats 3 --warmup 20000000 --pin -1 
+
+## resumed
+2026-10-06T03:19:21Z
+## loadavg
+ 5:19  up 10 days,  3:01, 5 users, load averages: 2.94 5.55 8.34
+## command
+/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/run200/gre_run.sh /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub --gre /private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/gre_mac/GRE --data /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre --datasets fb\,osm\,books\,stack.sorted --indexes sortedarray\,pgm\,lipp\,btree\,alex --repeats 3 --warmup 20000000 --pin -1 --resume 

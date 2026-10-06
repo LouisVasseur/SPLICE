@@ -1,0 +1,56 @@
+cmd: OMP_NUM_THREADS=1 /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub/bin/microbench --keys_file=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb --keys_file_type=binary --read=1 --insert=0 --operations_num=100000000 --table_size=-1 --init_table_ratio=1 --thread_num=1 --memory --index=pgm --output_path=/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub/gre_out.csv --warmup_num=20000000
+keys_file = /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb
+keys_file_type = binary
+read = 1
+insert = 0
+delete = 0
+update = 0
+scan = 0
+scan_num = 100
+operations_num = 100000000
+table_size = -1
+init_table_ratio = 1
+del_table_ratio = 0.5
+thread_num = 1
+index = pgm
+sample_distribution = uniform
+latency_sample = 0
+latency_sample_ratio = 0.01
+error_bound = 64
+output_path = /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/gre_mac_2026-10-06/warmup_pub/gre_out.csv
+seed = 1866
+memory = 1
+dataset_statistic = 0
+data_shift = 0
+gre_lite_patch: warmup_num=20000000 pin_core=-1
+[micro] Read:Insert:Update:Scan:Delete= 1:0:0:0:0
+Reading data from file.
+/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/data/external/gre/fb
+200000000
+Table size is 200000000, Init table size is 200000000
+17731591527 58309257246 40285995846 66303988201 30493554086 15459848461 45644219722 53550185340 60762036599 28751831783 
+prepare init keys.
+table_size: 200000000
+init_keys.size(): 200000000
+sample keys.
+generate operations.
+operations.size(): 100000000
+rss_before_build_bytes: 8005009024
+bulk loading
+rss_after_build_unpurged_bytes: 11279374208
+rss_after_build_bytes: 11241887616
+index_rss_bytes: 3236878592
+build_ns: 4744325708
+warmup_success_read: 20000000
+warmup_ns: 5255306333
+Begin running
+Finish running
+rss_after_run_bytes: 11241887616
+rss_peak_bytes: 11401976000
+Throughput = 3736564
+Memory: 3235020216
+success_read: 100000000
+success_insert: 0
+success_update: 0
+success_remove: 0
+scan_not_enough: 0

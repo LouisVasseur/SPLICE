@@ -1,0 +1,46 @@
+GRE e807edcef51df6732f07f94d4c797fb3897519ba, native arm64 macOS build by SPLICE gre_mac.sh: PREVIEW numbers only (see tools/gre_mac.md)
+gre_lite.sh: HEAD 59d810f02ef0122c1f23fc55e820bff19019692b:experimental/scaleli/tools/gre_lite.sh, cksum 285746909 26725 (copy, SCALELI_DIR line pointed at /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli)
+GRE origin: /private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/gre_wf/GRE
+indexes: alex lipp pgm btree sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice
+arm64 edits (each from the pristine file):
+  src/tscns.h: rdtsc -> CNTVCT_EL0 on aarch64; diff cksum 3706576122 549
+  src/benchmark/utils.h: cmpxchg asm compiled out on aarch64; diff cksum 3605971822 619
+  src/competitor/alex/src/src/core/alex_base.h: CPUID asm compiled out on aarch64; diff cksum 2570641699 695
+  src/benchmark/gre_lite_patch.h: macOS RSS = phys_footprint, peak = ledger_phys_footprint_peak; cksum 3321120673 3914
+  src/competitor/competitor.h: gre_lite's file minus artunsync; cksum 3404253088 2104
+  shim x86intrin.h: cksum 3549712774 311
+  shim omp.h: cksum 1834052790 618
+  shim tbb/parallel_sort.h: cksum 3472571396 348
+  shim jemalloc/jemalloc.h: cksum 809334019 211
+compiler: Apple clang version 17.0.0 (clang-1700.0.13.5) (/usr/bin/clang++)
+target-cpu: apple-m3
+C++ library: libc++ (Atom: libstdc++), so --seed gives other operation lists than on the Atom
+FP: hardware FMA (std::fma in SCALE-LI is one instruction; clang contracts a*x+b in GRE's TU), long double = double
+flags (all TUs): -faligned-new -mcpu=native -g -O3 -include cstdint -O3 -DNDEBUG
+flags microbench.cpp: -std=gnu++17 -D_LIBCPP_ENABLE_CXX17_REMOVED_RANDOM_SHUFFLE '-D__float128=long double' -I/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/gre_mac/GRE/build/gre_mac/include
+flags src/competitor/scaleli/scaleli_gre.cpp: -std=gnu++20 -ffp-contract=off -I/Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/include
+host: Apple M3 Max, 12P+4E cores, page 16384 B, P-core L1d 131072 B, L2 16777216 B, RAM 68719476736 B, macOS 15.7.5
+microbench code+data sha1: c9541ab47f5e0c87
+linked: /usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 1900.180.0)
+linked: /usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1351.0.0)
+--- gre_lite_build.txt (edit-only run) ---
+GRE e807edcef51df6732f07f94d4c797fb3897519ba, trimmed by SPLICE gre_lite.sh: competitor.h and CMakeLists.txt replaced (originals *.full)
+ f4365a73f910f43a71ee1da7924cd51219b42864 src/competitor/alex/src (f4365a7)
+ 808372ded6b8c5a6d3a1741090510b79042f2aa7 src/competitor/artsync/src (808372d)
+ eff5e36975b62327755b2e05fd19c882ea6b4b0c src/competitor/btree/src (stx-btree-0.9-18-geff5e36)
+ a1189c3956ebfef1335d252f8e13b91eb99fe8cf src/competitor/lipp/src (heads/main)
+ aac467887be5ba354ea2d23f7bc51f6e212f0f04 src/competitor/pgm/src (aac4678)
+ALEX_USE_LZCNT=0 (1 = as shipped)
+edits (each from the pristine file):
+  src/benchmark/benchmark.h: gre_lite_patch.h probes, --warmup_num, --pin_core; diff cksum 2814235834 4561
+  src/benchmark/gre_lite_patch.h: SPLICE, cksum 460516429 3661
+  src/competitor/sortedarray/sortedarray.h: SPLICE, cksum 2259561244 3414
+  src/competitor/scaleli/scaleli_gre.cpp: SPLICE, cksum 1891943914 9992
+  src/competitor/scaleli/scaleli_gre.hpp: SPLICE, cksum 3936764127 3291
+  src/competitor/scaleli/scaleli_interface.h: SPLICE, cksum 3501826812 2795
+  SCALE-LI headers /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/include/scaleli: cksum 2398828644 150457
+  SPLICE 59d810f02ef0122c1f23fc55e820bff19019692b (10 uncommitted paths in experimental/scaleli)
+  src/competitor/competitor.h: trimmed + sortedarray, cksum 4259127255 2194
+  CMakeLists.txt: trimmed, cksum 645182438 1710
+Apple clang version 17.0.0 (clang-1700.0.13.5)
+edit-only: not built
