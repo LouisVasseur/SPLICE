@@ -1,9 +1,26 @@
-build/
-build-*/
-results/local/
+# Build trees (cmake -B build..., the window suite's DIR/build-win). Trailing slash: directories only, so
+# include/splice/build.hpp is not matched.
+build*/
 __pycache__/
 *.pyc
-.ipynb_checkpoints/
 .DS_Store
+results/local*/
 
-# Datasets stay on each machine and research results are tracked: see experimental/scaleli/.gitignore.
+# Datasets are fetched (data/external/gre/download.sh) and sampled (tools/prepare_data.sh) on each machine and never
+# committed: the GRE files, their .sorted copies and the 2M samples carry third-party terms. The script, checksums and
+# sample manifests are.
+data/external/*
+!data/external/gre/
+data/external/gre/*
+!data/external/gre/download.sh
+!data/external/gre/SHA256SUMS
+data/samples/*
+!data/samples/*.manifest.json
+
+# gre_run.sh copies the GRE binary it timed into OUTDIR/bin/. GRE has no licence and STX is GPL-3, so only the build
+# record next to it (bin/gre_lite_build.txt) is committed.
+results/**/bin/microbench
+
+# main's layout after 'git checkout clean': ignored datasets and builds left under experimental/scaleli/. Move them
+# (README), never commit them.
+/experimental/
