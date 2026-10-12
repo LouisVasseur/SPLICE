@@ -20,7 +20,7 @@ the aidb studies, scaleli_bench and the earlier protocol (`main@ca8d80e:<path>` 
 | `tools/` | GRE: `gre_lite.sh` (build), `gre_run.sh` (runner), `gre_report.py`, `gre_transient.py`, `warmup_detect.py` |
 | | Mac: `gre_mac.sh` + [`gre_mac.md`](tools/gre_mac.md), `mac_lane.sh` (benchmark lane) |
 | | SPLICE-H offline: `splice_count.cpp` (exact-count simulator), `splice_table.py`, `splice_asm_check.sh`, `splice_xarch.sh` |
-| | data: `prepare_data.sh`, `datasets.py`; `check.sh` (cmake + ctest + the Python test) |
+| | data: `prepare_data.sh`, `datasets.py`; `check.sh` (cmake + ctest + the Python test; without `data/samples` it skips the two tests that read them) |
 | `tests/`, `examples/` | the CMake tests and `test_gre_report_splice.py` |
 | `data/` | `external/gre/` (fetched), `samples/` (generated; manifests tracked), `flows/` (NFL weights), the test fixture |
 | `results/splice_h/` | the per-dataset plans `gre_run.sh` reads (`args/`), the count results, `COUNTS.md`, `design_evidence/` |
@@ -32,7 +32,7 @@ the aidb studies, scaleli_bench and the earlier protocol (`main@ca8d80e:<path>` 
 ## Coming from main (the Atom checkout)
 
 The datasets sit under `experimental/scaleli/data/` (ignored files, so they survive the checkout). After
-`git fetch && git checkout clean`:
+`git fetch && git checkout clean` (once `clean` is pushed; stash any edits `git status --short` lists first):
 
 ```bash
 mkdir -p data/external/gre data/samples && mv -n experimental/scaleli/data/external/gre/* data/external/gre/ && { mv -n experimental/scaleli/data/samples/* data/samples/ 2>/dev/null; true; } && find experimental -type f | head
@@ -77,7 +77,7 @@ The full protocol (interleaved rounds, cold arm, THP, transient, warm-up phases,
 
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j
-tools/prepare_data.sh build && ctest --test-dir build   # splice_core and splice_gre_check need data/samples
+tools/prepare_data.sh build && (cd build && ctest)   # splice_core and splice_gre_check need data/samples
 # counts: the splice_count loop of docs/SPLICE_DESIGN.md section 9
 GRE_MAC_SEED=<existing GRE clone> tools/gre_mac.sh DEST
 tools/mac_lane.sh run -- tools/gre_run.sh OUT --gre DEST --data data/external/gre --pin -1 --datasets fb --indexes splice,pgm

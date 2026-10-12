@@ -169,7 +169,7 @@ void learned_root(){
     {Config c;c.region_keys=64;c.block_keys=8;c.routing=Routing::Rank;c.root=Root::Model;Index ix(c);std::vector<Record> w;
      for(unsigned i=0;i<4000;++i)w.emplace_back(Key(9000000000000ULL)+Key(i)*1000+(i%7),i);ix.bulk_load(w);const auto l=ix.learnability();
      CHECK(l.root_model);CHECK(l.root_probes_raw<l.root_probes_binary);for(auto [k,v]:w)CHECK(ix.find(k)==v);ix.validate();}
-    must_throw([]{Config c;(void)parse_root("tree");});must_throw([]{Config c;c.root_alpha=64.0;Index bad(c);});must_throw([]{Config c;c.virtual_alpha=1.0;Index bad(c);});
+    must_throw([]{(void)parse_root("tree");});must_throw([]{Config c;c.root_alpha=64.0;Index bad(c);});must_throw([]{Config c;c.virtual_alpha=1.0;Index bad(c);});
 }
 void joint_root(){
     // Building blocks. pysum is CPython's compensated sum(): a plain loop loses the 1.

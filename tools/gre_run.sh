@@ -183,6 +183,13 @@ splice_args=${SPLICE_ARGS-}"
 build_threads="*) ;; *) CONFIG="$CONFIG
 build_threads=$BUILD_THREADS";; esac
 fi
+# trace_*: the chunk schedule and the diagnostic columns are part of the condition; recorded only when a trace_ index
+# runs, so other OUTDIRs resume as before, and passed in runenv so the cmd: line of each log replays the run.
+TRACE_ENV=()
+case ",$INDEXES," in *,trace_*)
+  for v in GRE_TRACE GRE_TRACE_FAULTS GRE_TRACE_CPU; do [ -n "${!v-}" ] && TRACE_ENV+=("$v=${!v}"); done
+  CONFIG="$CONFIG
+trace_env=${TRACE_ENV[*]+${TRACE_ENV[*]}}";; esac
 NRUNS=0
 [ -f "$OUT/runs.tsv" ] && NRUNS=$(( $(wc -l < "$OUT/runs.tsv") - 1 ))
 if [ "$NRUNS" -gt 0 ] && [ "$RESUME" = 0 ]; then
@@ -339,6 +346,7 @@ for r in $(seq 1 "$REPEATS"); do
         [ "$SPLICE_PLAN" = none ] || sa="$(cat "$(plan_file "$ds")")${sa:+ $sa}"
         runenv+=(SPLICE_ARGS="$sa" SPLICE_BUILD_THREADS="$BUILD_THREADS")
       fi
+      case $idx in trace_*) runenv+=(${TRACE_ENV[@]+"${TRACE_ENV[@]}"});; esac
       echo "cmd: ${runenv[*]} ${cmd[*]}" > "$log"
       l1=$(load1); nb=$(busy); bnote=
       [ "$nb" = 0 ] || bnote="  BUSY ($nb other benchmark processes at the start: pids $({ pgrep -f "$BUSY" || true; } | tr '\n' ' '))"

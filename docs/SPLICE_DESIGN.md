@@ -375,7 +375,7 @@ Mac (counts and correctness; timings are meaningless there):
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j
 tools/prepare_data.sh build          # .sorted copies + the 20 samples (needs data/external/gre/download.sh first)
-ctest --test-dir build               # scaleli_* tests, plus splice_core, splice_layout17, splice_gre_check
+(cd build && ctest)                # scaleli_* tests, plus splice_core, splice_layout17, splice_gre_check
 D=data/external/gre
 for ds in fb osm books covid genome history libio planet stack wise; do
   build/splice_count --dataset $ds --data $D --out results/splice_h --threads 16 --grid pruned --verify --parity --perturb

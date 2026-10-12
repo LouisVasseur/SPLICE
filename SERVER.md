@@ -20,10 +20,12 @@ docs cite them.
 ## 0. Checkout and data
 
 On DIAS the checkout is `/tmp/louisvasseur/SPLICE`. Coming from `main`, the datasets sit under
-`experimental/scaleli/data/` (ignored files, so the checkout leaves them in place). Move them once:
+`experimental/scaleli/data/` (ignored files, so the checkout leaves them in place). `clean` must be pushed first, and
+`git checkout` refuses to switch over local edits to tracked files: `git status --short` lists them (`git stash`, or
+commit them on `main`; `??` lines do not block). Then move the data once:
 
 ```bash
-cd /tmp/louisvasseur/SPLICE && git fetch && git checkout clean
+cd /tmp/louisvasseur/SPLICE && git status --short && git fetch && git checkout clean
 mkdir -p data/external/gre data/samples && mv -n experimental/scaleli/data/external/gre/* data/external/gre/ && { mv -n experimental/scaleli/data/samples/* data/samples/ 2>/dev/null; true; } && find experimental -type f | head
 ```
 
@@ -39,7 +41,7 @@ data/external/gre/download.sh
 Optional, the CMake tests (the 2M samples are Mac-side, so the two tests that read them are excluded):
 
 ```bash
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j && ctest --test-dir build -E 'splice_core|splice_gre_check'
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j && (cd build && ctest -E 'splice_core|splice_gre_check')
 ```
 
 ## 5. GRE baselines

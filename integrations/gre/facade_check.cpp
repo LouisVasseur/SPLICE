@@ -1,7 +1,8 @@
 // Facade check (C++17; includes only scaleli_gre.hpp, like GRE's TU). Builds a cell through the facade from the same
 // records scaleli_bench loads (SOSD prefix, value mix64(row), stable sort, last write wins) and replays the read
 // operations of a scaleli_bench --dump-trace CSV, printing the read digest (= the bench's result_checksum on a
-// read-only trace) and the work counters. compare.py diffs this output against the bench JSON.
+// read-only trace) and the work counters. compare.py diffs this output against the bench JSON (scaleli_bench and
+// compare.py: main@ca8d80e).
 //   facade_check CELL SOSD_FILE LIMIT [TRACE_CSV] [--time]
 // --time: ns per lookup through the facade's exported get() against the same finds looped inside the facade TU.
 #include "scaleli_gre.hpp"

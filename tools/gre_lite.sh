@@ -75,7 +75,7 @@ if [ "$EDIT_ONLY" = 1 ]; then
 else
     : "${CONDA_PREFIX:?activate the conda environment first (SERVER.md)}"
     # A build beside a timed run (an -O3 compile on 16 cores) would disturb its timings.
-    BUSY='[-]-keys_file=|scaleli_bench|scaleli_hardness|splice_count'
+    BUSY='[-]-keys_file=|scaleli_bench|scaleli_hardness'
     if [ "${GRE_LITE_FORCE:-0}" != 1 ] && command -v pgrep >/dev/null 2>&1 && pgrep -f "$BUSY" >/dev/null; then
         echo "a benchmark is running (pgrep -fl '$BUSY'); build when it is done, or set GRE_LITE_FORCE=1" >&2; exit 1
     fi

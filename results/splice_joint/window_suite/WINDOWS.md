@@ -13,7 +13,7 @@ This suite measures windows of each dataset, priced as the 200M-key index, so th
 | `windows_contiguous.txt` | alternative window list of single contiguous blocks (`WINDOWS_FILE=...`). |
 | `winsel/` | window selection evidence (log-gap stats per 12.5M block, a joint scan of all 16 blocks x 10 datasets, stratified-window trials): not in the repository. |
 | `suite_out/` | `winbase_j4.json` (the pre-rebase baseline, one tree) and `sample_layout_hashes.txt` (the 20 `--hash-samples` lines). `x5_*.json` (five trees at once) and `validate_winbase/` are on main@ca8d80e:experimental/scaleli/results/splice_joint/scratch/suite_out. |
-| `winstats.cpp`, `pick_windows.py`, `scan_table.py`, `valtab.py` | scratch tools used for the window selection, not part of the patch: on main@ca8d80e (their inputs were never committed). |
+| `winstats.cpp`, `pick_windows.py`, `scan_table.py`, `valtab.py` | scratch tools used for the window selection, not part of the patch: on main@ca8d80e:experimental/scaleli/results/splice_joint/window_suite/ (their inputs were never committed). |
 
 ## Commands
 

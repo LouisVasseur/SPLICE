@@ -10,7 +10,7 @@ ART and `sortedarray`. Runner semantics and the validation record: [INTEGRATION.
 | `scaleli_gre.hpp` | Facade header, C++11-compatible, std types only: an opaque handle with bulk_load/get/put/update/remove/scan/memory. |
 | `scaleli_gre.cpp` | The facade, C++20. Builds a cell's `Config` with scaleli_bench's own parser (`scaleli/cli.hpp`) and prints the `scaleli_*` stats lines. |
 | `scaleli_interface.h` | GRE's `indexInterface<K,P>` for the cells, C++17. Copied into GRE's `src/competitor/scaleli/`; it includes GRE's `../indexInterface.h` at build time, and nothing of GRE is copied here. |
-| `facade_check.cpp` | C++17 driver (target `scaleli_gre_check`): builds a cell through the facade from the records scaleli_bench loads and replays a `--dump-trace` read trace. |
+| `facade_check.cpp` | C++17 driver (target `scaleli_gre_check`): builds a cell through the facade from the records scaleli_bench loads and replays a `--dump-trace` read trace (scaleli_bench: main@ca8d80e). |
 | `compare.py` | On main@ca8d80e (needs scaleli_bench, also there): checks that a facade or GRE log describes the index scaleli_bench builds. |
 
 Why a separate translation unit: GRE compiles its whole benchmark as one C++17 TU, and ALEX in that TU uses
@@ -81,7 +81,7 @@ Why these settings, from the prototypes:
   exercised.
 
 Every scaleli_* run prints, once after bulk_load, `scaleli_cell`, `scaleli_config` (the exact scaleli_bench flags;
-pasting them into scaleli_bench rebuilds the same index), `scaleli_flow_file`, `scaleli_build_threads`,
+pasting them into scaleli_bench, on main@ca8d80e, rebuilds the same index), `scaleli_flow_file`, `scaleli_build_threads`,
 `scaleli_bulk_load_ns`, `scaleli_accounted_bytes`, `scaleli_memory` (scaleli_bench's `memory_before`),
 `scaleli_root` (binary, raw, raw_vp, flow, flow_vp, joint or joint_vp), `scaleli_flow_regions`,
 `scaleli_virtual_points`, `scaleli_root_virtual` and `scaleli_learnability` (scaleli_bench's learnability block,
