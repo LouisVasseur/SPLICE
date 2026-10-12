@@ -1,12 +1,12 @@
 # Build trees (cmake -B build..., the window suite's DIR/build-win). Trailing slash: directories only, so
-# include/splice/build.hpp is not matched.
+# src/splice/build.hpp is not matched.
 build*/
 __pycache__/
 *.pyc
 .DS_Store
 results/local*/
 
-# Datasets are fetched (data/external/gre/download.sh) and sampled (tools/prepare_data.sh) on each machine and never
+# Datasets are fetched (data/external/gre/download.sh) and sampled (scripts/prepare_data.sh) on each machine and never
 # committed: the GRE files, their .sorted copies and the 2M samples carry third-party terms. The script, checksums and
 # sample manifests are.
 data/external/*

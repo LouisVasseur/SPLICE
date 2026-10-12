@@ -6,7 +6,7 @@ This suite measures windows of each dataset, priced as the 200M-key index, so th
 
 | file | what |
 |---|---|
-| `window_mode.patch` | every source change, as a diff against the copied tree (`patch -p1` from the repository root). It touches `include/splice/params.hpp`, `include/splice/cost.hpp` and `tools/splice_count.cpp`. `layout.hpp` (the read path) is untouched. |
+| `window_mode.patch` | every source change, as a diff against the copied tree (`patch -p1` from the repository root). It touches `src/splice/params.hpp`, `src/splice/cost.hpp` and `src/tools/splice_count.cpp`. `layout.hpp` (the read path) is untouched. |
 | `run_suite.sh DIR OUT.json` | builds `DIR/build-win/splice_count` (Release, -O3) and runs the joint variant plus G0, T0 and V0 on the 11 windows. It writes one row per window and a summary. |
 | `validate.sh DIR OUTDIR` | runs the full-scale chosen cell on the same windows without re-optimization, and prints residuals against `results/splice_h/<ds>.json` (`REF=...` overrides). |
 | `results/splice_h/<ds>.json` and `args/` | the validation reference and the default cells (current). The 2026-10-06 07:08 snapshot used for the tables below is main@ca8d80e:experimental/scaleli/results/splice_joint/scratch/ref_full (the `<ds>.json` files); it differs from the current cells for genome and planet. |
@@ -21,7 +21,7 @@ This suite measures windows of each dataset, priced as the 200M-key index, so th
 R=$(git rev-parse --show-toplevel); W=$R/results/splice_joint/window_suite; J=${TMPDIR:-/tmp}/splice_suite; D=$R/data/external/gre
 
 # A tree for the suite: copy the sources and apply the patch. Anchor the excludes: a bare 'build*'
-# also drops include/splice/build.hpp.
+# also drops src/splice/build.hpp.
 rsync -a $R/ $J/T/ --exclude /.git --exclude /data --exclude /results --exclude '/build*'
 (cd $J/T && patch -p1 < $W/window_mode.patch)
 

@@ -167,22 +167,22 @@ J(θ) = E over stored keys of [ D · (N_lines + P_walk-miss + P_table-miss) + τ
 
 Nothing is edited until Louis approves. All paths are under `experimental/scaleli/`.
 
-1. **`tools/splice_count.cpp`, written first.** Merge scratchpad `mlp/fullsim.cpp`, `impl/layout.cpp` (DIRECT and fence modes only), `adv/advsim.cpp`, `adv/pte.cpp` and `review/l2sim2.cpp`. Give it a shared-L2 LRU at 2 MB and 1 MB, the fixed-point outer loop, and JSON output. Run it on all 10 sorted files. Its output, under `results/splice_h/`, is the paper's count table and the target for count parity.
-2. **`include/splice/layout.hpp`, C++17.** POD arrays (Exceptions, Router, Seg16, Entry128, Line, Slot) and an inline `noexcept` `get()`. No repo headers: all `scaleli/*.hpp` are C++20 and cannot enter GRE's C++17 TU.
-3. **`include/splice/build.hpp` and `cost.hpp`, C++20.**
+1. **`src/tools/splice_count.cpp`, written first.** Merge scratchpad `mlp/fullsim.cpp`, `impl/layout.cpp` (DIRECT and fence modes only), `adv/advsim.cpp`, `adv/pte.cpp` and `review/l2sim2.cpp`. Give it a shared-L2 LRU at 2 MB and 1 MB, the fixed-point outer loop, and JSON output. Run it on all 10 sorted files. Its output, under `results/splice_h/`, is the paper's count table and the target for count parity.
+2. **`src/splice/layout.hpp`, C++17.** POD arrays (Exceptions, Router, Seg16, Entry128, Line, Slot) and an inline `noexcept` `get()`. No repo headers: all `scaleli/*.hpp` are C++20 and cannot enter GRE's C++17 TU.
+3. **`src/splice/build.hpp` and `cost.hpp`, C++20.**
    - Reuse `hardness.hpp`'s OptimalPLA (lines 230-311), adding an emit-segments variant next to `pla_segments()`.
    - Reuse `parallel_sort` and the 16-thread pattern.
    - `cost.hpp` is shared with `splice_count.cpp` so the build and the offline numbers cannot diverge.
    - **Do not reuse** `index.hpp`'s region/block path, `codec.hpp`'s `key_at`, `model.hpp`'s `std::fma`, `joint.hpp`'s tanh warp and gap table, or `smoothing.hpp`.
 4. **Parameters.** An own `SpliceParams`, parsed from env `SPLICE_ARGS`, the way `gre_run.sh` passes `SCALELI_FLOW`. Never touch `Config`: `static_assert(sizeof(Config)==152)` is at index.hpp:90.
-5. **GRE entry.** Add `integrations/gre_splice/`:
+5. **GRE entry.** Add `src/gre/`:
    - `splice_gre.cpp` (C++20 TU) builds and returns the POD through an opaque handle.
    - `splice_interface.h` (C++17) includes `layout.hpp` so `get()` inlines.
    - `thread_num` must be 1. `put`/`update` return false for now.
    - In `gre_lite.sh`, register `splice` and `splice_thp`, and retire the `scaleli_splice → Jg0` alias (gre_lite.sh:131).
    - Add the names to `gre_run.sh` and `gre_report.py`, with a memory check of 18-25 B/key.
 6. **Warm-up hook.** No index-specific hook is needed: there is no state on the read side. `bulk_load` pre-touches every arena page and reads the router and tier-1 lines once. Use GRE's `--warmup_num 20M --pin_core` on a core whose module sibling is idle, since L2 is probably shared per core pair.
-7. **Tests, `tests/test_splice.cpp`.**
+7. **Tests, `src/tests/test_splice.cpp`.**
    - Every stored key in the 20 2M samples returns its payload. 1M absent keys return false.
    - n ∈ {0, 1, 2, 3, 4, 5, 56, 57, 228, 229, 13,224, 13,225}.
    - Keys 0 and UINT64_MAX; the fb outliers spliced into a window; osm holes; a run of 10^6 stack keys.

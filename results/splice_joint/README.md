@@ -12,7 +12,7 @@ The scratch/ copies (diag_*, ref_full, suite_out) are on main@ca8d80e; the H1 pr
 ## What the diagnoses found (`diagnoses.json`, merged in `hypotheses.json`)
 
 - **The layout is the blocker, not the data.** On fb, osm, genome and planet every segment is FENCED, and
-  `make_plan` (include/splice/cost.hpp) puts all directory entries in one region and all data lines after it. Every
+  `make_plan` (src/splice/cost.hpp) puts all directory entries in one region and all data lines after it. Every
   FENCED lookup therefore pays 2 dependent lines and 2 page walks, a floor that G, T and V cannot move. Their only
   lever is the over-capacity residue (fb 0.08, osm 0.21, planet 0.09, genome 0.0004), which is why the T ablation
   (Hist-Tree knots) lands within 0.03 D and G (exceptions) only shows on fb's router (+0.24 D).

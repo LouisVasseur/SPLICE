@@ -1,124 +1,83 @@
 # SPLICE
 
-- **SPLICE-H** (`include/splice/`): a read-only learned index whose layout is chosen by exact counts of dependent
-  DRAM lines and page walks, not by an error proxy ([docs/SPLICE_DESIGN.md](docs/SPLICE_DESIGN.md)).
-- **SCALE-LI** (`include/scaleli/`): a compressed ordered map with NFL- and CSV-style controls and the joint G+T+V
-  root ([integrations/gre/README.md](integrations/gre/README.md)).
-- Both run inside GRE (gre4index/GRE, VLDB 2022) through `integrations/gre` and `integrations/gre_splice`.
+- **SPLICE-H** (`src/splice/`): a read-only learned index whose layout is chosen by exact counts of dependent DRAM
+  lines and page walks, not by an error proxy ([docs/DESIGN.md](docs/DESIGN.md)).
+- **SCALE-LI** (`src/scaleli/`): a compressed ordered map with NFL- and CSV-style controls and the joint G+T+V root.
+- Both run inside GRE (gre4index/GRE, VLDB 2022) through `src/gre/` ([docs/GRE.md](docs/GRE.md)).
 - Counts and correctness come from the Mac; timings come from the DIAS Atom (Intel Atom C3958, Goldmont).
 
-This branch (`clean`) holds only what runs. Branch `main` @ ca8d80e is the archive: walkthrough, slides, papers,
-the aidb studies, scaleli_bench and the earlier protocol (`main@ca8d80e:<path>` in the docs points there).
+Branch `main` @ ca8d80e is the archive (walkthrough, slides, papers, the aidb studies, scaleli_bench, the earlier
+protocol); `main@ca8d80e:<path>` in the docs points there.
+
+## Run
+
+```bash
+./run.sh setup          # build, datasets (+ .sorted copies and samples on the Mac), GRE
+./run.sh test           # ctest + the Python test
+./run.sh smoke          # every GRE index on a 10M-key prefix of fb: correctness only
+./run.sh bench          # the headline: 20M warm-up + 100M timed lookups, 3 rounds
+```
+
+| Command | What it does |
+|---|---|
+| `setup [build\|data\|gre]...` | CMake build in `build/`; `data/external/gre/download.sh` (skips present files, checks sha256) and, on the Mac, `scripts/prepare_data.sh`; the GRE build. Default: all three. |
+| `test` | `scripts/check.sh`: ctest and `src/tests/test_gre_report_splice.py`; without `data/samples` it skips `splice_core` and `splice_gre_check`. |
+| `smoke [ARGS]` | `scripts/gre_run.sh` over every index of this GRE build on fb, 10M keys, 1M lookups; a run passes only if `success_read` equals the lookups. Not timed. |
+| `bench [OUTDIR] [ARGS]` | `scripts/gre_run.sh` with the headline protocol; default OUTDIR `results/local/bench-<date>` (ignored by git), `--datasets fb,osm`, `--rounds 3`, `--indexes splice,pgm,lipp,sortedarray,alex,btree` (+`artunsync` on the Atom). Any gre_run.sh flag after it wins, e.g. `--warmup 0` for the cold arm. |
+| `warmup --tag T [ARGS]` | `scripts/paired_run.sh`: the paired warm-up trace batch, into `results/paired/T/<machine>/`. |
+| `analyze OUTDIR...` / `pair A B` | `scripts/warmup_detect.py analyze` / `pair` (numpy; matplotlib for `--plot`). |
+| `report OUTDIR [ARGS]` | `scripts/gre_report.py` (e.g. `--ref pgm --splice-json results/splice_h`). |
+| `counts [--datasets L] [FLAGS]` | `build/splice_count` over all keys of each dataset (default all ten) into `results/splice_h/`, then `COUNTS.md` (Mac: needs the `.sorted` copies). |
+| `lane on\|off\|status\|run -- CMD` | `scripts/mac_lane.sh`: heavy apps to the efficiency cores (Mac only). |
+
+`./run.sh help` prints the table. Long runs: `nohup ./run.sh bench OUT > OUT.out 2>&1 &`. Other tools, run directly:
+`scripts/splice_asm_check.sh` (the get() code check), `scripts/splice_xarch.sh` (arm64 vs x86 layout hashes),
+`scripts/gre_transient.py`, `scripts/splice_table.py`.
+
+## Mac and Atom
+
+`run.sh` picks the machine from `uname`. GRE lives outside the repository (no licence); set `GRE_DIR=DIR` or pass
+`./run.sh --gre DIR COMMAND` to use another clone.
+
+| | Mac (Darwin) | Atom (Linux) |
+|---|---|---|
+| GRE | `~/gre_mac/GRE`, built by `scripts/gre_mac.sh` (`GRE_MAC_SEED=<clone>` clones offline) | `/tmp/louisvasseur/GRE`, built by `scripts/gre_lite.sh` in the activated conda env |
+| timed runs | unpinned, inside `scripts/mac_lane.sh`: previews, never mixed with Atom numbers ([docs/MAC.md](docs/MAC.md)) | pinned to core 2: the reference numbers ([docs/PROTOCOL.md](docs/PROTOCOL.md)) |
+| data | raw files plus `.sorted` copies and the 2M samples | raw files only (GRE sorts on load) |
+
+Heavy commands refuse to start beside a timed run (`RUN_FORCE=1`, `GRE_LITE_FORCE=1`, `GRE_RUN_BUSY`,
+`PREPARE_DATA_FORCE=1` override). Requirements: CMake >= 3.16, GCC >= 11 or Clang >= 14, bash, curl; Python >= 3.6
+(stdlib) for the reports, >= 3.8 for `prepare_data.sh`, numpy for `warmup_detect.py`; 16 GB of disk for the data
+(+11.2 GB for the `.sorted` copies), 32 GB RAM.
 
 ## Layout
 
 | Path | What |
 |---|---|
-| `include/` | `splice/` (SPLICE-H, header-only) and `scaleli/` (SCALE-LI; `hardness.hpp` holds the LIPP and PGM ports) |
-| `src/hardness.cpp` | `scaleli_hardness`: writes the `.sorted` copies; ctest input |
-| `integrations/` | GRE facades and interfaces that `tools/gre_lite.sh` copies into a GRE clone |
-| `tools/` | GRE: `gre_lite.sh` (build), `gre_run.sh` (runner), `gre_report.py`, `gre_transient.py`, `warmup_detect.py` |
-| | Mac: `gre_mac.sh` + [`gre_mac.md`](tools/gre_mac.md), `mac_lane.sh` (benchmark lane) |
-| | both machines: `paired_run.sh` (the same warm-up trace batch on the Mac and the Atom; `warmup_detect.py pair` compares them) |
-| | SPLICE-H offline: `splice_count.cpp` (exact-count simulator), `splice_table.py`, `splice_asm_check.sh`, `splice_xarch.sh` |
-| | data: `prepare_data.sh`, `datasets.py`; `check.sh` (cmake + ctest + the Python test; without `data/samples` it skips the two tests that read them) |
-| `tests/`, `examples/` | the CMake tests and `test_gre_report_splice.py` |
-| `data/` | `external/gre/` (fetched), `samples/` (generated; manifests tracked), `flows/` (NFL weights), the test fixture |
-| `results/splice_h/` | the per-dataset plans `gre_run.sh` reads (`args/`), the count results, `COUNTS.md`, `design_evidence/` |
-| `results/splice_joint/` | the next G/T/V iteration: diagnoses, hypotheses, `window_suite/`, `prototypes/paged.cpp` |
-| `results/gre_mac_2026-10-06/` | reference Mac baselines (previews) |
-| `docs/` | `SPLICE_DESIGN.md`, `MATCHING_NFL_CSV.md` |
-| `SERVER.md` | the Atom protocol: sections 0, 5, 5b, 5w |
-
-## Coming from main (the Atom checkout)
-
-The datasets sit under `experimental/scaleli/data/` (ignored files, so they survive the checkout). After
-`git fetch && git checkout clean` (once `clean` is pushed; stash any edits `git status --short` lists first):
-
-```bash
-mkdir -p data/external/gre data/samples && mv -n experimental/scaleli/data/external/gre/* data/external/gre/ && { mv -n experimental/scaleli/data/samples/* data/samples/ 2>/dev/null; true; } && find experimental -type f | head
-```
-
-Then delete `experimental/` by hand once the `find` lists no data, and the stale `build-fs/`. Not
-`mv experimental/scaleli/data/external data/`: `clean` already tracks `data/external/gre/{download.sh,SHA256SUMS}`
-and `data/samples/*.manifest.json`, so that fails ("Directory not empty"). The `.sorted` copies move with the rest.
-A Mac worktree moves nothing: per-file symlinks into `data/external/gre/` and `data/samples/` (ignored), or `--data`.
-
-## Requirements
-
-- CMake >= 3.16, a C++20 compiler (GCC >= 11 or Clang >= 14), bash, curl.
-- Python >= 3.6, standard library only, for `gre_report.py`, `gre_transient.py` and `test_gre_report_splice.py`;
-  Python >= 3.8 for `datasets.py` and `prepare_data.sh`; numpy (and matplotlib for `--plot`) for `warmup_detect.py`.
-- Atom: an activated conda environment (`CONDA_PREFIX`) and micromamba (`MAMBA_EXE` or
-  `/tmp/louisvasseur/bin/micromamba`); `gre_lite.sh` installs `tbb-devel` 2020.2 and `jemalloc` 5.4.0 into it.
-- Disk: 16 GB for the raw files, +11.2 GB for the `.sorted` copies (Mac only). 32 GB RAM.
-
-## Data
-
-`data/external/gre/download.sh` (resumable, sha256-checked against `SHA256SUMS`), then on the Mac
-`tools/prepare_data.sh` (the `.sorted` copies and the 20 2M-key samples, each checked against its tracked manifest).
-Never commit data.
-
-## Atom quickstart
-
-```bash
-cd /tmp/louisvasseur/SPLICE                    # conda env activated
-tools/gre_lite.sh                              # -> /tmp/louisvasseur/GRE/build/microbench
-tools/splice_asm_check.sh g++ | tail -3        # must end in PASS
-# smoke tests: SERVER.md 5 and 5b step 2; then, e.g.
-nohup tools/gre_run.sh ~/splice_results/warm --datasets fb,osm --indexes splice,pgm,lipp,sortedarray \
-    --warmup 20000000 --pin 2 --splice-plan results/splice_h/args > ~/splice_results/warm.out 2>&1 &
-python3 tools/gre_report.py ~/splice_results/warm --ref pgm --splice-json results/splice_h > ~/splice_results/warm/report.md
-```
-
-The full protocol (interleaved rounds, cold arm, THP, transient, warm-up phases, ablations, counters) is
-[SERVER.md](SERVER.md) sections 5, 5b and 5w.
-
-## Mac quickstart
-
-```bash
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j
-tools/prepare_data.sh build && (cd build && ctest)   # splice_core and splice_gre_check need data/samples
-# counts: the splice_count loop of docs/SPLICE_DESIGN.md section 9
-GRE_MAC_SEED=<existing GRE clone> tools/gre_mac.sh DEST
-tools/mac_lane.sh run -- tools/gre_run.sh OUT --gre DEST --data data/external/gre --pin -1 --datasets fb --indexes splice,pgm
-```
-
-Mac numbers are previews ([tools/gre_mac.md](tools/gre_mac.md)); never mix them with Atom numbers.
-
-## Paired Mac and Atom runs
-
-The same warm-up trace batch on both machines (`GRE_TRACE=geo:64:65536 GRE_TRACE_CPU=1`, no warm-up, 120M traced
-lookups, interleaved rounds; the Mac inside `mac_lane.sh`, the Atom pinned to core 2), compared index by index.
-Use the same `--tag` on both; each machine writes `results/paired/<tag>/<machine>/` and the Atom's folder comes back
-through git (its `runs/bin/microbench` is ignored).
-
-```bash
-tools/paired_run.sh --tag 2026-10-13 --datasets fb --rounds 3     # Atom (after tools/gre_lite.sh) and Mac
-git add results/paired/2026-10-13/atom && git commit -m 'paired 2026-10-13: atom' && git push   # on the Atom
-python3 tools/warmup_detect.py pair results/paired/2026-10-13/atom/runs results/paired/2026-10-13/<mac>/runs \
-    --labels atom,mac --json results/paired/2026-10-13/pair.json --plot results/paired/2026-10-13/pair
-```
-
-`pair` reports, per dataset and index traced on both machines: where warm-up ends, the relaxation tau and the cold
-excess, the steady latency with its across-run interval and the B/A ratio, the jitter (robust CoV, two-state
-mixture), and plots each index's two traces normalized by their own steady mean so the transient shapes compare
-directly. SERVER.md 5p has the Atom side.
-
-## Next iteration
-
-[results/splice_joint/README.md](results/splice_joint/README.md) and
-[window_suite/WINDOWS.md](results/splice_joint/window_suite/WINDOWS.md). `window_mode.patch` applies with `patch -p1`
-from the repository root (cleanly on this branch); rerun `validate.sh` against the current cells before the next
-round. The H1 PAGED prototype is `results/splice_joint/prototypes/paged.cpp`.
+| `run.sh` | the entry point |
+| `src/` | all C++: `splice/`, `scaleli/` (headers, `-I src`), `gre/` (what GRE gets), `tools/` (`splice_count`, `scaleli_hardness`), `tests/` |
+| `scripts/` | the shell and Python behind `run.sh` |
+| `data/` | `external/gre/` (download script and checksums; datasets fetched, never committed), `samples/` (manifests), `flows/` (NFL weights), the test fixture |
+| `results/` | `splice_h/` (the plans `gre_run.sh` reads, `args/`, and the counts), `splice_joint/` (the next G/T/V iteration: `window_suite/`, `prototypes/`), `gre_mac_2026-10-06/` (Mac baselines), `paired/<tag>/<machine>/` |
+| `docs/` | [DESIGN](docs/DESIGN.md) (SPLICE-H), [PROTOCOL](docs/PROTOCOL.md) (the Atom), [MAC](docs/MAC.md), [GRE](docs/GRE.md), [METHODS](docs/METHODS.md) (matching NFL and CSV) |
 
 ## Results
 
-OUTDIRs go under `~/` (= `/tmp/louisvasseur` on DIAS, lost on reboot). Copy each back with `rsync --exclude bin/` to
-`results/gre_<date>/` or `results/splice_<date>/` on a branch cut from `clean`. Never datasets, GRE/STX/NFL code,
-`microbench` or build directories.
+`bench` and `smoke` write OUTDIRs outside git (`results/local/`, `$TMPDIR`). Keep a finished run with
+`rsync -a --exclude bin/ OUT/ results/gre_<date>/` (or `results/splice_<date>/`) and commit it; `warmup` already
+writes into `results/paired/<tag>/<machine>/` (commit and push on the Atom, then `./run.sh pair` on the Mac). Never
+commit datasets, GRE/STX/NFL code, `microbench` or build directories.
+
+## Atom checkout
+
+Pull only when nothing is running (a running `paired_run.sh` calls `tools/gre_run.sh` every round). From the previous
+`clean` layout nothing moves (`data/` keeps its paths): `git pull`, then `./run.sh setup build gre`.
+From `main` (data under `experimental/scaleli/data/`, ignored): stash any edits `git status --short` lists, then
+`git fetch && git checkout clean && mkdir -p data/external/gre data/samples && mv -n experimental/scaleli/data/external/gre/* data/external/gre/ && { mv -n experimental/scaleli/data/samples/* data/samples/ 2>/dev/null; true; }`,
+and delete `experimental/` and `build-fs/` by hand once `find experimental -type f` lists no data
+([docs/PROTOCOL.md](docs/PROTOCOL.md) section 0).
 
 ## License
 
-MIT ([LICENSE](LICENSE)). Ported code and what is never redistributed: [THIRD_PARTY.md](THIRD_PARTY.md) and
-[LICENSES/](LICENSES/).
+MIT ([LICENSE](LICENSE)). Ported code, its licence texts, and what is never redistributed:
+[THIRD_PARTY.md](THIRD_PARTY.md).

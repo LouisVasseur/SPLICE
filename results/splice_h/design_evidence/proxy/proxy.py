@@ -1,6 +1,6 @@
 # Counts (no timing): how do SSE, log2-error, NLL and lines-touched rank the same CDF models?
 import numpy as np, sys, json, os
-# The 2M samples of this checkout (tools/prepare_data.sh); SPLICE_SAMPLES overrides.
+# The 2M samples of this checkout (scripts/prepare_data.sh); SPLICE_SAMPLES overrides.
 SAMP=os.environ.get("SPLICE_SAMPLES",os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../../../data/samples"))
 DS=["books","fb","osm","covid","genome","history","libio","planet","stack","wise"]
 rng=np.random.default_rng(1)

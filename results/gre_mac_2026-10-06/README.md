@@ -2,16 +2,16 @@
 
 **These are preview numbers from a MacBook Pro (Apple M3 Max). The Mac is not the Atom.** They show whether GRE's
 driver runs end to end at full scale on this machine, and they give a rough idea of the rankings. They do not replace the
-Atom runs. Do not mix them with Atom numbers in a table or a ratio. `tools/gre_mac.md` lists the differences between
+Atom runs. Do not mix them with Atom numbers in a table or a ratio. `docs/MAC.md` lists the differences between
 the two machines.
 
 ## What ran
 
-- **Binary.** `tools/gre_mac.sh` built GRE natively for arm64. The source is GRE at
+- **Binary.** `scripts/gre_mac.sh` built GRE natively for arm64. The source is GRE at
   e807edcef51df6732f07f94d4c797fb3897519ba with the committed `gre_lite.sh` (SPLICE 59d810f) run in edit-only mode,
   plus the arm64 patches. The compiler is Apple clang 17 with `-O3 -mcpu=native` (apple-m3).
   `warmup_pub/gre_mac_build.txt` records the patches and flags. The microbench sha256 is `6ddeaf85…030cc`.
-- **Runner.** The committed `tools/gre_run.sh` (`git show HEAD:`), unmodified, ran under `nohup caffeinate -i` with
+- **Runner.** The committed `scripts/gre_run.sh` (`git show HEAD:`), unmodified, ran under `nohup caffeinate -i` with
   `OMP_NUM_THREADS=1`. It ran on macOS without changes. Its Linux-only provenance sections (lscpu, free, nproc, ldd,
   git) print "(unavailable)", so `warmup_pub/provenance_mac.txt` holds the macOS equivalents.
   ```
@@ -98,7 +98,7 @@ vm-compressor-space shortage.
 LIPP on osm and books needs more memory than this 64 GB Mac has free alongside its desktop apps; I did not measure
 how much. LIPP on fb fits, with a 38.5 GB peak. The task note expected about 27 GB for fb, and 27 GB is fb's *index*
 memory (134.5 B/key). Whether these LIPP cells fit on the Atom (64 GB, nothing else running) is a separate question;
-`docs/MATCHING_NFL_CSV.md` already lists it as unchecked.
+`docs/METHODS.md` already lists it as unchecked.
 
 ## Load and noise
 
@@ -126,7 +126,7 @@ memory (134.5 B/key). Whether these LIPP cells fit on the Atom (64 GB, nothing e
 
 ## Comparison with the Atom on fb (not like for like)
 
-The Atom figures are the DIAS GRE fb baselines cited in `docs/SPLICE_DESIGN.md` §6 (4 KiB pages).
+The Atom figures are the DIAS GRE fb baselines cited in `docs/DESIGN.md` §6 (4 KiB pages).
 
 | index | Mac mean Mops/s | Atom Mops/s | Mac / Atom | Mac vs sortedarray | Atom vs sortedarray |
 |---|---|---|---|---|---|
@@ -142,7 +142,7 @@ is LIPP > PGM > ALEX > B+tree > sorted array. Four of the five indexes keep thei
 about 1.9-2.7 times faster on each of them. LIPP is the exception: it moves from tied with PGM to twice as fast as
 PGM. Its ratio over the sorted array is 7.0 on the Mac and 2.4 on the Atom.
 
-**The Mac is not the Atom.** The differences are listed below; see `tools/gre_mac.md` for details.
+**The Mac is not the Atom.** The differences are listed below; see `docs/MAC.md` for details.
 - **Pages:** 16 KiB on the Mac, 4 KiB on the Atom. Larger pages give much more TLB reach, which matters most for
   LIPP's 27 GB index.
 - **Caches:** the M3 Max has a 128 KiB L1d and a 16 MiB L2 per P-cluster, and much lower memory latency.

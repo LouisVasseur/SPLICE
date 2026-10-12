@@ -1,6 +1,6 @@
-diff -ruN a/include/splice/cost.hpp b/include/splice/cost.hpp
---- a/include/splice/cost.hpp	2026-10-06 05:43:32
-+++ b/include/splice/cost.hpp	2026-10-06 07:31:38
+diff -ruN a/src/splice/cost.hpp b/src/splice/cost.hpp
+--- a/src/splice/cost.hpp	2026-10-06 05:43:32
++++ b/src/splice/cost.hpp	2026-10-06 07:31:38
 @@ -244,6 +244,10 @@
  inline Fit make_fit(const KeySrc& ks, const SpliceParams& p, unsigned threads) {
      Fit f; f.ks = ks; f.n = ks.n; f.tier1 = p.tier1; f.k1 = p.k1; f.rbits = p.router_bits; f.rleaf = p.router_leaf;
@@ -119,9 +119,9 @@ diff -ruN a/include/splice/cost.hpp b/include/splice/cost.hpp
          for (int k = 0; k < 4; ++k) { fp.ed[k] = expected_d(fp.counts, p, fp.rep[k]); fp.sim_ns += fp.rep[k].ns; }
      } else {
          const std::int64_t P0[REG_N] = {p.p0_ad, p.p0_ae, p.p0_b};
-diff -ruN a/include/splice/params.hpp b/include/splice/params.hpp
---- a/include/splice/params.hpp	2026-10-06 03:35:37
-+++ b/include/splice/params.hpp	2026-10-06 07:10:30
+diff -ruN a/src/splice/params.hpp b/src/splice/params.hpp
+--- a/src/splice/params.hpp	2026-10-06 03:35:37
++++ b/src/splice/params.hpp	2026-10-06 07:10:30
 @@ -12,14 +12,15 @@
  
  namespace splice {
@@ -220,9 +220,9 @@ diff -ruN a/include/splice/params.hpp b/include/splice/params.hpp
      if (!cell_only) r += " threads=" + s(p.threads) + " verify=" + s(unsigned(p.verify)) + " hash=" + s(unsigned(p.hash)) + " thp=" + s(unsigned(p.thp));
      r += " d_tau=" + s(p.d_tau) + " d_walk_hit=" + s(p.d_walk_hit) + " d_walk_hit_thp=" + s(p.d_walk_hit_thp)
          + " d_router_child=" + s(p.d_router_child) + " d_c_direct=" + s(p.d_c_direct) + " d_c_fenced=" + s(p.d_c_fenced)
-diff -ruN a/tools/splice_count.cpp b/tools/splice_count.cpp
---- a/tools/splice_count.cpp	2026-10-06 05:47:56
-+++ b/tools/splice_count.cpp	2026-10-06 07:37:31
+diff -ruN a/src/tools/splice_count.cpp b/src/tools/splice_count.cpp
+--- a/src/tools/splice_count.cpp	2026-10-06 05:47:56
++++ b/src/tools/splice_count.cpp	2026-10-06 07:37:31
 @@ -4,6 +4,10 @@
  //   splice_count --dataset fb --data DIR [--out results/splice_h] [--threads 16] [--grid pruned|cell]
  //                [--args "k=v ..."] [--verify] [--parity] [--hash] [--perturb]

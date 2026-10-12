@@ -42,7 +42,7 @@ if [ -n "${WINDOWS_FILE:-}" ]; then WINDOWS=$(grep -v '^#' "$WINDOWS_FILE" | gre
 
 BIN=$DIR/build-win/splice_count
 t0=$(date +%s)
-if [ ! -x "$BIN" ] || [ -n "$(find "$DIR/include/splice" "$DIR/tools/splice_count.cpp" -newer "$BIN" 2>/dev/null | head -1)" ]; then
+if [ ! -x "$BIN" ] || [ -n "$(find "$DIR/src/splice" "$DIR/src/tools/splice_count.cpp" -newer "$BIN" 2>/dev/null | head -1)" ]; then
   cmake -S "$DIR" -B "$DIR/build-win" -DCMAKE_BUILD_TYPE=Release >/dev/null
   cmake --build "$DIR/build-win" --target splice_count -j 4 >/dev/null
 fi

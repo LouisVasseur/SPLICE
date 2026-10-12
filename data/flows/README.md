@@ -1,7 +1,7 @@
 # NFL flow weights (2D2H2L text format), our own
 
 - `<ds>_s512_t2000.txt` (fb, osm, planet) and `<ds>_s64_t2000.txt` (the other seven): the `SCALELI_FLOW` files
-  `tools/gre_run.sh` passes to the scaleli_n/_nc/_j/_jg0 cells (`period()`: s512 for fb, osm and planet, s64
+  `scripts/gre_run.sh` passes to the scaleli_n/_nc/_j/_jg0 cells (`period()`: s512 for fb, osm and planet, s64
   otherwise). Trained on the Mac by `tools/train_flow.py data/samples/<ds>_2M_uniform_s42 --dtype uint64 --sample 16384
   --steps 2000 --shifts 64|512 --lr 0.05` (main@ca8d80e:experimental/scaleli/results/aidb_flowv2/retrain.sh; the
   trainer, the logs and the unused shift are on main).
