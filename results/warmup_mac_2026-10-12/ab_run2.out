@@ -1,0 +1,12 @@
+== lane round 1 Mon Oct 12 16:24:52 CEST 2026
+   rc=0
+== open round 3 Mon Oct 12 16:30:27 CEST 2026
+   rc=0
+== lane round 2 Mon Oct 12 16:35:27 CEST 2026
+   rc=0
+== lane round 3 Mon Oct 12 16:41:06 CEST 2026
+   rc=2
+== faults Mon Oct 12 16:41:07 CEST 2026
+   rc=2
+mac_lane: 0 demoted (state /var/folders/2w/rn565rk90cb0rh3m23g8wkkr0000gn/T//mac_lane.pids)
+== done Mon Oct 12 16:41:08 CEST 2026

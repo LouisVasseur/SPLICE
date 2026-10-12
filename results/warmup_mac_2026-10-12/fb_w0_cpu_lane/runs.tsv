@@ -1,0 +1,9 @@
+repeat	dataset	index	exit_code	wall_s	log	load1	busy
+1	fb	trace_nullindex	0	41.8	logs/fb__trace_nullindex__r1.log	4.97	0
+1	fb	trace_splice	0	95.7	logs/fb__trace_splice__r1.log	6.07	0
+1	fb	trace_lipp	0	103.3	logs/fb__trace_lipp__r1.log	6.32	0
+1	fb	trace_pgm	0	93.5	logs/fb__trace_pgm__r1.log	4.92	0
+2	fb	trace_nullindex	0	44.3	logs/fb__trace_nullindex__r2.log	5.51	0
+2	fb	trace_splice	0	101.8	logs/fb__trace_splice__r2.log	5.13	0
+2	fb	trace_lipp	0	100.4	logs/fb__trace_lipp__r2.log	5.97	0
+2	fb	trace_pgm	0	91.1	logs/fb__trace_pgm__r2.log	5.20	0

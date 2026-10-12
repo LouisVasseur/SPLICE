@@ -1,0 +1,23 @@
+2026-10-12 15:33:24 21 runs into /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/warmup_mac_2026-10-12/fb_w0 (warmup 0, pin -1, ops 120000000, init ratio 1)
+2026-10-12 15:34:06 [1/21] r1 fb       trace_nullindex    41.1s  257.971 Mops/s  success_read 120000000  index_rss_bytes 1622080
+2026-10-12 15:35:33 [2/21] r1 fb       trace_splice    86.8s  3.154 Mops/s  success_read 120000000  index_rss_bytes 3870515840
+2026-10-12 15:37:03 [3/21] r1 fb       trace_lipp      89.9s  3.612 Mops/s  success_read 120000000  index_rss_bytes 27241073984
+2026-10-12 15:38:21 [4/21] r1 fb       trace_pgm       78.2s  3.404 Mops/s  success_read 120000000  index_rss_bytes 3238680960
+2026-10-12 15:40:40 [5/21] r1 fb       trace_alex     138.7s  1.975 Mops/s  success_read 120000000  index_rss_bytes 4819658560
+2026-10-12 15:42:23 [6/21] r1 fb       trace_btree    103.2s  1.745 Mops/s  success_read 120000000  index_rss_bytes 3878083840
+2026-10-12 15:45:01 [7/21] r1 fb       trace_sortedarray   158.2s  0.986 Mops/s  success_read 120000000  index_rss_bytes 3203389568
+2026-10-12 15:45:37 [8/21] r2 fb       trace_nullindex    35.4s  327.427 Mops/s  success_read 120000000  index_rss_bytes 1622080
+2026-10-12 15:46:58 [9/21] r2 fb       trace_splice    81.4s  3.136 Mops/s  success_read 120000000  index_rss_bytes 3871630016
+2026-10-12 15:48:28 [10/21] r2 fb       trace_lipp      90.0s  3.573 Mops/s  success_read 120000000  index_rss_bytes 27218202496
+2026-10-12 15:49:49 [11/21] r2 fb       trace_pgm       80.4s  3.061 Mops/s  success_read 120000000  index_rss_bytes 3238697408
+2026-10-12 15:52:17 [12/21] r2 fb       trace_alex     147.9s  1.740 Mops/s  success_read 120000000  index_rss_bytes 4815415040
+2026-10-12 15:54:33 [13/21] r2 fb       trace_btree    135.6s  1.231 Mops/s  success_read 120000000  index_rss_bytes 3878001920
+2026-10-12 15:57:19 [14/21] r2 fb       trace_sortedarray   166.0s  0.939 Mops/s  success_read 120000000  index_rss_bytes 3203815808
+2026-10-12 15:57:59 [15/21] r3 fb       trace_nullindex    39.9s  291.371 Mops/s  success_read 120000000  index_rss_bytes 1622080
+2026-10-12 15:59:22 [16/21] r3 fb       trace_splice    83.6s  3.231 Mops/s  success_read 120000000  index_rss_bytes 3871859328
+2026-10-12 16:00:47 [17/21] r3 fb       trace_lipp      84.9s  3.717 Mops/s  success_read 120000000  index_rss_bytes 26950896512
+2026-10-12 16:02:13 [18/21] r3 fb       trace_pgm       85.8s  2.892 Mops/s  success_read 120000000  index_rss_bytes 3238697408
+2026-10-12 16:04:37 [19/21] r3 fb       trace_alex     143.5s  1.838 Mops/s  success_read 120000000  index_rss_bytes 4810925952
+2026-10-12 16:06:48 [20/21] r3 fb       trace_btree    130.7s  1.300 Mops/s  success_read 120000000  index_rss_bytes 3877903616
+2026-10-12 16:09:35 [21/21] r3 fb       trace_sortedarray   167.3s  0.920 Mops/s  success_read 120000000  index_rss_bytes 3203373184
+2026-10-12 16:09:35 done: 21 runs, 0 skipped (already done), 0 failed

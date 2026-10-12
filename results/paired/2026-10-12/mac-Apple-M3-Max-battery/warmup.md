@@ -1,0 +1,11 @@
+Warm-up detection (eps = 0.01; calls = lookups since the first get(); cut = first call of the steady phase)
+
+| dataset | index | runs | mser | pelt | relax | cov | hw | epoch | consensus | tau (calls) | beta | excess (ms) | steady ns/lookup | CI95 across runs | between-run share | R-hat | PELT kind | robust CoV | lag-1 | two states (fast / slow ns, slow share) | envelope: warm after | envelope: steady ns | steady chunks by core (share, mean ns, slow share) | migrations |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fb | trace_alex | 3 | 524K | 117M | 397K | 12.5M | 0 | 524K | 514K | 2e+05 | 1.00 | 182.86 | 719.70 | 143.38 | 0.98 | 1.075 | no steady state | 11.4% | 0.62 | one state | 271K | 648.54 | P1 51% 717 (slow 59%); P0 49% 722 (slow 61%) | cpu 69%, class 22% |
+| fb | trace_btree | 3 | 0 | 116M | never | 2.29M | 0 | 8.13K | 0 | 1.41e+03 | 0.70 | 0.00 | 1057.24 | 68.99 | 0.70 | 1.008 | no steady state | 9.3% | 0.52 | one state | 317K | 977.92 | P1 52% 1056 (slow 68%); P0 48% 1059 (slow 69%) | cpu 75%, class 27% |
+| fb | trace_lipp | 3 | 12.1M | 9.11M | 9.89M | 25.9M | 12M | 8.39M | 10.1M | 5.01e+05 | 0.50 | 8567.22 | 255.67 | 52.90 | 0.89 | 1.088 | warmup | 13.7% | 0.75 | one state | 9.95M | 223.97 | P1 50% 259; P0 50% 252 | cpu 50%, class 19% |
+| fb | trace_nullindex | 3 | 0 | 79.1M | never | 68.6M | never | 33.6M | 16.8M | 3.16e+09 | 1.00 | 0.00 | 3.18 | 0.31 | 0.76 | 1.108 | slowdown | 12.0% | 0.47 | 3 / 3, 80% | 67.1M | 3.13 | P1 93% 3 (slow 55%); P0 7% 3 (slow 52%) | cpu 1%, class 0% |
+| fb | trace_pgm | 3 | 0 | 111M | 0 | 9.17M | 0 | 131K | 286K | 2.24e+05 | 1.00 | -39.93 | 417.50 | 80.01 | 0.97 | 1.099 | no steady state | 10.9% | 0.68 | one state | 77.9K | 380.04 | P0 52% 414 (slow 26%); P1 48% 421 (slow 24%) | cpu 65%, class 15% |
+| fb | trace_sortedarray | 3 | 0 | 113M | 0 | 92.2M | 48M | 16.8M | 67.1M | 3.16e+09 | 1.00 | 0.00 | 1541.44 | 194.80 | 0.92 | 1.096 | no steady state | 8.1% | 0.48 | one state | 185K | 1324.72 | P1 51% 1536 (slow 84%); P0 49% 1547 (slow 85%) | cpu 73%, class 19% |
+| fb | trace_splice | 3 | 852K | 110M | 501K | 5.96M | 0 | 2.1M | 900K | 1.78e+05 | 0.70 | 91.70 | 416.24 | 57.23 | 0.96 | 1.055 | no steady state | 7.5% | 0.69 | one state | 642K | 391.34 | P0 51% 417 (slow 83%); P1 49% 415 (slow 84%) | cpu 47%, class 18% |

@@ -1,0 +1,22 @@
+id,read_ratio,insert_ratio,update_ratio,scan_ratio,delete_ratio,key_path,index_type,throughput,init_table_size,memory_consumption,thread_num,min,50 percentile,90 percentile,99 percentile,99.9 percentile,99.99 percentile,max,avg,seed,scan_num,latency_variance,latency_sample,data_shift,pgm,error_bound,table_size
+20261012174657,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_nullindex,312971205,200000000,0,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012174837,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_splice,2540651,200000000,3856734928,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012175020,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_lipp,2905972,200000000,24101427742,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012175201,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_pgm,2226599,200000000,3235020216,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012175455,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_alex,1299629,200000000,4680024424,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012175751,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_btree,917938,200000000,0,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012180121,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_sortedarray,719940,200000000,3200000000,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012180205,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_nullindex,323395509,200000000,0,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012180350,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_splice,2267240,200000000,3856734928,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012180529,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_lipp,2955852,200000000,24101427742,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012180708,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_pgm,2389619,200000000,3235020216,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012180959,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_alex,1358915,200000000,4680024424,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012181248,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_btree,960307,200000000,0,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012181642,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_sortedarray,629479,200000000,3200000000,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012181725,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_nullindex,324355017,200000000,0,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012181907,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_splice,2408416,200000000,3856734928,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012182039,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_lipp,3385355,200000000,24101427742,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012182210,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_pgm,2598491,200000000,3235020216,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012182450,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_alex,1519752,200000000,4680024424,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012182740,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_btree,960915,200000000,0,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000
+20261012183113,1,0,0,0,0,/Users/louisvasseur/Downloads/SPLICE-clean/data/external/gre/fb,trace_sortedarray,689272,200000000,3200000000,1,0,0,0,0,0,0,0,0,1866,100,0,0,0,0,64,200000000

@@ -1,0 +1,15 @@
+tag: 2026-10-12
+machine: mac-Apple-M3-Max
+date_utc: 2026-10-12T15:46:15Z
+uname: Darwin Louiss-MacBook-Pro.local 24.6.0 Darwin Kernel Version 24.6.0: Fri Feb 27 19:34:51 PST 2026; root:xnu-11417.140.69.709.8~1/RELEASE_ARM64_T6031 arm64
+commit: c0c556fdda700ca4366c18121074821aeee9e313 clean
+protocol: GRE_TRACE=geo:64:65536 GRE_TRACE_CPU=1 warmup=0 ops=120000000 rounds=3 pin=-1 lane=1
+datasets: fb
+indexes: trace_nullindex,trace_splice,trace_lipp,trace_pgm,trace_alex,trace_btree,trace_sortedarray
+gre: /Users/louisvasseur/gre_mac/GRE
+page_size: 16384
+cpu: Apple M3 Max; P 12 / E 4; P per L2 6
+memory_bytes: 68719476736
+power: Now drawing from 'Battery Power'
+load_at_start: 5.11 4.98 4.79
+gre_build: 1781500947 681304

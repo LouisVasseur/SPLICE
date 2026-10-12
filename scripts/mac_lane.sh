@@ -51,6 +51,12 @@ case "${1:-}" in
   status) status;;
   run)
     shift; [ "${1:-}" = -- ] && shift
+    # On battery or in Low Power Mode the performance cores run 1.3-2x slower (seen 2026-10-12): not a timing run.
+    if { pmset -g batt | grep -q 'Battery Power' || pmset -g | grep -Eq '^ *(lowpowermode|powermode) +1'; } &&
+       [ "${MAC_ALLOW_BATTERY:-0}" != 1 ]; then
+      echo "mac_lane: on battery or in Low Power Mode; plug in and turn Low Power Mode off (MAC_ALLOW_BATTERY=1 overrides)" >&2
+      exit 2
+    fi
     [ $# -gt 0 ] || { echo "usage: mac_lane.sh run -- COMMAND [ARGS...]" >&2; exit 2; }
     trap 'restore' EXIT
     trap 'exit 130' INT TERM HUP

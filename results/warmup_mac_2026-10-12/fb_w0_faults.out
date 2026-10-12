@@ -1,0 +1,3 @@
+mac_lane: 74 processes on the efficiency cores; running: tools/gre_run.sh results/warmup_mac_2026-10-12/fb_w0_faults --gre /Users/louisvasseur/gre_mac/GRE --data data/external/gre --datasets fb --ops 120000000 --warmup 0 --pin -1 --indexes trace_lipp,trace_alex,trace_btree,trace_pgm,trace_splice --repeats 1
+gre_run.sh: another benchmark is running (pgrep -f '[-]-keys_file=|scaleli_bench|scaleli_hardness|splice_count'); wait for it
+mac_lane: restored 74 processes

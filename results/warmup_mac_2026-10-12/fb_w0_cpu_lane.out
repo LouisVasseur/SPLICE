@@ -1,0 +1,19 @@
+mac_lane: 74 processes on the efficiency cores; running: tools/gre_run.sh results/warmup_mac_2026-10-12/fb_w0_cpu_lane --gre /Users/louisvasseur/gre_mac/GRE --data data/external/gre --datasets fb --ops 120000000 --warmup 0 --pin -1 --indexes trace_nullindex,trace_splice,trace_lipp,trace_pgm --repeats 1 --resume
+2026-10-12 16:24:52 4 runs into /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/warmup_mac_2026-10-12/fb_w0_cpu_lane (warmup 0, pin -1, ops 120000000, init ratio 1)
+2026-10-12 16:25:34 [1/4] r1 fb       trace_nullindex    41.8s  305.679 Mops/s  success_read 120000000  index_rss_bytes 1884224
+2026-10-12 16:27:10 [2/4] r1 fb       trace_splice    95.7s  2.722 Mops/s  success_read 120000000  index_rss_bytes 3871728256
+2026-10-12 16:28:53 [3/4] r1 fb       trace_lipp     103.3s  2.742 Mops/s  success_read 120000000  index_rss_bytes 27286965888
+2026-10-12 16:30:27 [4/4] r1 fb       trace_pgm       93.5s  2.649 Mops/s  success_read 120000000  index_rss_bytes 3238844736
+2026-10-12 16:30:27 done: 4 runs, 0 skipped (already done), 0 failed
+mac_lane: restored 75 processes
+mac_lane: 74 processes on the efficiency cores; running: tools/gre_run.sh results/warmup_mac_2026-10-12/fb_w0_cpu_lane --gre /Users/louisvasseur/gre_mac/GRE --data data/external/gre --datasets fb --ops 120000000 --warmup 0 --pin -1 --indexes trace_nullindex,trace_splice,trace_lipp,trace_pgm --repeats 2 --resume
+2026-10-12 16:35:28 8 runs into /Users/louisvasseur/Downloads/scaleli_sota/experimental/scaleli/results/warmup_mac_2026-10-12/fb_w0_cpu_lane (warmup 0, pin -1, ops 120000000, init ratio 1)
+2026-10-12 16:36:12 [5/8] r2 fb       trace_nullindex    44.3s  318.205 Mops/s  success_read 120000000  index_rss_bytes 1884224
+2026-10-12 16:37:54 [6/8] r2 fb       trace_splice   101.8s  2.431 Mops/s  success_read 120000000  index_rss_bytes 3870745216
+2026-10-12 16:39:35 [7/8] r2 fb       trace_lipp     100.4s  2.947 Mops/s  success_read 120000000  index_rss_bytes 27076578880
+2026-10-12 16:41:06 [8/8] r2 fb       trace_pgm       91.1s  2.702 Mops/s  success_read 120000000  index_rss_bytes 3238811968
+2026-10-12 16:41:06 done: 4 runs, 4 skipped (already done), 0 failed
+mac_lane: restored 74 processes
+mac_lane: 74 processes on the efficiency cores; running: tools/gre_run.sh results/warmup_mac_2026-10-12/fb_w0_cpu_lane --gre /Users/louisvasseur/gre_mac/GRE --data data/external/gre --datasets fb --ops 120000000 --warmup 0 --pin -1 --indexes trace_nullindex,trace_splice,trace_lipp,trace_pgm --repeats 3 --resume
+gre_run.sh: another benchmark is running (pgrep -f '[-]-keys_file=|scaleli_bench|scaleli_hardness|splice_count'); wait for it
+mac_lane: restored 74 processes

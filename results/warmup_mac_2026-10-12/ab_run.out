@@ -1,0 +1,9 @@
+== rebuild Mon Oct 12 16:09:47 CEST 2026
+edit-only: not built
+built: /Users/louisvasseur/gre_mac/GRE/build/microbench   (indexes: alex lipp pgm btree sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice splice splice_thp trace_splice trace_lipp trace_splice_thp trace_pgm trace_alex trace_btree trace_sortedarray trace_nullindex nullindex)
+== round 1 open Mon Oct 12 16:10:05 CEST 2026
+== round 1 lane Mon Oct 12 16:15:02 CEST 2026
+== round 2 open Mon Oct 12 16:15:02 CEST 2026
+== round 2 lane Mon Oct 12 16:20:10 CEST 2026
+== faults Mon Oct 12 16:20:10 CEST 2026
+== done Mon Oct 12 16:20:10 CEST 2026
