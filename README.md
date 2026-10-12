@@ -27,7 +27,7 @@ protocol); `main@ca8d80e:<path>` in the docs points there.
 | `warmup --tag T [ARGS]` | `scripts/paired_run.sh`: the paired warm-up trace batch, into `results/paired/T/<machine>/`. |
 | `analyze OUTDIR...` / `pair A B` | `scripts/warmup_detect.py analyze` / `pair` (numpy; matplotlib for `--plot`). |
 | `report OUTDIR [ARGS]` | `scripts/gre_report.py` (e.g. `--ref pgm --splice-json results/splice_h`). |
-| `counts [--datasets L] [FLAGS]` | `build/splice_count` over all keys of each dataset (default all ten) into `results/splice_h/`, then `COUNTS.md` (Mac: needs the `.sorted` copies). |
+| `counts [--datasets L] [--out D] [FLAGS]` | `build/splice_count` over all keys of each dataset (default all ten) into `D` (default `results/splice_h/`), then `D/COUNTS.md` (Mac: needs the `.sorted` copies). |
 | `lane on\|off\|status\|run -- CMD` | `scripts/mac_lane.sh`: heavy apps to the efficiency cores (Mac only). |
 
 `./run.sh help` prints the table. Long runs: `nohup ./run.sh bench OUT > OUT.out 2>&1 &`. Other tools, run directly:

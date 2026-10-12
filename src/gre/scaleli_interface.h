@@ -1,5 +1,5 @@
 // SCALE-LI in GRE (gre4index/GRE): indexInterface for the cells scaleli_B, _N, _C, _Cr, _NC, _J, _Jg0 (= _splice) (SPLICE, MIT).
-// Copied by gre_lite.sh into GRE's src/competitor/scaleli/ next to scaleli_gre.hpp (INTEGRATION.md); compiled inside
+// Copied by gre_lite.sh into GRE's src/competitor/scaleli/ next to scaleli_gre.hpp (docs/GRE.md); compiled inside
 // GRE's C++17 microbench TU, it only forwards to the C++20 facade (scaleli_gre.cpp, a separate TU/library).
 #pragma once
 #include <cstdint>

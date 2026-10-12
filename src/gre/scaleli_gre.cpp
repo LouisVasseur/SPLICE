@@ -1,4 +1,4 @@
-// SCALE-LI facade for GRE: the C++20 translation unit behind scaleli_gre.hpp (see that header and INTEGRATION.md).
+// SCALE-LI facade for GRE: the C++20 translation unit behind scaleli_gre.hpp (see that header and docs/GRE.md).
 // The Config is built from a synthetic scaleli_bench argv by scaleli_bench's own parser (scaleli/cli.hpp), and the
 // memory and learnability lines are cli.hpp's JSON, so a GRE index is by construction the index scaleli_bench builds
 // for the same cell, and the printed scaleli_config line reproduces it with scaleli_bench.

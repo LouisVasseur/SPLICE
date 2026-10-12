@@ -39,7 +39,9 @@ machine: $MACHINE   GRE: $GRE (GRE_DIR=DIR or --gre DIR overrides)   data: data/
   analyze OUTDIR... [ARGS]    warm-up phases of trace_* runs (scripts/warmup_detect.py analyze; numpy)
   pair A B [ARGS]             one machine's trace runs against the other's (scripts/warmup_detect.py pair; numpy)
   report OUTDIR [ARGS]        checks, throughput, ratios, memory as Markdown (scripts/gre_report.py)
-  counts [--datasets L] [F]   SPLICE-H plans: splice_count over all keys -> results/splice_h/, then COUNTS.md (Mac)
+  counts [--datasets L] [--out D] [F]
+                              SPLICE-H plans: splice_count over all keys -> D (default results/splice_h/), then
+                              D/COUNTS.md (Mac)
   lane on|off|status|run -- CMD   Mac only: move heavy apps to the efficiency cores (scripts/mac_lane.sh)
   help                        this table
 
@@ -48,11 +50,16 @@ EOF
 }
 
 # A heavy job beside a timed GRE run disturbs it: refuse, as gre_lite.sh and gre_run.sh do (RUN_FORCE=1 overrides).
+# Match the executable (argv[0]), not any command line that merely mentions the name (a shell loop, tail -f, an editor).
+busy_pids() {
+  ps -Ao pid=,args= | awk '{ n = $2; sub(/.*\//, "", n)
+    if (n == "splice_count" || n == "scaleli_hardness" || n == "scaleli_bench") { print $1; next }
+    if (n == "microbench") for (i = 3; i <= NF; i++) if (index($i, "--keys_file=") == 1) { print $1; next } }'
+}
 need_quiet() {
   [ "${RUN_FORCE:-0}" = 1 ] && return 0
-  if pgrep -f '[-]-keys_file=|splice_count|scaleli_hardness' > /dev/null 2>&1; then
-    die "a benchmark is running (pgrep -fl -- '--keys_file=|splice_count|scaleli_hardness'); wait, or set RUN_FORCE=1"
-  fi
+  local p; p=$(busy_pids | tr '\n' ' '); p=${p% }
+  [ -z "$p" ] || die "a benchmark is running (pids $p: microbench --keys_file=, splice_count or scaleli_*); wait, or set RUN_FORCE=1"
 }
 
 if [ "${1:-}" = --gre ]; then [ $# -ge 2 ] || die "--gre needs a directory"; GRE=$2; shift 2; fi
@@ -71,10 +78,12 @@ case $CMD in
         data)  "$DATA/download.sh"
                # the Mac also needs the .sorted copies (splice_count) and the samples (tests); the Atom's GRE sorts on load
                if [ $MACHINE = mac ]; then "$S/prepare_data.sh" "$ROOT/build"; fi;;
-        gre)   if [ $MACHINE = mac ]; then "$S/gre_mac.sh" "$GRE"; else "$S/gre_lite.sh" "$GRE"; fi;;
+        gre)   need_quiet
+               if [ $MACHINE = mac ]; then "$S/gre_mac.sh" "$GRE"; else "$S/gre_lite.sh" "$GRE"; fi;;
       esac
     done;;
   test)
+    need_quiet
     exec "$S/check.sh";;
   smoke)
     MB=$GRE/build/microbench
@@ -107,18 +116,22 @@ case $CMD in
     BIN=$ROOT/build/splice_count
     [ -x "$BIN" ] || die "no $BIN (./run.sh setup build)"
     need_quiet
-    DSL=$ALL_DS
+    DSL=$ALL_DS; OUTD=$ROOT/results/splice_h
     FLAGS=()
     while [ $# -gt 0 ]; do
-      case $1 in --datasets) [ $# -ge 2 ] || die "--datasets needs a list"; DSL=$2; shift 2;; *) FLAGS+=("$1"); shift;; esac
+      case $1 in
+        --datasets) [ $# -ge 2 ] || die "--datasets needs a list"; DSL=$2; shift 2;;
+        --out) [ $# -ge 2 ] || die "--out needs a directory"; OUTD=$2; shift 2;;   # COUNTS.md goes there too
+        *) FLAGS+=("$1"); shift;;
+      esac
     done
     for ds in ${DSL//,/ }; do                          # docs/DESIGN.md section 9; unsorted sets read <ds>.sorted
       echo "== splice_count $ds"
-      "$BIN" --dataset "$ds" --data "$DATA" --out "$ROOT/results/splice_h" --threads 16 --grid pruned \
+      "$BIN" --dataset "$ds" --data "$DATA" --out "$OUTD" --threads 16 --grid pruned \
         --verify --parity --perturb ${FLAGS[@]+"${FLAGS[@]}"}
     done
-    cd "$ROOT" && python3 scripts/splice_table.py results/splice_h > results/splice_h/COUNTS.md
-    echo "counts: results/splice_h/<ds>.json, args/, COUNTS.md";;
+    python3 "$S/splice_table.py" "$OUTD" > "$OUTD/COUNTS.md"
+    echo "counts: $OUTD/<ds>.json, args/, COUNTS.md";;
   lane)
     exec "$S/mac_lane.sh" "$@";;
   help|-h|--help)
