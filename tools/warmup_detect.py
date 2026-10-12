@@ -2,6 +2,7 @@
 """Warm-up and steady-state detection for GRE chunk traces (trace_<index> runs with GRE_TRACE=geo:F:C or fixed:C).
 
     python3 warmup_detect.py analyze OUTDIR [OUTDIR ...] [--eps 0.01] [--json FILE] [--plot DIR]
+    python3 warmup_detect.py pair OUTDIR_A OUTDIR_B [--labels A,B] [--json FILE] [--plot DIR]
     python3 warmup_detect.py synth [--reps 40] [--seed 1] [--json FILE] [--plot DIR]
 
 A trace has one point per chunk boundary (integrations/gre_splice/trace_interface.h): chunk k covers calls
@@ -18,7 +19,8 @@ Six detectors each return the call at which the steady phase starts:
          segments equivalent to the last one, as in Barrett et al. (2017); equivalent = within max(eps, 3 SE).
   relax  stretched-exponential relaxation y(t) = mu + A exp(-(t/tau)^beta), weighted least squares over a log grid
          of tau and four betas with (mu, A) in closed form, then two robust (Huber) refits. Warm-up ends when the
-         fitted transient is below eps * mu. This is the derivative criterion computed on the fit instead of on noisy
+         fitted transient is below eps * mu (a significant fit whose tau exceeds a tenth of the run is a drift,
+         not a warm-up: no cut). This is the derivative criterion computed on the fit instead of on noisy
          data: |d ln y / d ln t| of the fit is plotted. A * tau * Gamma(1 + 1/beta) is the extra time the cold start
          costs in total.
   cov    windowed coefficient of variation (Georges et al. 2007): the first window of 10 equal chunks with
@@ -339,14 +341,20 @@ def det_relax(start, n, y, nm=None, eps=EPS, **kw):
     e = eps_eff(eps, nm)
     gain = fit['sse0'] - fit['sse']
     fit['eps_eff'] = e
-    fit['significant'] = bool(gain > 9.0 * math.log(max(N, 2)) and abs(fit['A']) > 0.25 * e * abs(fit['mu']))
     total = float(start[-1] + n[-1])
+    # A best tau beyond a tenth of the run is a drift across the whole run, not a warm-up that ends inside it.
+    fit['at_grid_edge'] = fit['tau'] >= 10 ** 9.4
+    trend = bool(gain > 9.0 * math.log(max(N, 2)) and abs(fit['A']) > 0.25 * e * abs(fit['mu']))
+    fit['drift'] = trend and fit['tau'] >= 0.1 * total
+    fit['significant'] = trend and not fit['drift']
+    if fit['drift']:              # a trend over the whole run: this detector cannot place a warm-up end
+        fit['excess_ns'] = 0.0
+        return None, fit
     if not fit['significant'] or abs(fit['A']) <= e * abs(fit['mu']):
         cut = 0.0
     else:
         cut = fit['tau'] * math.log(abs(fit['A']) / (e * abs(fit['mu']))) ** (1.0 / fit['beta'])
     fit['excess_ns'] = fit['A'] * fit['tau'] * math.gamma(1.0 + 1.0 / fit['beta']) if fit['significant'] else 0.0
-    fit['at_grid_edge'] = fit['tau'] >= 10 ** 9.4
     if cut > total:
         return None, fit
     return float(cut), fit
@@ -1061,14 +1069,39 @@ def _mig_cell(cores):
                                        100 * float(np.mean([c['class_changes'] for c in cores])))
 
 
+def analyze_groups(outdirs, eps, cores):
+    """Every (dataset, index) of the OUTDIRs: per-run and pooled analyses, envelope, across-run statistics, cores."""
+    groups = {}
+    for r in find_runs(outdirs):
+        groups.setdefault((r['dataset'], r['index']), {'runs': []})['runs'].append(r)
+    cmap = core_map(cores)
+    for key in sorted(groups):
+        g = groups[key]
+        g['runs'].sort(key=lambda r: r['round'])
+        same = all(np.array_equal(r['n'], g['runs'][0]['n']) for r in g['runs'])
+        g['results'] = [analyze_series(r['start'], r['n'], r['y'], eps) for r in g['runs']]
+        base = g['runs'][0]
+        # The pooled series is the per-chunk median across runs: one cut and one fit per (dataset, index).
+        ypool = np.median(np.array([r['y'] for r in g['runs']]), axis=0) if same else base['y']
+        g['pooled_y'] = ypool
+        g['pooled'] = analyze_series(base['start'], base['n'], ypool, eps) if same else g['results'][0]
+        g['env_y'] = lower_envelope(base['n'], ypool)
+        g['envelope'] = analyze_series(base['start'], base['n'], g['env_y'], eps)
+        g['across'] = across_runs(g['results'])
+        cons = g['pooled']['consensus']
+        g['rhat'] = rhat([r['y'][r['start'] >= (cons or 0)] for r in g['runs']])
+        g['cmap'] = cmap
+        g['cores'] = [core_stats(r['start'], r['n'], r['y'], r['cpu'], res['consensus'], cmap,
+                                 (res.get('jitter') or {}).get('states'))
+                      for r, res in zip(g['runs'], g['results'])]
+    return groups
+
+
 def cmd_analyze(a):
-    runs = find_runs(a.outdirs)
-    if not runs:
+    groups = analyze_groups(a.outdirs, a.eps, a.cores)
+    if not groups:
         print('no trace_point lines found (run trace_<index> with GRE_TRACE=geo:F:C)', file=sys.stderr)
         return 2
-    groups = {}
-    for r in runs:
-        groups.setdefault((r['dataset'], r['index']), {'runs': []})['runs'].append(r)
     report = {'eps': a.eps, 'groups': []}
     lines = ['| dataset | index | runs | ' + ' | '.join(METHODS) + ' | consensus | tau (calls) | beta | excess (ms) |'
              ' steady ns/lookup | CI95 across runs | between-run share | R-hat | PELT kind | robust CoV | lag-1 |'
@@ -1077,28 +1110,7 @@ def cmd_analyze(a):
              '|' + '---|' * (len(METHODS) + 19)]
     for key in sorted(groups):
         g = groups[key]
-        g['runs'].sort(key=lambda r: r['round'])
-        same = all(np.array_equal(r['n'], g['runs'][0]['n']) for r in g['runs'])
-        g['results'] = [analyze_series(r['start'], r['n'], r['y'], a.eps) for r in g['runs']]
-        if same:
-            # The pooled series is the per-chunk median across runs: one cut and one fit per (dataset, index).
-            ymed = np.median(np.array([r['y'] for r in g['runs']]), axis=0)
-            g['pooled'] = analyze_series(g['runs'][0]['start'], g['runs'][0]['n'], ymed, a.eps)
-        else:
-            g['pooled'] = g['results'][0]
-        base = g['runs'][0]
-        g['env_y'] = lower_envelope(base['n'], ymed if same else base['y'])
-        g['envelope'] = analyze_series(base['start'], base['n'], g['env_y'], a.eps)
-        g['across'] = across_runs(g['results'])
         cons = g['pooled']['consensus']
-        chains = [r['y'][r['start'] >= (cons or 0)] for r in g['runs']]
-        g['rhat'] = rhat(chains)
-        cmap = core_map(a.cores)
-        g['cmap'] = cmap
-        st = (g['pooled'].get('jitter') or {}).get('states')
-        g['cores'] = [core_stats(r['start'], r['n'], r['y'], r['cpu'], res['consensus'], cmap,
-                                 (res.get('jitter') or {}).get('states'))
-                      for r, res in zip(g['runs'], g['results'])]
         fit = g['pooled']['info']['relax']
         per = {m: [res['cuts'][m] for res in g['results']] for m in METHODS}
         med = {m: (float(np.median([c for c in per[m] if c is not None])) if any(c is not None for c in per[m])
@@ -1138,6 +1150,106 @@ def cmd_analyze(a):
             plot_group(plt, key, g, os.path.join(a.plot, 'phases_%s_%s.png' % key), a.eps)
         plot_overview(plt, groups, os.path.join(a.plot, 'phases_overview.png'), a.eps)
     return 0
+
+
+def _ratio_ci(ma, ca, mb, cb):
+    r = mb / ma
+    rel = math.hypot((ca or 0.0) / ma, (cb or 0.0) / mb)
+    return r, r * rel
+
+
+def cmd_pair(a):
+    """Two machines, same protocol: per (dataset, index) present on both, where warm-up ends, the transient
+    (tau, excess), steady latency and its ratio, jitter; one overlay plot per index, normalized by each machine's
+    steady mean, so transient shapes compare directly."""
+    sides = [analyze_groups([d], a.eps, a.cores) for d in (a.a, a.b)]
+    la, lb = a.labels.split(',') if a.labels else [os.path.basename(os.path.dirname(os.path.abspath(d.rstrip('/'))))
+                                                    or d for d in (a.a, a.b)]
+    keys = sorted(set(sides[0]) & set(sides[1]))
+    only = sorted(set(sides[0]) ^ set(sides[1]))
+    if not keys:
+        print('no (dataset, index) traced on both sides', file=sys.stderr)
+        return 2
+    print('Paired warm-up comparison: A = %s (%s), B = %s (%s); eps = %g' % (la, a.a, lb, a.b, a.eps))
+    print()
+    print('| dataset | index | runs A/B | warm after A | warm after B | tau A | tau B | excess A (ms) | excess B (ms) |'
+          ' steady A ns | steady B ns | B/A | robust CoV A | robust CoV B | states A | states B | kind A | kind B |')
+    print('|' + '---|' * 18)
+    out = []
+    for key in keys:
+        ga, gb = sides[0][key], sides[1][key]
+        row = []
+        for g in (ga, gb):
+            acr, st, fit = g['across'], g['pooled'].get('steady', {}), g['pooled']['info']['relax']
+            m = acr.get('mean', st.get('mean', float('nan')))
+            row.append({'cons': g['pooled']['consensus'], 'tau': fit['tau'], 'excess_ms': fit['excess_ns'] / 1e6,
+                        'mean': m, 'ci': acr.get('ci95', st.get('ci95', 0.0)), 'jit': g['pooled'].get('jitter', {}),
+                        'kind': g['pooled']['info']['pelt']['kind'], 'runs': len(g['runs'])})
+        r, rci = _ratio_ci(row[0]['mean'], row[0]['ci'], row[1]['mean'], row[1]['ci'])
+        def states(j):
+            stt = j.get('states')
+            return ('%.0f/%.0f (%.0f%%)' % (stt['fast_mean'], stt['slow_mean'], 100 * stt['slow_share'])) if stt else 'one'
+        print('| %s | %s | %d/%d | %s | %s | %.3g | %.3g | %.1f | %.1f | %.1f +/- %.1f | %.1f +/- %.1f | %.2f +/- %.2f |'
+              ' %.1f%% | %.1f%% | %s | %s | %s | %s |' % (
+                  key[0], key[1].replace('trace_', ''), row[0]['runs'], row[1]['runs'], _fmt_calls(row[0]['cons']),
+                  _fmt_calls(row[1]['cons']), row[0]['tau'], row[1]['tau'], row[0]['excess_ms'], row[1]['excess_ms'],
+                  row[0]['mean'], row[0]['ci'] or 0, row[1]['mean'], row[1]['ci'] or 0, r, rci,
+                  100 * row[0]['jit'].get('robust_cov', float('nan')), 100 * row[1]['jit'].get('robust_cov', float('nan')),
+                  states(row[0]['jit']), states(row[1]['jit']), row[0]['kind'], row[1]['kind']))
+        out.append({'dataset': key[0], 'index': key[1], 'a': row[0], 'b': row[1], 'ratio_b_over_a': r,
+                    'ratio_ci95': rci})
+    if only:
+        print()
+        print('Traced on one side only: ' + ', '.join('%s/%s' % k for k in only))
+    if a.json:
+        with open(a.json, 'w') as f:
+            json.dump({'a': {'label': la, 'dir': a.a}, 'b': {'label': lb, 'dir': a.b}, 'eps': a.eps, 'pairs': out},
+                      f, indent=1, default=float)
+    if a.plot:
+        os.makedirs(a.plot, exist_ok=True)
+        plot_pair(_mpl(), sides, keys, (la, lb), os.path.join(a.plot, 'pair_overview.png'))
+    return 0
+
+
+def plot_pair(plt, sides, keys, labels, path):
+    k = len(keys)
+    cols = 2 if k > 1 else 1
+    rows = int(math.ceil(k / cols))
+    fig, axes = plt.subplots(rows, cols, figsize=(12, 3.0 * rows), squeeze=False)
+    colors = (STEADY, WARM)
+    for i, key in enumerate(keys):
+        ax = axes[i // cols][i % cols]
+        title = []
+        for s_, g in enumerate((sides[0][key], sides[1][key])):
+            base, pooled = g['runs'][0], g['pooled']
+            mu = g['across'].get('mean', pooled.get('steady', {}).get('mean', float('nan')))
+            x = np.repeat(np.concatenate([base['start'], [base['start'][-1] + base['n'][-1]]]), 2)[1:-1]
+            ax.plot(np.maximum(x, 32), np.repeat(g['pooled_y'] / mu, 2), color=colors[s_], lw=0.9, alpha=0.85,
+                    label='%s (steady %.0f ns)' % (labels[s_], mu))
+            c = pooled['consensus']
+            if c is not None and c > 32:
+                ax.axvline(c, color=colors[s_], lw=1.3, ls='--')
+            title.append('%s warm after %s' % (labels[s_], _fmt_calls(c)))
+        ax.axhline(1.0, color=INK2, lw=0.8)
+        ax.axvline(PROTOCOL_W, color=MUTED, lw=1.0, ls=(0, (4, 3)))
+        ax.set_xscale('log')
+        ax.set_xlim(32, None)
+        ys = np.concatenate([sides[s_][key]['pooled_y'] / sides[s_][key]['across'].get(
+            'mean', sides[s_][key]['pooled'].get('steady', {}).get('mean', 1.0)) for s_ in (0, 1)])
+        if np.nanmax(ys) > 3:
+            ax.set_yscale('log')
+        ax.set_title('%s on %s: %s' % (key[1].replace('trace_', ''), key[0], '; '.join(title)), fontsize=8.5,
+                     loc='left', color=INK)
+        ax.legend(loc='upper right', fontsize=7.5)
+        if i % cols == 0:
+            ax.set_ylabel('latency / steady mean')
+        if i // cols == rows - 1 or (i + cols) >= k:
+            ax.set_xlabel('lookups (log scale); dashed: each machine\'s warm-up end; gray dashes: 20M protocol warm-up')
+    for j in range(k, rows * cols):
+        axes[j // cols][j % cols].axis('off')
+    fig.tight_layout()
+    fig.savefig(path, dpi=150, bbox_inches='tight')
+    plt.close(fig)
 
 
 def cmd_synth(a):
@@ -1180,6 +1292,14 @@ def main():
     pa.add_argument('--plot')
     pa.add_argument('--cores', default='auto', help="CPU -> core class map: auto (macOS: E, P0, P1 ...), none, or "
                     "'0-3:E,4-9:P0,10-15:P1'")
+    pp = sub.add_parser('pair')
+    pp.add_argument('a')
+    pp.add_argument('b')
+    pp.add_argument('--labels', help='A,B (default: the machine folder names)')
+    pp.add_argument('--eps', type=float, default=EPS)
+    pp.add_argument('--cores', default='none')
+    pp.add_argument('--json')
+    pp.add_argument('--plot')
     ps = sub.add_parser('synth')
     ps.add_argument('--reps', type=int, default=40)
     ps.add_argument('--seed', type=int, default=1)
@@ -1191,6 +1311,8 @@ def main():
         return cmd_analyze(a)
     if a.cmd == 'synth':
         return cmd_synth(a)
+    if a.cmd == 'pair':
+        return cmd_pair(a)
     p.print_help()
     return 2
 

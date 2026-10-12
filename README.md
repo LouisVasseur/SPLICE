@@ -19,6 +19,7 @@ the aidb studies, scaleli_bench and the earlier protocol (`main@ca8d80e:<path>` 
 | `integrations/` | GRE facades and interfaces that `tools/gre_lite.sh` copies into a GRE clone |
 | `tools/` | GRE: `gre_lite.sh` (build), `gre_run.sh` (runner), `gre_report.py`, `gre_transient.py`, `warmup_detect.py` |
 | | Mac: `gre_mac.sh` + [`gre_mac.md`](tools/gre_mac.md), `mac_lane.sh` (benchmark lane) |
+| | both machines: `paired_run.sh` (the same warm-up trace batch on the Mac and the Atom; `warmup_detect.py pair` compares them) |
 | | SPLICE-H offline: `splice_count.cpp` (exact-count simulator), `splice_table.py`, `splice_asm_check.sh`, `splice_xarch.sh` |
 | | data: `prepare_data.sh`, `datasets.py`; `check.sh` (cmake + ctest + the Python test; without `data/samples` it skips the two tests that read them) |
 | `tests/`, `examples/` | the CMake tests and `test_gre_report_splice.py` |
@@ -67,7 +68,7 @@ tools/splice_asm_check.sh g++ | tail -3        # must end in PASS
 # smoke tests: SERVER.md 5 and 5b step 2; then, e.g.
 nohup tools/gre_run.sh ~/splice_results/warm --datasets fb,osm --indexes splice,pgm,lipp,sortedarray \
     --warmup 20000000 --pin 2 --splice-plan results/splice_h/args > ~/splice_results/warm.out 2>&1 &
-python3 tools/gre_report.py ~/splice_results/warm --ref pgm --splice-json results/splice_h > report.md
+python3 tools/gre_report.py ~/splice_results/warm --ref pgm --splice-json results/splice_h > ~/splice_results/warm/report.md
 ```
 
 The full protocol (interleaved rounds, cold arm, THP, transient, warm-up phases, ablations, counters) is
@@ -84,6 +85,25 @@ tools/mac_lane.sh run -- tools/gre_run.sh OUT --gre DEST --data data/external/gr
 ```
 
 Mac numbers are previews ([tools/gre_mac.md](tools/gre_mac.md)); never mix them with Atom numbers.
+
+## Paired Mac and Atom runs
+
+The same warm-up trace batch on both machines (`GRE_TRACE=geo:64:65536 GRE_TRACE_CPU=1`, no warm-up, 120M traced
+lookups, interleaved rounds; the Mac inside `mac_lane.sh`, the Atom pinned to core 2), compared index by index.
+Use the same `--tag` on both; each machine writes `results/paired/<tag>/<machine>/` and the Atom's folder comes back
+through git (its `runs/bin/microbench` is ignored).
+
+```bash
+tools/paired_run.sh --tag 2026-10-13 --datasets fb --rounds 3     # Atom (after tools/gre_lite.sh) and Mac
+git add results/paired/2026-10-13/atom && git commit -m 'paired 2026-10-13: atom' && git push   # on the Atom
+python3 tools/warmup_detect.py pair results/paired/2026-10-13/atom/runs results/paired/2026-10-13/<mac>/runs \
+    --labels atom,mac --json results/paired/2026-10-13/pair.json --plot results/paired/2026-10-13/pair
+```
+
+`pair` reports, per dataset and index traced on both machines: where warm-up ends, the relaxation tau and the cold
+excess, the steady latency with its across-run interval and the B/A ratio, the jitter (robust CoV, two-state
+mixture), and plots each index's two traces normalized by their own steady mean so the transient shapes compare
+directly. SERVER.md 5p has the Atom side.
 
 ## Next iteration
 

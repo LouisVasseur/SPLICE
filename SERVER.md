@@ -287,6 +287,14 @@ One diagnostic round with `GRE_TRACE_FAULTS=1` (a getrusage call per chunk, so n
 transient to page faults: `GRE_TRACE=geo:64:65536 GRE_TRACE_FAULTS=1 ... gre_run.sh $R/trace_w0_faults ...`. A
 transient with tau of about (index pages) / (pages touched per lookup) lookups is the first touch of the index's pages.
 
+5p) Paired with the Mac: the 5w protocol on fb with a tag shared with the Mac run, written into the checkout so it can
+be pushed (README, 'Paired Mac and Atom runs'). About 1.5 h for fb at 3 rounds; run it while nothing else is timed.
+
+```bash
+cd ~/SPLICE && tools/paired_run.sh --tag 2026-10-13 --datasets fb --rounds 3 > ~/paired.out 2>&1; tail -5 ~/paired.out
+git add results/paired/2026-10-13/atom && git commit -m 'paired 2026-10-13: atom' && git push
+```
+
 6) Reports:
 
 ```bash
