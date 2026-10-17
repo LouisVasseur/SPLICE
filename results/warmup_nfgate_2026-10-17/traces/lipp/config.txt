@@ -1,0 +1,14 @@
+gre=/private/tmp/claude-501/-Users-louisvasseur-Downloads-scaleli-sota/ac6d4251-6384-4db6-8aba-a17e1917a2ab/scratchpad/exp/GRE
+data=/Users/louisvasseur/Downloads/SPLICE-exp/data/external/gre
+datasets=fb,covid.sorted,genome.sorted,history.sorted,libio.sorted,planet.sorted,stack.sorted,wise.sorted
+indexes=trace_lipp
+ops=30000000
+warmup=0
+pin=-1
+init_ratio=1
+table_size=-1
+read=1
+insert=0
+extra=
+trace_env=GRE_TRACE=geo:64:65536 GRE_TRACE_CPU=1
+repeats=1

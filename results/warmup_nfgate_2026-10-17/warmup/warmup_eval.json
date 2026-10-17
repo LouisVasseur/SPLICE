@@ -1,0 +1,5013 @@
+{
+ "rows": [
+  {
+   "dataset": "books",
+   "index": "alex",
+   "log": "traces/main/logs/books__trace_alex__r1.log",
+   "consensus": 1037521.7034972134,
+   "cuts": {
+    "mser": 786368.0,
+    "pelt": 28180416.0,
+    "relax": 1026646.495356655,
+    "cov": 786368.0,
+    "hw": 0.0,
+    "epoch": 1048512.0,
+    "online": 655296.0
+   },
+   "online_cut": 655296.0,
+   "online_stop": 6946752.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 158489.3192461114,
+   "beta": 1.0,
+   "A": 1506.6169989751381,
+   "mu": 231.6182958073076,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 1026646.495356655,
+   "excess_ms_fit": 238.78270253218898,
+   "excess_ms_fit_signed": 238.78270253218898,
+   "excess_ms_empirical": 244.80788564121627,
+   "steady_ns": 231.82117263205737,
+   "steady_ci95": 1.0700712813393496,
+   "index_rss_bytes": 4639679680,
+   "pages": 283183.57421875,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 231.82117263205737
+    }
+   },
+   "index_warmup": 1026646.495356655
+  },
+  {
+   "dataset": "books",
+   "index": "btree",
+   "log": "traces/main/logs/books__trace_btree__r1.log",
+   "consensus": 1007462.9985374616,
+   "cuts": {
+    "mser": 12451776.0,
+    "pelt": 12451776.0,
+    "relax": 80668.34603137236,
+    "cov": 589760.0,
+    "hw": 0.0,
+    "epoch": 32704.0,
+    "online": 32704.0
+   },
+   "online_cut": 32704.0,
+   "online_stop": 4652992.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 4466.835921509635,
+   "beta": 0.35,
+   "A": 1774.1610732264796,
+   "mu": 877.4972221953477,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 80668.34603137236,
+   "excess_ms_fit": 39.855400516146716,
+   "excess_ms_fit_signed": 39.855400516146716,
+   "excess_ms_empirical": 83.88234738704425,
+   "steady_ns": 870.2178531222874,
+   "steady_ci95": 22.679524445946058,
+   "index_rss_bytes": 3878034688,
+   "pages": 236696.453125,
+   "switches": [
+    {
+     "call": 5439424.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 14942144.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 24707008.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5102040816326531,
+     "mean": 857.8750554063585
+    },
+    "P1": {
+     "share": 0.4897959183673469,
+     "mean": 883.0749340763798
+    }
+   },
+   "index_warmup": 80668.34603137236
+  },
+  {
+   "dataset": "books",
+   "index": "nullindex",
+   "log": "traces/main/logs/books__trace_nullindex__r1.log",
+   "consensus": 14155711.999999994,
+   "cuts": {
+    "mser": 14155712.0,
+    "pelt": 10551232.0,
+    "relax": null,
+    "cov": 982976.0,
+    "hw": null,
+    "epoch": 16777152.0,
+    "online": 655296.0
+   },
+   "online_cut": 655296.0,
+   "online_stop": 6553536.0,
+   "pelt_kind": "warmup",
+   "no_steady": false,
+   "tau": 35481338.923357606,
+   "beta": 1.0,
+   "A": 1.7824766114035444,
+   "mu": 2.513769089190969,
+   "relax_significant": false,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": null,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": 7.920713544784099,
+   "steady_ns": 3.4697415047166755,
+   "steady_ci95": 0.04893386568062434,
+   "index_rss_bytes": 1884224,
+   "pages": 115.00390625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 3.4697415047166755
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "books",
+   "index": "pgm",
+   "log": "traces/main/logs/books__trace_pgm__r1.log",
+   "consensus": 756283.9438598494,
+   "cuts": {
+    "mser": 655296.0,
+    "pelt": 28835776.0,
+    "relax": 872811.4686481827,
+    "cov": 851904.0,
+    "hw": 0.0,
+    "epoch": 524224.0,
+    "online": 393152.0
+   },
+   "online_cut": 393152.0,
+   "online_stop": 17825728.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 316227.7660168379,
+   "beta": 1.0,
+   "A": 86.39697429824244,
+   "mu": 319.14540236040614,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 872811.4686481827,
+   "excess_ms_fit": 27.32112217294737,
+   "excess_ms_fit_signed": 27.32112217294737,
+   "excess_ms_empirical": 26.564506761705594,
+   "steady_ns": 318.9167822677098,
+   "steady_ci95": 2.641998198014037,
+   "index_rss_bytes": 3215857728,
+   "pages": 196280.37890625,
+   "switches": [
+    {
+     "call": 10026944.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.6831460674157304,
+     "mean": 319.3848112005937
+    },
+    "P1": {
+     "share": 0.31685393258426964,
+     "mean": 317.9076986109957
+    }
+   },
+   "index_warmup": 872811.4686481827
+  },
+  {
+   "dataset": "books",
+   "index": "scaleli_b",
+   "log": "traces/main/logs/books__trace_scaleli_b__r1.log",
+   "consensus": 529072.0764363962,
+   "cuts": {
+    "mser": 393152.0,
+    "pelt": 29294528.0,
+    "relax": 533964.9030082271,
+    "cov": 2031552.0,
+    "hw": 0.0,
+    "epoch": 524224.0,
+    "online": 393152.0
+   },
+   "online_cut": 393152.0,
+   "online_stop": 3276736.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 44668.359215096345,
+   "beta": 0.5,
+   "A": 2311.096474063388,
+   "mu": 1624.0756198596953,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 533964.9030082271,
+   "excess_ms_fit": 206.465774968412,
+   "excess_ms_fit_signed": 206.465774968412,
+   "excess_ms_empirical": 188.8283614971924,
+   "steady_ns": 1624.8847217559814,
+   "steady_ci95": 17.526253866060525,
+   "index_rss_bytes": 2809420160,
+   "pages": 171473.3984375,
+   "switches": [
+    {
+     "call": 3604416.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 8978368.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 13959104.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 19267520.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 24575936.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5334821428571429,
+     "mean": 1623.6319868015944
+    },
+    "P1": {
+     "share": 0.46651785714285715,
+     "mean": 1626.3172751248737
+    }
+   },
+   "index_warmup": 533964.9030082271
+  },
+  {
+   "dataset": "books",
+   "index": "scaleli_n",
+   "log": "traces/main/logs/books__trace_scaleli_n__r1.log",
+   "consensus": 730936.1787399689,
+   "cuts": {
+    "mser": 196544.0,
+    "pelt": 29163456.0,
+    "relax": 254342.27818302583,
+    "cov": 1507264.0,
+    "hw": 5963712.0,
+    "epoch": 2097088.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 5046208.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 50118.72336272725,
+   "beta": 0.7,
+   "A": 2587.601730345509,
+   "mu": 1663.621012430724,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 254342.27818302583,
+   "excess_ms_fit": 164.1612268227967,
+   "excess_ms_fit_signed": 164.1612268227967,
+   "excess_ms_empirical": 152.3687681133383,
+   "steady_ns": 1661.53895489982,
+   "steady_ci95": 32.94807026818815,
+   "index_rss_bytes": 2892651008,
+   "pages": 176553.40625,
+   "switches": [
+    {
+     "call": 4915136.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 9764800.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 14876608.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 20185024.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 25493440.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.4966292134831461,
+     "mean": 1692.7975673761844
+    },
+    "P1": {
+     "share": 0.503370786516854,
+     "mean": 1630.6989845548358
+    }
+   },
+   "index_warmup": 254342.27818302583
+  },
+  {
+   "dataset": "books",
+   "index": "splice",
+   "log": "traces/main/logs/books__trace_splice__r1.log",
+   "consensus": 1397140.6993387183,
+   "cuts": {
+    "mser": 720832.0,
+    "pelt": 29097920.0,
+    "relax": 930704.2064714923,
+    "cov": 720832.0,
+    "hw": 0.0,
+    "epoch": 2097088.0,
+    "online": 524224.0
+   },
+   "online_cut": 524224.0,
+   "online_stop": 5439424.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 89125.0938133746,
+   "beta": 0.7,
+   "A": 362.9462741643847,
+   "mu": 207.11230505370398,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 930704.2064714923,
+   "excess_ms_fit": 40.946378690269434,
+   "excess_ms_fit_signed": 40.946378690269434,
+   "excess_ms_empirical": 40.30454737819908,
+   "steady_ns": 206.89671395838946,
+   "steady_ci95": 0.9353944061123525,
+   "index_rss_bytes": 4402342208,
+   "pages": 268697.64453125,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 206.89671395838946
+    }
+   },
+   "index_warmup": 930704.2064714923
+  },
+  {
+   "dataset": "covid",
+   "index": "alex",
+   "log": "traces/main/logs/covid.sorted__trace_alex__r1.log",
+   "consensus": 2254986.420966228,
+   "cuts": {
+    "mser": 2424768.0,
+    "pelt": 25558976.0,
+    "relax": 752651.7133132066,
+    "cov": 851904.0,
+    "hw": 2949056.0,
+    "epoch": 2097088.0,
+    "online": 2097088.0
+   },
+   "online_cut": 2097088.0,
+   "online_stop": 18415552.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 199526.2314968879,
+   "beta": 1.0,
+   "A": 560.9396453237431,
+   "mu": 194.47784298576073,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 752651.7133132066,
+   "excess_ms_fit": 111.92217352864735,
+   "excess_ms_fit_signed": 111.92217352864735,
+   "excess_ms_empirical": 178.8219013828588,
+   "steady_ns": 192.95288678933093,
+   "steady_ci95": 3.6269161946734694,
+   "index_rss_bytes": 4771145280,
+   "pages": 291207.59765625,
+   "switches": [
+    {
+     "call": 14483392.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5592417061611374,
+     "mean": 194.04691224179027
+    },
+    "P1": {
+     "share": 0.44075829383886256,
+     "mean": 191.56476847330728
+    }
+   },
+   "index_warmup": 752651.7133132066
+  },
+  {
+   "dataset": "covid",
+   "index": "btree",
+   "log": "traces/main/logs/covid.sorted__trace_btree__r1.log",
+   "consensus": 262079.99999999988,
+   "cuts": {
+    "mser": 262080.0,
+    "pelt": 29687744.0,
+    "relax": 158369.47468866612,
+    "cov": 3014592.0,
+    "hw": 0.0,
+    "epoch": 262080.0,
+    "online": 65472.0
+   },
+   "online_cut": 65472.0,
+   "online_stop": 2686912.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 2238.72113856834,
+   "beta": 0.35,
+   "A": 4237.878257023036,
+   "mu": 881.7388856003328,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 158369.47468866612,
+   "excess_ms_fit": 47.71364643593176,
+   "excess_ms_fit_signed": 47.71364643593176,
+   "excess_ms_empirical": 52.276082644072055,
+   "steady_ns": 884.0516268159644,
+   "steady_ci95": 15.095474358589222,
+   "index_rss_bytes": 3878018240,
+   "pages": 236695.44921875,
+   "switches": [
+    {
+     "call": 9895872.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 19464128.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 29360064.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.3443708609271523,
+     "mean": 911.2497231899164
+    },
+    "P1": {
+     "share": 0.6556291390728477,
+     "mean": 869.7657580134844
+    }
+   },
+   "index_warmup": 158369.47468866612
+  },
+  {
+   "dataset": "covid",
+   "index": "nullindex",
+   "log": "traces/main/logs/covid.sorted__trace_nullindex__r1.log",
+   "consensus": 16777152.000000007,
+   "cuts": {
+    "mser": 11599808.0,
+    "pelt": 25296832.0,
+    "relax": null,
+    "cov": 1572800.0,
+    "hw": 11927488.0,
+    "epoch": 16777152.0,
+    "online": 0.0
+   },
+   "online_cut": 0.0,
+   "online_stop": 2097088.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 22387211.385683425,
+   "beta": 1.0,
+   "A": 0.38796703964114243,
+   "mu": 3.285329205038869,
+   "relax_significant": false,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": null,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": 2.583101867919922,
+   "steady_ns": 3.431529998779297,
+   "steady_ci95": 0.015379012181586773,
+   "index_rss_bytes": 1884224,
+   "pages": 115.00390625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 3.431529998779297
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "covid",
+   "index": "pgm",
+   "log": "traces/main/logs/covid.sorted__trace_pgm__r1.log",
+   "consensus": 10489.473443113053,
+   "cuts": {
+    "mser": 0.0,
+    "pelt": 27066304.0,
+    "relax": 0.0,
+    "cov": 131008.0,
+    "hw": 0.0,
+    "epoch": 131008.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 18415552.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 5011.872336272725,
+   "beta": 1.0,
+   "A": 63.348267152312914,
+   "mu": 287.4441918151924,
+   "relax_significant": false,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 0.0,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": 0.46041616680777925,
+   "steady_ns": 284.3035437005037,
+   "steady_ci95": 7.607075025616908,
+   "index_rss_bytes": 3207387264,
+   "pages": 195763.3828125,
+   "switches": [
+    {
+     "call": 21364672.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.2868089764641489,
+     "mean": 288.2054840553808
+    },
+    "P1": {
+     "share": 0.7131910235358512,
+     "mean": 282.73438272893384
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "covid",
+   "index": "scaleli_b",
+   "log": "traces/main/logs/covid.sorted__trace_scaleli_b__r1.log",
+   "consensus": 157076.50773980664,
+   "cuts": {
+    "mser": 131008.0,
+    "pelt": 24379328.0,
+    "relax": 188292.93905833818,
+    "cov": 1376192.0,
+    "hw": 0.0,
+    "epoch": 131008.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 3801024.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 39810.71705534969,
+   "beta": 0.7,
+   "A": 2251.190599767422,
+   "mu": 1610.9436820282813,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 188292.93905833818,
+   "excess_ms_fit": 113.44501654432882,
+   "excess_ms_fit_signed": 113.44501654432882,
+   "excess_ms_empirical": 103.99315604077474,
+   "steady_ns": 1604.4351084704965,
+   "steady_ci95": 25.620085157191653,
+   "index_rss_bytes": 2641385536,
+   "pages": 161217.37890625,
+   "switches": [
+    {
+     "call": 1245120.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 6684608.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 11861952.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 16908224.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 21888960.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 27131840.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.4713656387665198,
+     "mean": 1632.9491012430638
+    },
+    "P1": {
+     "share": 0.5286343612334802,
+     "mean": 1579.0101315816244
+    }
+   },
+   "index_warmup": 188292.93905833818
+  },
+  {
+   "dataset": "covid",
+   "index": "scaleli_n",
+   "log": "traces/main/logs/covid.sorted__trace_scaleli_n__r1.log",
+   "consensus": 611203.4455291063,
+   "cuts": {
+    "mser": 786368.0,
+    "pelt": 26345408.0,
+    "relax": 475007.4815305033,
+    "cov": 2490304.0,
+    "hw": 0.0,
+    "epoch": 262080.0,
+    "online": 196544.0
+   },
+   "online_cut": 196544.0,
+   "online_stop": 5242816.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 44668.359215096345,
+   "beta": 0.5,
+   "A": 2399.1953973770924,
+   "mu": 1590.4936969046717,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 475007.4815305033,
+   "excess_ms_fit": 214.33624367449156,
+   "excess_ms_fit_signed": 214.33624367449156,
+   "excess_ms_empirical": 177.02072913952392,
+   "steady_ns": 1593.4406937635451,
+   "steady_ci95": 13.561830658249981,
+   "index_rss_bytes": 2679347328,
+   "pages": 163534.3828125,
+   "switches": [
+    {
+     "call": 4849600.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 10289088.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 15400896.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 20905920.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 26214336.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5033557046979866,
+     "mean": 1593.08582160102
+    },
+    "P1": {
+     "share": 0.4966442953020134,
+     "mean": 1593.8003614958343
+    }
+   },
+   "index_warmup": 475007.4815305033
+  },
+  {
+   "dataset": "covid",
+   "index": "splice",
+   "log": "traces/main/logs/covid.sorted__trace_splice__r1.log",
+   "consensus": 3613483.621671019,
+   "cuts": {
+    "mser": 6225856.0,
+    "pelt": 16383936.0,
+    "relax": 1160037.0578128062,
+    "cov": 1572800.0,
+    "hw": 2949056.0,
+    "epoch": 2097088.0,
+    "online": 1507264.0
+   },
+   "online_cut": 1507264.0,
+   "online_stop": 17039296.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 316227.7660168379,
+   "beta": 1.0,
+   "A": 129.6317545818488,
+   "mu": 148.97112437081506,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 1160037.0578128062,
+   "excess_ms_fit": 40.99316015626104,
+   "excess_ms_fit_signed": 40.99316015626104,
+   "excess_ms_empirical": 55.860962396484325,
+   "steady_ns": 148.2435703800801,
+   "steady_ci95": 1.3446072182063562,
+   "index_rss_bytes": 4372653632,
+   "pages": 266885.59765625,
+   "switches": [
+    {
+     "call": 1441728.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 148.2435703800801
+    }
+   },
+   "index_warmup": 1160037.0578128062
+  },
+  {
+   "dataset": "fb",
+   "index": "alex",
+   "log": "traces/main/logs/fb__trace_alex__r1.log",
+   "consensus": 15833087.955732957,
+   "cuts": {
+    "mser": 14942144.0,
+    "pelt": 24838080.0,
+    "relax": 895267.3860889511,
+    "cov": 589760.0,
+    "hw": 0.0,
+    "epoch": 16777152.0,
+    "online": 524224.0
+   },
+   "online_cut": 524224.0,
+   "online_stop": 5439424.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 199526.2314968879,
+   "beta": 1.0,
+   "A": 1010.5319679615267,
+   "mu": 719.7161672396946,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 895267.3860889511,
+   "excess_ms_fit": 201.62763537449726,
+   "excess_ms_fit_signed": 201.62763537449726,
+   "excess_ms_empirical": -190.32942303692755,
+   "steady_ns": 714.6792921909066,
+   "steady_ci95": 19.53429612731544,
+   "index_rss_bytes": 4815775552,
+   "pages": 293931.61328125,
+   "switches": [
+    {
+     "call": 2228160.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 13172672.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 24641472.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": true,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.6232558139534884,
+     "mean": 708.547668001545
+    },
+    "P1": {
+     "share": 0.3767441860465116,
+     "mean": 724.8229667757764
+    }
+   },
+   "index_warmup": 895267.3860889511
+  },
+  {
+   "dataset": "fb",
+   "index": "btree",
+   "log": "traces/main/logs/fb__trace_btree__r1.log",
+   "consensus": 661943.2085158909,
+   "cuts": {
+    "mser": 655296.0,
+    "pelt": 29360064.0,
+    "relax": 668657.7424170563,
+    "cov": null,
+    "hw": 5963712.0,
+    "epoch": 524224.0,
+    "online": 393152.0
+   },
+   "online_cut": 393152.0,
+   "online_stop": 4521920.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 25118.864315095823,
+   "beta": 0.35,
+   "A": 1508.8465231492926,
+   "mu": 867.6418448685625,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 668657.7424170563,
+   "excess_ms_fit": 190.60715454306026,
+   "excess_ms_fit_signed": 190.60715454306026,
+   "excess_ms_empirical": 166.7929755676762,
+   "steady_ns": 863.5421518915972,
+   "steady_ci95": 15.319935036109324,
+   "index_rss_bytes": 3878034688,
+   "pages": 236696.453125,
+   "switches": [
+    {
+     "call": 1984.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 9830336.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 19660736.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 28508096.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.6121076233183856,
+     "mean": 858.4575071230039
+    },
+    "P1": {
+     "share": 0.38789237668161436,
+     "mean": 871.5658976824986
+    }
+   },
+   "index_warmup": 668657.7424170563
+  },
+  {
+   "dataset": "fb",
+   "index": "lipp",
+   "log": "traces/lipp/logs/fb__trace_lipp__r1.log",
+   "consensus": 4770934.293663201,
+   "cuts": {
+    "mser": 2883520.0,
+    "pelt": 19529664.0,
+    "relax": 5426903.267283628,
+    "cov": null,
+    "hw": 2949056.0,
+    "epoch": 4194240.0,
+    "online": 1572800.0
+   },
+   "online_cut": 1572800.0,
+   "online_stop": 13828032.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 630957.3444801943,
+   "beta": 0.7,
+   "A": 9972.288823470579,
+   "mu": 3485.3753717186914,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 5426903.267283628,
+   "excess_ms_fit": 7964.6739994759155,
+   "excess_ms_fit_signed": 7964.6739994759155,
+   "excess_ms_empirical": 7397.907484160057,
+   "steady_ns": 3517.6106144984565,
+   "steady_ci95": 65.92471936061503,
+   "index_rss_bytes": 27192692672,
+   "pages": 1659710.24609375,
+   "switches": [
+    {
+     "call": 458688.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 1310656.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 2424768.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 3538880.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 4849600.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 6094784.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 7339968.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 8454080.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 9633728.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 10944448.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 12124096.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 13500352.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 14548928.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 15794112.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 16908224.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 18022336.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 19201984.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 20512704.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 21757888.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 23199680.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 24772544.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 25558976.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 26607552.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 27918272.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 29228992.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": true,
+   "steady_by_class": {
+    "E": {
+     "share": 0.0026041666666666665,
+     "mean": 3775.8960723876953
+    },
+    "P0": {
+     "share": 0.46875,
+     "mean": 3580.5593630472817
+    },
+    "P1": {
+     "share": 0.5286458333333334,
+     "mean": 3460.5216480123586
+    }
+   },
+   "index_warmup": 5426903.267283628
+  },
+  {
+   "dataset": "fb",
+   "index": "nullindex",
+   "log": "traces/main/logs/fb__trace_nullindex__r1.log",
+   "consensus": 12648384.00000001,
+   "cuts": {
+    "mser": 12648384.0,
+    "pelt": 25821120.0,
+    "relax": null,
+    "cov": 0.0,
+    "hw": 11927488.0,
+    "epoch": 8388544.0,
+    "online": 0.0
+   },
+   "online_cut": 0.0,
+   "online_stop": 2293696.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 12589254.117941687,
+   "beta": 1.0,
+   "A": 0.6340510890547714,
+   "mu": 3.3402068591710865,
+   "relax_significant": false,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": null,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": 4.29576602822748,
+   "steady_ns": 3.449823183705145,
+   "steady_ci95": 0.031242859768028864,
+   "index_rss_bytes": 1884224,
+   "pages": 115.00390625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P1": {
+     "share": 1.0,
+     "mean": 3.449823183705145
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "fb",
+   "index": "pgm",
+   "log": "traces/main/logs/fb__trace_pgm__r1.log",
+   "consensus": 170573.83742449005,
+   "cuts": {
+    "mser": 0.0,
+    "pelt": 29163456.0,
+    "relax": 221998.46743049912,
+    "cov": 131008.0,
+    "hw": 0.0,
+    "epoch": 131008.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 2162624.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 125892.54117941688,
+   "beta": 1.0,
+   "A": -85.06932481752287,
+   "mu": 426.47019587348325,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 221998.46743049912,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": -10.709593477695188,
+   "excess_ms_empirical": -8.255504574487627,
+   "steady_ns": 415.27726399425893,
+   "steady_ci95": 13.976860292239065,
+   "index_rss_bytes": 3238811968,
+   "pages": 197681.39453125,
+   "switches": [
+    {
+     "call": 9109440.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 26804160.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5837004405286343,
+     "mean": 424.63042781038104
+    },
+    "P1": {
+     "share": 0.41629955947136565,
+     "mean": 402.1630395959925
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "fb",
+   "index": "scaleli_b",
+   "log": "traces/main/logs/fb__trace_scaleli_b__r1.log",
+   "consensus": 282773.2941486907,
+   "cuts": {
+    "mser": 196544.0,
+    "pelt": 23986112.0,
+    "relax": 305094.27729967854,
+    "cov": 393152.0,
+    "hw": 14942144.0,
+    "epoch": 262080.0,
+    "online": 196544.0
+   },
+   "online_cut": 196544.0,
+   "online_stop": 1900480.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 70794.57843841374,
+   "beta": 0.7,
+   "A": 2355.2502056273934,
+   "mu": 1457.5730874795279,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 305094.27729967854,
+   "excess_ms_fit": 211.0620764933809,
+   "excess_ms_fit_signed": 211.0620764933809,
+   "excess_ms_empirical": 200.72622215179283,
+   "steady_ns": 1450.7204649596088,
+   "steady_ci95": 43.696265082986926,
+   "index_rss_bytes": 2146636096,
+   "pages": 131020.26953125,
+   "switches": [
+    {
+     "call": 131008.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 5439424.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 11206592.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 17039296.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 21561280.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 26214336.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5221238938053098,
+     "mean": 1419.8763950153932
+    },
+    "P1": {
+     "share": 0.4778761061946903,
+     "mean": 1484.4204673060665
+    }
+   },
+   "index_warmup": 305094.27729967854
+  },
+  {
+   "dataset": "fb",
+   "index": "scaleli_n",
+   "log": "traces/main/logs/fb__trace_scaleli_n__r1.log",
+   "consensus": 7034374.046666744,
+   "cuts": {
+    "mser": 2949056.0,
+    "pelt": 26673088.0,
+    "relax": 550965.9937754502,
+    "cov": 327616.0,
+    "hw": 11927488.0,
+    "epoch": 16777152.0,
+    "online": 196544.0
+   },
+   "online_cut": 196544.0,
+   "online_stop": 1966016.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 70794.57843841374,
+   "beta": 0.7,
+   "A": 1557.0416947851666,
+   "mu": 1402.5527544421689,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 550965.9937754502,
+   "excess_ms_fit": 139.53186481119062,
+   "excess_ms_fit_signed": 139.53186481119062,
+   "excess_ms_empirical": 423.8842070984588,
+   "steady_ns": 1381.1595792579105,
+   "steady_ci95": 31.126042734095684,
+   "index_rss_bytes": 2148716928,
+   "pages": 131147.2734375,
+   "switches": [
+    {
+     "call": 65472.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 5832640.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 11730880.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 17956800.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 24182720.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": true,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.47564469914040114,
+     "mean": 1407.6552639696972
+    },
+    "P1": {
+     "share": 0.5243553008595988,
+     "mean": 1357.1252423062351
+    }
+   },
+   "index_warmup": 550965.9937754502
+  },
+  {
+   "dataset": "fb",
+   "index": "splice",
+   "log": "traces/main/logs/fb__trace_splice__r1.log",
+   "consensus": 21917.766034236418,
+   "cuts": {
+    "mser": 0.0,
+    "pelt": 25558976.0,
+    "relax": 0.0,
+    "cov": 327616.0,
+    "hw": 0.0,
+    "epoch": 524224.0,
+    "online": 327616.0
+   },
+   "online_cut": 327616.0,
+   "online_stop": 6029248.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 2818382.931264455,
+   "beta": 1.0,
+   "A": 13.627111300119688,
+   "mu": 411.1857929737225,
+   "relax_significant": false,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 0.0,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": -1.913365792611497,
+   "steady_ns": 401.7612155275042,
+   "steady_ci95": 20.188358642739317,
+   "index_rss_bytes": 3870941760,
+   "pages": 236263.53515625,
+   "switches": [
+    {
+     "call": 262080.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 20578240.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.3209200438116101,
+     "mean": 408.3413091145278
+    },
+    "P1": {
+     "share": 0.6790799561883899,
+     "mean": 398.6515906549269
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "genome",
+   "index": "alex",
+   "log": "traces/main/logs/genome.sorted__trace_alex__r1.log",
+   "consensus": 959539.3400737294,
+   "cuts": {
+    "mser": 851904.0,
+    "pelt": 27000768.0,
+    "relax": 878109.3611404856,
+    "cov": 786368.0,
+    "hw": 0.0,
+    "epoch": 1048512.0,
+    "online": 851904.0
+   },
+   "online_cut": 851904.0,
+   "online_stop": 11206592.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 177827.94100389228,
+   "beta": 1.0,
+   "A": 1221.5420308662146,
+   "mu": 373.03772414090884,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 878109.3611404856,
+   "excess_ms_fit": 217.22430419865196,
+   "excess_ms_fit_signed": 217.22430419865196,
+   "excess_ms_empirical": 234.28136959893106,
+   "steady_ns": 372.863466047054,
+   "steady_ci95": 2.271732979917097,
+   "index_rss_bytes": 5129907200,
+   "pages": 313104.6875,
+   "switches": [
+    {
+     "call": 12451776.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.6040723981900452,
+     "mean": 374.8359013818177
+    },
+    "P1": {
+     "share": 0.39592760180995473,
+     "mean": 369.8540932791574
+    }
+   },
+   "index_warmup": 878109.3611404856
+  },
+  {
+   "dataset": "genome",
+   "index": "btree",
+   "log": "traces/main/logs/genome.sorted__trace_btree__r1.log",
+   "consensus": 39270.83788487162,
+   "cuts": {
+    "mser": 32704.0,
+    "pelt": 25821120.0,
+    "relax": 47117.14882357019,
+    "cov": 65472.0,
+    "hw": 0.0,
+    "epoch": 32704.0,
+    "online": 32704.0
+   },
+   "online_cut": 32704.0,
+   "online_stop": 2949056.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 2238.72113856834,
+   "beta": 0.35,
+   "A": 2654.8690613458675,
+   "mu": 917.9347230650218,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 47117.14882357019,
+   "excess_ms_fit": 29.89077931080883,
+   "excess_ms_fit_signed": 29.89077931080883,
+   "excess_ms_empirical": 18.870220291696647,
+   "steady_ns": 915.8493357206646,
+   "steady_ci95": 29.790894765173572,
+   "index_rss_bytes": 3878034688,
+   "pages": 236696.453125,
+   "switches": [
+    {
+     "call": 3080128.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 12648384.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 22085568.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.4166666666666667,
+     "mean": 937.2110936215049
+    },
+    "P1": {
+     "share": 0.5833333333333334,
+     "mean": 900.5909372200643
+    }
+   },
+   "index_warmup": 47117.14882357019
+  },
+  {
+   "dataset": "genome",
+   "index": "lipp",
+   "log": "traces/lipp/logs/genome.sorted__trace_lipp__r1.log",
+   "consensus": 1994976.4019803398,
+   "cuts": {
+    "mser": 2293696.0,
+    "pelt": 23396288.0,
+    "relax": 1735143.6099868482,
+    "cov": null,
+    "hw": 0.0,
+    "epoch": 1048512.0,
+    "online": 1179584.0
+   },
+   "online_cut": 1179584.0,
+   "online_stop": 10289088.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 630957.3444801943,
+   "beta": 1.0,
+   "A": 9002.161480330486,
+   "mu": 4989.214520951771,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 1735143.6099868482,
+   "excess_ms_fit": 5679.979902211217,
+   "excess_ms_fit_signed": 5679.979902211217,
+   "excess_ms_empirical": 5401.311296681655,
+   "steady_ns": 5037.210034652495,
+   "steady_ci95": 99.18113288998674,
+   "index_rss_bytes": 31030275712,
+   "pages": 1893937.7265625,
+   "switches": [
+    {
+     "call": 393152.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 1048512.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 1834944.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 2621376.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 3407808.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 4259776.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 5046208.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 5898176.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 6750144.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 7602112.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 8388544.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 9174976.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 10026944.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 10813376.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 11599808.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 12386240.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 13303744.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 14024640.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 14876608.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 15597504.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 16449472.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 17235904.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 18087872.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 18939840.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 19791808.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 20643776.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 21495744.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 22282176.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 23068608.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 23920576.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 24772544.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 25558976.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 26345408.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 27197376.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 27983808.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 28835776.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": true,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.4953051643192488,
+     "mean": 5060.692023399317
+    },
+    "P1": {
+     "share": 0.5046948356807511,
+     "mean": 5014.164920114917
+    }
+   },
+   "index_warmup": 1735143.6099868482
+  },
+  {
+   "dataset": "genome",
+   "index": "nullindex",
+   "log": "traces/main/logs/genome.sorted__trace_nullindex__r1.log",
+   "consensus": 16777152.000000007,
+   "cuts": {
+    "mser": 13107136.0,
+    "pelt": 28180416.0,
+    "relax": null,
+    "cov": 196544.0,
+    "hw": 11927488.0,
+    "epoch": 16777152.0,
+    "online": 196544.0
+   },
+   "online_cut": 196544.0,
+   "online_stop": 1376192.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 3162277660.1683793,
+   "beta": 1.0,
+   "A": 30.201863493193663,
+   "mu": -26.478487843912994,
+   "relax_significant": false,
+   "relax_at_grid_edge": true,
+   "cold_transient": false,
+   "relax_cut": null,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": 4.6319627222363255,
+   "steady_ns": 3.4570661926269532,
+   "steady_ci95": 0.0435692725776015,
+   "index_rss_bytes": 1884224,
+   "pages": 115.00390625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P1": {
+     "share": 1.0,
+     "mean": 3.4570661926269532
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "genome",
+   "index": "pgm",
+   "log": "traces/main/logs/genome.sorted__trace_pgm__r1.log",
+   "consensus": 1990925.2151805959,
+   "cuts": {
+    "mser": 131008.0,
+    "pelt": 29491136.0,
+    "relax": 235484.09329419938,
+    "cov": 131008.0,
+    "hw": 0.0,
+    "epoch": 16777152.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 2555840.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 79432.82347242821,
+   "beta": 1.0,
+   "A": -92.30798341436868,
+   "mu": 476.1494267631318,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 235484.09329419938,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": -7.332283751649378,
+   "excess_ms_empirical": 28.3486860246892,
+   "steady_ns": 474.82139515764834,
+   "steady_ci95": 5.015741354777616,
+   "index_rss_bytes": 3254524160,
+   "pages": 198640.390625,
+   "switches": [
+    {
+     "call": 11403200.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.3427230046948357,
+     "mean": 476.53660269959335
+    },
+    "P1": {
+     "share": 0.6572769953051644,
+     "mean": 473.9270369393485
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "genome",
+   "index": "scaleli_b",
+   "log": "traces/main/logs/genome.sorted__trace_scaleli_b__r1.log",
+   "consensus": 369440.9355440401,
+   "cuts": {
+    "mser": 327616.0,
+    "pelt": 18415552.0,
+    "relax": 416589.18228797056,
+    "cov": 2228160.0,
+    "hw": 0.0,
+    "epoch": 262080.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 2293696.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 10000.0,
+   "beta": 0.35,
+   "A": 3534.151342827282,
+   "mu": 1578.7023936465216,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 416589.18228797056,
+   "excess_ms_fit": 177.73758502341872,
+   "excess_ms_fit_signed": 177.73758502341872,
+   "excess_ms_empirical": 127.54873173788937,
+   "steady_ns": 1580.4164630018686,
+   "steady_ci95": 14.505693759315752,
+   "index_rss_bytes": 2212909504,
+   "pages": 135065.27734375,
+   "switches": [
+    {
+     "call": 2162624.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 7602112.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 13041600.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 18218944.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 23330752.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 28835776.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.45454545454545453,
+     "mean": 1586.0306313119283
+    },
+    "P1": {
+     "share": 0.5454545454545454,
+     "mean": 1575.7379894101523
+    }
+   },
+   "index_warmup": 416589.18228797056
+  },
+  {
+   "dataset": "genome",
+   "index": "scaleli_n",
+   "log": "traces/main/logs/genome.sorted__trace_scaleli_n__r1.log",
+   "consensus": 3057622.835523205,
+   "cuts": {
+    "mser": 8912832.0,
+    "pelt": 27000768.0,
+    "relax": 79249.79824969998,
+    "cov": 720832.0,
+    "hw": 0.0,
+    "epoch": 1048512.0,
+    "online": 720832.0
+   },
+   "online_cut": 720832.0,
+   "online_stop": 17498048.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 19952.62314968883,
+   "beta": 1.0,
+   "A": 2242.6924537580253,
+   "mu": 1582.2740547062942,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 79249.79824969998,
+   "excess_ms_fit": 44.74759737048482,
+   "excess_ms_fit_signed": 44.74759737048482,
+   "excess_ms_empirical": -46.56196564229466,
+   "steady_ns": 1581.1172888406893,
+   "steady_ci95": 15.784295658646247,
+   "index_rss_bytes": 2209960320,
+   "pages": 134885.2734375,
+   "switches": [
+    {
+     "call": 16320.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 5177280.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 10354624.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 15794112.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 20971456.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 26410944.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5146341463414634,
+     "mean": 1572.8321797881647
+    },
+    "P1": {
+     "share": 0.4853658536585366,
+     "mean": 1589.9020024591955
+    }
+   },
+   "index_warmup": 79249.79824969998
+  },
+  {
+   "dataset": "genome",
+   "index": "splice",
+   "log": "traces/main/logs/genome.sorted__trace_splice__r1.log",
+   "consensus": 6008121.392260294,
+   "cuts": {
+    "mser": 262080.0,
+    "pelt": 26476480.0,
+    "relax": 2151176.2293559015,
+    "cov": 1114048.0,
+    "hw": 0.0,
+    "epoch": 16777152.0,
+    "online": 786368.0
+   },
+   "online_cut": 786368.0,
+   "online_stop": 10485696.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 19952.62314968883,
+   "beta": 0.35,
+   "A": 789.4544779904984,
+   "mu": 376.020835816364,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 2151176.2293559015,
+   "excess_ms_fit": 79.21751671191846,
+   "excess_ms_fit_signed": 79.21751671191846,
+   "excess_ms_empirical": 161.59705729001232,
+   "steady_ns": 364.2551735655902,
+   "steady_ci95": 19.36139830754415,
+   "index_rss_bytes": 3134577856,
+   "pages": 191319.44921875,
+   "switches": [
+    {
+     "call": 589760.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 23527360.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.7287671232876712,
+     "mean": 375.267174570184
+    },
+    "P1": {
+     "share": 0.27123287671232876,
+     "mean": 334.66737288658067
+    }
+   },
+   "index_warmup": 2151176.2293559015
+  },
+  {
+   "dataset": "history",
+   "index": "alex",
+   "log": "traces/main/logs/history.sorted__trace_alex__r1.log",
+   "consensus": 2224303.2234767475,
+   "cuts": {
+    "mser": 2359232.0,
+    "pelt": 29163456.0,
+    "relax": 1368532.9345145437,
+    "cov": 851904.0,
+    "hw": 0.0,
+    "epoch": 2097088.0,
+    "online": null
+   },
+   "online_cut": null,
+   "online_stop": null,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 251188.6431509582,
+   "beta": 1.0,
+   "A": 761.9949687912509,
+   "mu": 194.8735975979727,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 1368532.9345145437,
+   "excess_ms_fit": 191.40448229853106,
+   "excess_ms_fit_signed": 191.40448229853106,
+   "excess_ms_empirical": 175.92992059407555,
+   "steady_ns": 195.54400465223523,
+   "steady_ci95": 2.797936971659352,
+   "index_rss_bytes": 4866795712,
+   "pages": 297045.63671875,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.9976359338061466,
+     "mean": 195.3612835780139
+    },
+    "P1": {
+     "share": 0.002364066193853428,
+     "mean": 272.6522979736328
+    }
+   },
+   "index_warmup": 1368532.9345145437
+  },
+  {
+   "dataset": "history",
+   "index": "btree",
+   "log": "traces/main/logs/history.sorted__trace_btree__r1.log",
+   "consensus": 474962.5650594348,
+   "cuts": {
+    "mser": 327616.0,
+    "pelt": 27983808.0,
+    "relax": 688377.1555187732,
+    "cov": 1048512.0,
+    "hw": 0.0,
+    "epoch": 262080.0,
+    "online": 327616.0
+   },
+   "online_cut": 327616.0,
+   "online_stop": 2686912.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 316227.7660168379,
+   "beta": 1.0,
+   "A": -289.789518881559,
+   "mu": 856.8213938661272,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 688377.1555187732,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": -91.63949217100968,
+   "excess_ms_empirical": -89.57156635780903,
+   "steady_ns": 854.2027193676921,
+   "steady_ci95": 18.277215981741726,
+   "index_rss_bytes": 3878034688,
+   "pages": 236696.453125,
+   "switches": [
+    {
+     "call": 262080.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 10354624.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 19922880.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.32516703786191536,
+     "mean": 837.4397373983305
+    },
+    "P1": {
+     "share": 0.6748329621380846,
+     "mean": 862.279931801774
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "history",
+   "index": "lipp",
+   "log": "traces/lipp/logs/history.sorted__trace_lipp__r1.log",
+   "consensus": 10059658.636745391,
+   "cuts": {
+    "mser": 10092480.0,
+    "pelt": 10026944.0,
+    "relax": 10125789.842016054,
+    "cov": 11599808.0,
+    "hw": 5963712.0,
+    "epoch": 8388544.0,
+    "online": null
+   },
+   "online_cut": null,
+   "online_stop": null,
+   "pelt_kind": "warmup",
+   "no_steady": false,
+   "tau": 316227.7660168379,
+   "beta": 0.5,
+   "A": 4642.615198130054,
+   "mu": 169.16080365725836,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 10125789.842016054,
+   "excess_ms_fit": 2936.2476651609722,
+   "excess_ms_fit_signed": 2936.2476651609722,
+   "excess_ms_empirical": 2898.130921767432,
+   "steady_ns": 176.07366605953808,
+   "steady_ci95": 3.57132675933864,
+   "index_rss_bytes": 17133388096,
+   "pages": 1045739.01953125,
+   "switches": [
+    {
+     "call": 3014592.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P1": {
+     "share": 1.0,
+     "mean": 176.07366605953808
+    }
+   },
+   "index_warmup": 10125789.842016054
+  },
+  {
+   "dataset": "history",
+   "index": "nullindex",
+   "log": "traces/main/logs/history.sorted__trace_nullindex__r1.log",
+   "consensus": 4193205.477372298,
+   "cuts": {
+    "mser": 3997632.0,
+    "pelt": 29556672.0,
+    "relax": 4192171.2098520654,
+    "cov": 6619072.0,
+    "hw": 0.0,
+    "epoch": 4194240.0,
+    "online": 0.0
+   },
+   "online_cut": 0.0,
+   "online_stop": 2293696.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 2238721.138568342,
+   "beta": 1.0,
+   "A": -0.9216128827022277,
+   "mu": 3.577878943841705,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 4192171.2098520654,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": -2.063234242082383,
+   "excess_ms_empirical": -2.232845256485569,
+   "steady_ns": 3.598688023690959,
+   "steady_ci95": 0.08269197594085222,
+   "index_rss_bytes": 1884224,
+   "pages": 115.00390625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P1": {
+     "share": 1.0,
+     "mean": 3.598688023690959
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "history",
+   "index": "pgm",
+   "log": "traces/main/logs/history.sorted__trace_pgm__r1.log",
+   "consensus": 9495202.721559804,
+   "cuts": {
+    "mser": 10747840.0,
+    "pelt": 21495744.0,
+    "relax": 1624143.1895324457,
+    "cov": 393152.0,
+    "hw": 0.0,
+    "epoch": 8388544.0,
+    "online": 32704.0
+   },
+   "online_cut": 32704.0,
+   "online_stop": 19005376.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 100000.0,
+   "beta": 0.5,
+   "A": 198.98402358269396,
+   "mu": 290.56827129256885,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 1624143.1895324457,
+   "excess_ms_fit": 39.796804716538794,
+   "excess_ms_fit_signed": 39.796804716538794,
+   "excess_ms_empirical": -216.8979246200045,
+   "steady_ns": 293.7761698013697,
+   "steady_ci95": 2.8420190451395126,
+   "index_rss_bytes": 3208550528,
+   "pages": 195834.3828125,
+   "switches": [
+    {
+     "call": 20774848.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.44871794871794873,
+     "mean": 293.4583572387695
+    },
+    "P1": {
+     "share": 0.5512820512820513,
+     "mean": 294.0348544453466
+    }
+   },
+   "index_warmup": 1624143.1895324457
+  },
+  {
+   "dataset": "history",
+   "index": "scaleli_b",
+   "log": "traces/main/logs/history.sorted__trace_scaleli_b__r1.log",
+   "consensus": 1096731.1930454946,
+   "cuts": {
+    "mser": 4325312.0,
+    "pelt": 24772544.0,
+    "relax": 277531.40785617975,
+    "cov": 2490304.0,
+    "hw": 0.0,
+    "epoch": 131008.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 7995328.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 19952.62314968883,
+   "beta": 0.5,
+   "A": 2540.897817835833,
+   "mu": 1496.6766548433336,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 277531.40785617975,
+   "excess_ms_fit": 101.39515324229014,
+   "excess_ms_fit_signed": 101.39515324229014,
+   "excess_ms_empirical": 128.65000793480323,
+   "steady_ns": 1492.7058349956167,
+   "steady_ci95": 19.82322031402927,
+   "index_rss_bytes": 2046218368,
+   "pages": 124891.2578125,
+   "switches": [
+    {
+     "call": 589760.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 6029248.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 11796416.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 17563584.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 23330752.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 28835776.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.43863636363636366,
+     "mean": 1516.959969476097
+    },
+    "P1": {
+     "share": 0.5613636363636364,
+     "mean": 1473.7542238428525
+    }
+   },
+   "index_warmup": 277531.40785617975
+  },
+  {
+   "dataset": "history",
+   "index": "scaleli_n",
+   "log": "traces/main/logs/history.sorted__trace_scaleli_n__r1.log",
+   "consensus": 650935.6859098211,
+   "cuts": {
+    "mser": 262080.0,
+    "pelt": 28180416.0,
+    "relax": 403969.2986480461,
+    "cov": 2752448.0,
+    "hw": 0.0,
+    "epoch": 1048512.0,
+    "online": 196544.0
+   },
+   "online_cut": 196544.0,
+   "online_stop": 4456384.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 35481.3389233576,
+   "beta": 0.7,
+   "A": 3635.5025428064437,
+   "mu": 1503.1179636764132,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 403969.2986480461,
+   "excess_ms_fit": 163.2817359190721,
+   "excess_ms_fit_signed": 163.2817359190721,
+   "excess_ms_empirical": 169.42664001175154,
+   "steady_ns": 1500.342570362475,
+   "steady_ci95": 12.626432385546602,
+   "index_rss_bytes": 2047152256,
+   "pages": 124948.2578125,
+   "switches": [
+    {
+     "call": 4032.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 5373888.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 11141056.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 16842688.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 22609856.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 28049344.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.4563758389261745,
+     "mean": 1510.6442800783643
+    },
+    "P1": {
+     "share": 0.5436241610738255,
+     "mean": 1491.6942214651854
+    }
+   },
+   "index_warmup": 403969.2986480461
+  },
+  {
+   "dataset": "history",
+   "index": "splice",
+   "log": "traces/main/logs/history.sorted__trace_splice__r1.log",
+   "consensus": 4090086.514420394,
+   "cuts": {
+    "mser": 1245120.0,
+    "pelt": 29294528.0,
+    "relax": 1993981.9523531229,
+    "cov": 2097088.0,
+    "hw": 0.0,
+    "epoch": 8388544.0,
+    "online": 786368.0
+   },
+   "online_cut": 786368.0,
+   "online_stop": 6619072.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 158489.3192461114,
+   "beta": 0.7,
+   "A": 530.8655113262168,
+   "mu": 147.50877042206756,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 1993981.9523531229,
+   "excess_ms_fit": 106.50197650769071,
+   "excess_ms_fit_signed": 106.50197650769071,
+   "excess_ms_empirical": 104.03740094087091,
+   "steady_ns": 147.48456151352315,
+   "steady_ci95": 0.7430622419982946,
+   "index_rss_bytes": 4402423424,
+   "pages": 268702.6015625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 147.48456151352315
+    }
+   },
+   "index_warmup": 1993981.9523531229
+  },
+  {
+   "dataset": "libio",
+   "index": "alex",
+   "log": "traces/main/logs/libio.sorted__trace_alex__r1.log",
+   "consensus": 908236.6405143326,
+   "cuts": {
+    "mser": 589760.0,
+    "pelt": 22413248.0,
+    "relax": 786710.1628697829,
+    "cov": 982976.0,
+    "hw": 0.0,
+    "epoch": 1048512.0,
+    "online": null
+   },
+   "online_cut": null,
+   "online_stop": null,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 223872.11385683424,
+   "beta": 1.0,
+   "A": 745.8239101801216,
+   "mu": 239.63274475723426,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 786710.1628697829,
+   "excess_ms_fit": 166.96917533699352,
+   "excess_ms_fit_signed": 166.96917533699352,
+   "excess_ms_empirical": 169.9087167764841,
+   "steady_ns": 231.50155129873994,
+   "steady_ci95": 14.712503282587322,
+   "index_rss_bytes": 4988381632,
+   "pages": 304466.65234375,
+   "switches": [
+    {
+     "call": 27721664.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.9232505643340858,
+     "mean": 229.8967101976166
+    },
+    "P1": {
+     "share": 0.07674943566591422,
+     "mean": 250.8068457210765
+    }
+   },
+   "index_warmup": 786710.1628697829
+  },
+  {
+   "dataset": "libio",
+   "index": "btree",
+   "log": "traces/main/logs/libio.sorted__trace_btree__r1.log",
+   "consensus": 1096829.4092908967,
+   "cuts": {
+    "mser": 2293696.0,
+    "pelt": 28770240.0,
+    "relax": 480848.1921561182,
+    "cov": 3145664.0,
+    "hw": 0.0,
+    "epoch": 524224.0,
+    "online": 2031552.0
+   },
+   "online_cut": 2031552.0,
+   "online_stop": 17825728.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 446683.5921509635,
+   "beta": 1.0,
+   "A": 181.42986551120038,
+   "mu": 864.8009435156347,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 480848.1921561182,
+   "excess_ms_fit": 81.04174405000919,
+   "excess_ms_fit_signed": 81.04174405000919,
+   "excess_ms_empirical": 96.86458921578028,
+   "steady_ns": 859.3371073636142,
+   "steady_ci95": 15.894350288471381,
+   "index_rss_bytes": 3878067456,
+   "pages": 236698.453125,
+   "switches": [
+    {
+     "call": 7798720.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 17760192.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 27721664.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.42272727272727273,
+     "mean": 855.9994646297988
+    },
+    "P1": {
+     "share": 0.5772727272727273,
+     "mean": 861.7812079482192
+    }
+   },
+   "index_warmup": 480848.1921561182
+  },
+  {
+   "dataset": "libio",
+   "index": "lipp",
+   "log": "traces/lipp/logs/libio.sorted__trace_lipp__r1.log",
+   "consensus": 3057081.293621867,
+   "cuts": {
+    "mser": 2228160.0,
+    "pelt": 29097920.0,
+    "relax": 2146931.109703147,
+    "cov": 4587456.0,
+    "hw": 0.0,
+    "epoch": 4194240.0,
+    "online": null
+   },
+   "online_cut": null,
+   "online_stop": null,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 446683.5921509635,
+   "beta": 1.0,
+   "A": 1119.1770147847712,
+   "mu": 129.56015195288546,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 2146931.109703147,
+   "excess_ms_fit": 499.9180092168536,
+   "excess_ms_fit_signed": 499.9180092168536,
+   "excess_ms_empirical": 522.0232494832339,
+   "steady_ns": 126.94882339849704,
+   "steady_ci95": 5.531082523967012,
+   "index_rss_bytes": 12322250368,
+   "pages": 752090.4765625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P1": {
+     "share": 1.0,
+     "mean": 126.94882339849704
+    }
+   },
+   "index_warmup": 2146931.109703147
+  },
+  {
+   "dataset": "libio",
+   "index": "nullindex",
+   "log": "traces/main/logs/libio.sorted__trace_nullindex__r1.log",
+   "consensus": 16777152.000000007,
+   "cuts": {
+    "mser": 0.0,
+    "pelt": 20316096.0,
+    "relax": null,
+    "cov": 0.0,
+    "hw": null,
+    "epoch": 16777152.0,
+    "online": 0.0
+   },
+   "online_cut": 0.0,
+   "online_stop": 393152.0,
+   "pelt_kind": "slowdown",
+   "no_steady": false,
+   "tau": 3162277660.1683793,
+   "beta": 1.0,
+   "A": -131.13149440420784,
+   "mu": 133.50966527130132,
+   "relax_significant": false,
+   "relax_at_grid_edge": true,
+   "cold_transient": false,
+   "relax_cut": null,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": -11.052650125732422,
+   "steady_ns": 3.376941680908203,
+   "steady_ci95": 0.1379122806415523,
+   "index_rss_bytes": 1884224,
+   "pages": 115.00390625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 3.376941680908203
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "libio",
+   "index": "pgm",
+   "log": "traces/main/logs/libio.sorted__trace_pgm__r1.log",
+   "consensus": 15833087.955732957,
+   "cuts": {
+    "mser": 14942144.0,
+    "pelt": 17039296.0,
+    "relax": 5183265.343346561,
+    "cov": 982976.0,
+    "hw": 2949056.0,
+    "epoch": 16777152.0,
+    "online": 1966016.0
+   },
+   "online_cut": 1966016.0,
+   "online_stop": 28245952.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 1584893.1924611141,
+   "beta": 1.0,
+   "A": -79.20520177591155,
+   "mu": 300.90446575934243,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 5183265.343346561,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": -125.53178510215116,
+   "excess_ms_empirical": -268.8642204285115,
+   "steady_ns": 300.3458481189817,
+   "steady_ci95": 1.1240759921304984,
+   "index_rss_bytes": 3208222784,
+   "pages": 195814.37890625,
+   "switches": [
+    {
+     "call": 13369280.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": true,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 300.3458481189817
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "libio",
+   "index": "scaleli_b",
+   "log": "traces/main/logs/libio.sorted__trace_scaleli_b__r1.log",
+   "consensus": 199894.33973182453,
+   "cuts": {
+    "mser": 196544.0,
+    "pelt": 19333056.0,
+    "relax": 203301.5011151224,
+    "cov": 262080.0,
+    "hw": 0.0,
+    "epoch": 131008.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 2293696.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 35481.3389233576,
+   "beta": 0.7,
+   "A": 2776.3835057455367,
+   "mu": 1455.4602792459427,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 203301.5011151224,
+   "excess_ms_fit": 124.69602566836824,
+   "excess_ms_fit_signed": 124.69602566836824,
+   "excess_ms_empirical": 125.70389342585882,
+   "steady_ns": 1449.9751281064605,
+   "steady_ci95": 18.14054472551725,
+   "index_rss_bytes": 1947881472,
+   "pages": 118889.25,
+   "switches": [
+    {
+     "call": 5373888.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 10944448.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 16580544.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 22216640.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 28114880.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.4392935982339956,
+     "mean": 1439.373862951844
+    },
+    "P1": {
+     "share": 0.5607064017660044,
+     "mean": 1458.2808437197227
+    }
+   },
+   "index_warmup": 203301.5011151224
+  },
+  {
+   "dataset": "libio",
+   "index": "scaleli_n",
+   "log": "traces/main/logs/libio.sorted__trace_scaleli_n__r1.log",
+   "consensus": 346651.2451504744,
+   "cuts": {
+    "mser": 196544.0,
+    "pelt": 17694656.0,
+    "relax": 458409.26050887775,
+    "cov": 1245120.0,
+    "hw": 0.0,
+    "epoch": 262080.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 1507264.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 25118.864315095823,
+   "beta": 0.5,
+   "A": 2563.2304555381124,
+   "mu": 1472.2712004299597,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 458409.26050887775,
+   "excess_ms_fit": 128.7708760419662,
+   "excess_ms_fit_signed": 128.7708760419662,
+   "excess_ms_empirical": 112.22100594763806,
+   "steady_ns": 1475.512000580849,
+   "steady_ci95": 10.540522784547855,
+   "index_rss_bytes": 1946914816,
+   "pages": 118830.25,
+   "switches": [
+    {
+     "call": 5832640.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 11665344.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 17563584.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 23461824.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 29228992.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.4212860310421286,
+     "mean": 1477.9320799978157
+    },
+    "P1": {
+     "share": 0.5787139689578714,
+     "mean": 1473.7502569439766
+    }
+   },
+   "index_warmup": 458409.26050887775
+  },
+  {
+   "dataset": "libio",
+   "index": "splice",
+   "log": "traces/main/logs/libio.sorted__trace_splice__r1.log",
+   "consensus": 1363954.9655004889,
+   "cuts": {
+    "mser": 524224.0,
+    "pelt": 29491136.0,
+    "relax": 1774207.961266232,
+    "cov": 982976.0,
+    "hw": 0.0,
+    "epoch": 1048512.0,
+    "online": 458688.0
+   },
+   "online_cut": 458688.0,
+   "online_stop": 4521920.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 50118.72336272725,
+   "beta": 0.35,
+   "A": 77.90957364187781,
+   "mu": 166.16083598373316,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 1774207.961266232,
+   "excess_ms_fit": 19.637443988570055,
+   "excess_ms_fit_signed": 19.637443988570055,
+   "excess_ms_empirical": 11.114980545717009,
+   "steady_ns": 166.77110567005403,
+   "steady_ci95": 1.3157046311754945,
+   "index_rss_bytes": 4399343296,
+   "pages": 268514.60546875,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.9977064220183486,
+     "mean": 166.6425419949937
+    },
+    "P1": {
+     "share": 0.0022935779816513763,
+     "mean": 222.69630432128906
+    }
+   },
+   "index_warmup": 1774207.961266232
+  },
+  {
+   "dataset": "osm",
+   "index": "alex",
+   "log": "traces/main/logs/osm__trace_alex__r1.log",
+   "consensus": 2097088.0000000014,
+   "cuts": {
+    "mser": 2097088.0,
+    "pelt": 26083264.0,
+    "relax": 552239.922010446,
+    "cov": 1048512.0,
+    "hw": 0.0,
+    "epoch": 2097088.0,
+    "online": 2097088.0
+   },
+   "online_cut": 2097088.0,
+   "online_stop": 27328448.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 89125.0938133746,
+   "beta": 0.7,
+   "A": 1353.419207021203,
+   "mu": 624.3014579984119,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 552239.922010446,
+   "excess_ms_fit": 152.68820572676478,
+   "excess_ms_fit_signed": 152.68820572676478,
+   "excess_ms_empirical": -185.5550738271783,
+   "steady_ns": 619.4913132505596,
+   "steady_ci95": 20.361281794619742,
+   "index_rss_bytes": 4929988736,
+   "pages": 300902.6328125,
+   "switches": [
+    {
+     "call": 8191936.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 19595200.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.589622641509434,
+     "mean": 627.3337529907227
+    },
+    "P1": {
+     "share": 0.41037735849056606,
+     "mean": 608.2234400606703
+    }
+   },
+   "index_warmup": 552239.922010446
+  },
+  {
+   "dataset": "osm",
+   "index": "btree",
+   "log": "traces/main/logs/osm__trace_btree__r1.log",
+   "consensus": 226969.0231588492,
+   "cuts": {
+    "mser": 196544.0,
+    "pelt": 25886656.0,
+    "relax": 158262.69550360038,
+    "cov": 655296.0,
+    "hw": 0.0,
+    "epoch": 262080.0,
+    "online": 65472.0
+   },
+   "online_cut": 65472.0,
+   "online_stop": 2228160.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 3162.2776601683795,
+   "beta": 0.35,
+   "A": 2805.743867246923,
+   "mu": 853.1856031656725,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 158262.69550360038,
+   "excess_ms_fit": 44.621293326836415,
+   "excess_ms_fit_signed": 44.621293326836415,
+   "excess_ms_empirical": 47.84596951265004,
+   "steady_ns": 853.0828238986186,
+   "steady_ci95": 15.793024582850117,
+   "index_rss_bytes": 3878034688,
+   "pages": 236696.453125,
+   "switches": [
+    {
+     "call": 5636032.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 15269824.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 25362368.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5209713024282561,
+     "mean": 859.3619422266039
+    },
+    "P1": {
+     "share": 0.47902869757174393,
+     "mean": 846.2539210165701
+    }
+   },
+   "index_warmup": 158262.69550360038
+  },
+  {
+   "dataset": "osm",
+   "index": "nullindex",
+   "log": "traces/main/logs/osm__trace_nullindex__r1.log",
+   "consensus": 16777152.000000007,
+   "cuts": {
+    "mser": 0.0,
+    "pelt": 25493440.0,
+    "relax": null,
+    "cov": 0.0,
+    "hw": null,
+    "epoch": 16777152.0,
+    "online": 64.0
+   },
+   "online_cut": 64.0,
+   "online_stop": 458688.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 3162277660.1683793,
+   "beta": 1.0,
+   "A": -111.95006706448781,
+   "mu": 114.45569891474234,
+   "relax_significant": false,
+   "relax_at_grid_edge": true,
+   "cold_transient": false,
+   "relax_cut": null,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": -9.641093261245125,
+   "steady_ns": 3.3641211700439455,
+   "steady_ci95": 0.11357926240396274,
+   "index_rss_bytes": 1884224,
+   "pages": 115.00390625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 3.3641211700439455
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "osm",
+   "index": "pgm",
+   "log": "traces/main/logs/osm__trace_pgm__r1.log",
+   "consensus": 16777152.000000007,
+   "cuts": {
+    "mser": 10223552.0,
+    "pelt": 22740928.0,
+    "relax": null,
+    "cov": 131008.0,
+    "hw": 0.0,
+    "epoch": 16777152.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 2162624.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 28183829.31264455,
+   "beta": 1.0,
+   "A": -14.188458048167504,
+   "mu": 512.671533995395,
+   "relax_significant": false,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": null,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": -314.59778031000513,
+   "steady_ns": 507.20757804870607,
+   "steady_ci95": 3.433563547053354,
+   "index_rss_bytes": 3226016000,
+   "pages": 196900.390625,
+   "switches": [
+    {
+     "call": 16580544.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": true,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.01,
+     "mean": 603.7956848144531
+    },
+    "P1": {
+     "share": 0.99,
+     "mean": 506.2319406066278
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "osm",
+   "index": "scaleli_b",
+   "log": "traces/main/logs/osm__trace_scaleli_b__r1.log",
+   "consensus": 1673830.1459475486,
+   "cuts": {
+    "mser": 7602112.0,
+    "pelt": 19791808.0,
+    "relax": 367935.24885266647,
+    "cov": 262080.0,
+    "hw": 0.0,
+    "epoch": 262080.0,
+    "online": 196544.0
+   },
+   "online_cut": 196544.0,
+   "online_stop": 2293696.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 158489.3192461114,
+   "beta": 1.0,
+   "A": 785.8584920469981,
+   "mu": 1670.2255986254252,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 367935.24885266647,
+   "excess_ms_fit": 124.5501774283044,
+   "excess_ms_fit_signed": 124.5501774283044,
+   "excess_ms_empirical": 139.91145947791986,
+   "steady_ns": 1655.304995047797,
+   "steady_ci95": 24.514926084663852,
+   "index_rss_bytes": 2706839680,
+   "pages": 165212.3828125,
+   "switches": [
+    {
+     "call": 3604416.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 8585152.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 13696960.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 18677696.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 23592896.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 28770240.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5359628770301624,
+     "mean": 1651.8152767693325
+    },
+    "P1": {
+     "share": 0.46403712296983757,
+     "mean": 1659.3356196594239
+    }
+   },
+   "index_warmup": 367935.24885266647
+  },
+  {
+   "dataset": "osm",
+   "index": "scaleli_n",
+   "log": "traces/main/logs/osm__trace_scaleli_n__r1.log",
+   "consensus": 581303.9681887286,
+   "cuts": {
+    "mser": 196544.0,
+    "pelt": 26738624.0,
+    "relax": 322081.50013371883,
+    "cov": 1179584.0,
+    "hw": 2949056.0,
+    "epoch": 1048512.0,
+    "online": 196544.0
+   },
+   "online_cut": 196544.0,
+   "online_stop": 4456384.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 70794.57843841374,
+   "beta": 0.7,
+   "A": 1983.648623751024,
+   "mu": 1647.1328043264898,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 322081.50013371883,
+   "excess_ms_fit": 177.76157987877215,
+   "excess_ms_fit_signed": 177.76157987877215,
+   "excess_ms_empirical": 241.19257920798384,
+   "steady_ns": 1590.4819397585732,
+   "steady_ci95": 96.11534813985686,
+   "index_rss_bytes": 2737412288,
+   "pages": 167078.38671875,
+   "switches": [
+    {
+     "call": 458688.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 5636032.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 10813376.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 16121792.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 21299136.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 26148800.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": true,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5178571428571429,
+     "mean": 1542.5024471940665
+    },
+    "P1": {
+     "share": 0.48214285714285715,
+     "mean": 1642.0154688093398
+    }
+   },
+   "index_warmup": 322081.50013371883
+  },
+  {
+   "dataset": "osm",
+   "index": "splice",
+   "log": "traces/main/logs/osm__trace_splice__r1.log",
+   "consensus": 12362508.689157797,
+   "cuts": {
+    "mser": 9109440.0,
+    "pelt": 26083264.0,
+    "relax": 215264.19868122862,
+    "cov": 4521920.0,
+    "hw": 0.0,
+    "epoch": 16777152.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 4456384.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 89125.0938133746,
+   "beta": 1.0,
+   "A": -152.07251550508843,
+   "mu": 432.0787891700587,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 215264.19868122862,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": -13.55347721082687,
+   "excess_ms_empirical": -253.0035941315478,
+   "steady_ns": 434.77610454274645,
+   "steady_ci95": 4.924115638128476,
+   "index_rss_bytes": 4225492096,
+   "pages": 257903.5703125,
+   "switches": [
+    {
+     "call": 196544.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 19398592.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5970149253731343,
+     "mean": 438.59594268798827
+    },
+    "P1": {
+     "share": 0.40298507462686567,
+     "mean": 429.11708506831417
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "planet",
+   "index": "alex",
+   "log": "traces/main/logs/planet.sorted__trace_alex__r1.log",
+   "consensus": 1005134.0985280247,
+   "cuts": {
+    "mser": 786368.0,
+    "pelt": 27590592.0,
+    "relax": 963549.0706354947,
+    "cov": 720832.0,
+    "hw": 0.0,
+    "epoch": 1048512.0,
+    "online": 786368.0
+   },
+   "online_cut": 786368.0,
+   "online_stop": 7405504.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 177827.94100389228,
+   "beta": 1.0,
+   "A": 1026.0368432902953,
+   "mu": 454.9531779460837,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 963549.0706354947,
+   "excess_ms_fit": 182.4580192364465,
+   "excess_ms_fit_signed": 182.4580192364465,
+   "excess_ms_empirical": 181.21847806620033,
+   "steady_ns": 455.4672687902472,
+   "steady_ci95": 2.1319160619470874,
+   "index_rss_bytes": 4979026368,
+   "pages": 303895.65234375,
+   "switches": [
+    {
+     "call": 15531968.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5011337868480725,
+     "mean": 454.11796915045693
+    },
+    "P1": {
+     "share": 0.4988662131519274,
+     "mean": 456.8227016102184
+    }
+   },
+   "index_warmup": 963549.0706354947
+  },
+  {
+   "dataset": "planet",
+   "index": "btree",
+   "log": "traces/main/logs/planet.sorted__trace_btree__r1.log",
+   "consensus": 3477791.4259340176,
+   "cuts": {
+    "mser": 5767104.0,
+    "pelt": 29556672.0,
+    "relax": 63848.77076149361,
+    "cov": 6881216.0,
+    "hw": 0.0,
+    "epoch": 2097088.0,
+    "online": null
+   },
+   "online_cut": null,
+   "online_stop": null,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 5623.413251903491,
+   "beta": 0.5,
+   "A": 1631.6895018823136,
+   "mu": 853.254183246282,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 63848.77076149361,
+   "excess_ms_fit": 18.35132873575362,
+   "excess_ms_fit_signed": 18.35132873575362,
+   "excess_ms_empirical": -27.94258475131806,
+   "steady_ns": 847.30762324558,
+   "steady_ci95": 13.077335580615536,
+   "index_rss_bytes": 3878034688,
+   "pages": 236696.453125,
+   "switches": [
+    {
+     "call": 5636032.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 15663040.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 25886656.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.4665012406947891,
+     "mean": 838.725218509106
+    },
+    "P1": {
+     "share": 0.533498759305211,
+     "mean": 854.8122376197992
+    }
+   },
+   "index_warmup": 63848.77076149361
+  },
+  {
+   "dataset": "planet",
+   "index": "lipp",
+   "log": "traces/lipp/logs/planet.sorted__trace_lipp__r1.log",
+   "consensus": 4032091.8168636146,
+   "cuts": {
+    "mser": 3735488.0,
+    "pelt": 15597504.0,
+    "relax": 3876210.744379875,
+    "cov": null,
+    "hw": 2949056.0,
+    "epoch": 4194240.0,
+    "online": 1376192.0
+   },
+   "online_cut": 1376192.0,
+   "online_stop": 16646080.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 1000000.0,
+   "beta": 0.7,
+   "A": 6440.707279961368,
+   "mu": 3062.235034587444,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 3876210.744379875,
+   "excess_ms_fit": 8152.798670609367,
+   "excess_ms_fit_signed": 8152.798670609367,
+   "excess_ms_empirical": 6984.235457530399,
+   "steady_ns": 3104.1529868983016,
+   "steady_ci95": 143.91957573515387,
+   "index_rss_bytes": 29989347968,
+   "pages": 1830404.5390625,
+   "switches": [
+    {
+     "call": 393152.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 1376192.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 2686912.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 3997632.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 5308352.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 6815680.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 8191936.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 9699264.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 11141056.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 12386240.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 13696960.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 14942144.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 16187328.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 17498048.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 18939840.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 20447168.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 21888960.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 23330752.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 24772544.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 26148800.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 27656128.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 29032384.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": true,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5164556962025316,
+     "mean": 3107.5936018251905
+    },
+    "P1": {
+     "share": 0.4835443037974684,
+     "mean": 3100.4781939920954
+    }
+   },
+   "index_warmup": 3876210.744379875
+  },
+  {
+   "dataset": "planet",
+   "index": "nullindex",
+   "log": "traces/main/logs/planet.sorted__trace_nullindex__r1.log",
+   "consensus": 0.0,
+   "cuts": {
+    "mser": 0.0,
+    "pelt": 0.0,
+    "relax": null,
+    "cov": 0.0,
+    "hw": null,
+    "epoch": 0.0,
+    "online": 192.0
+   },
+   "online_cut": 192.0,
+   "online_stop": 262080.0,
+   "pelt_kind": "flat",
+   "no_steady": false,
+   "tau": 3162277660.1683793,
+   "beta": 1.0,
+   "A": -112.9941547372298,
+   "mu": 115.44643643187314,
+   "relax_significant": false,
+   "relax_at_grid_edge": true,
+   "cold_transient": false,
+   "relax_cut": null,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": 0.0,
+   "steady_ns": 3.012320680464648,
+   "steady_ci95": 0.1600731598871058,
+   "index_rss_bytes": 1884224,
+   "pages": 115.00390625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 3.012320680464648
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "planet",
+   "index": "pgm",
+   "log": "traces/main/logs/planet.sorted__trace_pgm__r1.log",
+   "consensus": 131008.00000000012,
+   "cuts": {
+    "mser": 131008.0,
+    "pelt": 15531968.0,
+    "relax": 0.0,
+    "cov": 131008.0,
+    "hw": 0.0,
+    "epoch": 131008.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 3276736.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 100000.0,
+   "beta": 1.0,
+   "A": -34.23338855814876,
+   "mu": 422.6441539571776,
+   "relax_significant": false,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 0.0,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": -7.038787093502633,
+   "steady_ns": 422.65957288700054,
+   "steady_ci95": 1.5783994826540697,
+   "index_rss_bytes": 3226704064,
+   "pages": 196942.38671875,
+   "switches": [
+    {
+     "call": 14352320.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.47577092511013214,
+     "mean": 421.48783182214805
+    },
+    "P1": {
+     "share": 0.5242290748898678,
+     "mean": 423.7230017525809
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "planet",
+   "index": "scaleli_b",
+   "log": "traces/main/logs/planet.sorted__trace_scaleli_b__r1.log",
+   "consensus": 486600.1054509238,
+   "cuts": {
+    "mser": 196544.0,
+    "pelt": 27197376.0,
+    "relax": 451671.36085889285,
+    "cov": 2949056.0,
+    "hw": 0.0,
+    "epoch": 524224.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 3276736.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 17782.794100389227,
+   "beta": 0.5,
+   "A": 4065.7678584237765,
+   "mu": 1486.6906268562425,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 451671.36085889285,
+   "excess_ms_fit": 144.60142537266094,
+   "excess_ms_fit_signed": 144.60142537266094,
+   "excess_ms_empirical": 147.6894846748265,
+   "steady_ns": 1479.6015449982708,
+   "steady_ci95": 13.153487704245494,
+   "index_rss_bytes": 2045120640,
+   "pages": 124824.2578125,
+   "switches": [
+    {
+     "call": 2686912.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 8519616.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 14090176.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 19857344.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 25690048.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5389755011135857,
+     "mean": 1484.0383398513163
+    },
+    "P1": {
+     "share": 0.4610244988864143,
+     "mean": 1474.4145674406043
+    }
+   },
+   "index_warmup": 451671.36085889285
+  },
+  {
+   "dataset": "planet",
+   "index": "scaleli_n",
+   "log": "traces/main/logs/planet.sorted__trace_scaleli_n__r1.log",
+   "consensus": 2316505.6351531367,
+   "cuts": {
+    "mser": 5111744.0,
+    "pelt": 28835776.0,
+    "relax": 1049479.423371585,
+    "cov": 524224.0,
+    "hw": 0.0,
+    "epoch": 524224.0,
+    "online": 393152.0
+   },
+   "online_cut": 393152.0,
+   "online_stop": 3866560.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 44668.359215096345,
+   "beta": 0.5,
+   "A": 2237.6193810072787,
+   "mu": 1494.000397312651,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 1049479.423371585,
+   "excess_ms_fit": 199.9015725949893,
+   "excess_ms_fit_signed": 199.9015725949893,
+   "excess_ms_empirical": 182.65557264779264,
+   "steady_ns": 1488.1827761543618,
+   "steady_ci95": 20.31422416504992,
+   "index_rss_bytes": 2044743808,
+   "pages": 124801.2578125,
+   "switches": [
+    {
+     "call": 32704.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 5898176.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 11665344.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 17170368.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 22937536.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 28704704.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.46318289786223277,
+     "mean": 1509.256062903771
+    },
+    "P1": {
+     "share": 0.5368171021377672,
+     "mean": 1470.0000729856238
+    }
+   },
+   "index_warmup": 1049479.423371585
+  },
+  {
+   "dataset": "planet",
+   "index": "splice",
+   "log": "traces/main/logs/planet.sorted__trace_splice__r1.log",
+   "consensus": 491840.82289363246,
+   "cuts": {
+    "mser": 327616.0,
+    "pelt": 23855040.0,
+    "relax": 461454.2608686438,
+    "cov": 786368.0,
+    "hw": 0.0,
+    "epoch": 524224.0,
+    "online": 458688.0
+   },
+   "online_cut": 458688.0,
+   "online_stop": 19201984.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 10000.0,
+   "beta": 0.35,
+   "A": 1432.7527076205924,
+   "mu": 362.8257422595374,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 461454.2608686438,
+   "excess_ms_fit": 72.05520689007281,
+   "excess_ms_fit_signed": 72.05520689007281,
+   "excess_ms_empirical": 64.63139172120988,
+   "steady_ns": 351.7487758644971,
+   "steady_ci95": 14.197232317353329,
+   "index_rss_bytes": 3270483392,
+   "pages": 199614.46484375,
+   "switches": [
+    {
+     "call": 22085568.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.732739420935412,
+     "mean": 358.82338972004715
+    },
+    "P1": {
+     "share": 0.267260579064588,
+     "mean": 332.35254287719727
+    }
+   },
+   "index_warmup": 461454.2608686438
+  },
+  {
+   "dataset": "stack",
+   "index": "alex",
+   "log": "traces/main/logs/stack.sorted__trace_alex__r1.log",
+   "consensus": 8388543.999999993,
+   "cuts": {
+    "mser": 8388544.0,
+    "pelt": 26017728.0,
+    "relax": 1041186.9887899089,
+    "cov": 786368.0,
+    "hw": 8978368.0,
+    "epoch": 8388544.0,
+    "online": null
+   },
+   "online_cut": null,
+   "online_stop": null,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 199526.2314968879,
+   "beta": 1.0,
+   "A": 429.92687551218677,
+   "mu": 171.87021800619297,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 1041186.9887899089,
+   "excess_ms_fit": 85.78168929017828,
+   "excess_ms_fit_signed": 85.78168929017828,
+   "excess_ms_empirical": 182.25771314991266,
+   "steady_ns": 170.68119876942737,
+   "steady_ci95": 0.7987988890402941,
+   "index_rss_bytes": 4689601600,
+   "pages": 286230.56640625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P1": {
+     "share": 1.0,
+     "mean": 170.68119876942737
+    }
+   },
+   "index_warmup": 1041186.9887899089
+  },
+  {
+   "dataset": "stack",
+   "index": "btree",
+   "log": "traces/main/logs/stack.sorted__trace_btree__r1.log",
+   "consensus": 795498.4700845736,
+   "cuts": {
+    "mser": 786368.0,
+    "pelt": 15531968.0,
+    "relax": 804734.8188484475,
+    "cov": 6422464.0,
+    "hw": 0.0,
+    "epoch": 524224.0,
+    "online": 0.0
+   },
+   "online_cut": 0.0,
+   "online_stop": 4259776.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 501187.2336272725,
+   "beta": 1.0,
+   "A": 342.14162826663477,
+   "mu": 855.4096095100833,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 804734.8188484475,
+   "excess_ms_fit": 171.4770161796853,
+   "excess_ms_fit_signed": 171.4770161796853,
+   "excess_ms_empirical": 163.47841453016127,
+   "steady_ns": 850.6185385557982,
+   "steady_ci95": 20.78375085887336,
+   "index_rss_bytes": 3878083840,
+   "pages": 236699.453125,
+   "switches": [
+    {
+     "call": 3473344.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 13696960.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 23265216.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.42117117117117114,
+     "mean": 846.3305644479027
+    },
+    "P1": {
+     "share": 0.5788288288288288,
+     "mean": 853.7385819728272
+    }
+   },
+   "index_warmup": 804734.8188484475
+  },
+  {
+   "dataset": "stack",
+   "index": "lipp",
+   "log": "traces/lipp/logs/stack.sorted__trace_lipp__r1.log",
+   "consensus": 6298230.7286770055,
+   "cuts": {
+    "mser": 1507264.0,
+    "pelt": 26542016.0,
+    "relax": 2363998.70624063,
+    "cov": 3276736.0,
+    "hw": null,
+    "epoch": 16777152.0,
+    "online": 1834944.0
+   },
+   "online_cut": 1834944.0,
+   "online_stop": 16187328.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 446683.5921509635,
+   "beta": 1.0,
+   "A": 469.43125192462236,
+   "mu": 64.1386839058275,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 2363998.70624063,
+   "excess_ms_fit": 209.6872378776142,
+   "excess_ms_fit_signed": 209.6872378776142,
+   "excess_ms_empirical": 243.06313075123686,
+   "steady_ns": 59.85305752224392,
+   "steady_ci95": 5.50535967688504,
+   "index_rss_bytes": 8965932096,
+   "pages": 547237.06640625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P1": {
+     "share": 1.0,
+     "mean": 59.85305752224392
+    }
+   },
+   "index_warmup": 2363998.70624063
+  },
+  {
+   "dataset": "stack",
+   "index": "nullindex",
+   "log": "traces/main/logs/stack.sorted__trace_nullindex__r1.log",
+   "consensus": 9232818.539893107,
+   "cuts": {
+    "mser": 4849600.0,
+    "pelt": 28049344.0,
+    "relax": 5080811.443100152,
+    "cov": 4849600.0,
+    "hw": 0.0,
+    "epoch": 16777152.0,
+    "online": 0.0
+   },
+   "online_cut": 0.0,
+   "online_stop": 2097088.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 2818382.931264455,
+   "beta": 1.0,
+   "A": -1.0213525061499311,
+   "mu": 3.49183937639817,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 5080811.443100152,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": -2.8785624701371404,
+   "excess_ms_empirical": -2.2896831577921053,
+   "steady_ns": 3.4756298306622084,
+   "steady_ci95": 0.07556780806532662,
+   "index_rss_bytes": 1884224,
+   "pages": 115.00390625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 3.4756298306622084
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "stack",
+   "index": "pgm",
+   "log": "traces/main/logs/stack.sorted__trace_pgm__r1.log",
+   "consensus": 333199.62257541943,
+   "cuts": {
+    "mser": 5701568.0,
+    "pelt": 196544.0,
+    "relax": 423545.33879258257,
+    "cov": 196544.0,
+    "hw": 0.0,
+    "epoch": 262080.0,
+    "online": 196544.0
+   },
+   "online_cut": 196544.0,
+   "online_stop": 2293696.0,
+   "pelt_kind": "slowdown",
+   "no_steady": false,
+   "tau": 141253.75446227554,
+   "beta": 1.0,
+   "A": -55.556174713791336,
+   "mu": 277.021045801133,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 423545.33879258257,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": -7.847518261885162,
+   "excess_ms_empirical": -8.139060859457288,
+   "steady_ns": 277.46048311965166,
+   "steady_ci95": 1.1843233938921347,
+   "index_rss_bytes": 3204552896,
+   "pages": 195590.38671875,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.0022172949002217295,
+     "mean": 293.58863830566406
+    },
+    "P1": {
+     "share": 0.9977827050997783,
+     "mean": 277.4246427747938
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "stack",
+   "index": "scaleli_b",
+   "log": "traces/main/logs/stack.sorted__trace_scaleli_b__r1.log",
+   "consensus": 874224.1017388642,
+   "cuts": {
+    "mser": 327616.0,
+    "pelt": 28180416.0,
+    "relax": 728879.437552504,
+    "cov": 1114048.0,
+    "hw": 0.0,
+    "epoch": 1048512.0,
+    "online": 196544.0
+   },
+   "online_cut": 196544.0,
+   "online_stop": 6815680.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 31622.776601683792,
+   "beta": 0.5,
+   "A": 2604.700452116488,
+   "mu": 1454.8525292255367,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 728879.437552504,
+   "excess_ms_fit": 164.73572102316896,
+   "excess_ms_fit_signed": 164.73572102316896,
+   "excess_ms_empirical": 160.55815211103695,
+   "steady_ns": 1453.4284420659258,
+   "steady_ci95": 13.742565958812866,
+   "index_rss_bytes": 1881395008,
+   "pages": 114831.23828125,
+   "switches": [
+    {
+     "call": 982976.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 6946752.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 12910528.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 18481088.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 24444864.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": true,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5891647855530474,
+     "mean": 1458.381991506993
+    },
+    "P1": {
+     "share": 0.4108352144469526,
+     "mean": 1446.3247255597796
+    }
+   },
+   "index_warmup": 728879.437552504
+  },
+  {
+   "dataset": "stack",
+   "index": "scaleli_n",
+   "log": "traces/main/logs/stack.sorted__trace_scaleli_n__r1.log",
+   "consensus": 299722.55210417823,
+   "cuts": {
+    "mser": 196544.0,
+    "pelt": 20578240.0,
+    "relax": 342751.153048693,
+    "cov": 1245120.0,
+    "hw": 0.0,
+    "epoch": 262080.0,
+    "online": 0.0
+   },
+   "online_cut": 0.0,
+   "online_stop": 1310656.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 141253.75446227554,
+   "beta": 1.0,
+   "A": 505.7709560873958,
+   "mu": 1480.91975213878,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 342751.153048693,
+   "excess_ms_fit": 71.44204644531935,
+   "excess_ms_fit_signed": 71.44204644531935,
+   "excess_ms_empirical": 65.27229111064108,
+   "steady_ns": 1472.965431753513,
+   "steady_ci95": 17.745553778453417,
+   "index_rss_bytes": 1880870656,
+   "pages": 114799.234375,
+   "switches": [
+    {
+     "call": 2752448.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 8585152.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 14417856.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 20053952.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 25558976.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5376106194690266,
+     "mean": 1468.660383436415
+    },
+    "P1": {
+     "share": 0.46238938053097345,
+     "mean": 1477.9708228590387
+    }
+   },
+   "index_warmup": 342751.153048693
+  },
+  {
+   "dataset": "stack",
+   "index": "splice",
+   "log": "traces/main/logs/stack.sorted__trace_splice__r1.log",
+   "consensus": 391929.93795694463,
+   "cuts": {
+    "mser": 8323008.0,
+    "pelt": 262080.0,
+    "relax": 585870.6710614596,
+    "cov": 262080.0,
+    "hw": 0.0,
+    "epoch": 262080.0,
+    "online": null
+   },
+   "online_cut": null,
+   "online_stop": null,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 251188.6431509582,
+   "beta": 1.0,
+   "A": -28.42416580665783,
+   "mu": 124.08268130220667,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": 585870.6710614596,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": -7.139827641672242,
+   "excess_ms_empirical": -8.031001582360378,
+   "steady_ns": 124.07404917782532,
+   "steady_ci95": 0.7527783750108701,
+   "index_rss_bytes": 4258080064,
+   "pages": 259892.58203125,
+   "switches": [
+    {
+     "call": 8126400.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.738359201773836,
+     "mean": 124.36368251491237
+    },
+    "P1": {
+     "share": 0.2616407982261641,
+     "mean": 123.25669408248643
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "wise",
+   "index": "alex",
+   "log": "traces/main/logs/wise.sorted__trace_alex__r1.log",
+   "consensus": 5838222.23069066,
+   "cuts": {
+    "mser": 4063168.0,
+    "pelt": 22020032.0,
+    "relax": 984784.6478775095,
+    "cov": 720832.0,
+    "hw": 0.0,
+    "epoch": 8388544.0,
+    "online": 458688.0
+   },
+   "online_cut": 458688.0,
+   "online_stop": 4063168.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 158489.3192461114,
+   "beta": 1.0,
+   "A": 895.2539505029854,
+   "mu": 179.236568407699,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 984784.6478775095,
+   "excess_ms_fit": 141.88818916761008,
+   "excess_ms_fit_signed": 141.88818916761008,
+   "excess_ms_empirical": 175.85789073423928,
+   "steady_ns": 178.43130389221358,
+   "steady_ci95": 0.594905712009603,
+   "index_rss_bytes": 4707198336,
+   "pages": 287304.5859375,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P1": {
+     "share": 1.0,
+     "mean": 178.43130389221358
+    }
+   },
+   "index_warmup": 984784.6478775095
+  },
+  {
+   "dataset": "wise",
+   "index": "btree",
+   "log": "traces/main/logs/wise.sorted__trace_btree__r1.log",
+   "consensus": 2630762.1053605396,
+   "cuts": {
+    "mser": 262080.0,
+    "pelt": 24772544.0,
+    "relax": 824571.8998805822,
+    "cov": 7536576.0,
+    "hw": 0.0,
+    "epoch": 8388544.0,
+    "online": 262080.0
+   },
+   "online_cut": 262080.0,
+   "online_stop": 6881216.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 14125.375446227554,
+   "beta": 0.35,
+   "A": 1715.8222797340077,
+   "mu": 849.8011286500792,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 824571.8998805822,
+   "excess_ms_fit": 121.88953897713095,
+   "excess_ms_fit_signed": 121.88953897713095,
+   "excess_ms_empirical": 149.30584214350998,
+   "steady_ns": 845.2518291840187,
+   "steady_ci95": 17.40176876912465,
+   "index_rss_bytes": 3878034624,
+   "pages": 236696.44921875,
+   "switches": [
+    {
+     "call": 917440.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 10944448.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 21036992.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.3701923076923077,
+     "mean": 854.4741626095462
+    },
+    "P1": {
+     "share": 0.6298076923076923,
+     "mean": 839.8310683155788
+    }
+   },
+   "index_warmup": 824571.8998805822
+  },
+  {
+   "dataset": "wise",
+   "index": "lipp",
+   "log": "traces/lipp/logs/wise.sorted__trace_lipp__r1.log",
+   "consensus": 9311860.000947317,
+   "cuts": {
+    "mser": 6225856.0,
+    "pelt": 28114880.0,
+    "relax": 10336792.065605074,
+    "cov": 7077824.0,
+    "hw": 8978368.0,
+    "epoch": 8388544.0,
+    "online": null
+   },
+   "online_cut": null,
+   "online_stop": null,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 1000000.0,
+   "beta": 0.7,
+   "A": 3864.9122533005266,
+   "mu": 171.89104776079134,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 10336792.065605074,
+   "excess_ms_fit": 4892.296779076628,
+   "excess_ms_fit_signed": 4892.296779076628,
+   "excess_ms_empirical": 4522.741217871088,
+   "steady_ns": 183.27863860889605,
+   "steady_ci95": 12.918329118459804,
+   "index_rss_bytes": 17844717248,
+   "pages": 1089155.10546875,
+   "switches": [
+    {
+     "call": 1441728.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 183.27863860889605
+    }
+   },
+   "index_warmup": 10336792.065605074
+  },
+  {
+   "dataset": "wise",
+   "index": "nullindex",
+   "log": "traces/main/logs/wise.sorted__trace_nullindex__r1.log",
+   "consensus": 16777152.000000007,
+   "cuts": {
+    "mser": 14942144.0,
+    "pelt": 18284480.0,
+    "relax": null,
+    "cov": 0.0,
+    "hw": 14942144.0,
+    "epoch": 16777152.0,
+    "online": 64.0
+   },
+   "online_cut": 64.0,
+   "online_stop": 6815680.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 63095734.44801943,
+   "beta": 1.0,
+   "A": -2.856296752097126,
+   "mu": 5.292981662323221,
+   "relax_significant": false,
+   "relax_at_grid_edge": false,
+   "cold_transient": false,
+   "relax_cut": null,
+   "excess_ms_fit": 0.0,
+   "excess_ms_fit_signed": 0.0,
+   "excess_ms_empirical": -10.763948913710944,
+   "steady_ns": 3.3832232666015627,
+   "steady_ci95": 0.06209916467330544,
+   "index_rss_bytes": 1884224,
+   "pages": 115.00390625,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P1": {
+     "share": 1.0,
+     "mean": 3.3832232666015627
+    }
+   },
+   "index_warmup": 0.0
+  },
+  {
+   "dataset": "wise",
+   "index": "pgm",
+   "log": "traces/main/logs/wise.sorted__trace_pgm__r1.log",
+   "consensus": 44467.97845925789,
+   "cuts": {
+    "mser": 0.0,
+    "pelt": 22478784.0,
+    "relax": 14660.695300069225,
+    "cov": 262080.0,
+    "hw": 0.0,
+    "epoch": 131008.0,
+    "online": 262080.0
+   },
+   "online_cut": 262080.0,
+   "online_stop": 2424768.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 6309.573444801937,
+   "beta": 1.0,
+   "A": 94.75858674265587,
+   "mu": 288.17712695139113,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 14660.695300069225,
+   "excess_ms_fit": 0.5978862625784224,
+   "excess_ms_fit_signed": 0.5978862625784224,
+   "excess_ms_empirical": -0.41413846489514655,
+   "steady_ns": 282.7476702238384,
+   "steady_ci95": 11.567201468919414,
+   "index_rss_bytes": 3207616640,
+   "pages": 195777.3828125,
+   "switches": [
+    {
+     "call": 22216640.0,
+     "from": "P1",
+     "to": "P0"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.26096491228070173,
+     "mean": 292.9077683136243
+    },
+    "P1": {
+     "share": 0.7390350877192983,
+     "mean": 279.1599798004422
+    }
+   },
+   "index_warmup": 14660.695300069225
+  },
+  {
+   "dataset": "wise",
+   "index": "scaleli_b",
+   "log": "traces/main/logs/wise.sorted__trace_scaleli_b__r1.log",
+   "consensus": 6714203.907671005,
+   "cuts": {
+    "mser": 10747840.0,
+    "pelt": 18546624.0,
+    "relax": 486977.6994722317,
+    "cov": 458688.0,
+    "hw": 0.0,
+    "epoch": 4194240.0,
+    "online": 131008.0
+   },
+   "online_cut": 131008.0,
+   "online_stop": 7995328.0,
+   "pelt_kind": "mixed",
+   "no_steady": false,
+   "tau": 28183.82931264455,
+   "beta": 0.5,
+   "A": 2731.820245249068,
+   "mu": 1545.4580283196701,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 486977.6994722317,
+   "excess_ms_fit": 153.98631100985304,
+   "excess_ms_fit_signed": 153.98631100985304,
+   "excess_ms_empirical": -152.26912611362886,
+   "steady_ns": 1553.2730303403348,
+   "steady_ci95": 15.313364147304,
+   "index_rss_bytes": 2305790528,
+   "pages": 140734.28515625,
+   "switches": [
+    {
+     "call": 2097088.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 7471040.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 12713920.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 18284480.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 23855040.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 29425600.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": true,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5141242937853108,
+     "mean": 1551.3876611059839
+    },
+    "P1": {
+     "share": 0.4858757062146893,
+     "mean": 1555.268014065055
+    }
+   },
+   "index_warmup": 486977.6994722317
+  },
+  {
+   "dataset": "wise",
+   "index": "scaleli_n",
+   "log": "traces/main/logs/wise.sorted__trace_scaleli_n__r1.log",
+   "consensus": 335674.63731089595,
+   "cuts": {
+    "mser": 655296.0,
+    "pelt": 26279872.0,
+    "relax": 171711.41589834925,
+    "cov": 1245120.0,
+    "hw": 0.0,
+    "epoch": 131008.0,
+    "online": 655296.0
+   },
+   "online_cut": 655296.0,
+   "online_stop": 6029248.0,
+   "pelt_kind": "no steady state",
+   "no_steady": true,
+   "tau": 79432.82347242821,
+   "beta": 1.0,
+   "A": 1545.222623284374,
+   "mu": 1540.8846145441487,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 171711.41589834925,
+   "excess_ms_fit": 122.74139586095012,
+   "excess_ms_fit_signed": 122.74139586095012,
+   "excess_ms_empirical": 125.85982895273311,
+   "steady_ns": 1528.2635699354623,
+   "steady_ci95": 20.409372451674052,
+   "index_rss_bytes": 2348421888,
+   "pages": 143336.296875,
+   "switches": [
+    {
+     "call": 32704.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 5570496.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 10878912.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 16580544.0,
+     "from": "P0",
+     "to": "P1"
+    },
+    {
+     "call": 22216640.0,
+     "from": "P1",
+     "to": "P0"
+    },
+    {
+     "call": 27590592.0,
+     "from": "P0",
+     "to": "P1"
+    }
+   ],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 0.5521064301552107,
+     "mean": 1523.242396281905
+    },
+    "P1": {
+     "share": 0.44789356984478934,
+     "mean": 1534.453036468808
+    }
+   },
+   "index_warmup": 171711.41589834925
+  },
+  {
+   "dataset": "wise",
+   "index": "splice",
+   "log": "traces/main/logs/wise.sorted__trace_splice__r1.log",
+   "consensus": 980791.1189657414,
+   "cuts": {
+    "mser": 917440.0,
+    "pelt": 720832.0,
+    "relax": 1265327.3322688204,
+    "cov": 917440.0,
+    "hw": 0.0,
+    "epoch": 1048512.0,
+    "online": 720832.0
+   },
+   "online_cut": 720832.0,
+   "online_stop": 6946752.0,
+   "pelt_kind": "warmup",
+   "no_steady": false,
+   "tau": 354813.3892335753,
+   "beta": 1.0,
+   "A": 70.1557520695253,
+   "mu": 140.14967703204394,
+   "relax_significant": true,
+   "relax_at_grid_edge": false,
+   "cold_transient": true,
+   "relax_cut": 1265327.3322688204,
+   "excess_ms_fit": 24.89220016601869,
+   "excess_ms_fit_signed": 24.89220016601869,
+   "excess_ms_empirical": 23.62964095696496,
+   "steady_ns": 140.06126196675712,
+   "steady_ci95": 0.7949527196155785,
+   "index_rss_bytes": 4387579584,
+   "pages": 267796.60546875,
+   "switches": [],
+   "cut_at_switch": false,
+   "steady_by_class": {
+    "P0": {
+     "share": 1.0,
+     "mean": 140.06126196675712
+    }
+   },
+   "index_warmup": 1265327.3322688204
+  }
+ ],
+ "per_index": {
+  "nullindex": {
+   "datasets": 10,
+   "max_consensus": 16777152.000000007,
+   "max_consensus_dataset": "wise",
+   "max_consensus_no_switch": 16777152.000000007,
+   "max_index_warmup": 0.0,
+   "max_index_warmup_dataset": "wise",
+   "cold_transients": 0,
+   "max_online_stop": 6815680.0,
+   "online_never_sure": 0,
+   "median_tau": null,
+   "touches_per_lookup_k": null,
+   "tau_vs_pages_fit": null,
+   "excess_ms_fit_median": 0.0,
+   "covered_by_20M": true,
+   "no_steady_runs": 6
+  },
+  "splice": {
+   "datasets": 10,
+   "max_consensus": 12362508.689157797,
+   "max_consensus_dataset": "osm",
+   "max_consensus_no_switch": 12362508.689157797,
+   "max_index_warmup": 2151176.2293559015,
+   "max_index_warmup_dataset": "genome",
+   "cold_transients": 7,
+   "max_online_stop": 19201984.0,
+   "online_never_sure": 1,
+   "median_tau": 89125.0938133746,
+   "touches_per_lookup_k": 3.014837157915314,
+   "tau_vs_pages_fit": null,
+   "excess_ms_fit_median": 32.91928942814406,
+   "covered_by_20M": true,
+   "no_steady_runs": 7
+  },
+  "pgm": {
+   "datasets": 10,
+   "max_consensus": 16777152.000000007,
+   "max_consensus_dataset": "osm",
+   "max_consensus_no_switch": 9495202.721559804,
+   "max_index_warmup": 1624143.1895324457,
+   "max_index_warmup_dataset": "history",
+   "cold_transients": 3,
+   "max_online_stop": 28245952.0,
+   "online_never_sure": 0,
+   "median_tau": 100000.0,
+   "touches_per_lookup_k": 1.958343828125,
+   "tau_vs_pages_fit": null,
+   "excess_ms_fit_median": 0.0,
+   "covered_by_20M": true,
+   "no_steady_runs": 6
+  },
+  "btree": {
+   "datasets": 10,
+   "max_consensus": 3477791.4259340176,
+   "max_consensus_dataset": "planet",
+   "max_consensus_no_switch": 3477791.4259340176,
+   "max_index_warmup": 824571.8998805822,
+   "max_index_warmup_dataset": "wise",
+   "cold_transients": 9,
+   "max_online_stop": 17825728.0,
+   "online_never_sure": 1,
+   "median_tau": 5623.413251903491,
+   "touches_per_lookup_k": 42.09124290214305,
+   "tau_vs_pages_fit": null,
+   "excess_ms_fit_median": 46.167469881384086,
+   "covered_by_20M": true,
+   "no_steady_runs": 8
+  },
+  "alex": {
+   "datasets": 10,
+   "max_consensus": 15833087.955732957,
+   "max_consensus_dataset": "fb",
+   "max_consensus_no_switch": 8388543.999999993,
+   "max_index_warmup": 1368532.9345145437,
+   "max_index_warmup_dataset": "history",
+   "cold_transients": 10,
+   "max_online_stop": 27328448.0,
+   "online_never_sure": 3,
+   "median_tau": 188677.0862503901,
+   "touches_per_lookup_k": 1.5910392799730046,
+   "tau_vs_pages_fit": null,
+   "excess_ms_fit_median": 174.71359728672002,
+   "covered_by_20M": true,
+   "no_steady_runs": 8
+  },
+  "lipp": {
+   "datasets": 7,
+   "max_consensus": 10059658.636745391,
+   "max_consensus_dataset": "history",
+   "max_consensus_no_switch": 10059658.636745391,
+   "max_index_warmup": 10336792.065605074,
+   "max_index_warmup_dataset": "wise",
+   "cold_transients": 7,
+   "max_online_stop": 16646080.0,
+   "online_never_sure": 3,
+   "median_tau": 630957.3444801943,
+   "touches_per_lookup_k": 1.8304045390625,
+   "tau_vs_pages_fit": {
+    "slope": 0.49037869132718775,
+    "n": 7
+   },
+   "excess_ms_fit_median": 4892.296779076628,
+   "covered_by_20M": true,
+   "no_steady_runs": 4
+  },
+  "scaleli_b": {
+   "datasets": 10,
+   "max_consensus": 6714203.907671005,
+   "max_consensus_dataset": "wise",
+   "max_consensus_no_switch": 1673830.1459475486,
+   "max_index_warmup": 728879.437552504,
+   "max_index_warmup_dataset": "stack",
+   "cold_transients": 10,
+   "max_online_stop": 7995328.0,
+   "online_never_sure": 0,
+   "median_tau": 33552.05776252069,
+   "touches_per_lookup_k": 3.9442043419116537,
+   "tau_vs_pages_fit": null,
+   "excess_ms_fit_median": 149.293868191257,
+   "covered_by_20M": true,
+   "no_steady_runs": 6
+  },
+  "scaleli_n": {
+   "datasets": 10,
+   "max_consensus": 7034374.046666744,
+   "max_consensus_dataset": "fb",
+   "max_consensus_no_switch": 3057622.835523205,
+   "max_index_warmup": 1049479.423371585,
+   "max_index_warmup_dataset": "planet",
+   "cold_transients": 10,
+   "max_online_stop": 17498048.0,
+   "online_never_sure": 0,
+   "median_tau": 47393.5412889118,
+   "touches_per_lookup_k": 3.157736255473703,
+   "tau_vs_pages_fit": null,
+   "excess_ms_fit_median": 151.40680036513135,
+   "covered_by_20M": true,
+   "no_steady_runs": 8
+  }
+ },
+ "protocol_w": 20000000,
+ "page": 16384
+}

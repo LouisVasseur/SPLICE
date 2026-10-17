@@ -1,0 +1,9 @@
+repeat	dataset	index	exit_code	wall_s	log	load1	busy
+1	fb	trace_lipp	0	178.7	logs/fb__trace_lipp__r1.log	3.17	0
+1	covid.sorted	trace_lipp	0	41.7	logs/covid.sorted__trace_lipp__r1.log	8.71	0
+1	genome.sorted	trace_lipp	0	222.8	logs/genome.sorted__trace_lipp__r1.log	5.49	0
+1	history.sorted	trace_lipp	0	60.7	logs/history.sorted__trace_lipp__r1.log	5.03	0
+1	libio.sorted	trace_lipp	0	52.0	logs/libio.sorted__trace_lipp__r1.log	5.38	0
+1	planet.sorted	trace_lipp	0	159.8	logs/planet.sorted__trace_lipp__r1.log	6.11	0
+1	stack.sorted	trace_lipp	0	44.0	logs/stack.sorted__trace_lipp__r1.log	5.74	0
+1	wise.sorted	trace_lipp	0	62.9	logs/wise.sorted__trace_lipp__r1.log	4.64	0

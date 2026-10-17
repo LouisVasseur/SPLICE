@@ -1,0 +1,1 @@
+taskpolicy -c background /usr/bin/python3 ../../scripts/warmup_detect.py       406.35s user 19.47s system 91% cpu 7:47.87 total

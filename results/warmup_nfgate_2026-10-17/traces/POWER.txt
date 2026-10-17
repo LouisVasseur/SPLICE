@@ -1,0 +1,8 @@
+POWER=battery-lowpower
+# power gate: polled pmset every 60 s from 20:08 to 20:53 CEST 2026-10-17 (45 min); always 'Battery Power' with powermode 1, so the batches run with MAC_ALLOW_BATTERY=1
+2026-10-17 20:53:42 r1_main start: 'Battery Power' powermode=1 87%; discharging;
+2026-10-17 20:54 r1_main aborted after a few seconds (trace_lipp was in the index list by mistake); lane restored; restarted below
+2026-10-17 20:54:04 r1_main start: 'Battery Power' powermode=1 87%; discharging;
+2026-10-17 22:13:35 r1_main end rc=0 wall=4771s: 'Battery Power' powermode=1 67%; discharging;
+2026-10-17 22:13:50 r1_lipp start: 'Battery Power' powermode=1 67%; discharging;
+2026-10-17 22:27:35 r1_lipp end rc=1 wall=825s: 'Battery Power' powermode=1 63%; discharging;

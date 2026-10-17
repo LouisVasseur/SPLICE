@@ -1,0 +1,40 @@
+cmd: OMP_NUM_THREADS=1 GRE_TRACE=geo:64:65536 GRE_TRACE_CPU=1 /Users/louisvasseur/Downloads/SPLICE-exp/results/warmup_nfgate_2026-10-17/traces/lipp/bin/microbench --keys_file=/Users/louisvasseur/Downloads/SPLICE-exp/data/external/gre/covid.sorted --keys_file_type=binary --read=1 --insert=0 --operations_num=30000000 --table_size=-1 --init_table_ratio=1 --thread_num=1 --memory --index=trace_lipp --output_path=/Users/louisvasseur/Downloads/SPLICE-exp/results/warmup_nfgate_2026-10-17/traces/lipp/gre_out.csv
+keys_file = /Users/louisvasseur/Downloads/SPLICE-exp/data/external/gre/covid.sorted
+keys_file_type = binary
+read = 1
+insert = 0
+delete = 0
+update = 0
+scan = 0
+scan_num = 100
+operations_num = 30000000
+table_size = -1
+init_table_ratio = 1
+del_table_ratio = 0.5
+thread_num = 1
+index = trace_lipp
+sample_distribution = uniform
+latency_sample = 0
+latency_sample_ratio = 0.01
+error_bound = 64
+output_path = /Users/louisvasseur/Downloads/SPLICE-exp/results/warmup_nfgate_2026-10-17/traces/lipp/gre_out.csv
+seed = 1866
+memory = 1
+dataset_statistic = 0
+data_shift = 0
+gre_lite_patch: warmup_num=0 pin_core=-1
+[micro] Read:Insert:Update:Scan:Delete= 1:0:0:0:0
+Reading data from file.
+/Users/louisvasseur/Downloads/SPLICE-exp/data/external/gre/covid.sorted
+200000000
+Table size is 200000000, Init table size is 200000000
+1366450640356970496 1418517683520348162 1393328054890598402 1428062370522296325 1382086688235790344 1362720825695236098 1399902777208410113 1412426035619115020 1421383208902565892 1379844622495707140 
+prepare init keys.
+table_size: 200000000
+init_keys.size(): 200000000
+sample keys.
+generate operations.
+operations.size(): 30000000
+rss_before_build_bytes: 6884456000
+bulk loading
+RT_ASSERT Error at src/benchmark/./../competitor/./lipp/./src/src/core/lipp.h:490, `isfinite(node->model.a)`

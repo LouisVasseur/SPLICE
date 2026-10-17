@@ -1,0 +1,26 @@
+GRE e807edcef51df6732f07f94d4c797fb3897519ba, trimmed by SPLICE gre_lite.sh: competitor.h and CMakeLists.txt replaced (originals *.full)
+ f4365a73f910f43a71ee1da7924cd51219b42864 src/competitor/alex/src (f4365a7)
+ 808372ded6b8c5a6d3a1741090510b79042f2aa7 src/competitor/artsync/src (808372d)
+ eff5e36975b62327755b2e05fd19c882ea6b4b0c src/competitor/btree/src (stx-btree-0.9-18-geff5e36)
+ a1189c3956ebfef1335d252f8e13b91eb99fe8cf src/competitor/lipp/src (heads/main)
+ aac467887be5ba354ea2d23f7bc51f6e212f0f04 src/competitor/pgm/src (aac4678)
+ALEX_USE_LZCNT=0 (1 = as shipped)
+edits (each from the pristine file):
+  src/benchmark/benchmark.h: gre_lite_patch.h probes, --warmup_num, --pin_core; diff cksum 2814235834 4561
+  src/benchmark/gre_lite_patch.h: SPLICE, cksum 460516429 3661
+  src/competitor/sortedarray/sortedarray.h: SPLICE, cksum 2259561244 3414
+  src/competitor/scaleli/scaleli_gre.cpp: SPLICE, cksum 395299753 9989
+  src/competitor/scaleli/scaleli_gre.hpp: SPLICE, cksum 393161503 3333
+  src/competitor/scaleli/scaleli_interface.h: SPLICE, cksum 3120948210 2792
+  SCALE-LI headers /Users/louisvasseur/Downloads/SPLICE-exp/src/scaleli: cksum 3881524655 149640
+  src/competitor/splice/null_interface.h: SPLICE, cksum 1862962735 1394
+  src/competitor/splice/splice_gre.cpp: SPLICE, cksum 2050526163 4732
+  src/competitor/splice/splice_gre.hpp: SPLICE, cksum 397141586 2101
+  src/competitor/splice/splice_interface.h: SPLICE, cksum 379744709 3883
+  src/competitor/splice/trace_interface.h: SPLICE, cksum 829081719 7640
+  SPLICE headers /Users/louisvasseur/Downloads/SPLICE-exp/src/splice: cksum 3520207029 102934
+  SPLICE bfe85acaa0318b79909ac5d53bfc8ece862779b1 (0 uncommitted paths in SPLICE)
+  src/competitor/competitor.h: trimmed + sortedarray, cksum 3664905971 4988
+  CMakeLists.txt: trimmed, cksum 389274962 2635
+Apple clang version 17.0.0 (clang-1700.0.13.5)
+edit-only: not built

@@ -1185,7 +1185,8 @@ def plot_overview(plt, groups, path, eps):
         _phase_axes(ax, runs[0]['start'], runs[0]['n'], [r['y'] for r in runs], g['pooled'],
                     g['pooled']['info']['relax'], xmin, xmax, i == 0)
         st = g['pooled'].get('steady', {})
-        ax.set_title('%s: warm after %s, steady %.1f ns' % (key[1].replace('trace_', ''),
+        # the dataset too: an overview of several OUTDIRs mixes datasets, and the panel is its only label
+        ax.set_title('%s on %s: warm after %s, steady %.1f ns' % (key[1].replace('trace_', ''), key[0],
                      _fmt_calls(g['pooled']['consensus']), g['across'].get('mean', st.get('mean', float('nan')))),
                      fontsize=9, loc='left', color=INK)
         if i // cols == rows - 1 or (i + cols) >= k:
