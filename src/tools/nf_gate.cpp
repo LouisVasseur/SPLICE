@@ -149,15 +149,18 @@ std::size_t root_count(double y, std::size_t n, std::size_t t) {
     else { std::size_t hi = p, step = 1, lo = p > step ? p - step : 0; while (lo > 0 && !ok(lo)) { hi = lo; step *= 2; lo = p > step ? p - step : 0; } (void)last_true(lo, hi); }
     return c;
 }
-// Root proxy: least-squares line from feature to region index fitted on the sample (fit_root fits the fences), then
-// the real exponential + binary correction counted per sample key. Returns expected root probes per lookup.
-double root_proxy(std::span<const double> f, std::span<const std::size_t> rank, std::size_t region_keys, std::size_t regions) {
-    long double mx = 0, my = 0, xx = 0, xy = 0; const std::size_t m = f.size();
-    for (std::size_t i = 0; i < m; ++i) { const long double x = f[i], y = (long double)(rank[i] / region_keys), k = (long double)(i + 1);
+// Root proxy: fit_root's least-squares line from feature to region index, fitted on q evenly spaced region fences
+// (first key of region j, target j) as the build does, then the real exponential + binary correction counted for each
+// sample key. Fences, not sample keys, carry the fit: fb's 21 top outliers sit inside its last region, and a fit
+// through them (the sample's last key) more than doubles the predicted root probes. Returns probes per lookup.
+double root_proxy(std::span<const double> ff, std::span<const std::size_t> fj, std::span<const double> f, std::span<const std::size_t> rank,
+                  std::size_t region_keys, std::size_t regions) {
+    long double mx = 0, my = 0, xx = 0, xy = 0;
+    for (std::size_t i = 0; i < ff.size(); ++i) { const long double x = ff[i], y = (long double)fj[i], k = (long double)(i + 1);
         const long double dx = x - mx, dy = y - my; mx += dx / k; my += dy / k; xx += dx * (x - mx); xy += dx * (y - my); }
     const long double sl = xx > 0 ? xy / xx : 0, ic = my - sl * mx; std::size_t c = 0;
-    for (std::size_t i = 0; i < m; ++i) c += root_count(double(sl * f[i] + ic), regions, rank[i] / region_keys);
-    return double(c) / double(m);
+    for (std::size_t i = 0; i < f.size(); ++i) c += root_count(double(sl * f[i] + ic), regions, rank[i] / region_keys);
+    return double(c) / double(f.size());
 }
 double binary_root(std::size_t n) { return std::ceil(std::log2(double(std::max<std::size_t>(n, 2)))); }
 
@@ -214,7 +217,12 @@ std::string gate_json(std::span<const Key> keys, std::size_t m, const Config& cb
       o << ",\"w1\":{\"raw\":" << w1r << ",\"flow\":" << w1f << ",\"diff\":" << w1r - w1f << "},\"ks\":{\"raw\":" << ksr << ",\"flow\":" << ksf << ",\"diff\":" << ksr - ksf << "},\"w1ks_ns\":" << tr.ns + tf.ns; }
     // (e2) root proxy: expected root probes raw vs flow vs binary at this case's region count; the build keeps the cheapest
     const std::size_t regions = (n + region_keys - 1) / region_keys;
-    const auto rr = timed([&] { return root_proxy(x, rank, region_keys, regions); }), rf = timed([&] { return root_proxy(z, rank, region_keys, regions); });
+    const std::size_t q = std::max<std::size_t>(2, std::min(m, regions));
+    std::vector<std::size_t> fj(q); std::vector<Key> fk(q); std::vector<double> fx(q), fz(q);
+    const auto rr = timed([&] {
+        for (std::size_t i = 0; i < q; ++i) { fj[i] = std::size_t((unsigned __int128)i * (regions - 1) / (q - 1)); fk[i] = keys[fj[i] * region_keys]; fx[i] = double(fk[i] - s[0]); }
+        return root_proxy(fx, fj, x, rank, region_keys, regions); });
+    const auto rf = timed([&] { for (std::size_t i = 0; i < q; ++i) fz[i] = (*cn.flow)(fk[i]); return root_proxy(fz, fj, z, rank, region_keys, regions); });
     const double bin = binary_root(regions), root_b = std::min(rr.v, bin), root_n = std::min(root_b, rf.v);
     o << ",\"root_proxy\":{\"raw\":" << rr.v << ",\"flow\":" << rf.v << ",\"binary\":" << bin << ",\"B\":" << root_b << ",\"N\":" << root_n << ",\"ns\":" << rr.ns + rf.ns << "}";
     // (e3) mini build: contiguous region-size chunks at evenly spaced offsets (m keys in all), each rebuilt as a real
