@@ -7,6 +7,8 @@ into the clone's `src/competitor/scaleli/` and `src/competitor/splice/`, registe
 `./run.sh setup gre` runs the right one for the machine; `./run.sh smoke` checks every registered index.
 Two families live here: SCALE-LI as eight cells (`scaleli_*`) and SPLICE-H, the read-only index of `src/splice/`
 ([DESIGN.md](DESIGN.md)), as `splice` and `splice_thp`, plus the `trace_<index>` chunk timer and `nullindex`.
+`trace_scaleli_b` and `trace_scaleli_n` time the cells B and N (N reads `SCALELI_FLOW`, which `gre_run.sh` sets as for
+`scaleli_n`): the warm-up of SCALE-LI with and without the flow, for deciding per dataset whether the flow pays.
 
 ## Files (`src/gre/`)
 

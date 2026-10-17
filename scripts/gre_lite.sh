@@ -8,9 +8,10 @@
 # run_ba.py (main@ca8d80e:experimental/scaleli/results/aidb_ba) plus the joint G+T+V root, from src/gre/ (docs/GRE.md "SCALE-LI cells"). They
 # read SCALELI_FLOW (per-dataset flow file, cells _n _nc _j _jg0) and SCALELI_BUILD_THREADS (default 16).
 # SPLICE-H: splice and splice_thp (the same layout, plus MADV_HUGEPAGE on the arena), the read-only index of
-# src/gre/ (docs/DESIGN.md), and trace_<index> (splice, splice_thp, lipp, pgm, alex, btree,
-# sortedarray, nullindex, artunsync), which wrap an index with a chunk timer (GRE_TRACE: every 1M calls by default for
+# src/gre/ (docs/DESIGN.md), and trace_<index> (splice, splice_thp, lipp, pgm, alex, btree, sortedarray, nullindex,
+# scaleli_b, scaleli_n, artunsync), which wrap an index with a chunk timer (GRE_TRACE: every 1M calls by default for
 # scripts/gre_transient.py, or log-spaced chunks for scripts/warmup_detect.py), never for headline numbers.
+# trace_scaleli_n reads SCALELI_FLOW like scaleli_n; the facade call is out of line, so the timer adds no inlining gap.
 # The splice ones read SPLICE_ARGS (per-dataset plan, results/splice_h/args) and SPLICE_BUILD_THREADS (default 16).
 # nullindex: an O(1) get() that touches no memory, the harness baseline subtracted in docs/PROTOCOL.md 5b's perf check.
 # scaleli_splice is SCALE-LI's joint-root cell Jg0, not the SPLICE index (splice).
@@ -154,9 +155,11 @@ indexInterface<KEY_TYPE, PAYLOAD_TYPE> *get_index(std::string index_type) {
   else if (index_type == "trace_btree") index = new TraceInterface<KEY_TYPE, PAYLOAD_TYPE, BTreeInterface<KEY_TYPE, PAYLOAD_TYPE> >(new BTreeInterface<KEY_TYPE, PAYLOAD_TYPE>);
   else if (index_type == "trace_sortedarray") index = new TraceInterface<KEY_TYPE, PAYLOAD_TYPE, SortedArrayInterface<KEY_TYPE, PAYLOAD_TYPE> >(new SortedArrayInterface<KEY_TYPE, PAYLOAD_TYPE>);
   else if (index_type == "trace_nullindex") index = new TraceInterface<KEY_TYPE, PAYLOAD_TYPE, NullInterface<KEY_TYPE, PAYLOAD_TYPE> >(new NullInterface<KEY_TYPE, PAYLOAD_TYPE>);
+  else if (index_type == "trace_scaleli_b") index = new TraceInterface<KEY_TYPE, PAYLOAD_TYPE, ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE> >(new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("B"));
+  else if (index_type == "trace_scaleli_n") index = new TraceInterface<KEY_TYPE, PAYLOAD_TYPE, ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE> >(new ScaleliInterface<KEY_TYPE, PAYLOAD_TYPE>("N"));
   else if (index_type == "trace_artunsync") index = new TraceInterface<KEY_TYPE, PAYLOAD_TYPE, ARTUnsynchronizedInterface<KEY_TYPE, PAYLOAD_TYPE> >(new ARTUnsynchronizedInterface<KEY_TYPE, PAYLOAD_TYPE>);
   else if (index_type == "nullindex") index = new NullInterface<KEY_TYPE, PAYLOAD_TYPE>;
-  else { std::cout << "Could not find a matching index called " << index_type << " (gre_lite: alex lipp pgm btree artunsync sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice splice splice_thp trace_splice trace_lipp trace_splice_thp trace_pgm trace_alex trace_btree trace_sortedarray trace_nullindex trace_artunsync nullindex).\n"; exit(0); }
+  else { std::cout << "Could not find a matching index called " << index_type << " (gre_lite: alex lipp pgm btree artunsync sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice splice splice_thp trace_splice trace_lipp trace_splice_thp trace_pgm trace_alex trace_btree trace_sortedarray trace_nullindex trace_scaleli_b trace_scaleli_n trace_artunsync nullindex).\n"; exit(0); }
   return index;
 }
 EOF
@@ -524,4 +527,4 @@ fi
 } > build/gre_lite_build.txt
 cat build/gre_lite_build.txt
 if [ "$EDIT_ONLY" = 1 ]; then echo "edited: $DEST (not built)"
-else echo "built: $DEST/build/microbench   (indexes: alex lipp pgm btree artunsync sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice splice splice_thp trace_splice trace_lipp trace_splice_thp trace_pgm trace_alex trace_btree trace_sortedarray trace_nullindex trace_artunsync nullindex)"; fi
+else echo "built: $DEST/build/microbench   (indexes: alex lipp pgm btree artunsync sortedarray scaleli_b scaleli_n scaleli_c scaleli_cr scaleli_nc scaleli_j scaleli_jg0 scaleli_splice splice splice_thp trace_splice trace_lipp trace_splice_thp trace_pgm trace_alex trace_btree trace_sortedarray trace_nullindex trace_scaleli_b trace_scaleli_n trace_artunsync nullindex)"; fi

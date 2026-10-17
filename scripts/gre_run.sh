@@ -5,7 +5,7 @@
 #   gre_run.sh OUTDIR --datasets fb,osm --indexes btree,alex,pgm,artunsync,lipp,sortedarray
 #       [--gre DIR] [--data DIR] [--repeats 3] [--ops 100000000] [--warmup 0] [--init-ratio 1] [--pin -1]
 #       [--table-size -1] [--read 1 --insert 0] [--resume] [-- extra microbench flags]
-#       [--flows DIR] [--build-threads 16]   (SCALE-LI cells scaleli_b _n _c _nc _j _jg0, src/gre/)
+#       [--flows DIR] [--build-threads 16]   (SCALE-LI cells scaleli_b _n _c _nc _j _jg0, trace_scaleli_b _n, src/gre/)
 #       [--splice-plan DIR|none] [--splice-arm fast|compact]   (SPLICE-H: splice splice_thp nullindex trace_<index>)
 #   defaults: --gre /tmp/louisvasseur/GRE, --data /tmp/louisvasseur/SPLICE/data/external/gre
 #             --splice-plan results/splice_h/args and --flows data/flows of this checkout, --splice-arm fast
@@ -144,8 +144,8 @@ extra=${EXTRA[*]+${EXTRA[*]}}"
 # SCALE-LI cells: flow file per dataset with run_ba.py's PERIOD; recorded only when a scaleli_* index runs, so
 # OUTDIRs of the baseline indexes resume as before.
 period() { case $1 in fb|osm|planet) echo s512;; *) echo s64;; esac; }
-flow_cell() { case $1 in scaleli_n|scaleli_nc|scaleli_j|scaleli_jg0|scaleli_splice) return 0;; *) return 1;; esac; }
-case ",$INDEXES," in *,scaleli_*) CONFIG="$CONFIG
+flow_cell() { case $1 in scaleli_n|scaleli_nc|scaleli_j|scaleli_jg0|scaleli_splice|trace_scaleli_n) return 0;; *) return 1;; esac; }
+case ",$INDEXES," in *,scaleli_*|*,trace_scaleli_*) CONFIG="$CONFIG
 flows=$FLOWS
 build_threads=$BUILD_THREADS
 scaleli_args=${SCALELI_ARGS-}";; esac
@@ -303,7 +303,7 @@ check_run() {
   [ "$READ_ONLY" != 1 ] || [ "$sr" = "$OPS" ] || bad="${bad:+$bad, }success_read ${sr:-missing} != $OPS"
   [ "$WARMUP" = 0 ] || [ "$wsr" = "$WARMUP" ] || bad="${bad:+$bad, }warmup_success_read ${wsr:-missing} != $WARMUP"
   [ "$PIN" = -1 ] || [ "$pc" = "$PIN" ] || bad="${bad:+$bad, }not pinned to core $PIN"
-  case $log in *__scaleli_*)  # the facade prints scaleli_cell after bulk_load, scaleli_error on any failure
+  case $log in *__scaleli_*|*__trace_scaleli_*)  # the facade prints scaleli_cell after bulk_load, scaleli_error on any failure
     grep -q '^scaleli_cell: ' "$log" || bad="${bad:+$bad, }no scaleli_cell line"
     ! grep -q 'scaleli_error' "$log" || bad="${bad:+$bad, }scaleli_error";; esac
   case $log in *__splice__r*|*__splice_thp__r*|*__trace_splice__r*|*__trace_splice_thp__r*)  # splice_index after bulk_load, splice_error on failure
@@ -339,7 +339,7 @@ for r in $(seq 1 "$REPEATS"); do
            --operations_num="$OPS" --table_size="$TABLE_SIZE" --init_table_ratio="$INIT_RATIO" --thread_num=1 --memory
            --index="$idx" --output_path="$OUT/gre_out.csv" ${PATCH[@]+"${PATCH[@]}"} ${EXTRA[@]+"${EXTRA[@]}"})
       runenv=(OMP_NUM_THREADS=1)
-      case $idx in scaleli_*) runenv+=(SCALELI_BUILD_THREADS="$BUILD_THREADS");; esac
+      case $idx in scaleli_*|trace_scaleli_*) runenv+=(SCALELI_BUILD_THREADS="$BUILD_THREADS");; esac
       if flow_cell "$idx"; then runenv+=(SCALELI_FLOW="$FLOWS/${ds}_$(period "$ds")_t2000.txt"); fi
       if splice_idx "$idx"; then
         sa=${SPLICE_ARGS-}
