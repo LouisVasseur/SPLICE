@@ -27,6 +27,9 @@ add_test(NAME scaleli_core COMMAND scaleli_tests)
 # tests. Threads come with scaleli.
 add_executable(scaleli_hardness src/tools/hardness.cpp)
 target_link_libraries(scaleli_hardness PRIVATE scaleli)
+# NF gate (src/tools/nf_gate.cpp): B vs N exact counters on a key set, and the sample scores that try to predict it.
+add_executable(nf_gate src/tools/nf_gate.cpp)
+target_link_libraries(nf_gate PRIVATE scaleli)
 add_executable(scaleli_hardness_tests src/tests/test_hardness.cpp)
 target_link_libraries(scaleli_hardness_tests PRIVATE scaleli)
 set(SCALELI_HARDNESS_FIXTURE "${CMAKE_CURRENT_SOURCE_DIR}/data/dense_sparse_fixture_uint64")
