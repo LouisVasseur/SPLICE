@@ -271,8 +271,10 @@ enlarging the warm-up.
 cache/TLB/page-fault transient of 1e3-1e6 lookups is resolved instead of hiding inside the first 1M chunk.
 `scripts/warmup_detect.py` (numpy; matplotlib for `--plot`; or copy the OUTDIR to the Mac) finds where each run stops
 drifting (MSER, PELT changepoints, a stretched-exponential relaxation fit, doubling epochs; windowed CoV and
-Heidelberger-Welch as baselines), the steady mean with batch-means and across-run intervals, the cold-start excess
-time, and the steady-phase jitter (robust CoV, lag-1, two-state mixture). `trace_nullindex` is the harness alone.
+Heidelberger-Welch as baselines; and `online`, a streaming detector that reads the chunks in order and stops as
+soon as a windowed log-log slope and the windows' variance ratio say stationary, reported with the lookups it needed
+to see), the steady mean with batch-means and across-run intervals, the cold-start excess time, and the steady-phase
+jitter (robust CoV, lag-1, two-state mixture). `trace_nullindex` is the harness alone.
 
 ```bash
 cd ~/SPLICE; for k in 1 2 3; do GRE_TRACE=geo:64:65536 ./run.sh bench $R/trace_w0 --datasets fb,osm --indexes trace_nullindex,trace_splice,trace_lipp,trace_pgm,trace_alex,trace_btree,trace_sortedarray,trace_artunsync --warmup 0 --ops 120000000 --pin 2 --repeats $k --resume --splice-plan $P >> $R/trace_w0.out 2>&1; done

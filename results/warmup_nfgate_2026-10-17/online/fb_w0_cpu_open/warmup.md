@@ -1,0 +1,8 @@
+Warm-up detection (eps = 0.01; calls = lookups since the first get(); cut = first call of the steady phase)
+
+| dataset | index | runs | mser | pelt | relax | cov | hw | epoch | online | online stop | consensus | tau (calls) | beta | excess (ms) | steady ns/lookup | CI95 across runs | between-run share | R-hat | PELT kind | robust CoV | lag-1 | two states (fast / slow ns, slow share) | envelope: warm after | envelope: steady ns | steady chunks by core (share, mean ns, slow share) | migrations |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fb | trace_lipp | 3 | 6.16M | 5.44M | 10.2M | 21.9M | 12M | 4.19M | 5.64M | 50.9M | 10.6M | 5.01e+05 | 0.50 | 7752.64 | 211.22 | 57.32 | 0.91 | 1.049 | warmup | 37.4% | 0.90 | 150 / 251, 54% | 11.6M | 177.06 | P1 51% 210 (slow 51%); P0 49% 212 (slow 54%) | cpu 47%, class 17% |
+| fb | trace_nullindex | 3 | 0 | 0 | never | 23.1M | 36M | 0 | 0 | 2.1M | 0 | 3.16e+09 | 1.00 | 0.00 | 3.20 | 0.68 | 0.95 | 1.137 | flat | 16.7% | 0.58 | 3 / 3, 78% | 0 | 2.88 | P0 89% 3 (slow 57%); P1 11% 4 (slow 100%) | cpu 1%, class 1% |
+| fb | trace_pgm | 3 | 0 | 0 | 0 | 262K | 0 | 0 | 0 | 27.1M | 0 | 3.16e+09 | 0.70 | 0.00 | 358.27 | 30.36 | 0.79 | 1.009 | flat | 24.6% | 0.88 | 286 / 419, 53% | 1.6K | 314.47 | P1 50% 360 (slow 54%); P0 50% 356 (slow 52%) | cpu 55%, class 19% |
+| fb | trace_splice | 3 | 197K | 131K | 289K | 2.42M | 24M | 262K | 197K | 28.6M | 250K | 1.26e+05 | 1.00 | 74.47 | 350.39 | 43.49 | 0.86 | 1.025 | warmup | 19.5% | 0.89 | 280 / 426, 50% | 65.5K | 300.93 | P0 51% 350 (slow 57%); P1 49% 351 (slow 57%) | cpu 53%, class 17% |

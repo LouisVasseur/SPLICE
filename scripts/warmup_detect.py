@@ -3,7 +3,7 @@
 
     python3 warmup_detect.py analyze OUTDIR [OUTDIR ...] [--eps 0.01] [--json FILE] [--plot DIR]
     python3 warmup_detect.py pair OUTDIR_A OUTDIR_B [--labels A,B] [--json FILE] [--plot DIR]
-    python3 warmup_detect.py synth [--reps 40] [--seed 1] [--json FILE] [--plot DIR]
+    python3 warmup_detect.py synth [--reps 40] [--seed 1] [--jobs 1] [--json FILE] [--plot DIR]
 
 A trace has one point per chunk boundary (src/gre/trace_interface.h): chunk k covers calls
 [c_k, c_k+1) and takes t_k+1 - t_k ns, so y_k = (t_k+1 - t_k) / (c_k+1 - c_k) is its mean latency in ns per lookup.
@@ -29,6 +29,14 @@ Six detectors each return the call at which the steady phase starts:
          rest (spectral density at 0 from batch means) accepts stationarity at 5%.
   epoch  doubling epochs [2^j F, 2^(j+1) F) calls: warm once every later epoch's mean is within max(eps, 2 SE) of
          the reference (the chunks in the second half of the run).
+  online streaming (OnlineWarmup): reads the chunks in order and stops as soon as it is sure, with no look-ahead and
+         O(window) work per chunk. Over the window [t/R^2, t] it fits ln y against log10(calls): the slope is the
+         derivative per decade, warm needs |slope| + Z SE <= C min(eps_eff, SMAX) (an equivalence test; SE from the
+         noise model, inflated for residual chi^2 and autocorrelation); and the residual variances of the window's
+         two halves, standardized by the noise model, must agree (F-type ratio). The two-component noise model and
+         so eps_eff are learned from the chunks seen so far. After M passing chunks the cut is walked back over the
+         chunks already seen. Reported with the lookups it had to see ('online stop'); not in the consensus: it
+         cannot see a shift that comes after a long flat stretch (synth: step, late slowdown).
 The consensus cut is the median, in log space, of the cuts of mser, pelt, relax and epoch (cov and hw are baselines:
 the synthetic validation shows them missing early transients). Steady state: the calls-weighted mean after the
 consensus cut, with a 95% interval from 20 batch means; across runs, the mean of run means with a t interval and the
@@ -37,7 +45,8 @@ The trace wrapper adds a counter to every get(), so these runs are never headlin
 
 synth generates series with the real chunk schedule and known warm-up ends (flat, exponential, stretched, step,
 late slowdown) under two noise levels and scores every detector: |log10 error| of the cut and the bias that the
-cut leaves in the steady mean. Needs numpy; --plot needs matplotlib.
+cut leaves in the steady mean, plus the lookups the online detector read before it stopped (synth_online.png).
+Needs numpy; --plot needs matplotlib.
 """
 import argparse
 import json
@@ -53,7 +62,7 @@ MIN_SEG = 3           # PELT: chunks per segment
 COV_K, COV_THETA = 10, 0.02
 HW_CRIT = 0.46136     # Cramer-von Mises, 5%
 N_BATCH = 20
-METHODS = ('mser', 'pelt', 'relax', 'cov', 'hw', 'epoch')
+METHODS = ('mser', 'pelt', 'relax', 'cov', 'hw', 'epoch', 'online')
 T975 = {1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228,
         11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145, 15: 2.131, 16: 2.120, 17: 2.110, 18: 2.101, 19: 2.093,
         20: 2.086, 25: 2.060, 30: 2.042}
@@ -439,8 +448,186 @@ def det_epoch(start, n, y, nm=None, eps=EPS, **kw):
     return epochs[j0]['start'] if j0 > 0 else 0.0, {'epochs': epochs, 'ref': ref}
 
 
+def noise_online(n, y, x):
+    """noise_model on the chunks seen so far, with the half used for the drift detrended by a line in log10(calls)
+    first: online, that half can still hold the tail of the transient, which is not drift."""
+    eq = equal_mask(n)
+    if eq.sum() < 8:
+        return noise_model(n, y)
+    s_op2, _, _ = noise_model(n, y)
+    ye, xe = y[eq], np.log10(x[eq])
+    half, hx = ye[ye.size // 2:], xe[ye.size // 2:]
+    if hx[-1] > hx[0]:
+        half = half - np.polyval(np.polyfit(hx, half, 1), hx) + float(np.median(half))
+    b = max(min(int(math.sqrt(half.size)), half.size // 6), 1)    # shorter batches early: 6 of them from 12 chunks
+    nb = half.size // b
+    d2 = 0.0
+    if nb >= 6:
+        bm = half[:nb * b].reshape(nb, b).mean(axis=1)
+        d2 = max(mad_sd(bm) ** 2 - s_op2 / (b * float(n.max())), 0.0)
+    return s_op2, d2, float(np.median(half))
+
+
+ONLINE_R = 3.0      # window: calls in [t / R^2, t], split at t / R into the previous and the current half
+ONLINE_H = 4        # chunks per half, at least
+ONLINE_M = 3        # consecutive passing chunks before the run is declared warm
+ONLINE_C = math.log(10)   # slope tolerance per decade = C eps_eff: |d ln y / d ln t| <= eps_eff, relax's criterion
+ONLINE_SMAX = 0.2   # cap on eps_eff in the slope tolerance: drift that persists is scatter about the line (the SE has
+                    # it), not a slope; uncapped, the open Mac's two-state jitter (eps_eff 0.4-1) passes LIPP's tail
+ONLINE_Z = 1.64     # slope: |b| + Z SE <= tol, the one-sided 95% bound of |b| inside the tolerance
+ONLINE_ZF = 2.58    # variance: |ln F| within ZF sigma (1% two-sided)
+ONLINE_R1 = 0.9     # lag-1 autocorrelation cap for the SE and dof corrections
+ONLINE_BACK_Z = 3.0  # back-extension of the cut over the chunks already seen
+
+
+class OnlineWarmup:
+    """Streaming warm-up detector: push() one chunk at a time, in order; it never looks past the chunk just pushed.
+    Per chunk, over the window U = [t / R^2, t] of the chunks seen so far (at least 2 H chunks):
+      derivative  a weighted line of ln y against log10(calls); its slope b is d ln y / d log10 t (relative change
+                  per decade), its SE comes from the noise model, inflated by the residual chi^2 and the lag-1
+                  autocorrelation (drift is correlated). Pass: |b| + Z SE <= tol (an equivalence test: the slope is
+                  shown small, not merely not shown large; 'spec' rule: |b| <= max(tol, Z SE) and Z SE <= tol).
+      variance    U split at t / R into the previous half P and the current half C, each fitted by its own line;
+                  F = phi_C / phi_P, the ratio of their residual variances standardized by the noise model. Pass:
+                  |ln F| <= ZF sqrt(2 / df_P + 2 / df_C), with effective degrees of freedom. A transient bends the
+                  line in one half and its spread shrinks as it decays, so F settles only once both are stationary.
+    The two-component noise model (per-lookup part + drift, noise_online) is refitted on the chunks seen so far each
+    time their number grows by 1/8; the drift is also read inside the window (the smaller of the two halves'
+    scatter about their own lines, so a transient's curvature in one half is not taken for drift). Tolerance:
+    tol = C min(eps_eff, SMAX) per decade, eps_eff = max(eps, 2 drift sd / mean) learned on the fly.
+    Warm after M consecutive passing chunks; the stop is that chunk's end (the lookups the detector had to see).
+    The cut starts at U of the first of them and is then walked back over the chunks already seen while each is
+    within max(eps_eff, BACK_Z sigma) of U's mean (no look-ahead: those chunks were read before the stop).
+    O(window) work per chunk, O(1) amortized for the noise model."""
+
+    def __init__(self, eps=EPS, R=ONLINE_R, h=ONLINE_H, m=ONLINE_M, c=ONLINE_C, z=ONLINE_Z, zf=ONLINE_ZF, cap=4096,
+                 rule='tost', dwin=True, smax=ONLINE_SMAX):
+        self.eps, self.R, self.h, self.m, self.c, self.z, self.zf = eps, R, h, m, c, z, zf
+        self.rule, self.dwin, self.smax = rule, dwin, smax
+        self.s, self.n, self.y = (np.empty(cap) for _ in range(3))
+        self.k = 0
+        self.nm, self.nm_at = None, 0
+        self.run, self.run_a = 0, 0
+        self.cut = self.stop = self.window_cut = None
+        self.hist = []          # per tested chunk: (end call, slope, SE, ln F, its band, tol, pass)
+
+    def _grow(self):
+        for a in ('s', 'n', 'y'):
+            setattr(self, a, np.concatenate([getattr(self, a), np.empty(getattr(self, a).size)]))
+
+    @staticmethod
+    def _line(x, z, w):
+        S0 = w.sum()
+        xm, zm = (w * x).sum() / S0, (w * z).sum() / S0
+        dx = x - xm
+        Sxx = float((w * dx * dx).sum())
+        b = float((w * dx * (z - zm)).sum() / Sxx) if Sxx > 0 else 0.0
+        e = np.sqrt(w) * (z - zm - b * dx)          # standardized residuals
+        df = max(x.size - 2, 1)
+        phi = float((e * e).sum() / df)
+        r1 = float(np.sum(e[1:] * e[:-1]) / max((e * e).sum(), 1e-300)) if e.size > 2 else 0.0
+        return b, Sxx, phi, min(max(r1, 0.0), ONLINE_R1), df, z - zm - b * dx
+
+    def push(self, start, n, y):
+        """Add one chunk; returns True once the run is declared warm (later pushes are ignored)."""
+        if self.stop is not None:
+            return True
+        if self.k == self.s.size:
+            self._grow()
+        k = self.k
+        self.s[k], self.n[k], self.y[k] = start, n, y
+        self.k += 1
+        s, nn, yy = self.s[:k + 1], self.n[:k + 1], self.y[:k + 1]
+        if self.nm is None or k + 1 >= self.nm_at:
+            self.nm = noise_online(nn, yy, s + nn / 2)
+            self.nm_at = int(math.ceil((k + 1) * 1.125)) + 1
+        t = start + n
+        a = min(int(np.searchsorted(s, t / self.R ** 2)), k + 1 - 2 * self.h)
+        if a < 0:
+            return False
+        c = min(max(int(np.searchsorted(s, t / self.R)), a + self.h), k + 1 - self.h)
+        x = np.log10(s[a:] + nn[a:] / 2)
+        ybar = wmean(nn[a:], yy[a:])
+        w = ybar * ybar / chunk_var(nn[a:], self.nm)  # 1 / Var(ln y_k), Var from the model
+        z = np.log(np.maximum(yy[a:], 1e-9))
+        b, Sxx, phi, r1, _, _ = self._line(x, z, w)
+        se = math.sqrt(max(phi, 1.0) * (1 + r1) / (1 - r1) / Sxx) if Sxx > 0 else float('inf')
+        j = c - a
+        _, _, pP, rP, dP, eP = self._line(x[:j], z[:j], w[:j])
+        _, _, pC, rC, dC, eC = self._line(x[j:], z[j:], w[j:])
+        nm = self.nm
+        eq = nn[a:] == nn.max()
+        if self.dwin and eq[:j].sum() >= self.h and eq[j:].sum() >= self.h:
+            # Drift seen inside the window: equal-chunk scatter of each half about its own line, beyond the
+            # per-lookup part; the smaller half, since a transient's curvature in one half is not drift.
+            d2w = min(mad_sd(ybar * e[q]) ** 2 for e, q in ((eP, eq[:j]), (eC, eq[j:]))) - nm[0] / nn.max()
+            nm = (nm[0], max(nm[1], d2w), nm[2])
+        self.nm_used = nm
+        tol = self.c * min(eps_eff(self.eps, nm), self.smax)
+        if self.rule == 'tost':
+            ok_slope = abs(b) + self.z * se <= tol
+        else:
+            ok_slope = abs(b) <= max(tol, self.z * se) and self.z * se <= tol
+        dP *= (1 - rP) / (1 + rP)      # effective degrees of freedom of a correlated series
+        dC *= (1 - rC) / (1 + rC)
+        lnF = math.log(max(pC, 1e-12) / max(pP, 1e-12))
+        band = self.zf * math.sqrt(2.0 / max(dP, 1.0) + 2.0 / max(dC, 1.0))
+        ok = ok_slope and abs(lnF) <= band
+        self.hist.append((t, b, se, lnF, band, tol, ok))
+        if not ok:
+            self.run = 0
+            return False
+        if self.run == 0:
+            self.run_a = a
+        self.run += 1
+        if self.run >= self.m:
+            self.stop, self.window_cut = float(t), float(s[self.run_a])
+            self.cut = float(s[self.back(self.run_a)])
+            return True
+        return False
+
+    def back(self, a):
+        """Walk back from the tested window over the chunks already seen (no look-ahead): extend the steady phase
+        while the earlier chunks are within max(eps_eff, BACK_Z sigma) of the window's mean. One isolated chunk
+        outside (a stall: interference only adds time) is stepped over; two in a row end the walk."""
+        k = self.k
+        nn, yy = self.n[a:k], self.y[a:k]
+        ref = wmean(nn, yy)
+        nm = self.nm_used
+        e = min(eps_eff(self.eps, nm), self.smax) * ref
+        nm = (nm[0], min(nm[1], (e / 2) ** 2), nm[2])      # the same cap on the drift that excuses a deviation
+        ref_var = nm[0] / nn.sum() + nm[1]
+
+        def ok(i):
+            return abs(self.y[i] - ref) <= max(e, ONLINE_BACK_Z * math.sqrt(chunk_var(self.n[i], nm) + ref_var))
+        j = a
+        while j > 0:
+            if ok(j - 1):
+                j -= 1
+            elif j > 1 and ok(j - 2):
+                j -= 2
+            else:
+                break
+        return j
+
+
+def det_online(start, n, y, eps=EPS, online=None, **kw):
+    """The streaming detector over a whole trace: it gets the chunks one at a time and ignores the full-run noise
+    model (nm) the offline detectors share, which would be look-ahead. online: OnlineWarmup keyword overrides."""
+    od = OnlineWarmup(eps=eps, cap=max(int(y.size), 16), **(online or {}))
+    for i in range(y.size):
+        if od.push(float(start[i]), float(n[i]), float(y[i])):
+            break
+    total = float(start[-1] + n[-1])
+    seen = od.stop if od.stop is not None else total
+    info = {'stop': od.stop, 'window_cut': od.window_cut, 'seen': seen, 'total': total, 'seen_share': seen / total,
+            'noise': {'s_op2': od.nm[0], 'drift_sd': math.sqrt(od.nm[1]), 'eps_eff': eps_eff(eps, od.nm)},
+            'hist': od.hist}
+    return od.cut, info
+
+
 DETECTORS = {'mser': det_mser, 'pelt': det_pelt, 'relax': det_relax, 'cov': det_cov, 'hw': det_hw,
-             'epoch': det_epoch}
+             'epoch': det_epoch, 'online': det_online}
 
 
 CORE = ('mser', 'pelt', 'relax', 'epoch')   # the consensus; cov and hw are reported as baselines
@@ -659,31 +846,46 @@ def synth_series(rng, fn, noise, mu=150.0):
     return start, n, truth + per_op + drift + stalls / n, truth
 
 
-def run_synth(reps, seed, eps=EPS):
+def _analyze_job(args):
+    return analyze_series(*args)
+
+
+def run_synth(reps, seed, eps=EPS, jobs=1):
+    # The series are drawn in one sequence (the same for any jobs), then analysed, in parallel if jobs > 1.
     rng = np.random.default_rng(seed)
-    rows, examples = [], {}
+    todo = []
     for nname, noise in NOISE.items():
         e_true = max(eps, 2.0 * noise['drift'])
         for sname, fn, truth_at in SCENARIOS:
-            true_cut = truth_at(e_true)
             for rep in range(reps):
-                start, n, y, truth = synth_series(rng, fn, noise)
-                res = analyze_series(start, n, y, eps)
-                final = truth[-1]
-                for mname in METHODS + ('consensus',):
-                    cut = res['consensus'] if mname == 'consensus' else res['cuts'][mname]
-                    if cut is None:
-                        rows.append({'noise': nname, 'scenario': sname, 'method': mname, 'found': False})
-                        continue
-                    msk = start >= cut
-                    steady = wmean(n[msk], y[msk]) if msk.sum() >= 4 else float('nan')
-                    rows.append({'noise': nname, 'scenario': sname, 'method': mname, 'found': True,
-                                 'cut': cut, 'true': true_cut,
-                                 'log_err': abs(math.log10((cut + 1e3) / (true_cut + 1e3))),
-                                 'bias_pct': 100.0 * (steady / final - 1.0)})
-                if rep == 0:
-                    examples[(nname, sname)] = {'start': start, 'n': n, 'y': y, 'truth': truth, 'res': res,
-                                                'true_cut': true_cut}
+                todo.append((nname, sname, truth_at(e_true), rep) + synth_series(rng, fn, noise))
+    args = [(t[4], t[5], t[6], eps) for t in todo]
+    if jobs > 1:
+        from multiprocessing import Pool
+        with Pool(jobs) as pool:
+            results = pool.map(_analyze_job, args, chunksize=2)
+    else:
+        results = [_analyze_job(x) for x in args]
+    rows, examples = [], {}
+    for (nname, sname, true_cut, rep, start, n, y, truth), res in zip(todo, results):
+        final = truth[-1]
+        for mname in METHODS + ('consensus',):
+            cut = res['consensus'] if mname == 'consensus' else res['cuts'][mname]
+            if cut is None:
+                rows.append({'noise': nname, 'scenario': sname, 'method': mname, 'found': False})
+                continue
+            msk = start >= cut
+            steady = wmean(n[msk], y[msk]) if msk.sum() >= 4 else float('nan')
+            rows.append({'noise': nname, 'scenario': sname, 'method': mname, 'found': True,
+                         'cut': cut, 'true': true_cut,
+                         'log_err': abs(math.log10((cut + 1e3) / (true_cut + 1e3))),
+                         'bias_pct': 100.0 * (steady / final - 1.0)})
+        oi = res['info']['online']
+        rows.append({'noise': nname, 'scenario': sname, 'method': 'online_stop', 'seen': oi['seen'],
+                     'total': oi['total'], 'stopped': oi['stop'] is not None, 'true': true_cut})
+        if rep == 0:
+            examples[(nname, sname)] = {'start': start, 'n': n, 'y': y, 'truth': truth, 'res': res,
+                                        'true_cut': true_cut}
     return rows, examples
 
 
@@ -702,13 +904,48 @@ def summarize_synth(rows):
     return out
 
 
+LOOKAHEAD = ('step', 'late slowdown')   # a shift after a long flat stretch: no detector without look-ahead sees it
+
+
+def summarize_online(rows, summary):
+    """The online detector's cost and accuracy against the offline consensus: lookups it saw before stopping (the
+    offline detectors need the whole run), per cell; and per method the median over cells of the median |log10
+    error|, over all scenarios and over the ones a streaming detector can resolve (not LOOKAHEAD)."""
+    cells = []
+    for nname in NOISE:
+        for sname, _, _ in SCENARIOS:
+            rr = [r for r in rows if r['noise'] == nname and r['scenario'] == sname and r['method'] == 'online_stop']
+            seen = np.array([r['seen'] for r in rr])
+            tot = np.array([r['total'] for r in rr])
+            true = rr[0]['true'] if rr else 0.0
+            cells.append({'noise': nname, 'scenario': sname,
+                          'stopped_share': float(np.mean([r['stopped'] for r in rr])),
+                          'median_seen': float(np.median(seen)), 'p90_seen': float(np.percentile(seen, 90)),
+                          'median_seen_share': float(np.median(seen / tot)), 'true': true,
+                          'median_seen_over_true': float(np.median(seen / true)) if true > 0 else None})
+    overall = {}
+    for m in METHODS + ('consensus',):
+        errs = {(c['noise'], c['scenario']): (c['median_log_err'] if c['median_log_err'] is not None else 3.0)
+                for c in summary if c['method'] == m}
+        res = [v for k, v in errs.items() if k[1] not in LOOKAHEAD]
+        overall[m] = {'all': float(np.median(list(errs.values()))), 'resolvable': float(np.median(res)),
+                      'worst_resolvable': float(max(res)), 'mean_resolvable': float(np.mean(res))}
+    return cells, overall
+
+
 # ---------------------------------------------------------------- plots
 
 INK, INK2, MUTED, GRID = '#0b0b0b', '#52514e', '#8a8984', '#e6e5e1'
 WARM, STEADY, FIT = '#eb6834', '#2a78d6', '#1c5cab'
-MARK = {'mser': 'o', 'pelt': 's', 'relax': 'D', 'cov': '^', 'hw': 'v', 'epoch': 'P'}
+ONLINE = '#1baf7a'
+MARK = {'mser': 'o', 'pelt': 's', 'relax': 'D', 'cov': '^', 'hw': 'v', 'epoch': 'P', 'online': 'X'}
 LABEL = {'mser': 'MSER', 'pelt': 'PELT', 'relax': 'relaxation fit', 'cov': 'windowed CoV', 'hw': 'Heidelberger-Welch',
-         'epoch': 'doubling epochs'}
+         'epoch': 'doubling epochs', 'online': 'online (streaming)'}
+COLOR = {'online': ONLINE}
+
+
+def _online_stop(res):
+    return (res['info'].get('online') or {}).get('stop')
 
 
 def _mpl():
@@ -758,6 +995,14 @@ def _phase_axes(ax, start, n, ys, res, fit, xmin, xmax, show_legend):
         if cons > xmin:
             ax.axvline(cons, color=WARM, lw=1.4)
     ax.axvline(PROTOCOL_W, color=MUTED, lw=1.0, ls=(0, (4, 3)), label='protocol warm-up (20M)')
+    oc, osp = res['cuts'].get('online'), _online_stop(res)
+    if oc is not None:
+        # online: along the bottom, an X at its cut, a bar at the call where it became sure (the lookups it had to see)
+        tr = ax.get_xaxis_transform()
+        ax.plot([max(oc, xmin), max(osp, xmin)], [0.035, 0.035], color=ONLINE, lw=1.6, transform=tr,
+                solid_capstyle='butt', label='online: cut (X) to stop (|), %s lookups seen' % _fmt_calls(osp))
+        ax.plot([max(oc, xmin)], [0.035], marker='X', ms=7, color=ONLINE, transform=tr, ls='')
+        ax.plot([max(osp, xmin)], [0.035], marker='|', ms=11, mew=2, color=ONLINE, transform=tr, ls='')
     for i, y in enumerate(ys):
         x = np.repeat(np.concatenate([start, [start[-1] + n[-1]]]), 2)[1:-1]
         ax.plot(np.maximum(x, xmin), np.repeat(y, 2), color=INK2, lw=0.7, alpha=0.55 if len(ys) > 1 else 0.8,
@@ -795,13 +1040,19 @@ def _marginal(ax, ys, res, ylim, yscale):
     ax.set_title('steady chunks', fontsize=7, color=INK2)
 
 
-def _strip_axes(ax, cuts_list, xmin, xmax):
-    """One row per detector, one dot per run at its cut (log x, aligned with the phase panel)."""
+def _strip_axes(ax, cuts_list, xmin, xmax, stops=None):
+    """One row per detector, one dot per run at its cut (log x, aligned with the phase panel); the online row also
+    shows, per run, a line from its cut to its stop (the lookups it needed to see)."""
     for row, m in enumerate(METHODS):
         xs = [c[m] for c in cuts_list if c.get(m) is not None]
         miss = sum(1 for c in cuts_list if c.get(m) is None)
+        if m == 'online' and stops:
+            for c, st in zip(cuts_list, stops):
+                if c.get(m) is not None and st is not None:
+                    ax.plot([max(c[m], xmin), max(st, xmin)], [row, row], color=ONLINE, lw=0.8, alpha=0.6, zorder=2)
+                    ax.scatter([max(st, xmin)], [row], marker='|', s=60, color=ONLINE, zorder=3)
         if xs:
-            ax.scatter(np.maximum(xs, xmin), [row] * len(xs), marker=MARK[m], s=26, color=INK2, zorder=3)
+            ax.scatter(np.maximum(xs, xmin), [row] * len(xs), marker=MARK[m], s=26, color=COLOR.get(m, INK2), zorder=3)
         if miss:
             ax.text(xmax, row, '  none x%d' % miss, va='center', ha='left', fontsize=7, color=MUTED)
     ax.set_yticks(range(len(METHODS)))
@@ -909,11 +1160,13 @@ def plot_group(plt, key, group, path, eps):
     ax2.legend(loc='upper right', fontsize=7.5, ncol=3)
     ax2.tick_params(labelbottom=False)
     ax3 = fig.add_subplot(gs[row + 1, 0], sharex=ax)
-    _strip_axes(ax3, [r['cuts'] for r in results] + [pooled['cuts']], xmin, xmax)
+    _strip_axes(ax3, [r['cuts'] for r in results] + [pooled['cuts']], xmin, xmax,
+                [_online_stop(r) for r in results] + [_online_stop(pooled)])
     ax3.axvline(PROTOCOL_W, color=MUTED, lw=1.0, ls=(0, (4, 3)))
     if pooled['consensus'] and pooled['consensus'] > xmin:
         ax3.axvline(pooled['consensus'], color=WARM, lw=1.4)
-    ax3.set_xlabel('lookups since the first get() (log scale); dots: each run and the pooled median series')
+    ax3.set_xlabel('lookups since the first get() (log scale); dots: each run and the pooled median series; '
+                   'online: cut X, stop |')
     fig.savefig(path, dpi=150, bbox_inches='tight')
     plt.close(fig)
 
@@ -968,14 +1221,20 @@ def plot_synth(plt, examples, summary, outdir):
                 c = res['cuts'][m]
                 if c is not None:
                     ax.scatter([max(c, 40)], [ymax - (i + 1) * (ymax - ymin) * 0.08], marker=MARK[m], s=16,
-                               color=INK2, zorder=4)
+                               color=COLOR.get(m, INK2), zorder=4)
+            st = _online_stop(res)
+            if st is not None:
+                yo = ymax - (METHODS.index('online') + 1) * (ymax - ymin) * 0.08
+                ax.plot([max(res['cuts']['online'], 40), st], [yo, yo], color=ONLINE, lw=0.8)
+                ax.scatter([st], [yo], marker='|', s=40, color=ONLINE, zorder=4)
             ax.set_xscale('log')
             ax.set_xlim(32, 1.3e8)
             ax.set_title('%s, %s' % (sname, nname), fontsize=8, loc='left')
     for ax in axes[-1]:
         ax.set_xlabel('lookups (log scale)')
-    handles = [plt.Line2D([], [], marker=MARK[m], ls='', color=INK2, label=LABEL[m]) for m in METHODS]
-    handles += [plt.Line2D([], [], color=INK, ls=':', label='true warm-up end'),
+    handles = [plt.Line2D([], [], marker=MARK[m], ls='', color=COLOR.get(m, INK2), label=LABEL[m]) for m in METHODS]
+    handles += [plt.Line2D([], [], marker='|', color=ONLINE, label='online stop (lookups seen)'),
+                plt.Line2D([], [], color=INK, ls=':', label='true warm-up end'),
                 plt.Line2D([], [], color=WARM, label='consensus cut')]
     fig.legend(handles=handles, loc='lower center', ncol=4, fontsize=8, bbox_to_anchor=(0.5, -0.02))
     fig.tight_layout(rect=(0, 0.04, 1, 1))
@@ -998,7 +1257,7 @@ def plot_synth(plt, examples, summary, outdir):
                     ax.scatter([0], [yy], marker='x', s=14, color=MUTED)
                 else:
                     ax.scatter([v], [yy], marker=MARK.get(m, '*'), s=18 if m != 'consensus' else 40,
-                               color=INK2 if m != 'consensus' else WARM, zorder=3)
+                               color=COLOR.get(m, INK2) if m != 'consensus' else WARM, zorder=3)
         ax.set_yticks(range(len(names)))
         ax.set_yticklabels(names, fontsize=8)
         ax.set_ylim(len(names) - 0.5, -0.5)
@@ -1008,12 +1267,100 @@ def plot_synth(plt, examples, summary, outdir):
             ax.set_xlim(-0.05, 3.0)
         else:
             ax.set_xscale('symlog', linthresh=0.1)
-    handles = [plt.Line2D([], [], marker=MARK[m], ls='', color=INK2, label=LABEL[m]) for m in METHODS]
+    handles = [plt.Line2D([], [], marker=MARK[m], ls='', color=COLOR.get(m, INK2), label=LABEL[m]) for m in METHODS]
     handles += [plt.Line2D([], [], marker='*', ls='', color=WARM, markersize=9, label='consensus (median)'),
                 plt.Line2D([], [], marker='x', ls='', color=MUTED, label='no cut returned')]
     fig.legend(handles=handles, loc='lower center', ncol=4, fontsize=8, bbox_to_anchor=(0.5, -0.06))
     fig.tight_layout(rect=(0, 0.06, 1, 1))
     fig.savefig(os.path.join(outdir, 'synth_accuracy.png'), dpi=150, bbox_inches='tight')
+    plt.close(fig)
+
+
+def plot_synth_online(plt, rows, examples, path, example=('noisy', 'exp slow')):
+    """Online against the offline consensus on the synthetic suite: |log10 error| of the cut per series, lookups
+    the online detector saw before stopping, and one example with its slope test over time."""
+    names = [s_[0] for s_ in SCENARIOS]
+    fig = plt.figure(figsize=(13, 8.6))
+    gs = fig.add_gridspec(2, 3, height_ratios=[1.25, 1.0], hspace=0.38, wspace=0.08)
+    rng = np.random.default_rng(0)
+    for col, nname in enumerate(NOISE):
+        ax = fig.add_subplot(gs[0, col])
+        for row, sname in enumerate(names):
+            for off, m, colr in ((-0.17, 'consensus', WARM), (0.17, 'online', ONLINE)):
+                rr = [r for r in rows if r['noise'] == nname and r['scenario'] == sname and r['method'] == m]
+                v = np.array([r['log_err'] if r['found'] else 3.0 for r in rr])
+                yy = row + off + rng.uniform(-0.07, 0.07, v.size)
+                ax.scatter(np.minimum(v, 3.0), yy, s=7, color=colr, alpha=0.55, lw=0)
+                ax.scatter([float(np.median(v))], [row + off], marker='|', s=150, color=colr, lw=2.2, zorder=4)
+        ax.set_yticks(range(len(names)))
+        ax.set_yticklabels(names if col == 0 else [], fontsize=8)
+        ax.set_ylim(len(names) - 0.5, -0.5)
+        ax.set_xlim(-0.1, 5.0)
+        ax.axvspan(-0.1, 0.3, color=GRID, alpha=0.5, lw=0)
+        ax.set_xlabel('|log10 error| of the cut (shaded: within 2x)', fontsize=8)
+        ax.set_title('%s machine: cut accuracy' % nname, fontsize=9, loc='left')
+        for row, sname in enumerate(names):
+            if sname in LOOKAHEAD:
+                ax.text(4.95, row, 'needs look-ahead', ha='right', va='center', fontsize=7, color=MUTED)
+    ax = fig.add_subplot(gs[0, 2])
+    for row, sname in enumerate(names):
+        for off, nname, mk in ((-0.17, 'quiet', 'o'), (0.17, 'noisy', 's')):
+            rr = [r for r in rows if r['noise'] == nname and r['scenario'] == sname and r['method'] == 'online_stop']
+            v = np.array([r['seen'] for r in rr])
+            yy = row + off + rng.uniform(-0.07, 0.07, v.size)
+            ax.scatter(v, yy, s=7, marker=mk, color=ONLINE, alpha=0.55, lw=0)
+            ax.scatter([float(np.median(v))], [row + off], marker='|', s=150, color=ONLINE, lw=2.2, zorder=4)
+            if rr and rr[0]['true'] > 0:
+                ax.scatter([rr[0]['true']], [row + off], marker='|', s=150, color=INK, lw=1.2, zorder=5)
+    total = next(r['total'] for r in rows if r['method'] == 'online_stop')
+    ax.axvline(total, color=WARM, lw=1.4)
+    ax.text(total, -0.45, ' offline:\n all %s' % _fmt_calls(total), fontsize=7, color=WARM, va='top', ha='right')
+    ax.set_xscale('log')
+    ax.set_xlim(3e3, 3e8)
+    ax.set_yticks(range(len(names)))
+    ax.set_yticklabels([])
+    ax.set_ylim(len(names) - 0.5, -0.5)
+    ax.set_xlabel('lookups seen at the stop (o quiet, s noisy; black |: true end)', fontsize=8)
+    ax.set_title('cost: lookups the online detector needs', fontsize=9, loc='left')
+
+    ex = examples[example]
+    res, start, n = ex['res'], ex['start'], ex['n']
+    oi, oc = res['info']['online'], res['cuts']['online']
+    ax = fig.add_subplot(gs[1, 0:2])
+    mid = start + n / 2
+    ax.plot(mid, ex['y'], color=INK2, lw=0.6, alpha=0.7, label='chunk mean')
+    ax.plot(mid, ex['truth'], color=INK, lw=1.0, label='truth')
+    if ex['true_cut'] > 0:
+        ax.axvline(ex['true_cut'], color=INK, lw=1.2, ls=':', label='true warm-up end')
+    if res['consensus'] is not None:
+        ax.axvline(max(res['consensus'], 33), color=WARM, lw=1.2, label='offline consensus (reads the whole run)')
+    if oc is not None:
+        ax.axvline(max(oc, 33), color=ONLINE, lw=1.4, label='online cut')
+        ax.axvspan(max(oc, 33), oi['stop'], color=ONLINE, alpha=0.10, lw=0, label='seen before the stop')
+        ax.axvline(oi['stop'], color=ONLINE, lw=1.0, ls='--', label='online stop')
+    ax.set_xscale('log')
+    ax.set_xlim(32, 1.3e8)
+    ax.set_ylabel('ns per lookup')
+    ax.set_xlabel('lookups (log scale)')
+    ax.set_title('example: %s, %s' % (example[1], example[0]), fontsize=9, loc='left')
+    ax.legend(loc='upper right', fontsize=7.5, ncol=2)
+    ax = fig.add_subplot(gs[1, 2])
+    h = np.array([x[:6] for x in oi['hist']], float)
+    if h.size:
+        z = ONLINE_Z
+        ax.plot(h[:, 0], np.abs(h[:, 1]) + z * h[:, 2], color=ONLINE, lw=1.2, label='|slope| + %.2f SE' % z)
+        ax.plot(h[:, 0], np.abs(h[:, 1]), color=INK2, lw=0.8, label='|slope| (per decade)')
+        ax.plot(h[:, 0], h[:, 5], color=WARM, lw=1.0, ls='--', label='tolerance (learned)')
+        ok = np.array([x[6] for x in oi['hist']])
+        ax.scatter(h[ok, 0], np.full(ok.sum(), 2e-3), marker='|', color=ONLINE, s=20, label='both tests pass')
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.set_ylim(1e-3, 10)
+    ax.yaxis.tick_right()
+    ax.set_xlabel('lookups seen (log scale)')
+    ax.set_title('its slope test, chunk by chunk', fontsize=9, loc='left')
+    ax.legend(loc='upper right', fontsize=7)
+    fig.savefig(path, dpi=150, bbox_inches='tight')
     plt.close(fig)
 
 
@@ -1103,11 +1450,12 @@ def cmd_analyze(a):
         print('no trace_point lines found (run trace_<index> with GRE_TRACE=geo:F:C)', file=sys.stderr)
         return 2
     report = {'eps': a.eps, 'groups': []}
-    lines = ['| dataset | index | runs | ' + ' | '.join(METHODS) + ' | consensus | tau (calls) | beta | excess (ms) |'
+    lines = ['| dataset | index | runs | ' + ' | '.join(METHODS) + ' | online stop | consensus | tau (calls) | beta |'
+             ' excess (ms) |'
              ' steady ns/lookup | CI95 across runs | between-run share | R-hat | PELT kind | robust CoV | lag-1 |'
              ' two states (fast / slow ns, slow share) | envelope: warm after | envelope: steady ns |'
              ' steady chunks by core (share, mean ns, slow share) | migrations |',
-             '|' + '---|' * (len(METHODS) + 19)]
+             '|' + '---|' * (len(METHODS) + 20)]
     for key in sorted(groups):
         g = groups[key]
         cons = g['pooled']['consensus']
@@ -1115,10 +1463,13 @@ def cmd_analyze(a):
         per = {m: [res['cuts'][m] for res in g['results']] for m in METHODS}
         med = {m: (float(np.median([c for c in per[m] if c is not None])) if any(c is not None for c in per[m])
                    else None) for m in METHODS}
+        stops = [_online_stop(res) for res in g['results']]
+        stop_med = float(np.median([x for x in stops if x is not None])) if any(x is not None for x in stops) else None
         acr = g['across']
         envg = g['envelope']
-        lines.append('| %s | %s | %d | %s | %s | %.3g | %.2f | %.2f | %.2f | %s | %s | %.3f | %s | %s | %s | %.2f | %s | %s |' % (
-            key[0], key[1], len(g['runs']), ' | '.join(_fmt_calls(med[m]) for m in METHODS), _fmt_calls(cons),
+        lines.append('| %s | %s | %d | %s | %s | %s | %.3g | %.2f | %.2f | %.2f | %s | %s | %.3f | %s | %s | %s | %.2f | %s | %s |' % (
+            key[0], key[1], len(g['runs']), ' | '.join(_fmt_calls(med[m]) for m in METHODS), _fmt_calls(stop_med),
+            _fmt_calls(cons),
             fit['tau'], fit['beta'], fit['excess_ns'] / 1e6, acr.get('mean', float('nan')),
             ('%.2f' % acr['ci95']) if 'ci95' in acr else '-',
             ('%.2f' % acr['between_share']) if 'between_share' in acr else '-', g['rhat'],
@@ -1128,6 +1479,9 @@ def cmd_analyze(a):
         report['groups'].append({
             'dataset': key[0], 'index': key[1], 'runs': [r['path'] for r in g['runs']],
             'per_run_cuts': per, 'pooled_cuts': g['pooled']['cuts'], 'consensus': cons,
+            'online': {'per_run_stop': stops, 'pooled_stop': _online_stop(g['pooled']),
+                       'per_run_window_cut': [res['info']['online']['window_cut'] for res in g['results']],
+                       'per_run_eps_eff': [res['info']['online']['noise']['eps_eff'] for res in g['results']]},
             'relax': {k: v for k, v in fit.items()}, 'steady_pooled': g['pooled'].get('steady'),
             'across_runs': acr, 'rhat': g['rhat'], 'pelt_kind': g['pooled']['info']['pelt']['kind'],
             'pelt_segments': g['pooled']['info']['pelt']['segments'],
@@ -1172,9 +1526,10 @@ def cmd_pair(a):
         return 2
     print('Paired warm-up comparison: A = %s (%s), B = %s (%s); eps = %g' % (la, a.a, lb, a.b, a.eps))
     print()
-    print('| dataset | index | runs A/B | warm after A | warm after B | tau A | tau B | excess A (ms) | excess B (ms) |'
-          ' steady A ns | steady B ns | B/A | robust CoV A | robust CoV B | states A | states B | kind A | kind B |')
-    print('|' + '---|' * 18)
+    print('| dataset | index | runs A/B | warm after A | warm after B | online A (cut / stop) | online B (cut / stop) |'
+          ' tau A | tau B | excess A (ms) | excess B (ms) | steady A ns | steady B ns | B/A | robust CoV A |'
+          ' robust CoV B | states A | states B | kind A | kind B |')
+    print('|' + '---|' * 20)
     out = []
     for key in keys:
         ga, gb = sides[0][key], sides[1][key]
@@ -1182,17 +1537,20 @@ def cmd_pair(a):
         for g in (ga, gb):
             acr, st, fit = g['across'], g['pooled'].get('steady', {}), g['pooled']['info']['relax']
             m = acr.get('mean', st.get('mean', float('nan')))
-            row.append({'cons': g['pooled']['consensus'], 'tau': fit['tau'], 'excess_ms': fit['excess_ns'] / 1e6,
+            row.append({'cons': g['pooled']['consensus'], 'online': g['pooled']['cuts'].get('online'),
+                        'online_stop': _online_stop(g['pooled']), 'tau': fit['tau'], 'excess_ms': fit['excess_ns'] / 1e6,
                         'mean': m, 'ci': acr.get('ci95', st.get('ci95', 0.0)), 'jit': g['pooled'].get('jitter', {}),
                         'kind': g['pooled']['info']['pelt']['kind'], 'runs': len(g['runs'])})
         r, rci = _ratio_ci(row[0]['mean'], row[0]['ci'], row[1]['mean'], row[1]['ci'])
         def states(j):
             stt = j.get('states')
             return ('%.0f/%.0f (%.0f%%)' % (stt['fast_mean'], stt['slow_mean'], 100 * stt['slow_share'])) if stt else 'one'
-        print('| %s | %s | %d/%d | %s | %s | %.3g | %.3g | %.1f | %.1f | %.1f +/- %.1f | %.1f +/- %.1f | %.2f +/- %.2f |'
-              ' %.1f%% | %.1f%% | %s | %s | %s | %s |' % (
+        print('| %s | %s | %d/%d | %s | %s | %s / %s | %s / %s | %.3g | %.3g | %.1f | %.1f | %.1f +/- %.1f | %.1f +/- %.1f |'
+              ' %.2f +/- %.2f | %.1f%% | %.1f%% | %s | %s | %s | %s |' % (
                   key[0], key[1].replace('trace_', ''), row[0]['runs'], row[1]['runs'], _fmt_calls(row[0]['cons']),
-                  _fmt_calls(row[1]['cons']), row[0]['tau'], row[1]['tau'], row[0]['excess_ms'], row[1]['excess_ms'],
+                  _fmt_calls(row[1]['cons']), _fmt_calls(row[0]['online']), _fmt_calls(row[0]['online_stop']),
+                  _fmt_calls(row[1]['online']), _fmt_calls(row[1]['online_stop']), row[0]['tau'], row[1]['tau'],
+                  row[0]['excess_ms'], row[1]['excess_ms'],
                   row[0]['mean'], row[0]['ci'] or 0, row[1]['mean'], row[1]['ci'] or 0, r, rci,
                   100 * row[0]['jit'].get('robust_cov', float('nan')), 100 * row[1]['jit'].get('robust_cov', float('nan')),
                   states(row[0]['jit']), states(row[1]['jit']), row[0]['kind'], row[1]['kind']))
@@ -1229,6 +1587,12 @@ def plot_pair(plt, sides, keys, labels, path):
             c = pooled['consensus']
             if c is not None and c > 32:
                 ax.axvline(c, color=colors[s_], lw=1.3, ls='--')
+            oc, osp = pooled['cuts'].get('online'), _online_stop(pooled)
+            if oc is not None:       # online: X at the cut, | at the stop, along the bottom in the machine's colour
+                tr, yv = ax.get_xaxis_transform(), 0.04 + 0.05 * s_
+                ax.plot([max(oc, 32), max(osp, 32)], [yv, yv], color=colors[s_], lw=1.2, transform=tr)
+                ax.plot([max(oc, 32)], [yv], marker='X', ms=6, color=colors[s_], transform=tr, ls='')
+                ax.plot([max(osp, 32)], [yv], marker='|', ms=9, mew=1.8, color=colors[s_], transform=tr, ls='')
             title.append('%s warm after %s' % (labels[s_], _fmt_calls(c)))
         ax.axhline(1.0, color=INK2, lw=0.8)
         ax.axvline(PROTOCOL_W, color=MUTED, lw=1.0, ls=(0, (4, 3)))
@@ -1244,16 +1608,19 @@ def plot_pair(plt, sides, keys, labels, path):
         if i % cols == 0:
             ax.set_ylabel('latency / steady mean')
         if i // cols == rows - 1 or (i + cols) >= k:
-            ax.set_xlabel('lookups (log scale); dashed: each machine\'s warm-up end; gray dashes: 20M protocol warm-up')
+            ax.set_xlabel('lookups (log scale)')
     for j in range(k, rows * cols):
         axes[j // cols][j % cols].axis('off')
-    fig.tight_layout()
+    fig.tight_layout(rect=(0, 0.03, 1, 1))
+    fig.text(0.5, 0.0, 'dashed: each machine\'s warm-up end (consensus); gray dashes: 20M protocol warm-up; '
+             'bottom: online cut X to stop |, in the machine\'s colour', ha='center', va='bottom', fontsize=8,
+             color=INK2)
     fig.savefig(path, dpi=150, bbox_inches='tight')
     plt.close(fig)
 
 
 def cmd_synth(a):
-    rows, examples = run_synth(a.reps, a.seed, a.eps)
+    rows, examples = run_synth(a.reps, a.seed, a.eps, a.jobs)
     summ = summarize_synth(rows)
     print('Synthetic validation: %d series per scenario and noise level; true warm-up end at max(eps = %g, 2 x drift sd)' % (a.reps, a.eps))
     print()
@@ -1273,12 +1640,35 @@ def cmd_synth(a):
             print('| %s | %s | %s |' % (nname, sname, ' | '.join(cells)))
     print()
     print('Cells: median |log10 error| of the cut / median |bias| of the steady mean after the cut.')
+    cells, overall = summarize_online(rows, summ)
+    print()
+    print('Online detector, lookups seen before it stopped (the offline detectors read all %s):' %
+          _fmt_calls(cells[0]['median_seen'] / cells[0]['median_seen_share']))
+    print()
+    print('| noise | scenario | true warm-up end | stopped | median seen | p90 seen | share of run | seen / true end |')
+    print('|---|---|---|---|---|---|---|---|')
+    for c in cells:
+        print('| %s | %s | %s | %.0f%% | %s | %s | %.2f%% | %s |' % (
+            c['noise'], c['scenario'], _fmt_calls(c['true']), 100 * c['stopped_share'], _fmt_calls(c['median_seen']),
+            _fmt_calls(c['p90_seen']), 100 * c['median_seen_share'],
+            ('%.1fx' % c['median_seen_over_true']) if c['median_seen_over_true'] is not None else '-'))
+    print()
+    print('Per method, over the cells: median of the median |log10 error| (no cut counts as 3), all scenarios and the ones'
+          ' a streaming detector can resolve (all but %s):' % ' and '.join(LOOKAHEAD))
+    print()
+    print('| method | all | resolvable | mean resolvable | worst resolvable |')
+    print('|---|---|---|---|---|')
+    for m, o in overall.items():
+        print('| %s | %.2f | %.2f | %.2f | %.2f |' % (m, o['all'], o['resolvable'], o['mean_resolvable'],
+                                                    o['worst_resolvable']))
     if a.json:
         with open(a.json, 'w') as f:
-            json.dump({'summary': summ}, f, indent=1)
+            json.dump({'summary': summ, 'online': cells, 'overall': overall}, f, indent=1)
     if a.plot:
         os.makedirs(a.plot, exist_ok=True)
-        plot_synth(_mpl(), examples, summ, a.plot)
+        plt = _mpl()
+        plot_synth(plt, examples, summ, a.plot)
+        plot_synth_online(plt, rows, examples, os.path.join(a.plot, 'synth_online.png'))
     return 0
 
 
@@ -1304,6 +1694,7 @@ def main():
     ps.add_argument('--reps', type=int, default=40)
     ps.add_argument('--seed', type=int, default=1)
     ps.add_argument('--eps', type=float, default=EPS)
+    ps.add_argument('--jobs', type=int, default=1, help='worker processes for the analysis (same results for any)')
     ps.add_argument('--json')
     ps.add_argument('--plot')
     a = p.parse_args()
