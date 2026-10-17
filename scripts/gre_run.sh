@@ -144,6 +144,8 @@ extra=${EXTRA[*]+${EXTRA[*]}}"
 # SCALE-LI cells: flow file per dataset with run_ba.py's PERIOD; recorded only when a scaleli_* index runs, so
 # OUTDIRs of the baseline indexes resume as before.
 period() { case $1 in fb|osm|planet) echo s512;; *) echo s64;; esac; }
+# <name>.sorted (the Mac's sorted copy of an unsorted set) shares the flow and the plan of <name>.
+flow_file() { local d=${1%.sorted}; echo "$FLOWS/${d}_$(period "$d")_t2000.txt"; }
 flow_cell() { case $1 in scaleli_n|scaleli_nc|scaleli_j|scaleli_jg0|scaleli_splice|trace_scaleli_n) return 0;; *) return 1;; esac; }
 case ",$INDEXES," in *,scaleli_*|*,trace_scaleli_*) CONFIG="$CONFIG
 flows=$FLOWS
@@ -152,14 +154,14 @@ scaleli_args=${SCALELI_ARGS-}";; esac
 for idx in "${IX[@]}"; do
   flow_cell "$idx" || continue
   for ds in "${DS[@]}"; do
-    f=$FLOWS/${ds}_$(period "$ds")_t2000.txt
+    f=$(flow_file "$ds")
     [ -f "$f" ] && [ -r "$f" ] || die "$idx needs the flow file $f (--flows DIR)"
   done
 done
 # SPLICE-H: the plan file of every dataset, checked before the first run; recorded only when a splice index runs, so
 # other OUTDIRs resume as before. The plan's cksum is part of the config: a resumed grid never mixes two plans.
 splice_idx() { case $1 in splice|splice_thp|trace_splice|trace_splice_thp) return 0;; *) return 1;; esac; }
-plan_file() { if [ "$SPLICE_ARM" = compact ]; then echo "$SPLICE_PLAN/$1.compact.args"; else echo "$SPLICE_PLAN/$1.args"; fi; }
+plan_file() { if [ "$SPLICE_ARM" = compact ]; then echo "$SPLICE_PLAN/${1%.sorted}.compact.args"; else echo "$SPLICE_PLAN/${1%.sorted}.args"; fi; }
 HAS_SPLICE=0
 for idx in "${IX[@]}"; do splice_idx "$idx" && HAS_SPLICE=1; done
 if [ "$HAS_SPLICE" = 1 ]; then
@@ -340,7 +342,7 @@ for r in $(seq 1 "$REPEATS"); do
            --index="$idx" --output_path="$OUT/gre_out.csv" ${PATCH[@]+"${PATCH[@]}"} ${EXTRA[@]+"${EXTRA[@]}"})
       runenv=(OMP_NUM_THREADS=1)
       case $idx in scaleli_*|trace_scaleli_*) runenv+=(SCALELI_BUILD_THREADS="$BUILD_THREADS");; esac
-      if flow_cell "$idx"; then runenv+=(SCALELI_FLOW="$FLOWS/${ds}_$(period "$ds")_t2000.txt"); fi
+      if flow_cell "$idx"; then runenv+=(SCALELI_FLOW="$(flow_file "$ds")"); fi
       if splice_idx "$idx"; then
         sa=${SPLICE_ARGS-}
         [ "$SPLICE_PLAN" = none ] || sa="$(cat "$(plan_file "$ds")")${sa:+ $sa}"
