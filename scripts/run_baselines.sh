@@ -34,9 +34,10 @@ mkdir -p "$OUT/logs"
 for d in $DATASETS; do [ -f "$DATA_DIR/$d" ] || { echo "missing $DATA_DIR/$d (data/download.sh)" >&2; exit 1; }; done
 
 if [ "$(uname -s)" = Darwin ]; then
-    POWER=$(pmset -g batt | sed -n 's/^Now drawing from .\(.*\).$/\1/p'); LPM=$(pmset -g | awk '/lowpowermode|powermode/ {print $2; exit}')
-    HOST="$(sysctl -n machdep.cpu.brand_string), $POWER, lowpowermode=${LPM:-?}"
-    [ "$POWER" = "AC Power" ] && [ "${LPM:-0}" = 0 ] || echo "WARNING: $HOST: timings are not comparable (smoke only)" >&2
+    # pmset: 'powermode' 0 automatic, 1 low power, 2 high power (older macOS: 'lowpowermode' 0/1)
+    POWER=$(pmset -g batt | sed -n 's/^Now drawing from .\(.*\).$/\1/p'); PM=$(pmset -g | awk '/lowpowermode|powermode/ {print $1 "=" $2; exit}')
+    HOST="$(sysctl -n machdep.cpu.brand_string), $POWER, ${PM:-powermode=?}"
+    [ "$POWER" = "AC Power" ] && [ "${PM#*=}" != 1 ] || echo "WARNING: $HOST: timings are not comparable (smoke only)" >&2
 else HOST="$(lscpu | sed -n 's/^Model name: *//p'), $(uname -r), governor $(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null || echo ?)"; fi
 SETTINGS="ops=$OPS table=$TABLE ratio=$RATIO core=${CORE:-none} binary=$(sed -n 's/^microbench sha256: //p' "$GRE_DIR/build/BUILD_MANIFEST.txt")"
 if [ -f "$OUT/SETTINGS" ] && [ "$(cat "$OUT/SETTINGS")" != "$SETTINGS" ]; then
