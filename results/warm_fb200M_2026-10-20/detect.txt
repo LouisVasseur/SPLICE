@@ -1,0 +1,5 @@
+run                                   var_cut  var_calls  der_cut  der_calls    before     after      tail
+fb.trace_alex.r1                            2     400000       67   13400000    303.91    298.90    298.53
+fb.trace_lipp.r1                            7    1400000       98   19600000    150.14     95.07     91.29
+fb.trace_w_alex.r1                        108   21600000       41    8200000    301.39    299.23    297.17
+fb.trace_w_lipp.r1                          0          0        0          0       nan     90.38     91.39

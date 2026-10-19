@@ -10,6 +10,7 @@
 //   vp_<base>      virtual points (VirtualIndex) in front of the base; <t>_vp_<base> is T then V (e.g. pw512_vp_alex)
 //   g_<name>       G: outlier keys peeled into an exception list (ExceptionIndex), then any other name on the bulk
 //                  (g_alex, g_pw512_alex, g_vp_lipp, g_pw512_vp_alex)
+//   trace_<name>   chunk timer around any name (warm-up detection runs only); w_<name>: untimed warm-up in bulk_load
 //   gate_<base>    the learned gate (gate.h, gate_model.h)
 //   nflsw_<base>   an NFL-style switch: pw512 or raw (gate.h)
 // Bases: lipp btree alex pgm, and artunsync where GRE's registry has it (Linux: competitor.h includes artunsync.h
@@ -26,6 +27,7 @@
 #include "gret/transform_index.h"
 #include "gret/vpoints.h"
 #include "gret/exceptions.h"
+#include "gret/warmup.h"
 
 #ifndef GRET_HAS_ARTUNSYNC
 #if defined(ARTVERSION1_TREE_H)  // src/competitor/artsync/src/ART/Tree.h, included by artunsync.h only
@@ -88,6 +90,32 @@ indexInterface<K, P>* make_index(const std::string& name) {
     return nullptr;
   } else {
     using namespace registry_detail;
+    {  // trace_ / w_ / trace_w_ on a raw base: held by value and inlined, so the layers add no call to the lookup
+      auto raw = [&](const std::string& n, auto tag) -> indexInterface<K, P>* {
+        using B = typename decltype(tag)::type;
+        if (n == "trace_" ) return new TraceIndex<K, P, B>(name);
+        if (n == "w_") return new WarmIndex<K, P, B>(name);
+        if (n == "trace_w_") return new TraceIndex<K, P, WarmIndex<K, P, B>>(name);
+        return nullptr;
+      };
+      for (const char* pre : {"trace_w_", "trace_", "w_"}) {
+        const std::string pr = pre;
+        if (name.compare(0, pr.size(), pr) != 0) continue;
+        const std::string b = name.substr(pr.size());
+        if (b == "lipp") return raw(pr, std::common_type<LIPPInterface<uint64_t, P>>{});
+        if (b == "btree") return raw(pr, std::common_type<BTreeInterface<uint64_t, P>>{});
+        if (b == "alex") return raw(pr, std::common_type<alexInterface<uint64_t, P>>{});
+        if (b == "pgm") return raw(pr, std::common_type<pgmInterface<uint64_t, P>>{});
+        break;
+      }
+    }
+    if (name.compare(0, 6, "trace_") == 0 || name.compare(0, 2, "w_") == 0) {  // measurement layers, outermost
+      const bool tr = name[0] == 't';
+      indexInterface<K, P>* inner = make_index<K, P>(name.substr(tr ? 6 : 2));
+      if (!inner) return nullptr;
+      if (tr) return new TraceIndex<K, P>(name, inner);
+      return new WarmIndex<K, P>(name, inner);
+    }
     if (name.compare(0, 2, "g_") == 0) {  // G first: the exception list wraps whatever the rest of the name builds
       const std::string rest = name.substr(2);  // g_<base>: the base by value, called directly
       if (rest == "lipp") return new ExceptionIndex<K, P, LIPPInterface<uint64_t, P>>(name);

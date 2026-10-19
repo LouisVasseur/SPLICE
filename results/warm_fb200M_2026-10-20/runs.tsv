@@ -1,0 +1,5 @@
+dataset	index	repeat	throughput_ops	memory_bytes	success_read	wall_s	log
+fb	trace_lipp	1	8844382	24101427742	60000000	38	logs/fb.trace_lipp.r1.log
+fb	trace_w_lipp	1	11064528	24101427742	60000000	40	logs/fb.trace_w_lipp.r1.log
+fb	trace_alex	1	3332959	4680024424	60000000	71	logs/fb.trace_alex.r1.log
+fb	trace_w_alex	1	3332962	4680024424	60000000	78	logs/fb.trace_w_alex.r1.log
