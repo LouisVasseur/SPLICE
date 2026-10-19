@@ -37,6 +37,7 @@
 
 #include "gret/common.h"
 #include "gret/flow.h"
+#include "gret/nflflow.h"
 #include "gret/pwlcdf.h"
 
 namespace gret {
@@ -82,11 +83,32 @@ MolFlow make_transform(MolFlow*, const TransformSpec& s, const std::pair<uint64_
   }
 }
 
+// NflFlow: NFL's own flow, loaded from $TRANSFORM_NFL (NFL's weight file for the dataset), its z range fitted on the
+// build keys.
+template <class P>
+NflFlow make_transform(NflFlow*, const TransformSpec& s, const std::pair<uint64_t, P>* kv, size_t n) {
+  const char* e = std::getenv("TRANSFORM_NFL");
+  const std::string path = !s.flow_path.empty() ? s.flow_path : e ? e : "";
+  if (path.empty()) die("nfl needs NFL's weights: set TRANSFORM_NFL=<dataset>.nfl (NFL's train/numerical_flow.py)");
+  try {
+    NflFlow f = NflFlow::load(path);
+    f.fit(n, [kv](size_t i) { return uint64_t(kv[i].first); });
+    return f;
+  } catch (const std::exception& ex) {
+    die(ex.what());
+  }
+}
+
 // Extra fields for the stderr line: MolFlow says which a * b + c its build fuses (flow.h; T differs by 1 on ~0.1% of
 // the keys between the two, so collision sets and nf labels must not be mixed across them).
 template <class Tr>
 std::string transform_note(const Tr&) { return ""; }
 inline std::string transform_note(const MolFlow&) { return MolFlow::kFusedMadd ? " fma=1" : " fma=0"; }
+inline std::string transform_note(const NflFlow& f) {
+  char b[80];
+  std::snprintf(b, sizeof b, " zlo=%.9g zhi=%.9g", f.zlo(), f.zhi());
+  return b;
+}
 
 template <class K, class P, class Base, class Tr>
 class TransformIndex final : public indexInterface<K, P> {

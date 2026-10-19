@@ -6,6 +6,7 @@
 //   pw_<base>      PwlCdf with K = $TRANSFORM_K (default 512); it reports itself as pw<K>_<base>. Only these names
 //                  read $TRANSFORM_K: pw<K>_, gate_ (pw512, pw4096) and nflsw_ (pw512) have fixed K
 //   nf_<base>      MolFlow loaded from $TRANSFORM_FLOW
+//   nfl_<base>     NFL's own flow (NflFlow), its weights loaded from $TRANSFORM_NFL
 //   gate_<base>    the learned gate (gate.h, gate_model.h)
 //   nflsw_<base>   an NFL-style switch: pw512 or raw (gate.h)
 // Bases: lipp btree alex pgm, and artunsync where GRE's registry has it (Linux: competitor.h includes artunsync.h
@@ -53,6 +54,7 @@ namespace registry_detail {
 template <class K, class P, class Base>
 indexInterface<K, P>* make_on(const std::string& kind, const std::string& base, RawLimits raw) {
   if (kind == "nf") return new TransformIndex<K, P, Base, MolFlow>("nf_" + base);
+  if (kind == "nfl") return new TransformIndex<K, P, Base, NflFlow>("nfl_" + base);
   if (kind == "gate") return new GateIndex<K, P, Base>(base, GateMode::learned, raw);
   if (kind == "nflsw") return new GateIndex<K, P, Base>(base, GateMode::nflsw, raw);
   if (const unsigned k = pw_knots(kind))

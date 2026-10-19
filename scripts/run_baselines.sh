@@ -56,7 +56,10 @@ if [ -n "${TRANSFORM_K:-}" ]; then
         { echo "TRANSFORM_K=$TRANSFORM_K: must be an integer in [2, 65536] without leading zeros" >&2; exit 1; }
     case " $INDEXES " in *" pw_"*) ;; *) echo "WARNING: TRANSFORM_K affects only pw_<base>, and INDEXES has none" >&2 ;; esac
     XSET="$XSET transform_k=$TRANSFORM_K"; fi
-unset TRANSFORM_FLOW
+unset TRANSFORM_FLOW TRANSFORM_NFL
+if [ -n "${NFL_DIR:-}" ]; then   # NFL_DIR=DIR: TRANSFORM_NFL=DIR/<dataset>.nfl (NFL's own flow weights, read by nfl_*)
+    NFL_DIR=$(cd "$NFL_DIR" && pwd) || { echo "NFL_DIR: no such directory" >&2; exit 1; }
+    XSET="$XSET nfl_dir=$NFL_DIR"; fi
 if [ -n "${FLOW_DIR:-}" ]; then
     FLOW_DIR=$(cd "$FLOW_DIR" && pwd) || { echo "FLOW_DIR: no such directory" >&2; exit 1; }
     XSET="$XSET flow_dir=$FLOW_DIR"; fi
@@ -129,6 +132,7 @@ for r in $(seq 1 "$REPEATS"); do for d in $DATASETS; do for i in $INDEXES; do
     if [ "$(uname -s)" = Darwin ] && [ "$i" = lipp ] && lipp_fails "$d"; then
         echo "[$n/$total] $d $i r$r: skipped on macOS (raw LIPP fails on keys that are equal as doubles)"; continue; fi
     [ -z "${FLOW_DIR:-}" ] || export TRANSFORM_FLOW="$FLOW_DIR/$d.flow"
+    [ -z "${NFL_DIR:-}" ] || export TRANSFORM_NFL="$NFL_DIR/$d.nfl"
     t0=$(date +%s)
     # GRE's own flags; no --latency_sample (it adds timer reads to the timed loop), as in GRE's throughput figures
     if ! OMP_NUM_THREADS=1 ${PIN[@]+"${PIN[@]}"} "$RUN_BIN" --keys_file="$DATA_DIR/$d" --keys_file_type=binary --read=1 --insert=0 \
