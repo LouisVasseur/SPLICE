@@ -43,6 +43,10 @@ machine: $MACHINE   GRE: $GRE (GRE_DIR=DIR or --gre DIR overrides)   data: data/
                               SPLICE-H plans: splice_count over all keys -> D (default results/splice_h/), then
                               D/COUNTS.md (Mac)
   lane on|off|status|run -- CMD   Mac only: move heavy apps to the efficiency cores (scripts/mac_lane.sh)
+  atom SUB [--out R] [--lanes K] [--dry-run] [ARGS]
+                              the Atom in parallel pinned lanes (scripts/atom_batch.py, docs/ATOM_FAST.md):
+                              doctor | calib | verdict | warmup | bench | run warmup,bench | counts | status |
+                              merge | anchors. Real runs on Linux only; --dry-run prints the schedule anywhere.
   help                        this table
 
 Long runs: nohup ./run.sh bench ... > bench.out 2>&1 &     Docs: README.md, docs/PROTOCOL.md (Atom), docs/MAC.md
@@ -134,6 +138,14 @@ case $CMD in
     echo "counts: $OUTD/<ds>.json, args/, COUNTS.md";;
   lane)
     exec "$S/mac_lane.sh" "$@";;
+  atom)
+    SUB=${1:-}; [ $# -eq 0 ] || shift
+    case $SUB in
+      doctor|calib|verdict|warmup|bench|run|counts|status|merge|anchors) ;;
+      *) die "atom: SUB is one of doctor calib verdict warmup bench run counts status merge anchors (docs/ATOM_FAST.md)";;
+    esac
+    # this machine's GRE and data first, the caller's flags after them (argparse keeps the last value)
+    exec python3 "$S/atom_batch.py" "$SUB" --gre "$GRE" --data "$DATA" "$@";;
   help|-h|--help)
     usage;;
   *)

@@ -15,6 +15,9 @@ splice_total_bytes (within 3%, and 18-25 B/key unless the cell is compact), pred
 splice_thp's arena, and layout hashes that must agree between repeats (and, with --splice-json DIR, with
 splice_count's DIR/<ds>.json). Its findings go to Warnings; they never change the exit status. Without SPLICE runs
 the report is unchanged.
+A merged lane OUTDIR (scripts/atom_batch.py merge: config pin=per-run, runs.tsv with pin, lane, solo and concurrency
+columns) is checked against each run's own core and gets a Lanes section; --only solo|parallel keeps one kind of run.
+Plain gre_run.sh OUTDIRs have none of those columns and are reported as before.
 Standard library only; runs on Python 3.6.
 """
 import argparse
@@ -197,7 +200,7 @@ def check_run(row, log, cfg):
         if sr is None or ops is None or sr != ops:
             p.append(('success_read', 'success_read %s != operations_num %s' % (sr, ops)))
     want_w = as_int(cfg.get('warmup'), 0)
-    want_pin = as_int(cfg.get('pin'), -1)
+    want_pin = as_int(row.get('pin'), as_int(cfg.get('pin'), -1))   # merged lanes: each run's own core
     w = log.get('warmup_num')
     if w is None:
         if want_w > 0 or want_pin >= 0:
@@ -262,6 +265,8 @@ def provenance_md(secs, cfg, out):
     if resumed:
         rows.append(('resumed', ', '.join(l[0].strip() for l in resumed if l)))
     w, pin = as_int(cfg.get('warmup'), 0), as_int(cfg.get('pin'), -1)
+    if cfg.get('pin') == 'per-run':      # atom_batch.py lanes: pinned, each run to its lane's core
+        pin = 0
     cond = 'with warm-up' if w > 0 else 'GRE as published' if pin < 0 else 'pinned, no warm-up'
     keys = ['datasets', 'indexes', 'repeats', 'ops', 'warmup', 'pin', 'init_ratio', 'table_size', 'read', 'insert', 'extra']
     rows.append(('condition', '%s (%s)' % (cond, ', '.join('%s=%s' % (k, cfg[k]) for k in keys if k in cfg))))
@@ -288,6 +293,22 @@ def load_md(runs, out):
     if loads or busy:
         out.append('')
     return busy
+
+
+def lanes_md(runs, out):
+    """Merged lane OUTDIRs (atom_batch.py): which runs had the machine to themselves and how many others ran."""
+    if not runs or 'solo' not in runs[0]:
+        return
+    solo = [r for r in runs if r.get('solo') == '1']
+    conc = sorted(set(as_int(r.get('conc_alive_max'), 0) for r in runs))
+    lanes = sorted(set(r.get('core', '') for r in runs))
+    sib = [x for x in (as_float(r.get('sibling_busy_pct')) for r in runs) if x is not None]
+    out.append('## Lanes\n')
+    out.append('%d runs solo (no other run alive during the timed lookups, no foreign benchmark), %d beside others '
+               '(at most %d at once); cores %s; K %s. Sibling of the timed core busy: max %s. A run that ran beside '
+               'others is valid only within the calibrated bound (calib/verdict.md); --only solo|parallel separates them.\n'
+               % (len(solo), len(runs) - len(solo), max(conc) if conc else 0, ', '.join(lanes),
+                  ', '.join(sorted(set(r.get('k', '') for r in runs))), fmt(max(sib), 1) + '%' if sib else 'n/a'))
 
 
 def splice_md(ds, cells, a, cfg, out, warn):
@@ -377,8 +398,15 @@ def main():
     ap.add_argument('outdir')
     ap.add_argument('--ref', help='reference index for throughput ratios (default sortedarray, else btree)')
     ap.add_argument('--splice-json', help='splice_count results directory (results/splice_h): compare layout hashes')
+    ap.add_argument('--only', choices=('solo', 'parallel'), help='merged lane OUTDIR: only the runs that ran alone or '
+                    'only those that ran beside others (runs.tsv column solo)')
     a = ap.parse_args()
     runs, retried = load_runs(a.outdir) or ([], 0)
+    if a.only:
+        if runs and 'solo' not in runs[0]:
+            sys.stderr.write('gre_report.py: --only needs a merged lane OUTDIR (no solo column in runs.tsv)\n')
+            return 2
+        runs = [r for r in runs if r.get('solo') == ('1' if a.only == 'solo' else '0')]
     if not runs:
         sys.stderr.write('gre_report.py: no runs in %s/runs.tsv\n' % a.outdir)
         return 2
@@ -413,6 +441,7 @@ def main():
                   ' (%d earlier attempts superseded by a --resume rerun; their logs are *.log.prev)' % retried
                   if retried else ''))
     want_w = as_int(cfg.get('warmup'), 0)
+    pin_on = as_int(cfg.get('pin'), -1) >= 0 or any(as_int(r.get('pin'), -1) >= 0 for r in runs)
     out.append('| dataset | index | runs | exit 0 | throughput | success_read | warm-up | pin | status |')
     out.append('|---|---|---|---|---|---|---|---|---|')
     for ds in datasets:
@@ -425,7 +454,7 @@ def main():
             bad = any(r['problems'] for r in cell)
             out.append('| %s | %s | %d | %s | %s | %s | %s | %s | %s |' % (
                 ds, ix, len(cell), n_ok('exit'), n_ok('throughput'), n_ok('success_read'),
-                n_ok('warmup') if want_w > 0 else 'n/a', n_ok('pin') if as_int(cfg.get('pin'), -1) >= 0 else 'n/a',
+                n_ok('warmup') if want_w > 0 else 'n/a', n_ok('pin') if pin_on else 'n/a',
                 'FAIL' if bad else 'PASS'))
     failed = [r for r in runs if r['problems']]
     if failed:
@@ -435,6 +464,7 @@ def main():
                                                   '; '.join(m for _, m in r['problems'])))
     out.append('')
     busy = load_md(runs, out)
+    lanes_md(runs, out)
 
     out.append('## Results per dataset\n')
     out.append('Throughput in Mops/s over the runs that pass every check (GRE times one pass over the operations '

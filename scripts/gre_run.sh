@@ -108,7 +108,9 @@ int --build-threads "$BUILD_THREADS"; range --build-threads "$BUILD_THREADS" 1 1
 range --ops "$OPS" 1 2147483647
 range --warmup "$WARMUP" 0 2147483647
 [ "$TABLE_SIZE" = -1 ] || range --table-size "$TABLE_SIZE" 1 2147483647
-NCPU=$(nproc 2>/dev/null || getconf _NPROCESSORS_ONLN)
+# Online CPUs, not nproc: under a CPU mask (scripts/atom_batch.py lanes) nproc counts only the mask, and a lane's core
+# may be numbered above the mask's size.
+NCPU=$(getconf _NPROCESSORS_ONLN 2>/dev/null || nproc)
 range --pin "$PIN" -1 $((NCPU - 1))
 ratio --init-ratio "$INIT_RATIO" 1; ratio --read "$READ" 0; ratio --insert "$INSERT" 0
 READ_ONLY=0; awk -v x="$READ" 'BEGIN { exit !(x == 1) }' && READ_ONLY=1
@@ -241,7 +243,9 @@ printf '%s\nrepeats=%s\n' "$CONFIG" "$REPEATS" > "$OUT/config.txt"
 if [ "$SRC" = "$BIN" ]; then
   cmp -s "$BIN" "$BUILD/microbench" 2>/dev/null || echo "note: $BUILD/microbench differs from the copy this OUTDIR started with; resuming with the copy"
 else
-  cp "$SRC" "$BIN"
+  # GRE_RUN_BIN_LINK=1 (atom_batch.py: one OUTDIR per run, all from one frozen copy that nothing rewrites): a hard
+  # link instead of a copy, so hundreds of OUTDIRs do not each hold the binary. Same inode, so the same sha256.
+  if [ "${GRE_RUN_BIN_LINK:-0}" = 1 ]; then ln -f "$SRC" "$BIN" 2>/dev/null || cp "$SRC" "$BIN"; else cp "$SRC" "$BIN"; fi
   cp "$BUILD/gre_lite_build.txt" "$OUT/bin/" 2>/dev/null || echo "(no $BUILD/gre_lite_build.txt)" > "$OUT/bin/gre_lite_build.txt"
 fi
 

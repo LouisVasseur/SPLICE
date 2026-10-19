@@ -59,7 +59,7 @@ Heavy commands refuse to start beside a timed run (`RUN_FORCE=1`, `GRE_LITE_FORC
 | `scripts/` | the shell and Python behind `run.sh` |
 | `data/` | `external/gre/` (download script and checksums; datasets fetched, never committed), `samples/` (manifests), `flows/` (NFL weights), the test fixture |
 | `results/` | `splice_h/` (the plans `gre_run.sh` reads, `args/`, and the counts), `splice_joint/` (the next G/T/V iteration: `window_suite/`, `prototypes/`), `gre_mac_2026-10-06/` (Mac baselines), `paired/<tag>/<machine>/` |
-| `docs/` | [DESIGN](docs/DESIGN.md) (SPLICE-H), [PROTOCOL](docs/PROTOCOL.md) (the Atom), [MAC](docs/MAC.md), [GRE](docs/GRE.md), [METHODS](docs/METHODS.md) (matching NFL and CSV) |
+| `docs/` | [DESIGN](docs/DESIGN.md) (SPLICE-H), [PROTOCOL](docs/PROTOCOL.md) (the Atom), [ATOM_FAST](docs/ATOM_FAST.md) (the Atom in parallel lanes), [MAC](docs/MAC.md), [GRE](docs/GRE.md), [METHODS](docs/METHODS.md) (matching NFL and CSV) |
 
 ## Results
 

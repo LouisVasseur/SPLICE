@@ -10,7 +10,8 @@
 //   geo:F:C       chunks of F, 2F, 4F, ... calls up to C, then C each (scripts/warmup_detect.py): cache and TLB warm-up
 //                 under uniform lookups ends within about 1e4-1e5 calls, so it needs log-time resolution early and
 //                 fixed resolution later. Output: trace_schedule / trace_calls / trace_chunks_n: <N> / N lines
-//                 'trace_point: <k> <call> <ns since point 0> <faults> <cpu>' / 'trace_end: <calls> <ns> <faults>'.
+//                 'trace_point: <k> <call> <ns since point 0> <faults> <cpu>' / 'trace_end: <calls> <ns> <faults>' /
+//                 'trace_t0_mono_ns: <steady_clock ns of point 0>'.
 //   fixed:C       chunks of C calls, same output as geo.
 // GRE_TRACE_FAULTS=1 adds the process's minor+major page faults at every boundary (getrusage: one syscall per
 // boundary, so for diagnosis runs only; otherwise the column is -1). GRE_TRACE_CPU=1 adds the CPU the thread is on
@@ -151,6 +152,9 @@ public:
                     f_[k], u_[k]);
       if (n_) std::printf("trace_end: %llu %lld %lld\n", static_cast<unsigned long long>(calls_), end - t_[0],
                           end_faults);
+      // Point 0 on the absolute steady_clock (CLOCK_MONOTONIC on Linux), so scripts/atom_batch.py can place every
+      // chunk against its own log of when the co-running lanes were stopped or running (calibration).
+      if (n_) std::printf("trace_t0_mono_ns: %lld\n", t_[0]);
     }
     std::fflush(stdout);
     return in_->Inner::memory_consumption();

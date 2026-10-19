@@ -5,6 +5,10 @@ phases (5w). The earlier protocol (sections 1-4: scaleli_bench, aidb_pipeline, v
 aidb_ba/PROTOCOL.md) is on main@ca8d80e. The labels 5, 5b, 5w and the step numbers are kept because the scripts and
 docs cite them.
 
+The whole set (warm-up traces, headline grid, untimed counts) can also run in parallel pinned lanes, one L2 module
+each, with K chosen by a calibration: [ATOM_FAST.md](ATOM_FAST.md) (`./run.sh atom`). Each run keeps this file's
+conditions; ATOM_FAST.md lists the extra rules.
+
 ## Requirements
 
 - Linux x86-64 (the DIAS Atom, for timings) or macOS (counts and previews); CMake >= 3.16; a C++20 compiler
