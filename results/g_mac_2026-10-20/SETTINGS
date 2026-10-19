@@ -1,0 +1,1 @@
+ops=10000000 table=-1 ratio=1 core=none binary=2c76b2dd5e0a30fa nfl_dir=/Users/louisvasseur/gre-transform/nfl10M flow_dir=/Users/louisvasseur/gre-transform/flows

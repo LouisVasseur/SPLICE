@@ -89,7 +89,12 @@ indexInterface<K, P>* make_index(const std::string& name) {
   } else {
     using namespace registry_detail;
     if (name.compare(0, 2, "g_") == 0) {  // G first: the exception list wraps whatever the rest of the name builds
-      indexInterface<K, P>* inner = make_index<K, P>(name.substr(2));
+      const std::string rest = name.substr(2);  // g_<base>: the base by value, called directly
+      if (rest == "lipp") return new ExceptionIndex<K, P, LIPPInterface<uint64_t, P>>(name);
+      if (rest == "btree") return new ExceptionIndex<K, P, BTreeInterface<uint64_t, P>>(name);
+      if (rest == "alex") return new ExceptionIndex<K, P, alexInterface<uint64_t, P>>(name);
+      if (rest == "pgm") return new ExceptionIndex<K, P, pgmInterface<uint64_t, P>>(name);
+      indexInterface<K, P>* inner = make_index<K, P>(rest);
       return inner ? new ExceptionIndex<K, P>(name, inner) : nullptr;
     }
     const size_t us = name.find('_');

@@ -15,20 +15,26 @@
 #include <cstdio>
 #include <cstdlib>
 #include <memory>
+#include <type_traits>
 #include <string>
 #include <utility>
 #include <vector>
 
 namespace gret {
 
-template <class K, class P>
+template <class K, class P, class Inner = indexInterface<K, P>>
 class ExceptionIndex final : public indexInterface<K, P> {
+  static constexpr bool kByValue = !std::is_same<Inner, indexInterface<K, P>>::value;
+
  public:
-  ExceptionIndex(std::string name, indexInterface<K, P>* inner) : name_(std::move(name)), inner_(inner) {}
+  // Inner = indexInterface<K, P>: owns a built index of any composition, called through its virtual interface.
+  // Inner = a concrete GRE interface (g_<base>): held by value and called directly, so G adds only the range check.
+  ExceptionIndex(std::string name, indexInterface<K, P>* inner) : name_(std::move(name)), owned_(inner) {}
+  explicit ExceptionIndex(std::string name) : name_(std::move(name)) {}
   ExceptionIndex(const ExceptionIndex&) = delete;
   ExceptionIndex& operator=(const ExceptionIndex&) = delete;
 
-  void init(Param* param = nullptr) override { inner_->init(param); }
+  void init(Param* param = nullptr) override { inner().init(param); }
 
   void bulk_load(std::pair<K, P>* kv, size_t n, Param* param = nullptr) override {
     const char* e = std::getenv("TRANSFORM_G_E");
@@ -49,31 +55,39 @@ class ExceptionIndex final : public indexInterface<K, P> {
     span_ = hi > lo ? uint64_t(kv[hi - 1].first) - lo_ : 0;
     std::fprintf(stderr, "gret: %s n=%zu exceptions=%zu (low %zu, high %zu) bulk=[%llu, %llu]\n", name_.c_str(), n,
                  exc_.size(), lo, n - hi, (unsigned long long)lo_, (unsigned long long)(lo_ + span_));
-    inner_->bulk_load(kv + lo, hi - lo, param);
+    inner().bulk_load(kv + lo, hi - lo, param);
   }
 
-  bool get(K key, P& val, Param* param = nullptr) override {
-    if (uint64_t(key) - lo_ > span_) {  // outside the bulk: the exceptions (rare, predictable)
+  // flatten: inline the base's own lookup here, so the wrapper adds a range check, not a second call frame (LIPP's
+  // ~20 ns lookups lose 13-22% to the extra call otherwise)
+  __attribute__((flatten)) bool get(K key, P& val, Param* param = nullptr) override {
+    if (__builtin_expect(uint64_t(key) - lo_ > span_, 0)) {  // outside the bulk: the exceptions (rare, predictable)
       const auto it = std::lower_bound(exc_.begin(), exc_.end(), key,
                                        [](const std::pair<K, P>& a, K k) { return a.first < k; });
       if (it == exc_.end() || it->first != key) return false;
       val = it->second;
       return true;
     }
-    return inner_->get(key, val, param);
+    return inner().get(key, val, param);
   }
   bool put(K, P, Param* = nullptr) override { return false; }
   bool update(K, P, Param* = nullptr) override { return false; }
   bool remove(K, Param* = nullptr) override { return false; }
   size_t scan(K, size_t, std::pair<K, P>*, Param* = nullptr) override { return 0; }
   long long memory_consumption() override {
-    const long long m = inner_->memory_consumption();
+    const long long m = inner().memory_consumption();
     return m ? m + (long long)(exc_.size() * sizeof(std::pair<K, P>)) : 0;
   }
 
  private:
+  Inner& inner() {
+    if constexpr (kByValue) return held_;
+    else return *owned_;
+  }
+  struct Empty {};
   std::string name_;
-  std::unique_ptr<indexInterface<K, P>> inner_;
+  std::unique_ptr<indexInterface<K, P>> owned_;
+  typename std::conditional<kByValue, Inner, Empty>::type held_;
   std::vector<std::pair<K, P>> exc_;
   uint64_t lo_ = 0, span_ = 0;
 };

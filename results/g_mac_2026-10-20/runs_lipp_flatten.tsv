@@ -1,0 +1,17 @@
+dataset	index	repeat	throughput_ops	memory_bytes	success_read	wall_s	log
+covid_10M	lipp	1	44758293	327837140	10000000	3	logs/covid_10M.lipp.r1.log
+covid_10M	g_lipp	1	41229465	327837140	10000000	2	logs/covid_10M.g_lipp.r1.log
+libio_10M	lipp	1	42680948	320269744	10000000	2	logs/libio_10M.lipp.r1.log
+libio_10M	g_lipp	1	43307722	320269744	10000000	3	logs/libio_10M.g_lipp.r1.log
+stack_10M	lipp	1	49349566	320000074	10000000	2	logs/stack_10M.lipp.r1.log
+stack_10M	g_lipp	1	43128502	320000074	10000000	3	logs/stack_10M.g_lipp.r1.log
+history_10M	lipp	1	48643285	321420942	10000000	3	logs/history_10M.lipp.r1.log
+history_10M	g_lipp	1	42411906	321420942	10000000	2	logs/history_10M.g_lipp.r1.log
+covid_10M	lipp	2	45483975	327837140	10000000	3	logs/covid_10M.lipp.r2.log
+covid_10M	g_lipp	2	40964582	327837140	10000000	2	logs/covid_10M.g_lipp.r2.log
+libio_10M	lipp	2	47610821	320269744	10000000	3	logs/libio_10M.lipp.r2.log
+libio_10M	g_lipp	2	41042327	320269744	10000000	2	logs/libio_10M.g_lipp.r2.log
+stack_10M	lipp	2	49613442	320000074	10000000	3	logs/stack_10M.lipp.r2.log
+stack_10M	g_lipp	2	45213380	320000074	10000000	2	logs/stack_10M.g_lipp.r2.log
+history_10M	lipp	2	47948405	321420942	10000000	3	logs/history_10M.lipp.r2.log
+history_10M	g_lipp	2	43753443	321420942	10000000	2	logs/history_10M.g_lipp.r2.log
