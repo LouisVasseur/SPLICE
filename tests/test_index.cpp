@@ -5,6 +5,9 @@
 // that returns another key's payload), then every key is looked up and its payload checked. Coverage: every base
 // (btree pgm alex lipp, plus artunsync on Linux) x pw512, pw4096 (through make_index), nf (synthetic flow files),
 // a non-monotone test transform (the sort path), the gate and NFL's switch (each gate variant through bulk_load_as).
+// The gate's decisions: every gate_/nflsw_ build must choose what gate_model.h's tree (or NFL's switch) gives, with
+// gate.h's fallbacks written out again here; a hand-written depth-2 tree must route the synthetic sets to all four
+// leaves; the veto runs on the placeholder tree (always raw), whatever the trained model chooses.
 // Forced collisions: a dense run below a 2^64 - 1 outlier and near-duplicate clusters (PwlCdf's flat segments), a
 // saturating flow, and a flow that maps every key to 0 (the sentinel base); each must reach the overflow.
 // Keys that were never loaded must not crash (not on LIPP: its get() of such a key can hit RT_ASSERT) and may only
@@ -149,6 +152,23 @@ static const char* kSmooth = "0.25 0.125 0.1\n0.25 0.375 0.1\n0.25 0.625 0.1\n0.
 static const char* kSaturating = "1 0.5 1e-06\n";
 static const char* kZero = "1 1000000 0.01\n";
 
+// ---- gate trees for the tests (gate.h's GateTree format)
+
+// the placeholder: always raw, pw512 where raw is vetoed (the veto tests must not depend on the trained model)
+static constexpr GateTree kAlwaysRaw = {"*", {nullptr, nullptr, nullptr}, {0, 0, 0},
+                                        {{Variant::raw, Variant::pw512}, {Variant::raw, Variant::pw512},
+                                         {Variant::raw, Variant::pw512}, {Variant::raw, Variant::pw512}}};
+// a depth-2 tree with four distinct leaves: log2_range <= 55 ? (gap_cv <= 0.5 ? L0 : L1) : (conflict_raw <= 50 ? L2
+// : L3); dense -> L0, random2^50 -> L1, random64 -> L2, fb-like -> L3 (check_gate_decide)
+static constexpr GateTree kTestTree = {"test", {"log2_range", "gap_cv", "conflict_raw"}, {55, 0.5, 50},
+                                       {{Variant::pw4096, Variant::pw512}, {Variant::nf, Variant::pw4096},
+                                        {Variant::raw, Variant::pw512}, {Variant::pw512, Variant::pw4096}}};
+static int leaf_of(const GateTree& t, const GateLeaf& l) {  // the leaves of kTestTree are distinct
+  for (int i = 0; i < 4; ++i)
+    if (t.leaf[i].pick == l.pick && t.leaf[i].fallback == l.fallback) return i;
+  return -1;
+}
+
 // ---- a non-monotone, colliding test transform (exercises the sort and the overflow); found by ADL
 
 namespace testtr {
@@ -218,6 +238,25 @@ struct Suite {
   bool lean;   // LIPP: every instance first builds a pool of 10^7 nodes (~12 s under ASan), so by default it runs
                // only the sets and variants that reach its own code paths; GRET_TEST_FULL=1 runs everything
 
+  // registry.h's raw limits for this base
+  RawLimits limits() const { return RawLimits{base == "lipp" && LDBL_MANT_DIG < 64, base == "alex" || base == "pgm"}; }
+
+  // What GateIndex must build for leaf l (gate.h's rule, written out again): pick, else fallback, else pw512; nf needs
+  // $TRANSFORM_FLOW to name a readable file, raw is vetoed by the limits
+  static Variant expected(const GateLeaf& l, const GateFeatures& f, RawLimits raw) {
+    auto ok = [&](Variant v) {
+      if (v == Variant::nf) {
+        const char* p = std::getenv("TRANSFORM_FLOW");
+        std::FILE* fp = p && *p ? std::fopen(p, "r") : nullptr;
+        if (fp) std::fclose(fp);
+        return fp != nullptr;
+      }
+      if (v != Variant::raw) return true;
+      return !(raw.needs_53_bits && f.above_2_53 * 1000 > f.n) && !(raw.max_is_sentinel && f.n && f.max == UINT64_MAX);
+    };
+    return ok(l.pick) ? l.pick : ok(l.fallback) ? l.fallback : Variant::pw512;
+  }
+
   template <class TI>
   TI* make(const std::string& name) {
     Index* idx = make_index<uint64_t, uint64_t>(name);
@@ -283,8 +322,23 @@ struct Suite {
     for (int i = 0; i < GateFeatures::kCount; ++i) same &= f.v[i] == gi->features().v[i];
     CHECK(same, "%s %s: bulk_load's features differ from compute_features", s.name.c_str(), name.c_str());
     const Variant v = gi->choice();
+    const Variant want = expected(learned ? gate_decide(gate_tree(base), f) : GateLeaf{nfl_switch(f), Variant::raw},
+                                  f, limits());
+    CHECK(v == want, "%s %s: chose %s, the model gives %s", s.name.c_str(), name.c_str(), variant_name(v),
+          variant_name(want));
     delete gi;
     return v;
+  }
+
+  // The hand-written depth-2 tree through GateIndex: the choice follows the tree, and the chosen variant is exact
+  void gate_tree2(const Set& s) {
+    const std::string what = s.name + " gate_" + base + " (test tree)";
+    Gate* gi = new Gate(base, GateMode::learned, limits(), &kTestTree);
+    load_and_check(gi, s.keys, what, true);
+    const Variant want = expected(gate_decide(kTestTree, gi->features()), gi->features(), limits());
+    CHECK(gi->choice() == want, "%s: chose %s, the tree gives %s", what.c_str(), variant_name(gi->choice()),
+          variant_name(want));
+    delete gi;
   }
 
   void gate_variants(const Set& s, bool lean) {  // lean: raw and nf (pw is pw() above, through the same switch)
@@ -336,20 +390,20 @@ struct Suite {
     const Set &dense = by_name(sets, "dense"), &above = by_name(sets, "above2^53"), &fb = by_name(sets, "fb-like");
     CHECK(gate(fb, false) == Variant::pw512, "nflsw_%s on fb-like must choose pw512", base.c_str());
     if (!lean) gate(dense, false);
-    // the placeholder chooses raw, except where raw is vetoed (LIPP with a 64-bit long double, keys above 2^53)
-    const bool veto = base == "lipp" && LDBL_MANT_DIG < 64;
-    CHECK(gate(dense, true) == Variant::raw, "gate_%s on dense", base.c_str());
-    CHECK(gate(above, true) == (veto ? Variant::pw512 : Variant::raw), "gate_%s on above2^53", base.c_str());
-    // ALEX and PGM: 2^64 - 1 (in dense+max) is their sentinel, so their gates must not build raw there
+    // gate_<base> with the trained model (gate() checks the choice against gate_model.h's tree and the vetoes)
+    gate(dense, true);
+    gate(above, true);
     const bool sentinel = base == "alex" || base == "pgm";
-    if (!lean) CHECK(gate(by_name(sets, "dense+max"), true) == (sentinel ? Variant::pw512 : Variant::raw),
-                     "gate_%s on dense+max", base.c_str());
+    if (!lean) gate(by_name(sets, "dense+max"), true);  // ALEX and PGM: 2^64 - 1 is their sentinel, raw is vetoed
+    // a real depth-2 tree: four leaves (LIPP: two of them)
+    for (const char* n : {"dense", "fb-like", "random2^50", "random64"})
+      if (!lean || std::string(n) == "dense" || std::string(n) == "fb-like") gate_tree2(by_name(sets, n));
     gate_variants(by_name(sets, "random2^50"), lean);
-    // the veto itself, on every platform: raw is replaced by the leaf's fallback (pw512) when > 0.1% of keys > 2^53.
-    // ALEX and PGM keep their sentinel veto: fb-like holds 2^64 - 1, and their raw lookup of it is not reliable
-    // (GRE's own bugs, see gate.h), so this test must not depend on it
+    // the veto itself, on every platform, on the placeholder tree (always raw): raw is replaced by the leaf's fallback
+    // (pw512) when > 0.1% of keys > 2^53. ALEX and PGM keep their sentinel veto: fb-like holds 2^64 - 1, and their raw
+    // lookup of it is not reliable (GRE's own bugs, see gate.h), so this test must not depend on it
     for (const Set* s : {&above, &fb}) {
-      Gate* gi = new Gate(base, GateMode::learned, RawLimits{true, sentinel});
+      Gate* gi = new Gate(base, GateMode::learned, RawLimits{true, sentinel}, &kAlwaysRaw);
       load_and_check(gi, s->keys, s->name + " gate_" + base + " (raw needs 53 bits)", true);
       CHECK(gi->choice() == (s == &above || sentinel ? Variant::pw512 : Variant::raw), "veto on %s", s->name.c_str());
       delete gi;
@@ -362,13 +416,13 @@ struct Suite {
     const Set s{tag, keys, false};
     pw(512, s);
     pw(4096, s);
-    gate(s, true);
-    gate(s, false);
     std::string flow = file + ".flow";
     if (const char* d = std::getenv("FLOW_DIR")) flow = std::string(d) + "/" + tag + ".flow";
-    if (std::FILE* f = std::fopen(flow.c_str(), "r")) {
-      std::fclose(f);
-      setenv("TRANSFORM_FLOW", flow.c_str(), 1);
+    std::FILE* ff = std::fopen(flow.c_str(), "r");
+    if (ff) std::fclose(ff), setenv("TRANSFORM_FLOW", flow.c_str(), 1);  // as run_baselines.sh: the gate may pick nf
+    gate(s, true);
+    gate(s, false);
+    if (ff) {
       Nf* ti = make<Nf>("nf_" + base);
       if (ti) {
         load_and_check(ti, keys, tag + " nf_" + base);
@@ -431,6 +485,35 @@ static void check_features(const std::vector<Set>& sets) {
         "fb-like features: %s", fb.list().c_str());
 }
 
+// gate_model.h is well formed, and gate_decide routes features as documented (kTestTree)
+static void check_gate_decide(const std::vector<Set>& sets) {
+  const size_t nt = sizeof(kGateTrees) / sizeof(kGateTrees[0]);
+  CHECK(nt > 0 && std::string(kGateTrees[nt - 1].base) == "*", "gate_model.h: the last tree must be '*'");
+  for (const GateTree& t : kGateTrees) {
+    for (int i = 0; i < 3; ++i)
+      CHECK(!t.feature[i] || (GateFeatures::id(t.feature[i]) >= 0 && std::isfinite(t.threshold[i])),
+            "gate_model.h %s: node %d", t.base, i);
+    for (const GateLeaf& l : t.leaf) CHECK(l.fallback != Variant::nf, "gate_model.h %s: nf as a fallback", t.base);
+  }
+  CHECK(std::string(gate_tree("btree").base) == "btree" || std::string(gate_tree("btree").base) == "*", "gate_tree");
+  int want = 0;
+  for (const char* n : {"dense", "random2^50", "random64", "fb-like"}) {
+    const GateFeatures f = compute_features(by_name(sets, n).keys.data(), by_name(sets, n).keys.size());
+    CHECK(leaf_of(kTestTree, gate_decide(kTestTree, f)) == want, "kTestTree: %s reaches leaf %d, not %d (%s)", n,
+          leaf_of(kTestTree, gate_decide(kTestTree, f)), want, f.list().c_str());
+    ++want;
+  }
+  GateFeatures f = compute_features(by_name(sets, "dense").keys.data(), by_name(sets, "dense").keys.size());
+  f.v[GateFeatures::log2_range] = 55;  // a test holds at equality
+  CHECK(leaf_of(kTestTree, gate_decide(kTestTree, f)) == 0, "kTestTree: log2_range == 55 must hold");
+  f.v[GateFeatures::log2_range] = NAN;  // a NaN feature fails its test
+  CHECK(leaf_of(kTestTree, gate_decide(kTestTree, f)) >= 2, "kTestTree: NaN must fail");
+  GateTree one = kTestTree;  // a nullptr child always holds
+  one.feature[2] = nullptr;
+  f.v[GateFeatures::conflict_raw] = 1e9;
+  CHECK(leaf_of(kTestTree, gate_decide(one, f)) == 2, "nullptr child must hold");
+}
+
 // GRE key file -> sorted unique keys, stride-sampled to at most maxn (plus the max)
 static Keys read_gre(const char* path, size_t maxn) {
   std::FILE* f = std::fopen(path, "rb");
@@ -476,6 +559,7 @@ int main(int argc, char** argv) {
   }
   check_registry();
   check_features(sets);
+  check_gate_decide(sets);
   Suite<BTreeInterface<uint64_t, uint64_t>>{"btree", true, false}.synthetic(sets);
   Suite<pgmInterface<uint64_t, uint64_t>>{"pgm", true, false}.synthetic(sets);
   Suite<alexInterface<uint64_t, uint64_t>>{"alex", true, false}.synthetic(sets);

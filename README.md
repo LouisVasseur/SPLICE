@@ -130,9 +130,19 @@ GRE_DIR=$HOME/gre-transform/GRE DATA_DIR=data/samples DATASETS="fb_10M books_10M
   -o build/gate_features`, then `build/gate_features FILE...`, one JSON line per file), the same code as `gate.h`.
   - The labels are Mac timings on the 10M samples: raw, pw512, pw4096 and nf, on lipp and btree, `OPS=10000000`,
     3 repeats, under the lane described in `DESIGN.md`, on AC power with Low Power Mode off.
-  - `gate/train_gate.py` (leave-one-dataset-out) regenerates `include/gret/gate_model.h`. Until it has run, that
-    file is the documented placeholder: always raw, or pw512 where raw is vetoed: LIPP when more than 0.1% of the
-    keys are above 2^53 on macOS, and ALEX and PGM when the keys include 2^64 - 1 (fb), their sentinel.
+  - `gate/train_gate.py LABELS_DIR FEATURES.jsonl --out-dir results/gate_mac_<date> --header
+    include/gret/gate_model.h` labels each dataset with its fastest variant (median over repeats), fits a constant,
+    a one-feature threshold rule and a depth-2 tree per base, validates them leave-one-dataset-out, and writes the
+    least-regret one into `gate_model.h` (plus labels, LODO and choice tables in the out dir). Raw is never a label
+    where the gate vetoes it: LIPP when more than 0.1% of the keys are above 2^53 on macOS, ALEX and PGM when the
+    keys include 2^64 - 1 (fb), their sentinel. Bases without labels (alex, pgm) keep the placeholder: raw, pw512
+    where raw is vetoed.
+  - The current model (`results/gate_mac_2026-10-19/REPORT.md`): on the Mac the fastest variant is raw on every
+    dataset where raw can be built, for both lipp and btree, and pw512 (within noise of pw4096) where raw LIPP is
+    vetoed; LODO picks the constant `raw, pw512 where vetoed`, which is the placeholder's rule. The transforms do not
+    pay on these bases for GRE's read-only uniform lookups at 10M keys.
+  - `gate/check_gate.py RUN_DIR results/gate_mac_<date>` checks `gate_*` and `nflsw_*` runs of a rebuilt binary:
+    each choice must match the model, and the features printed at bulk_load must match `gate_features`.
   - GRE's own raw ALEX and PGM mishandle the key 2^64 - 1, which fb contains: on `fb_10M` with distinct payloads,
     raw ALEX returns payload 0 for it, and raw PGM segfaults when looking it up. GRE's constant payload hides the
     first, and its uniform lookups reach that one key only by chance (about 1 run in 10 at `OPS=1000000` on a 10M

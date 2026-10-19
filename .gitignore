@@ -1,9 +1,10 @@
-# datasets, GRE clones, builds and results scratch never go in git
+# datasets, GRE clones, builds and results scratch never go in git (the gate reports results/gate_mac_* do: small)
 /data/*
 !/data/download.sh
 !/data/SHA256SUMS
 !/data/sample.py
 build/
-/results/
+/results/*
+!/results/gate_mac_*/
 *.part
 __pycache__/
