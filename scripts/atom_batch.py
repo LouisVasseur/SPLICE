@@ -3,6 +3,7 @@
 """Run the GRE experiment set on the DIAS Atom in parallel pinned lanes, as fast as the validity rules allow.
 
     atom_batch.py doctor  [--out R]                          topology, lanes, memory, THP -> R/machine.txt
+    atom_batch.py smoke   [--out R] [--lanes K]              real lanes, untimed, 10M keys -> R/smoke/SMOKE.md
     atom_batch.py calib   [--out R] [--k 4,3,2] [--dry-run]   solo vs K-way on the probe cells -> R/calib/
     atom_batch.py verdict [--out R]                          admissible K from R/calib -> R/calib/verdict.json
     atom_batch.py run RECIPES [--out R] [--lanes K] [--rounds N] [--datasets L] [--indexes L] [--dry-run]
@@ -39,12 +40,14 @@ links) that gre_report.py and warmup_detect.py read unchanged; `--only solo|para
 
 Calibration (calib, verdict): for K in --k (largest first), probes trace_pgm and trace_lipp on fb (W=20M, 200M
 lookups, fixed 65,536-call chunks) run on lane 1 while lanes 2..K loop real GRE runs (setups, builds, lookups) under
-the campaign's masks. The scheduler stops and resumes the load lanes together (SIGSTOP/SIGCONT) in 5 s blocks, in
-seeded random order within pairs, so solo and K-way alternate inside one probe process: the pairing removes the
-run-to-run offset that a solo-vs-parallel comparison of whole runs would need hundreds of runs to average out.
-Inflation = exp(mean over pairs of ln(median chunk latency, K-way block / solo block)) - 1, with a t interval. K is
-admissible when its upper 95% bound is at most --bound (1%) for both probes and the pairs whose K-way block had a
-load in setup or build do not exceed it either. `run` refuses K > 1 without such a verdict for the same binary.
+the campaign's masks, started together at the probe's pin. The scheduler stops and resumes the load lanes together
+(SIGSTOP/SIGCONT) in 5 s blocks, in seeded random order within pairs, so solo and K-way alternate inside one probe
+process: the pairing removes the run-to-run offset that a solo-vs-parallel comparison of whole runs would need
+hundreds of runs to average out. Inflation = exp(mean over pairs of ln(median chunk latency, K-way block / solo
+block)) - 1, with a t interval. K is admissible when its upper 95% bound is at most --bound (1%) for both probes and
+at least 3 pairs whose K-way block had a load in setup or build do not exceed it on average. `run` refuses K > 1
+without such a verdict for the same binary. `smoke` runs a few minutes of real lanes (10M keys) and checks the
+Linux-only parts: masks, pin, VmHWM, the tag, trace chunks on the lane core and on the scheduler's clock.
 
 Python 3.6, standard library only (it runs on the Atom). Linux for real runs; anywhere for --dry-run, merge,
 verdict, anchors and status (ATOM_BATCH_TEST=1 lets the tests drive fake binaries on macOS).
@@ -270,7 +273,7 @@ class Predictor(object):
     measured/model ratio of the same index."""
 
     def __init__(self, records=()):
-        self.walls, self.peaks, self.rw, self.rp = {}, {}, {}, {}
+        self.walls, self.peaks, self.rw, self.rp, self.floors = {}, {}, {}, {}, {}
         for r in records:
             self.add(r)
 
@@ -288,8 +291,13 @@ class Predictor(object):
         if g:
             norm = float(g) - (it['ops'] + it['warmup']) * OPS_GB
             k = (base_index(it['idx']), it['ds'])
-            self.peaks[k] = max(self.peaks.get(k, 0.0), norm)
-            self.rp.setdefault(k[0], []).append(float(g) / model_peak(it))
+            if rec.get('status') == 'pass':
+                self.peaks[k] = max(self.peaks.get(k, 0.0), norm)
+                self.rp.setdefault(k[0], []).append(float(g) / model_peak(it))
+            else:
+                # a crashed or killed run stopped short of its peak: its VmHWM only raises the estimate, and the cell
+                # stays unmeasured (a LIPP cell that was never measured keeps running alone)
+                self.floors[k] = max(self.floors.get(k, 0.0), norm)
 
     def measured_peak(self, it):
         return (base_index(it['idx']), it['ds']) in self.peaks
@@ -312,6 +320,8 @@ class Predictor(object):
             p = self.peaks[k] + (it['ops'] + it['warmup']) * OPS_GB
         else:
             p = model_peak(it) * max(1.0, median(self.rp.get(k[0], [])) or 1.0)
+        if k in self.floors and it.get('table_size', -1) <= 0:
+            p = max(p, self.floors[k] + (it['ops'] + it['warmup']) * OPS_GB)
         return p * 1.05 + 0.5 + it.get('peak_extra', 0.0)
 
 
@@ -340,11 +350,19 @@ def read_modules(sysfs='/sys/devices/system/cpu', allowed=None):
 
 
 def fake_modules(spec):
+    """'8x2' (the Atom: 8 modules of 2 CPUs) or explicit modules '0-3/4-9/10-15' (the Mac: E cluster, 2 P clusters)."""
     m = re.match(r'^(\d+)x(\d+)$', spec or '')
-    if not m:
-        die("--topology must look like 8x2 (modules x CPUs per module)")
-    n, w = int(m.group(1)), int(m.group(2))
-    return [{'cpus': list(range(i * w, (i + 1) * w)), 'complete': True} for i in range(n)], []
+    if m:
+        n, w = int(m.group(1)), int(m.group(2))
+        return [{'cpus': list(range(i * w, (i + 1) * w)), 'complete': True} for i in range(n)], []
+    try:
+        mods = [sorted(parse_cpulist(x)) for x in (spec or '').split('/') if x.strip()]
+    except ValueError:
+        mods = []
+    flat = [c for x in mods for c in x]
+    if not mods or not all(mods) or len(flat) != len(set(flat)):
+        die("--topology must look like 8x2 (modules x CPUs per module) or 0-3/4-9/10-15 (one CPU list per module)")
+    return [{'cpus': x, 'complete': True} for x in mods], []
 
 
 class Layout(object):
@@ -539,12 +557,26 @@ def fs_type(path):
     return typ
 
 
+def allowed_cpus(sysfs):
+    """The CPUs this user may run on: the cpuset, not this shell's mask. A shell moved to the house module
+    (taskset -cp 0,1 $$) would otherwise leave no lane. Widening our own affinity to every online CPU, the kernel
+    grants exactly the cpuset's share of it (sched_setaffinity intersects with the cpuset); the scheduler then
+    confines itself to the house module again."""
+    try:
+        online = parse_cpulist(read(os.path.join(sysfs, 'online')) or '')
+        if online:
+            os.sched_setaffinity(0, set(online))
+    except (OSError, ValueError):
+        pass
+    return sorted(os.sched_getaffinity(0))
+
+
 class Machine(object):
     """What the scheduler reads about the machine; overridable for --dry-run and tests."""
 
     def __init__(self, a):
         self.linux = os.path.isdir('/proc/self') and sys.platform.startswith('linux')
-        self.allowed = sorted(os.sched_getaffinity(0)) if hasattr(os, 'sched_getaffinity') else None
+        self.allowed = allowed_cpus(a.sysfs) if hasattr(os, 'sched_getaffinity') else None
         self.fake_topo = bool(a.topology) or not self.linux    # a fake layout: never apply its CPU masks
         if a.topology:
             self.mods, self.iso = fake_modules(a.topology)
@@ -609,6 +641,11 @@ def recipe_items(names, a, k, thp_mode):
     for ds in dss:
         if ds not in DATASETS:
             die('unknown dataset %s' % ds)
+    # --ops / --warmup / --table-size shrink every run: a smoke of the machinery, never the protocol's numbers
+    ops = getattr(a, 'ops', None)
+    w = getattr(a, 'warmup', None)
+    w = 20000000 if w is None else w
+    ts = getattr(a, 'table_size', None) or -1
     for name in names:
         if name == 'warmup':
             # --trace-indexes; a warmup-only run also takes --indexes (in warmup,bench it is the bench's list)
@@ -617,19 +654,22 @@ def recipe_items(names, a, k, thp_mode):
             for r in range(1, (a.rounds or 2) + 1):
                 for ds in dss:
                     for ix in ixs:
-                        items.append(gre_item(arm_name('trace', thp_mode), ds, ix, r, 30000000, 0, TRACE_ENV))
+                        items.append(gre_item(arm_name('trace', thp_mode), ds, ix, r, ops or 30000000, 0, TRACE_ENV,
+                                              table_size=ts))
         elif name == 'bench':
             ixs = csv_list(a.indexes, BENCH_IX)
             for r in range(1, (a.rounds or 3) + 1):
                 if k > 1 and not a.no_anchors:
                     for ds, ix in ANCHORS:
                         if ds in dss and ix in ixs:
-                            items.append(gre_item(arm_name('warm_solo', thp_mode), ds, ix, r, 100000000, 20000000,
-                                                  exclusive=True, why='solo anchor'))
+                            items.append(gre_item(arm_name('warm_solo', thp_mode), ds, ix, r, ops or 100000000, w,
+                                                  exclusive=True, why='solo anchor', table_size=ts))
                 for ds in dss:
                     for ix in ixs:
-                        items.append(gre_item(arm_name('warm', thp_mode), ds, ix, r, 100000000, 20000000))
-                        items.append(gre_item(arm_name('cold', thp_mode), ds, ix, r, 100000000, 0))
+                        items.append(gre_item(arm_name('warm', thp_mode), ds, ix, r, ops or 100000000, w,
+                                              table_size=ts))
+                        items.append(gre_item(arm_name('cold', thp_mode), ds, ix, r, ops or 100000000, 0,
+                                              table_size=ts))
         else:
             die("unknown recipe '%s' (warmup, bench)" % name)
     return items
@@ -687,9 +727,11 @@ def exclusive(it, measured):
                                (base_index(it['idx']), it['ds']) not in measured)
 
 
-def select(pending, running, free_lanes, free_mem, now, pred, ncpu, history, measured):
+def select(pending, running, free_lanes, free_mem, now, pred, ncpu, history, measured, k=None):
     """Next (item, lane) to start, 'drain' (an exclusive head waits for an empty machine) or None.
     running: dicts with item, end (predicted), reserved (GB)."""
+    # a retry waits for a lane other than the one it failed on (when there is one)
+    pending = [it for it in pending if pick_lane(it, free_lanes, history, k) is not None] if free_lanes else []
     if not free_lanes or not pending:
         return None
     if any(exclusive(r['item'], measured) for r in running):
@@ -723,10 +765,13 @@ def select(pending, running, free_lanes, free_mem, now, pred, ncpu, history, mea
     return None
 
 
-def pick_lane(it, free_lanes, history):
-    """Prefer a lane this cell has not used yet (lane effects average out over rounds), else the lowest."""
+def pick_lane(it, free_lanes, history, k=None):
+    """Prefer a lane this cell has not used yet (lane effects average out over rounds), else the lowest. None: every
+    free lane is one this item failed on, and another lane exists (k lanes in all): wait for it."""
     used = history.get((it['ds'], it['idx']), set())
     avoid = set(it.get('avoid_lanes', ()))
+    if k is not None and avoid and all(j in avoid for j in free_lanes) and len(avoid & set(range(k))) < k:
+        return None
     for pref in (lambda j: j not in used and j not in avoid, lambda j: j not in avoid, lambda j: True):
         for j in sorted(free_lanes):
             if pref(j):
@@ -825,7 +870,7 @@ class Run(object):
     def __init__(self, sched, it, lane, attempt):
         self.s, self.it, self.lane, self.attempt = sched, it, lane, attempt
         self.dir = os.path.join(item_dir(sched.R, it), 'a%d' % attempt)
-        self.mb = None
+        self.mb = self.mb_seen = None
         self.mono_pin = None
         self.rss = 0.0
         self.hwm = 0.0
@@ -834,6 +879,10 @@ class Run(object):
         self.foreign = set()
         self.mem_min = None
         self.snap_pin = None
+        self.mask_seen = None     # the microbench's CPU list at first sight (before the pin): the mask really applied
+        self.threads_max = 0      # its thread count: TBB sizes its pool from the mask
+        self.tagged_seen = False  # the foreign scan saw it as ours (ATOM_BATCH_ID in its environment)
+        self.pin = -1
 
     def phase(self):
         if self.it['kind'] == 'cmd':
@@ -847,15 +896,17 @@ class Run(object):
             L = s.layout.lane(self.lane)
             self.info = L
             mask = L['mask']
+            self.pin = pin_for(s.machine, L)
             cmd = ['bash', GRE_RUN, self.dir, '--gre', s.frozen, '--data', s.data, '--datasets', it['ds'],
                    '--indexes', it['idx'], '--repeats', '1', '--ops', str(it['ops']), '--warmup', str(it['warmup']),
-                   '--pin', str(L['core']), '--build-threads', str(s.a.build_threads)]
+                   '--pin', str(self.pin), '--build-threads', str(s.a.build_threads)]
             if it.get('table_size', -1) > 0:
                 cmd += ['--table-size', str(it['table_size'])]
             if s.a.splice_plan:
                 cmd += ['--splice-plan', s.a.splice_plan]
         else:
             self.info = {'lane': 0, 'module': [], 'core': -1, 'siblings': [], 'mask': s.machine.allowed or []}
+            self.pin = -1
             mask = s.machine.allowed
             cmd = it['argv']
         env = dict(os.environ)
@@ -885,7 +936,7 @@ class Run(object):
     def find_mb(self, table):
         for pid, (ppid, comm) in table.items():
             if ppid == self.p.pid and comm == 'microbench':
-                self.mb = pid
+                self.mb = self.mb_seen = pid
                 return
 
     def poll(self, table, now):
@@ -898,8 +949,14 @@ class Run(object):
                 if st:
                     self.rss = kb_gb(st.get('VmRSS')) or self.rss
                     self.hwm = max(self.hwm, kb_gb(st.get('VmHWM')) or 0.0)
+                    try:
+                        self.threads_max = max(self.threads_max, int(st.get('Threads', '0')))
+                    except ValueError:
+                        pass
                 if self.mono_pin is None:
                     ts = proc_status(self.mb, self.mb)
+                    if ts and self.mask_seen is None and ts.get('Cpus_allowed_list') != str(self.info['core']):
+                        self.mask_seen = ts.get('Cpus_allowed_list')
                     if ts and ts.get('Cpus_allowed_list') == str(self.info['core']):
                         self.mono_pin = now   # gre_lite_pin: the timed thread moved to its core, right before warm-up
                         self.snap_pin = (cpu_jiffies(), interrupts(), now)
@@ -931,6 +988,7 @@ class Run(object):
                'siblings': self.info['siblings'], 'mask': self.info['mask'], 'mask_applied': self.mask_applied,
                'k': s.layout.k if it['kind'] == 'gre' else 0, 'pool': s.layout.pool, 'build_threads': s.a.build_threads,
                't_start': self.t_start, 'mono_start': self.mono_start, 'mono_pin': self.mono_pin, 'mono_end': now,
+               'mb_pid': self.mb_seen,
                'wall_s': round(now - self.mono_start, 2), 'exit_code': rc, 'status': status, 'guard': self.guarded,
                'guard_alone': self.guard_alone,
                'others_at_start': self.others, 'mem_available_start_gb': round(self.mem_start, 2),
@@ -938,7 +996,8 @@ class Run(object):
                'pswpout_delta': pswpout() - self.swap_start, 'foreign': sorted(self.foreign),
                'foreign_max': len(self.foreign), 'load1_start': self.load_start, 'hwm_gb': round(self.hwm, 3),
                'thp': s.thp, 'governor': governor(self.info['core']) if self.info['core'] >= 0 else '',
-               'env_set': self.env_set, 'trust_verdict': bool(s.a.trust_verdict)}
+               'env_set': self.env_set, 'trust_verdict': bool(s.a.trust_verdict), 'pin': self.pin,
+               'mask_seen': self.mask_seen, 'threads_max': self.threads_max, 'tagged_seen': self.tagged_seen}
         rec.update(res)
         rec['timed_window'] = timed_window(rec)
         if self.snap_pin and it['kind'] == 'gre':
@@ -963,6 +1022,13 @@ class Run(object):
 
 def s_linux(s):
     return s.machine.linux
+
+
+def pin_for(machine, L):
+    # gre_lite_pin is Linux only: elsewhere (the Mac, ATOM_BATCH_TEST=1) GRE prints no pinned_core and gre_run.sh would
+    # fail every pinned run, so those runs go unpinned and say so (atom.json pin = -1). The tests' fake microbench
+    # reports any core it is given (ATOM_BATCH_TEST_PIN=1).
+    return L['core'] if machine.linux or os.environ.get('ATOM_BATCH_TEST_PIN') == '1' else -1
 
 
 def timed_window(rec):
@@ -1017,13 +1083,22 @@ class Scheduler(object):
                 self.nofit.add((base_index(r['item']['idx']), r['item']['ds']))
         for it in self.items:
             recs = by_item.get(it['id'], [])
+            for r in recs:
+                # one R, one condition: a rerun with other sizes or trace settings would count the old runs as done
+                ri = r['item']
+                if r['status'] != 'interrupted' and any(ri.get(f) != it.get(f) for f in ('ops', 'warmup', 'table_size',
+                                                                                            'env')):
+                    die('%s already holds %s with ops %s, warmup %s, table size %s, env %s; this command asks for %s, '
+                        '%s, %s, %s: use another --out' % (self.R, it['id'], ri.get('ops'), ri.get('warmup'),
+                                                            ri.get('table_size'), ri.get('env'), it['ops'],
+                                                            it['warmup'], it['table_size'], it['env']))
             if any(r['status'] == 'pass' for r in recs):
                 done += 1
                 continue
-            fails = [r for r in recs if r['status'] in ('fail', 'refused')]
+            # a refusal (gre_run.sh exit 2) ran nothing: after the setup is fixed, a rerun tries the item again
+            fails = [r for r in recs if r['status'] == 'fail']
             guards = [r for r in recs if r['status'] == 'guard_killed']
-            if any(r['status'] == 'refused' for r in recs) or len(fails) > a.retries or len(guards) > 1 \
-                    or (guards and fails):
+            if len(fails) > a.retries or len(guards) > 1 or (guards and fails):
                 failed.append(it['id'])
                 continue
             it = dict(it)
@@ -1103,7 +1178,10 @@ class Scheduler(object):
             self.guard(running, mem, now)
             if now - last_scan >= 5.0:
                 last_scan = now
-                foreign = benchmark_procs(self.cid)[1] if self.machine.linux else []
+                ours, foreign = benchmark_procs(self.cid) if self.machine.linux else ([], [])
+                for r in running.values():
+                    if r.mb is not None and r.mb in ours:
+                        r.tagged_seen = True
             if foreign and a.foreign == 'wait':
                 if paused is None:
                     paused = now
@@ -1124,7 +1202,7 @@ class Scheduler(object):
                     free_mem = base - self.machine.headroom - sum(r['reserved'] for r in rlist)
                     free = [j for j in range(self.layout.k) if j not in running]
                     sel = select(eligible(queue), rlist, free, free_mem, now, self.pred, ncpu, history,
-                                 set(self.pred.peaks))
+                                 set(self.pred.peaks), self.layout.k)
                     if sel is None or sel == 'drain':
                         break
                     it, lane = sel
@@ -1157,13 +1235,15 @@ class Scheduler(object):
 
     def guard(self, running, mem, now):
         """MemAvailable below 3 GB: kill the newest run still in setup or build (if more than one runs); below
-        1.5 GB or on swap-out: the newest run in setup or build, else the newest run. The kernel's OOM killer never
-        gets to choose. A killed run frees its memory within a second or two: no second kill before that."""
+        1.5 GB, or below 3 GB while pages are swapped out: the newest run in setup or build, else the newest run. The
+        kernel's OOM killer never gets to choose. A killed run frees its memory within a second or two: no second
+        kill before that. Swap-out with memory to spare (the kernel trimming other users' idle pages) kills nothing:
+        each run records its swap-out (pswpout_delta) for the report."""
         if not running or not self.machine.linux:
             return
         self.swap_hist = [x for x in self.swap_hist if now - x[0] <= 5.0] + [(now, pswpout())]
         swapping = self.swap_hist[-1][1] - self.swap_hist[0][1] > 4096     # 16 MB of 4 KiB pages within 5 s
-        hard = mem < GUARD_HARD_GB or swapping
+        hard = mem < GUARD_HARD_GB or (swapping and mem < GUARD_GB)
         if now - self.last_guard < 3.0 or (not hard and (mem >= GUARD_GB or len(running) < 2)):
             return
         alive = [r for r in running.values() if not r.guarded]
@@ -1295,7 +1375,8 @@ def resolve_k(a, R, machine, sha, dry):
 def default_out(a):
     if a.out:
         return os.path.abspath(a.out)
-    cands = sorted(glob.glob(os.path.join(ROOT, 'results', 'atom_*')))
+    # folders only: results/atom_<date>.run.out and friends sort after their folder
+    cands = sorted(d for d in glob.glob(os.path.join(ROOT, 'results', 'atom_*')) if os.path.isdir(d))
     R = cands[-1] if cands else os.path.join(ROOT, 'results', 'atom_' + datetime.date.today().isoformat())
     return R
 
@@ -1382,11 +1463,8 @@ def dry_run(a, R, machine, items, k, pred, recipes, thp_mode):
     lay, sched, total = plan(k, items)
     if not cmd:
         rows = []
-        for kk in range(1, 5):
-            try:
-                _, sc, tot = plan(kk, items if kk == k else recipe_items(recipes, a, kk, thp_mode))
-            except SystemExit:
-                break
+        for kk in range(1, min(4, max_lanes(machine.mods, avoid)) + 1):
+            _, sc, tot = plan(kk, items if kk == k else recipe_items(recipes, a, kk, thp_mode))
             rows.append((kk, len(sc), tot, sum(e - s for s, e, _, _ in sc)))
         print('\nK  runs   wall      run time   speed-up vs K=1')
         for kk, n, tot, work in rows:
@@ -1468,11 +1546,8 @@ def cmd_doctor(a):
     out.append('load1: %s' % load1())
     _, foreign = benchmark_procs(campaign_id(R)) if m.linux else ([], [])
     out.append('benchmark processes running now: %s' % (', '.join(foreign) or 'none'))
-    for k in range(1, 5):
-        try:
-            out.append('K=%d: %s' % (k, Layout(m.mods, k, parse_cpulist(a.avoid_cpus)).describe()))
-        except SystemExit:
-            break
+    for k in range(1, min(4, max_lanes(m.mods, parse_cpulist(a.avoid_cpus))) + 1):
+        out.append('K=%d: %s' % (k, Layout(m.mods, k, parse_cpulist(a.avoid_cpus)).describe()))
     txt = '\n'.join(out) + '\n'
     sys.stdout.write(txt)
     if m.linux:
@@ -1481,6 +1556,138 @@ def cmd_doctor(a):
             f.write(txt)
         note('wrote %s' % os.path.join(R, 'machine.txt'))
     return 0
+
+
+# ------------------------------------------------------------------------------------------------ smoke
+SMOKE_IX = ('lipp', 'pgm', 'btree', 'splice', 'artunsync')
+SMOKE_TRACE = ('trace_pgm', 'trace_lipp')
+
+
+def binary_indexes(path):
+    """gre_lite.sh compiles its index list into the binary: '(gre_lite: alex lipp ... sortedarray)'."""
+    m = re.search(rb'gre_lite: ([a-z0-9_ ]*)\)', read_bytes(path) or b'')
+    return m.group(1).decode().split() if m else []
+
+
+def max_lanes(mods, avoid):
+    mods = [m for m in mods if not set(m['cpus']) & set(avoid)]
+    if not mods:
+        return 0
+    house = min(mods, key=lambda m: m['cpus'][0])['cpus']
+    return sum(1 for m in mods if m['complete'] and m['cpus'] != house)
+
+
+def smoke_checks(recs, linux):
+    """(rows, ok): what the Linux-only parts did in a real run. The pass of gre_run.sh's checks includes the pin."""
+    rows, ok = [], True
+    pids = set(r.get('mb_pid') for r in recs if r.get('mb_pid'))
+    for r in sorted(recs, key=lambda r: r.get('mono_start') or 0):
+        it = r['item']
+        bad, info = [], []
+        if r.get('status') != 'pass':
+            bad.append('status %s (exit %s)' % (r.get('status'), r.get('exit_code')))
+        if linux:
+            want = cpulist(r.get('mask') or [])
+            if not r.get('mask_applied'):
+                bad.append('mask not applied')
+            elif r.get('mask_seen') is not None and r['mask_seen'] != want:
+                bad.append('microbench CPUs %s, mask %s' % (r['mask_seen'], want))
+            elif r.get('mask_seen') is None:
+                info.append('mask not seen (the run ended before a poll)')
+            if r.get('mono_pin') is None:
+                bad.append('pin never seen: phases unknown (memory admission and overlaps fall back)')
+            if not r.get('hwm_gb'):
+                bad.append('no VmHWM read')
+            own = [x for x in (r.get('foreign') or []) if x.split(':')[0].isdigit() and int(x.split(':')[0]) in pids]
+            if own:
+                bad.append('own runs counted as foreign: %s' % ', '.join(own))
+            info.append('threads max %s on %d CPUs' % (r.get('threads_max'), len(r.get('mask') or [])))
+            if it['idx'].startswith('trace_'):
+                pts, t0, warm, core = parse_trace_log(os.path.join(r['_dir'], 'logs', '%s__%s__r1.log'
+                                                                   % (it['ds'], it['idx'])))
+                cpus = sorted(set(c for _, _, c in pts if c >= 0))
+                if cpus != [r.get('core')]:
+                    bad.append('trace chunks ran on CPUs %s, not only %s' % (cpus, r.get('core')))
+                if t0 is None:
+                    bad.append('no trace_t0_mono_ns (rebuild GRE: ./run.sh setup gre); calib falls back to the pin poll')
+                elif r.get('mono_pin') is not None and abs(t0 - r['mono_pin']) > 2.0:
+                    bad.append('trace clock %.1f s off the scheduler clock' % (t0 - r['mono_pin']))
+                elif r.get('mono_pin') is not None:
+                    info.append('trace t0 - pin poll %+.3f s' % (t0 - r['mono_pin']))
+        ok = ok and not bad
+        rows.append('| %s | %s | %s | %s | %s | %s |' % (it['id'], r.get('lane'), r.get('core'), cpulist(r.get('mask') or []),
+                                                     '; '.join(info) or '-', 'FAIL: ' + '; '.join(bad) if bad else 'PASS'))
+    return rows, ok
+
+
+def cmd_smoke(a):
+    """A few minutes of real lanes, untimed (10M keys, 3M lookups): what the Mac tests could only fake (CPU masks,
+    the pin seen from /proc, VmHWM, the ATOM_BATCH_ID tag, trace_t0_mono_ns on the scheduler's clock), then merge
+    and gre_report.py on the result. R/smoke/ is rebuilt each time and never merged with the campaign."""
+    R = default_out(a)
+    S = os.path.join(R, 'smoke')
+    machine = Machine(a)
+    can_run(machine)
+    avoid = parse_cpulist(a.avoid_cpus)
+    k = min(a.lanes or 4, max_lanes(machine.mods, avoid))
+    if k < 1:
+        die('no complete L2 module outside the house module')
+    with Lock(R):
+        if os.path.isdir(S):
+            shutil.rmtree(S)
+        os.makedirs(S)
+        gre_dir, sha = freeze_binary(S, a.gre, True)     # the current build, whatever R/gre holds
+        known = binary_indexes(os.path.join(gre_dir, 'build', 'microbench'))
+        dss = [d for d in csv_list(a.datasets, ('fb', 'wise')) if os.path.exists(os.path.join(a.data, d))]
+        if not dss:
+            die('no smoke dataset in %s' % a.data)
+        items = []
+        # 3M lookups: a timed phase of a few seconds, so the 0.2 s poll sees each pin
+        for ds in dss:
+            for ix in [x for x in SMOKE_IX if x in known]:
+                items.append(gre_item('smoke', ds, ix, 1, 3000000, 300000, table_size=10000000))
+        for ix in [x for x in SMOKE_TRACE if x in known]:
+            items.append(gre_item('smoke_trace', dss[0], ix, 1, 3000000, 0, TRACE_ENV, table_size=10000000))
+        a.splice_plan = 'none'                           # the plans are for all 200M keys
+        a.poll = min(a.poll, 0.2)
+        layout = Layout(machine.mods, k, avoid)
+        recover(S, campaign_id(S), machine.linux)
+        if machine.allowed and hasattr(os, 'sched_setaffinity') and not machine.fake_topo:
+            os.sched_setaffinity(0, set(layout.house))
+        note('smoke: %d runs on K=%d (%s), binary %s' % (len(items), k, layout.describe(), sha[:12]))
+        s = Scheduler(a, S, machine, layout, items, Predictor())
+        s.frozen, s.sha = gre_dir, sha
+        s.run()
+    recs = [r for r in attempt_records(S) if (r.get('item') or {}).get('kind') == 'gre']
+    rows, ok = smoke_checks(recs, machine.linux)
+    lines = ['# Lane smoke (%s)' % S, '', 'K=%d; %s; binary %s; %s' % (k, layout.describe(), sha[:12],
+                                                                        'Linux checks on' if machine.linux else
+                                                                        'not Linux: masks, pin and /proc not checked'),
+             '', '| run | lane | core | mask | seen | verdict |', '|---|---|---|---|---|---|'] + rows + ['']
+    for r in recs:
+        r['_key'] = r['_dir']
+    conc = max([0] + [o['conc_alive_max'] for o in overlaps(recs).values()])
+    if k > 1 and conc < 1:
+        ok = False
+        lines.append('FAIL: no two runs were ever alive at once: the lanes did not run in parallel')
+    else:
+        lines.append('At most %d other runs alive during a run\'s lookups.' % conc)
+    for arm in ('smoke', 'smoke_trace'):
+        out = merge_arm(S, arm, None)
+        if out:
+            rep = subprocess.Popen([sys.executable, os.path.join(ROOT, 'scripts', 'gre_report.py'), out],
+                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+            txt = rep.communicate()[0]
+            with open(os.path.join(S, arm, 'report.md'), 'w') as f:
+                f.write(txt)
+            lines.append('gre_report.py %s: exit %d%s' % (os.path.relpath(out, S), rep.returncode,
+                                                         '' if rep.returncode == 0 else ' (FAIL)'))
+            ok = ok and rep.returncode == 0
+    lines += ['', 'Smoke: %s' % ('PASS' if ok else 'FAIL')]
+    with open(os.path.join(S, 'SMOKE.md'), 'w') as f:
+        f.write('\n'.join(lines) + '\n')
+    print('\n'.join(lines))
+    return 0 if ok else 1
 
 
 # ------------------------------------------------------------------------------------------------ calibration
@@ -1560,7 +1767,10 @@ def cmd_calib(a):
                     os.makedirs(sd, exist_ok=True)
                     write_json(os.path.join(sd, 'session.json'), {'status': 'does_not_fit', 'k': k})
                 else:
-                    calib_session(a, R, machine, s, sd, gre_dir, sha, rng)
+                    for _ in range(3):   # someone else's benchmark ran during the blocks: wait for it, run it again
+                        calib_session(a, R, machine, s, sd, gre_dir, sha, rng)
+                        if (load_json(os.path.join(sd, 'session.json')) or {}).get('status') != 'foreign':
+                            break
             res = analyze_k(R, k, a.bound)
             note('K=%d: %s' % (k, 'admissible' if res and res['admissible'] else 'not admissible'))
             if a.stop_at_pass and res and res['admissible']:
@@ -1589,7 +1799,7 @@ def calib_session(a, R, machine, s, sd, gre_dir, sha, rng):
         d = os.path.join(sd, name)
         cmd = ['bash', GRE_RUN, d, '--gre', gre_dir, '--data', a.data, '--datasets', ','.join(datasets),
                '--indexes', ','.join(indexes), '--repeats', str(repeats), '--ops', str(ops), '--warmup', str(warmup),
-               '--pin', str(L['core']), '--build-threads', str(a.build_threads)]
+               '--pin', str(pin_for(machine, L)), '--build-threads', str(a.build_threads)]
         if ts and ts > 0:
             cmd += ['--table-size', str(ts)]
         if a.splice_plan:
@@ -1613,11 +1823,16 @@ def calib_session(a, R, machine, s, sd, gre_dir, sha, rng):
     probe, PL = launch('probe', 0, [pr['ds']], [pr['idx']], pr['ops'], pr['warmup'], 1, pr['env'], -1)
     loads = []
     sz = s['size']
-    for ld in s['loads']:
-        p, L = launch('load%d' % (ld['lane'] + 1), ld['lane'], ld['datasets'], ld['indexes'], sz['ops'], sz['warmup'],
-                      200, {}, sz['table_size'])
-        loads.append((p, L))
-    note('%s: probe %s on core %d, %d load lanes (%s)' % (s['name'], pr['id'], PL['core'], len(loads), load_desc(sz)))
+
+    def start_loads():
+        # at the probe's pin, all together: their setups (read, sorts, shuffle, copies, build) then overlap the first
+        # blocks and their lookups the later ones, so both conditions get pairs, with every load alive in every pair
+        for ld in s['loads']:
+            p, L = launch('load%d' % (ld['lane'] + 1), ld['lane'], ld['datasets'], ld['indexes'], sz['ops'],
+                          sz['warmup'], 200, {}, sz['table_size'])
+            loads.append((p, L))
+    note('%s: probe %s on core %d, then %d load lanes at its pin (%s)' % (s['name'], pr['id'], PL['core'],
+                                                                         len(s['loads']), load_desc(sz)))
     t_start = mono()
     blocks, t_pin, state, status = [], None, 'on', 'done'
 
@@ -1661,6 +1876,8 @@ def calib_session(a, R, machine, s, sd, gre_dir, sha, rng):
                 status = 'aborted_memory'
                 break
             time.sleep(0.02)
+        if t_pin is not None and status == 'done' and probe.poll() is None:
+            start_loads()
         pair = 0
         while probe.poll() is None and status == 'done':
             order = ['off', 'on'] if rng.random() < 0.5 else ['on', 'off']
@@ -1845,6 +2062,10 @@ def analyze_k(R, k, bound):
         st = row['setup']
         if st and st['n'] >= 3 and st['pct'] > bound:
             why.append('pairs with a load in setup: %+.2f%% > %.2f%%' % (st['pct'], bound))
+        if not st or st['n'] < 3:
+            # the campaign runs setups beside timed runs: a K whose setups were never measured is not shown harmless
+            why.append('only %d pairs with a load in setup (3 needed): the setups beside a timed run are untested'
+                       % (st['n'] if st else 0))
         if an['cpus'] and core is not None and core >= 0 and an['cpus'] != [core]:
             why.append('probe ran on CPUs %s, not only %d' % (an['cpus'], core))
         if why:
@@ -1968,7 +2189,7 @@ def merge_arm(R, arm, only):
         groups.setdefault((it['round'], it['ds'], it['idx']), []).append(r)
     cols = ['repeat', 'dataset', 'index', 'exit_code', 'wall_s', 'log', 'load1', 'busy', 'pin', 'lane', 'core', 'mask',
             'k', 'attempt', 'status', 'conc_start', 'conc_alive_max', 'conc_timed_max', 'overlap_s', 'solo',
-            'sibling_busy_pct', 'core_busy_pct', 'mem_available_min_gb', 'segment']
+            'sibling_busy_pct', 'core_busy_pct', 'mem_available_min_gb', 'pswpout', 'segment']
     lines = ['\t'.join(cols)]
     order = dict((d, i) for i, d in enumerate(DATASETS))
     dss, ixs, cfgs, rounds = [], [], [], 0
@@ -1976,17 +2197,20 @@ def merge_arm(R, arm, only):
         rs = sorted(groups[key], key=lambda r: (r['status'] == 'pass', r['attempt']))   # the passing one last
         for i, r in enumerate(rs):
             it = r['item']
-            last = i == len(rs) - 1
+            # the bare name only for a passing attempt: warmup_detect.py reads every *.log, so a cell that never
+            # passed keeps its logs as *.log.a<n> (runs.tsv still lists them, and gre_report.py fails the cell)
+            last = i == len(rs) - 1 and r['status'] == 'pass'
             name = '%s__%s__r%d.log' % (it['ds'], it['idx'], it['round']) + ('' if last else '.a%d' % r['attempt'])
             src = os.path.join(r['_dir'], 'logs', '%s__%s__r1.log' % (it['ds'], it['idx']))
             if os.path.exists(src):
                 os.symlink(os.path.relpath(src, os.path.join(out, 'logs')), os.path.join(out, 'logs', name))
             row = [it['round'], it['ds'], it['idx'], r.get('exit_code') if r.get('exit_code') is not None else '',
                    r.get('run_wall_s') or r.get('wall_s'), 'logs/' + name, r.get('load1_start'), r.get('foreign_max', 0),
-                   r.get('core'), r.get('lane'), r.get('core'), cpulist(r.get('mask') or []), r.get('k'), r['attempt'],
+                   r.get('pin', r.get('core')), r.get('lane'), r.get('core'), cpulist(r.get('mask') or []), r.get('k'),
+                   r['attempt'],
                    r['status'], len(r.get('others_at_start') or []), r.get('conc_alive_max'), r.get('conc_timed_max'),
                    r.get('overlap_s'), r.get('solo'), r.get('sibling_busy_pct'), r.get('core_busy_pct'),
-                   r.get('mem_available_min_gb'), r.get('segment')]
+                   r.get('mem_available_min_gb'), r.get('pswpout_delta'), r.get('segment')]
             lines.append('\t'.join('' if x is None else str(x) for x in row))
             cfgs.append(read(os.path.join(r['_dir'], 'config.txt')) or '')
         if key[1] not in dss:
@@ -2121,7 +2345,8 @@ def main(argv=None):
         p.add_argument('--out', help='results folder R (default: newest results/atom_*, else results/atom_<today>)')
         p.add_argument('--gre', default='/tmp/louisvasseur/GRE')
         p.add_argument('--data', default=os.path.join(ROOT, 'data', 'external', 'gre'))
-        p.add_argument('--topology', help='fake L2 topology MxN (dry runs, tests), e.g. 8x2')
+        p.add_argument('--topology', help='fake L2 topology (dry runs, tests): MxN such as 8x2 (the Atom), or one CPU '
+                       'list per module such as 0-3/4-9/10-15 (the Mac)')
         p.add_argument('--sysfs', default='/sys/devices/system/cpu')
         p.add_argument('--mem-total', type=float, help='GB (dry runs)')
         p.add_argument('--mem-available', type=float, help='GB (dry runs; default: /proc/meminfo, else 64)')
@@ -2148,6 +2373,9 @@ def main(argv=None):
         p.add_argument('--retries', type=int, default=1)
         p.add_argument('--no-anchors', action='store_true')
         p.add_argument('--trust-verdict', action='store_true', help='accept a verdict made with another binary')
+        p.add_argument('--ops', type=int, help='lookups per run (default 100M bench, 30M traces); small runs only')
+        p.add_argument('--warmup', type=int, help='untimed lookups before the warm arm (default 20M)')
+        p.add_argument('--table-size', type=int, help='keys loaded per run (default: the whole file); small runs only')
     p = common(sub.add_parser('calib'))
     p.add_argument('--k', default='4,3,2', help='the K to test, largest first')
     p.add_argument('--lanes', '--max-lanes', dest='lanes', type=int, help='test K = LANES, LANES-1, ..., 2')
@@ -2158,6 +2386,10 @@ def main(argv=None):
     p.add_argument('--all-k', dest='stop_at_pass', action='store_false', help='test every K even after one passes')
     for name in ('verdict', 'doctor', 'status', 'anchors'):
         common(sub.add_parser(name))
+    p = common(sub.add_parser('smoke'))
+    p.add_argument('--lanes', type=int, help='K (default: 4, or as many as the machine has)')
+    p.add_argument('--datasets', help='default fb,wise (one sorted and one unsorted raw file)')
+    p.add_argument('--retries', type=int, default=0)
     p = common(sub.add_parser('merge'))
     p.add_argument('--only', choices=('solo', 'parallel'))
     p.add_argument('--arms')
@@ -2179,8 +2411,16 @@ def main(argv=None):
     if a.cmd == 'counts':
         return cmd_run(a, ['counts'])
     return {'calib': cmd_calib, 'verdict': cmd_verdict, 'doctor': cmd_doctor, 'status': cmd_status,
-            'merge': cmd_merge, 'anchors': cmd_anchors}[a.cmd](a)
+            'merge': cmd_merge, 'anchors': cmd_anchors, 'smoke': cmd_smoke}[a.cmd](a)
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    try:
+        rc = main()
+        sys.stdout.flush()
+    except BrokenPipeError:
+        # `... --dry-run | head`: the reader left; say nothing more and exit as SIGPIPE would (141 also ends the
+        # documented chain before the counts, should a scheduler ever lose its stdout)
+        os.dup2(os.open(os.devnull, os.O_WRONLY), sys.stdout.fileno())
+        rc = 141
+    sys.exit(rc)

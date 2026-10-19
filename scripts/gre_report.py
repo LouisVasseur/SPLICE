@@ -303,12 +303,17 @@ def lanes_md(runs, out):
     conc = sorted(set(as_int(r.get('conc_alive_max'), 0) for r in runs))
     lanes = sorted(set(r.get('core', '') for r in runs))
     sib = [x for x in (as_float(r.get('sibling_busy_pct')) for r in runs) if x is not None]
+    swapped = ['%s/%s r%s' % (r.get('dataset'), r.get('index'), r.get('repeat')) for r in runs
+               if as_int(r.get('pswpout'), 0) > 0]
     out.append('## Lanes\n')
     out.append('%d runs solo (no other run alive during the timed lookups, no foreign benchmark), %d beside others '
                '(at most %d at once); cores %s; K %s. Sibling of the timed core busy: max %s. A run that ran beside '
-               'others is valid only within the calibrated bound (calib/verdict.md); --only solo|parallel separates them.\n'
+               'others is valid only within the calibrated bound (calib/verdict.md); --only solo|parallel separates them.'
+               ' Pages swapped out (machine-wide) during %d runs%s.\n'
                % (len(solo), len(runs) - len(solo), max(conc) if conc else 0, ', '.join(lanes),
-                  ', '.join(sorted(set(r.get('k', '') for r in runs))), fmt(max(sib), 1) + '%' if sib else 'n/a'))
+                  ', '.join(sorted(set(r.get('k', '') for r in runs))), fmt(max(sib), 1) + '%' if sib else 'n/a',
+                  len(swapped), (': ' + ', '.join(swapped[:10]) + (' ...' if len(swapped) > 10 else '')) if swapped
+                  else ''))
 
 
 def splice_md(ds, cells, a, cfg, out, warn):
@@ -438,7 +443,9 @@ def main():
                'looked-up key when read-only (success_read == operations_num), finds every warm-up key '
                '(warmup_success_read == warmup_num) and, when pinning was requested, reports the core.\n'
                % (len(runs), ' of %d planned' % planned if planned else '', nfail,
-                  ' (%d earlier attempts superseded by a --resume rerun; their logs are *.log.prev)' % retried
+                  (' (%d earlier attempts superseded by a retry; their logs are *.log.a<attempt>)' % retried
+                   if cfg.get('pin') == 'per-run' else       # atom_batch.py merge: one row per attempt
+                   ' (%d earlier attempts superseded by a --resume rerun; their logs are *.log.prev)' % retried)
                   if retried else ''))
     want_w = as_int(cfg.get('warmup'), 0)
     pin_on = as_int(cfg.get('pin'), -1) >= 0 or any(as_int(r.get('pin'), -1) >= 0 for r in runs)

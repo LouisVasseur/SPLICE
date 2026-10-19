@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Tests of scripts/atom_batch.py (the Atom lane scheduler) that run in seconds on any machine, standard library only:
 the sysfs topology reader, lane layouts, the admission (memory, exclusive items, round barrier, backfill) in the dry
-run, the calibration analysis on synthetic chunk traces with a planted effect, the merge read by gre_report.py
-(and warmup_detect.py when numpy is installed), and two end-to-end runs through gre_run.sh with a fake microbench
-(ATOM_BATCH_TEST=1: no CPU masks or /proc on macOS).
+run, the calibration analysis and verdict rules on synthetic chunk traces with planted effects (setup-only
+slowdowns, drift, migrations, missing clock lines, mixed binaries), the merge read by gre_report.py (and
+warmup_detect.py when numpy is installed), end-to-end runs through gre_run.sh with a fake microbench (retries,
+resume, refusals, one condition per R, the lane smoke and its Linux checks on faked records; ATOM_BATCH_TEST=1: no
+CPU masks or /proc on macOS).
 
     python3 src/tests/test_atom_batch.py
 """
@@ -96,6 +98,21 @@ class Topology(unittest.TestCase):
     def test_cpulist(self):
         for s in ('0', '0-3', '2-3,10-15', '1,3,5'):
             self.assertEqual(A.cpulist(A.parse_cpulist(s)), s)
+
+    def test_explicit_topology(self):
+        # the Mac: E cluster 0-3 (house), P clusters 4-9 and 10-15
+        mods, _ = A.fake_modules('0-3/4-9/10-15')
+        lay = A.Layout(mods, 2)
+        self.assertEqual((lay.house, lay.lanes, lay.pool), ([0, 1, 2, 3], [[4, 5, 6, 7, 8, 9], list(range(10, 16))], []))
+        self.assertEqual(A.max_lanes(mods, []), 2)
+        self.assertEqual(A.max_lanes(A.fake_modules('8x2')[0], [8]), 6)
+        for bad in ('0-3/2-5', 'x', '0-3//'):
+            if bad == '0-3//':
+                self.assertEqual(len(A.fake_modules(bad)[0]), 1)
+                continue
+            with self.assertRaises(SystemExit):
+                with contextlib.redirect_stderr(io.StringIO()):
+                    A.fake_modules(bad)
 
 
 class Admission(unittest.TestCase):
@@ -207,6 +224,110 @@ class Calibration(unittest.TestCase):
             pts.append((calls, int((tt - t0) * 1e9), 2))
         return pts, t0, warm_calls, blocks
 
+    def synth2(self, effect, setup_pairs=None, setup_effect=0.0, drift=0.0, pairs=20, cpu=2, migrate_after=None, seed=1,
+               noise=0.01, block=5.0):
+        """synth with control: the pairs whose K-way block had a load in setup (default the first half, as when the
+        loads start together at the probe's pin) and their extra slowdown, a linear drift of the latency (fraction per
+        second), and chunks that ran on another CPU after a time."""
+        if setup_pairs is None:
+            setup_pairs = range(pairs // 2)
+        rng = random.Random(seed)
+        blocks, t, pts, calls = [], 100.0, [(0, 0, cpu)], 0
+        t0 = t
+        for p in range(pairs):
+            o = ['off', 'on'] if rng.random() < 0.5 else ['on', 'off']
+            for st in o:
+                blocks.append({'pair': p, 'state': st, 'start': t, 'end': t + block,
+                               'setup': 1 if p in setup_pairs else 0})
+                t += block
+        tt = t0
+        while tt < t:
+            b = [x for x in blocks if x['start'] <= tt < x['end']]
+            lat = 850e-9 * (1 + rng.gauss(0, noise)) * (1 + drift * (tt - t0))
+            if b and b[0]['state'] == 'on':
+                lat *= 1 + effect + (setup_effect if b[0]['setup'] else 0.0)
+            tt += 65536 * lat
+            calls += 65536
+            c = cpu if migrate_after is None or tt - t0 < migrate_after else cpu + 1
+            pts.append((calls, int((tt - t0) * 1e9), c))
+        return pts, t0, 300000, blocks
+
+    def write_session(self, R, k, name, synth, sha='abc', t0_line=True, pin_off=0.0):
+        pts, t0, w, blocks = synth
+        sd = os.path.join(R, 'calib', 'K%d' % k, name)
+        os.makedirs(os.path.join(sd, 'probe', 'logs'))
+        ix = 'trace_' + name.split('_')[0]
+        with open(os.path.join(sd, 'probe', 'logs', 'fb__%s__r1.log' % ix), 'w') as f:
+            f.write('gre_lite_patch: warmup_num=%d pin_core=2\n' % w)
+            for i, (c, tn, cpu) in enumerate(pts):
+                f.write('trace_point: %d %d %d -1 %d\n' % (i, c, tn, cpu))
+            if t0_line:
+                f.write('trace_t0_mono_ns: %d\n' % int(t0 * 1e9))
+        with open(os.path.join(sd, 'toggles.tsv'), 'w') as f:
+            f.write('pair\tstate\tmono_start\tmono_end\tload_setup\tload_timed\tload_idle\n')
+            for b in blocks:
+                f.write('%d\t%s\t%.6f\t%.6f\t%d\t0\t0\n' % (b['pair'], b['state'], b['start'], b['end'], b['setup']))
+        A.write_json(os.path.join(sd, 'session.json'), {
+            'status': 'done', 'k': k, 'probe': {'ds': 'fb', 'idx': ix}, 'block_s': 5.0, 'mono_pin': t0 + pin_off,
+            'binary_sha256': sha, 'topology': [[0, 1]]})
+
+    def verdict_of(self, sessions):
+        """sessions: [(k, name, synth2 kwargs, write_session kwargs)] -> (admissible K, verdict)."""
+        R = tempfile.mkdtemp()
+        try:
+            for k, name, kw, wkw in sessions:
+                self.write_session(R, k, name, self.synth2(**kw), **wkw)
+            v = A.make_verdict(R, 1.0)
+            return v['admissible_k'], v
+        finally:
+            shutil.rmtree(R)
+
+    def test_verdict_rules(self):
+        def both(k, kw, wkw=None):
+            return [(k, 'pgm_fb', dict(kw, seed=10 * k + 1), wkw or {}),
+                    (k, 'lipp_fb', dict(kw, seed=10 * k + 2), wkw or {})]
+        # K=4 passes at once: the calibration stops there
+        self.assertEqual(self.verdict_of(both(4, {'effect': 0.002}))[0], 4)
+        # 3% at K=4, 1.5% at K=3, 0.1% at K=2: K=2
+        self.assertEqual(self.verdict_of(both(4, {'effect': 0.03}) + both(3, {'effect': 0.015}) +
+                                         both(2, {'effect': 0.001}))[0], 2)
+        # a K that passes above one that fails is a red flag: serial
+        self.assertEqual(self.verdict_of(both(3, {'effect': 0.001}) + both(2, {'effect': 0.03}))[0], 1)
+        # one probe fails: the K fails
+        self.assertEqual(self.verdict_of([(4, 'pgm_fb', {'effect': 0.001}, {}),
+                                          (4, 'lipp_fb', {'effect': 0.02}, {})])[0], 1)
+        # 0.8% planted with noisy chunks and few pairs: the point estimate is below 1%, the upper bound decides
+        k, v = self.verdict_of(both(4, {'effect': 0.008, 'noise': 0.03, 'pairs': 8}))
+        his = [r['all']['hi'] for t in v['tested'] for r in t['probes']]
+        self.assertGreater(max(his), 1.0)
+        self.assertEqual(k, 1)
+        # only the pairs with a load in setup are slow (+1.5% in 4 of 20): the mean passes, the setup rule fails
+        k, v = self.verdict_of(both(4, {'effect': 0.0, 'setup_pairs': (1, 6, 11, 16), 'setup_effect': 0.015}))
+        self.assertEqual(k, 1)
+        self.assertIn('load in setup', v['text'])
+        # slow drift (+5% over the 200 s) does not bias the paired estimate
+        k, v = self.verdict_of(both(4, {'effect': 0.003, 'drift': 0.05 / 200}))
+        self.assertEqual(k, 4)
+        for t in v['tested']:
+            for r in t['probes']:
+                self.assertTrue(0.0 < r['all']['pct'] < 0.6, r['all'])
+        # the probe migrated off its core: fail
+        k, v = self.verdict_of(both(4, {'effect': 0.0, 'migrate_after': 100.0}))
+        self.assertEqual(k, 1)
+        self.assertIn('probe ran on CPUs', v['text'])
+        # too few pairs: fail
+        self.assertEqual(self.verdict_of(both(4, {'effect': 0.0, 'pairs': 4}))[0], 1)
+        # no K-way block ever had a load in setup: the setups beside a timed run are untested, so the K fails
+        k, v = self.verdict_of(both(4, {'effect': 0.0, 'setup_pairs': (3, 9)}))
+        self.assertEqual(k, 1)
+        self.assertIn('setups beside a timed run are untested', v['text'])
+        # no trace_t0_mono_ns (an older build): the polled pin aligns the chunks, within 20 ms
+        self.assertEqual(self.verdict_of(both(4, {'effect': 0.002}, {'t0_line': False, 'pin_off': 0.015}))[0], 4)
+        # sessions of two binaries vouch for none
+        k, v = self.verdict_of([(4, 'pgm_fb', {'effect': 0.0}, {'sha': 'a'}), (4, 'lipp_fb', {'effect': 0.0}, {'sha': 'b'})])
+        self.assertEqual(k, 1)
+        self.assertIn('different binaries', v['text'])
+
     def test_planted_effects(self):
         for eff, lo, hi in ((0.0, -0.4, 0.4), (0.005, 0.2, 0.8), (0.02, 1.6, 2.4)):
             pts, t0, w, blocks = self.synth(eff)
@@ -290,10 +411,12 @@ class EndToEnd(unittest.TestCase):
         fake_data(self.data, ['fb', 'osm', 'wise', 'genome', 'books', 'history'])
         self.R = os.path.join(self.d, 'R')
         os.environ['ATOM_BATCH_TEST'] = '1'
+        os.environ['ATOM_BATCH_TEST_PIN'] = '1'
         os.environ['FAKE_MB_SECONDS'] = '0.1'
 
     def tearDown(self):
         os.environ.pop('ATOM_BATCH_TEST', None)
+        os.environ.pop('ATOM_BATCH_TEST_PIN', None)
         os.environ.pop('FAKE_MB_SECONDS', None)
         shutil.rmtree(self.d)
 
@@ -371,7 +494,7 @@ class EndToEnd(unittest.TestCase):
         rep = subprocess.run([sys.executable, os.path.join(ROOT, 'scripts', 'gre_report.py'),
                               os.path.join(self.R, 'warm', 'merged')], stdout=subprocess.PIPE, universal_newlines=True)
         self.assertEqual(rep.returncode, 0, rep.stdout)          # the passing attempt counts
-        self.assertIn('1 earlier attempts superseded', rep.stdout)
+        self.assertIn('1 earlier attempts superseded by a retry', rep.stdout)
 
     def test_refusals_stop_the_campaign(self):
         rc, out, err = quiet(A.main, self.args('bench', '--datasets', 'covid,stack', '--indexes', 'pgm,btree',
@@ -380,6 +503,57 @@ class EndToEnd(unittest.TestCase):
         self.assertIn('refused three runs in a row', err)
         self.assertEqual(set(r['status'] for r in A.attempt_records(self.R)), {'refused'})
         self.assertFalse(os.path.exists(os.path.join(self.R, 'sched', 'lock')))
+
+    def test_refused_items_rerun_after_the_fix(self):
+        quiet(A.main, self.args('bench', '--datasets', 'covid', '--indexes', 'pgm', '--rounds', '1', '--lanes', '1',
+                                '--no-anchors'))
+        self.assertEqual(set(r['status'] for r in A.attempt_records(self.R)), {'refused'})
+        fake_data(os.path.join(self.d, 'data2'), ['covid'])       # the fix: the data file is there now
+        for n in ('covid',):
+            shutil.copy(os.path.join(self.d, 'data2', n), os.path.join(self.data, n))
+        rc, out, err = quiet(A.main, self.args('bench', '--datasets', 'covid', '--indexes', 'pgm', '--rounds', '1',
+                                                '--lanes', '1', '--no-anchors'))
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn('2 items: 0 done, 0 failed for good, 2 to run', out)
+
+    def test_one_condition_per_out(self):
+        rc, out, err = quiet(A.main, self.args('warmup', '--datasets', 'fb', '--indexes', 'pgm', '--rounds', '1',
+                                                '--lanes', '1', '--ops', '2000'))
+        self.assertEqual(rc, 0, out + err)
+        rc, out, err = quiet(A.main, self.args('warmup', '--datasets', 'fb', '--indexes', 'pgm', '--rounds', '1',
+                                                '--lanes', '1'))
+        self.assertEqual(rc, 2)
+        self.assertIn('use another --out', err)
+
+    def test_smoke_runs_and_checks(self):
+        rc, out, err = quiet(A.main, ['smoke', '--out', self.R, '--gre', self.gre, '--data', self.data, '--topology',
+                                      '0-3/4-9/10-15', '--foreign', 'tag', '--poll', '0.05'])
+        self.assertEqual(rc, 0, out + err)
+        self.assertIn('Smoke: PASS', A.read(os.path.join(self.R, 'smoke', 'SMOKE.md')))
+        recs = [r for r in A.attempt_records(os.path.join(self.R, 'smoke'))]
+        self.assertEqual(sorted(set(r['item']['arm'] for r in recs)), ['smoke', 'smoke_trace'])
+        self.assertEqual(A.attempt_records(self.R), [])            # never mixed with the campaign's cells
+        # the Linux checks on records as the Atom would write them
+        good = dict(recs[0], mask_applied=True, mask_seen=A.cpulist(recs[0]['mask']), mono_pin=1.0, hwm_gb=1.2,
+                    foreign=[], mb_pid=4242)
+        rows, ok = A.smoke_checks([good], True)
+        self.assertTrue(ok, rows)
+        for bad, why in ((dict(good, mask_seen='0-15'), 'microbench CPUs'), (dict(good, mono_pin=None), 'pin never'),
+                         (dict(good, mask_applied=False), 'mask not applied'), (dict(good, hwm_gb=0.0), 'VmHWM'),
+                         (dict(good, foreign=['4242:microbench']), 'own runs'), (dict(good, status='fail'), 'status')):
+            rows, ok = A.smoke_checks([bad], True)
+            self.assertFalse(ok, why)
+            self.assertIn(why, rows[0])
+        tr = [r for r in recs if r['item']['idx'].startswith('trace_')][0]
+        t0 = A.parse_trace_log(os.path.join(tr['_dir'], 'logs', 'fb__%s__r1.log' % tr['item']['idx']))[1]
+        tr = dict(tr, mask_applied=True, mask_seen=A.cpulist(tr['mask']), mono_pin=t0 - 0.05, hwm_gb=1.0, foreign=[])
+        rows, ok = A.smoke_checks([tr], True)
+        self.assertTrue(ok, rows)
+        self.assertIn('trace t0 - pin poll +0.050 s', rows[0])
+        rows, ok = A.smoke_checks([dict(tr, core=99)], True)        # the fake reports the core it was given
+        self.assertIn('trace chunks ran on CPUs', rows[0])
+        rows, ok = A.smoke_checks([dict(tr, mono_pin=t0 - 30)], True)
+        self.assertIn('trace clock', rows[0])
 
     def test_lock(self):
         os.makedirs(os.path.join(self.R, 'sched', 'lock'))
