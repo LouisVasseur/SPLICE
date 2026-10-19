@@ -1,0 +1,30 @@
+{
+ "keys": "/Users/louisvasseur/gre-transform/data10M/wise_10M",
+ "flow": "/Users/louisvasseur/gre-transform/flows/wise_10M.flow",
+ "n_keys": 10000000,
+ "n_sample": 2000000,
+ "sampling": "stride",
+ "M": 32,
+ "steps": 2000,
+ "batch": 65536,
+ "lr": 0.01,
+ "seed": 0,
+ "threads": 8,
+ "lo": 8811611028207,
+ "hi": 17586118428459,
+ "lo_q": 0.001,
+ "hi_q": 0.999,
+ "clip": 1.0,
+ "clipped_fraction": 0.0,
+ "nll_train": -0.02799193170670255,
+ "ks_uniform": 0.0018306031811636814,
+ "decreasing_pairs": 0,
+ "collision_fraction": 0.0,
+ "wall_s": {
+  "load_sample": 0.031,
+  "train": 46.728,
+  "total": 47.213
+ },
+ "torch": "2.8.0",
+ "numpy": "2.0.2"
+}

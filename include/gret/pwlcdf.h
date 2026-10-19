@@ -34,6 +34,12 @@ class PwlCdf {
 
   // sorted: non-decreasing keys (distinct in GRE's use; equal knots are dropped anyway), n >= 1, K >= 1.
   static PwlCdf build(const uint64_t* sorted, size_t n, unsigned K) {
+    return build_by(n, [sorted](size_t i) { return sorted[i]; }, K);
+  }
+
+  // The same on key_at(i), the i-th key; it is read only at the K + 1 knot ranks (TransformIndex: GRE's pairs).
+  template <class KeyAt>
+  static PwlCdf build_by(size_t n, KeyAt key_at, unsigned K) {
     if (n == 0) throw std::invalid_argument("PwlCdf::build: no keys");
     if (K == 0) throw std::invalid_argument("PwlCdf::build: K must be >= 1");
     std::vector<uint64_t> x, y;
@@ -44,7 +50,7 @@ class PwlCdf {
       // round half up of j (n-1) / K and j (2^52 - 1) / K: products below 2^97, exact in 128 bits
       const size_t i = size_t((2 * u128(j) * (n - 1) + K) / twoK);
       const uint64_t yj = uint64_t((2 * u128(j) * kOutMax + K) / twoK);
-      const uint64_t xj = sorted[i];
+      const uint64_t xj = key_at(i);
       if (!x.empty() && xj < x.back()) throw std::invalid_argument("PwlCdf::build: keys are not sorted");
       if (x.empty() || xj != x.back()) {
         x.push_back(xj);

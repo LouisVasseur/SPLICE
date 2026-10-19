@@ -3,15 +3,19 @@
 """Train the gate (include/gret/gate.h) from timed labels: leave-one-dataset-out, then include/gret/gate_model.h.
 
     python3 gate/train_gate.py LABELS_DIR FEATURES.jsonl --out-dir DIR [--header include/gret/gate_model.h]
-                               [--bases "lipp btree"] [--no-veto-lipp]
+                               [--bases "lipp btree"] [--no-veto-lipp] [--veto-rule ties|count]
 
 LABELS_DIR is a run_baselines.sh directory (runs.tsv) with, per base B, the indexes B (raw), pw512_B, pw4096_B and
 nf_B on every dataset; FEATURES.jsonl is tools/gate_features output for the same key files (matched by basename).
 
 Labels: per base and dataset, the median throughput of each variant over its repeats; the oracle is the variant with
-the highest median. A variant the gate cannot build is not a candidate: raw LIPP where gate.h vetoes it (more than
-0.1% of the keys above 2^53 with a 64-bit long double, i.e. macOS arm64; --no-veto-lipp for x86 labels), where
-run_baselines.sh does not run it either. The regret of a choice is 100 (1 - thr(choice) / thr(oracle)), in %.
+the highest median, flagged a noise tie when its margin over the second is below the larger of the two cells' spreads
+((max - min) / median over repeats). A variant the gate cannot build is not a candidate: raw where gate.h's raw_veto()
+vetoes it, which run_baselines.sh does not run either. LIPP: two adjacent keys equal as doubles (the features'
+double_ties > 0) with a 64-bit long double, i.e. macOS arm64; --no-veto-lipp for x86 labels. --veto-rule count is the
+rule before double_ties (more than 0.1% of the keys above 2^53), for labels made with it (results/gate_mac_2026-10-19).
+ALEX: the keys include 2^64 - 1, or n / central_share > 2^30; PGM: 2^64 - 1. The regret of a choice is
+100 (1 - thr(choice) / thr(oracle)), in %.
 
 Models, per base, each fitted by exhaustive search for the least total regret on its training datasets:
   const   one variant everywhere (a depth-0 tree);
@@ -22,10 +26,14 @@ between two adjacent training values: the geometric mean for the positive, heavy
 mean otherwise. Ties in training regret go to fewer splits, then the wider gap between the two training values (in
 the feature's scale, over its training range), then GateFeatures::kNames order, then the lower threshold.
 Validation: leave-one-dataset-out (LODO) over the datasets; the model type with the least mean LODO regret (ties:
-the simpler) is refitted on every dataset and written to the header. The header keeps a '*' tree, the documented
+the simpler) is refitted on every dataset and written to the header. That LODO figure is then reported for it: the
+type is selected on the same folds (no nested LODO), which is optimistic once the types differ. The header keeps a
+'*' tree, the documented
 placeholder (raw, pw512 where raw is vetoed), for the bases without labels (alex, pgm, artunsync).
 Baselines, scored on the same labels: always-raw (pw512 where raw is vetoed, the placeholder), always-pw512,
-always-pw4096, always-nf, and NFL's switch (nflsw: pw512 if conflict_pw512 <= conflict_raw, else raw).
+always-pw4096, always-nf, and an NFL-style switch on pw512 (NFL itself switches to its own flow): nflsw, pw512 if
+conflict_pw512 <= conflict_raw (as gate.h's nflsw_), and nflsw-strict with '<'. The conflict degrees come from a
+65,536-key sample and tie at 1 or 2 on most datasets, so the two rows can differ a lot.
 
 Writes into --out-dir: labels.tsv, features.jsonl (the rows used), lodo.tsv, choices.tsv, model.json, tables.md;
 and the header. Python 3.6+, stdlib only.
@@ -51,9 +59,14 @@ def die(msg):
     sys.exit('train_gate.py: ' + msg)
 
 
-def tilde(path):  # $HOME -> ~ in what goes into the repo
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def tilde(path):  # what goes into the repo: repo-relative inside it, else $HOME -> ~
     home = os.path.expanduser('~')
     path = os.path.abspath(path)
+    if path.startswith(REPO + os.sep):
+        return os.path.relpath(path, REPO)
     return '~' + path[len(home):] if path.startswith(home + os.sep) else path
 
 
@@ -84,22 +97,33 @@ def read_features(path):
     return rows
 
 
-def raw_vetoed(base, feat, veto_lipp):
-    """gate.h's RawLimits on the platform the labels come from (see the docstring)."""
-    if base == 'lipp' and veto_lipp and feat['above_2_53'] * 1000 > feat['n']:
-        return True
+def raw_vetoed(base, feat, veto_lipp, rule):
+    """gate.h's raw_veto() with the RawLimits of the platform the labels come from (see the docstring)."""
+    if base == 'lipp' and veto_lipp:
+        if rule == 'count':
+            return feat['above_2_53'] * 1000 > feat['n']
+        if 'double_ties' not in feat:
+            die('%s: no double_ties in the features (older tools/gate_features): rerun it, or --veto-rule count for '
+                'labels made with that rule' % feat['file'])
+        return feat['double_ties'] > 0
     if base in ('alex', 'pgm') and feat['n'] > 0 and feat['max'] == 2 ** 64 - 1:
+        return True
+    if base == 'alex' and feat['n'] > 0 and not feat['n'] / feat['features']['central_share'] <= 2.0 ** 30:
         return True
     return False
 
 
 class Dataset:
-    def __init__(self, name, base, feat, thr, vetoed):
+    def __init__(self, name, base, feat, thr, spread, vetoed):
         self.name, self.base, self.feat = name, base, feat
         self.f = feat['features']
         self.thr = thr                  # {variant: median throughput} of the buildable variants
         self.vetoed = vetoed            # raw cannot be built (gate.h's veto)
         self.oracle = max(VARIANTS, key=lambda v: (thr.get(v, -1), -VARIANTS.index(v)))
+        ranked = sorted(thr, key=lambda v: -thr[v])
+        self.margin = 100 * (thr[ranked[0]] / thr[ranked[1]] - 1) if len(ranked) > 1 else float('inf')
+        # the oracle is a noise tie when its margin is below the larger spread of the top two cells
+        self.tie = len(ranked) > 1 and self.margin < max(spread[ranked[0]], spread[ranked[1]])
 
     def buildable(self, v):
         return v in self.thr and not (v == 'raw' and self.vetoed)
@@ -258,6 +282,8 @@ def write_header(path, trees, source, notes):
 
 
 PLACEHOLDER = {'leaf': ['raw', 'pw512']}
+CAVEAT = ('Caveat: labels from 10M-key samples on one Mac (Apple M3 Max, on AC power), ten datasets, GRE\'s uniform '
+          'read-only lookups; leave-one-dataset-out is the only validation.')
 
 
 # ---- main
@@ -270,6 +296,8 @@ def main():
     ap.add_argument('--header', help='write the model here (include/gret/gate_model.h)')
     ap.add_argument('--bases', default='lipp btree')
     ap.add_argument('--no-veto-lipp', action='store_true', help='labels from an 80-bit long double (x86)')
+    ap.add_argument('--veto-rule', choices=['ties', 'count'], default='ties',
+                    help="raw LIPP's veto: double_ties > 0 (gate.h), or the earlier count rule of older labels")
     a = ap.parse_args()
     labels_dir = os.path.abspath(a.labels_dir)
     runs = os.path.join(labels_dir, 'runs.tsv')
@@ -292,7 +320,7 @@ def main():
         ds = []
         for name in names:
             feat = feats[name]
-            vetoed = raw_vetoed(base, feat, not a.no_veto_lipp)
+            vetoed = raw_vetoed(base, feat, not a.no_veto_lipp, a.veto_rule)
             thr, stats = {}, {}
             for v in VARIANTS:
                 t = cells.get((name, index_name(base, v)))
@@ -304,7 +332,8 @@ def main():
                     die('%s: raw %s ran although the gate vetoes it' % (name, base))
                 thr[v] = statistics.median(t)
                 stats[v] = (len(t), min(t), max(t))
-            d = Dataset(name, base, feat, thr, vetoed)
+            spread = dict((v, 100 * (stats[v][2] - stats[v][1]) / thr[v]) for v in thr)
+            d = Dataset(name, base, feat, thr, spread, vetoed)
             ds.append(d)
             for v in VARIANTS:
                 if v in thr:
@@ -320,6 +349,8 @@ def main():
         for name in names:
             f.write(json.dumps(feats[name], sort_keys=True) + '\n')
 
+    veto_text = 'none (--no-veto-lipp)' if a.no_veto_lipp else (
+        'double_ties > 0' if a.veto_rule == 'ties' else 'more than 0.1% of the keys above 2^53 (--veto-rule count)')
     lodo_rows, choice_rows, md, final = [], [], [], []
     for base in bases:
         ds = data[base]
@@ -337,6 +368,8 @@ def main():
             ('always-nf', lambda d: 'nf'),
             ('nflsw', lambda d: d.realize(('pw512' if d.f['conflict_pw512'] <= d.f['conflict_raw'] else 'raw',
                                            'raw'))),
+            ('nflsw-strict', lambda d: d.realize(('pw512' if d.f['conflict_pw512'] < d.f['conflict_raw'] else 'raw',
+                                                  'raw'))),
         ])
         for m, rule in fixed.items():
             res[m] = [(d.name, rule(d), d.regret(rule(d)), '') for d in ds]
@@ -345,7 +378,9 @@ def main():
             reg = [x[2] for x in r]
             summary[m] = {'mean_regret_pct': statistics.mean(reg), 'worst_regret_pct': max(reg),
                           'share_of_oracle_pct': statistics.mean(100 - x for x in reg),
-                          'oracle_hits': sum(1 for x, d in zip(r, ds) if x[1] == d.oracle), 'datasets': len(ds)}
+                          'oracle_hits': sum(1 for x, d in zip(r, ds) if x[1] == d.oracle),
+                          'oracle_hits_on_ties': sum(1 for x, d in zip(r, ds) if x[1] == d.oracle and d.tie),
+                          'datasets': len(ds)}
             for (name, v, g, fm) in r:
                 lodo_rows.append((base, m, name, v, g, fm))
         chosen = min(MODELS, key=lambda m: (round(summary[m]['mean_regret_pct'], 9), MODELS[m]))
@@ -358,6 +393,7 @@ def main():
                                 nfl))
         out['bases'][base] = {
             'oracle': OrderedDict((d.name, d.oracle) for d in ds),
+            'oracle_noise_tie': OrderedDict((d.name, d.tie) for d in ds),
             'summary': summary, 'chosen_model': chosen, 'final_tree': tree, 'final_tree_text': describe(tree),
             'final_in_sample_mean_regret_pct': cost / len(ds),
             'final_choices': OrderedDict(fin),
@@ -377,16 +413,23 @@ def main():
                 lo, hi = min(cells[(d.name, index_name(base, v))]), max(cells[(d.name, index_name(base, v))])
                 s = '%.2f (%.0f%%)' % (d.thr[v] / 1e6, 100 * (hi - lo) / d.thr[v])
                 cells_.append('**%s**' % s if v == d.oracle else s)
-            second = sorted(d.thr.values())[-2] if len(d.thr) > 1 else d.thr[d.oracle]
-            md.append('| %s | %s | %s | %.1f%% |' % (d.name, d.oracle, ' | '.join(cells_),
-                                                     100 * (d.thr[d.oracle] / second - 1)))
+            md.append('| %s | %s | %s | %.1f%%%s |' % (d.name, d.oracle, ' | '.join(cells_), d.margin,
+                                                       ' (noise tie)' if d.tie else ''))
         md.append('\nLODO (const, rule, tree2) and fixed baselines, regret in % of the oracle\'s median throughput:\n')
-        md.append('| model | mean regret | worst regret | mean share of oracle | picks the oracle |')
+        md.append('| model | mean regret | worst regret | mean share of oracle | picks the oracle (on noise ties) |')
         md.append('|---|---|---|---|---|')
         for m, s in summary.items():
-            md.append('| %s%s | %.2f%% | %.2f%% | %.2f%% | %d/%d |' % (
+            md.append('| %s%s | %.2f%% | %.2f%% | %.2f%% | %d/%d (%d) |' % (
                 m, ' (chosen)' if m == chosen else '', s['mean_regret_pct'], s['worst_regret_pct'],
-                s['share_of_oracle_pct'], s['oracle_hits'], s['datasets']))
+                s['share_of_oracle_pct'], s['oracle_hits'], s['datasets'], s['oracle_hits_on_ties']))
+        same = [m for m in MODELS if [x[1] for x in res[m]] == [x[1] for x in res['always-raw']]]
+        notes_md = ['The model type is chosen by this same LODO (no nested LODO): its LODO figure is optimistic '
+                    'once the types differ.']
+        if len(same) == len(MODELS):
+            notes_md.append('Every model type makes the same choices as always-raw on every dataset: on these labels '
+                            'LODO cannot tell const, rule and tree2 apart, and the gate adds nothing over the '
+                            'hand-written rule (raw, pw512 where raw is vetoed).')
+        md.append('\n' + ' '.join(notes_md))
         md.append('\nPer-dataset choices (LODO for const/rule/tree2):\n')
         md.append('| dataset | oracle | ' + ' | '.join(res) + ' |')
         md.append('|---' * (len(res) + 2) + '|')
@@ -407,12 +450,14 @@ def main():
     with open(os.path.join(a.out_dir, 'model.json'), 'w') as f:
         json.dump(out, f, indent=1)
     with open(os.path.join(a.out_dir, 'tables.md'), 'w') as f:
-        f.write('Labels: median Mops/s over repeats (spread = (max - min) / median); oracle in bold. Source: %s\n\n'
-                % tilde(runs) + '\n'.join(md) + '\n')
+        f.write('Labels: median Mops/s over repeats (spread = (max - min) / median); oracle in bold. Source: %s; '
+                'features: %s; raw LIPP veto: %s.\n\n%s\n\n' % (tilde(runs), tilde(a.features), veto_text, CAVEAT)
+                + '\n'.join(md) + '\n')
     if a.header:
         src = 'gate/train_gate.py on %s (%d datasets); LODO-chosen per base: %s' % (
             tilde(runs), len(names), ', '.join('%s=%s' % (b, out['bases'][b]['chosen_model']) for b in bases))
-        notes = ['Trained on %s' % tilde(runs), 'with the features of %s.' % tilde(a.features)]
+        notes = ['Trained on %s' % tilde(runs), 'with the features of %s;' % tilde(a.features),
+                 'raw LIPP veto in the labels: %s.' % veto_text] + [c.rstrip() for c in chunks(CAVEAT, 114)]
         for b in bases:
             s = out['bases'][b]
             notes.append('%s: %s, LODO mean regret %.2f%% (worst %.2f%%): %s' % (

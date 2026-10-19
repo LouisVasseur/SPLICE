@@ -1,6 +1,6 @@
 {
- "labels": "~/gre-transform/results/labels_2026-10-19/runs.tsv",
- "features": "~/gre-transform/results/features_10M.jsonl",
+ "labels": "results/gate_mac_2026-10-19/labels/runs.tsv",
+ "features": "results/gate_mac_2026-10-19/features_10M.jsonl",
  "bases": {
   "lipp": {
    "oracle": {
@@ -15,12 +15,25 @@
     "stack_10M": "raw",
     "wise_10M": "raw"
    },
+   "oracle_noise_tie": {
+    "covid_10M": true,
+    "genome_10M": false,
+    "libio_10M": false,
+    "osm_10M": true,
+    "books_10M": true,
+    "fb_10M": false,
+    "history_10M": false,
+    "planet_10M": false,
+    "stack_10M": false,
+    "wise_10M": false
+   },
    "summary": {
     "const": {
      "mean_regret_pct": 0.0,
      "worst_regret_pct": 0.0,
      "share_of_oracle_pct": 100.0,
      "oracle_hits": 10,
+     "oracle_hits_on_ties": 3,
      "datasets": 10
     },
     "rule": {
@@ -28,6 +41,7 @@
      "worst_regret_pct": 0.0,
      "share_of_oracle_pct": 100.0,
      "oracle_hits": 10,
+     "oracle_hits_on_ties": 3,
      "datasets": 10
     },
     "tree2": {
@@ -35,6 +49,7 @@
      "worst_regret_pct": 0.0,
      "share_of_oracle_pct": 100.0,
      "oracle_hits": 10,
+     "oracle_hits_on_ties": 3,
      "datasets": 10
     },
     "always-raw": {
@@ -42,6 +57,7 @@
      "worst_regret_pct": 0.0,
      "share_of_oracle_pct": 100.0,
      "oracle_hits": 10,
+     "oracle_hits_on_ties": 3,
      "datasets": 10
     },
     "always-pw512": {
@@ -49,6 +65,7 @@
      "worst_regret_pct": 58.90620314464695,
      "share_of_oracle_pct": 72.2859792844121,
      "oracle_hits": 3,
+     "oracle_hits_on_ties": 3,
      "datasets": 10
     },
     "always-pw4096": {
@@ -56,6 +73,7 @@
      "worst_regret_pct": 61.12210108928182,
      "share_of_oracle_pct": 70.33477618146524,
      "oracle_hits": 0,
+     "oracle_hits_on_ties": 0,
      "datasets": 10
     },
     "always-nf": {
@@ -63,6 +81,7 @@
      "worst_regret_pct": 88.30271289517383,
      "share_of_oracle_pct": 18.47083695568132,
      "oracle_hits": 0,
+     "oracle_hits_on_ties": 0,
      "datasets": 10
     },
     "nflsw": {
@@ -70,6 +89,15 @@
      "worst_regret_pct": 58.90620314464695,
      "share_of_oracle_pct": 72.2859792844121,
      "oracle_hits": 3,
+     "oracle_hits_on_ties": 3,
+     "datasets": 10
+    },
+    "nflsw-strict": {
+     "mean_regret_pct": 11.728546804394362,
+     "worst_regret_pct": 58.90620314464695,
+     "share_of_oracle_pct": 88.27145319560563,
+     "oracle_hits": 7,
+     "oracle_hits_on_ties": 3,
      "datasets": 10
     }
    },
@@ -590,6 +618,68 @@
       "regret_pct": 31.996257768866965,
       "fold_model": ""
      }
+    ],
+    "nflsw-strict": [
+     {
+      "dataset": "covid_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "pw512",
+      "regret_pct": 58.90620314464695,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "pw512",
+      "regret_pct": 26.383007130429704,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "pw512",
+      "regret_pct": 31.996257768866965,
+      "fold_model": ""
+     }
     ]
    }
   },
@@ -606,12 +696,25 @@
     "stack_10M": "raw",
     "wise_10M": "raw"
    },
+   "oracle_noise_tie": {
+    "covid_10M": false,
+    "genome_10M": false,
+    "libio_10M": false,
+    "osm_10M": false,
+    "books_10M": false,
+    "fb_10M": false,
+    "history_10M": false,
+    "planet_10M": false,
+    "stack_10M": false,
+    "wise_10M": false
+   },
    "summary": {
     "const": {
      "mean_regret_pct": 0.0,
      "worst_regret_pct": 0.0,
      "share_of_oracle_pct": 100.0,
      "oracle_hits": 10,
+     "oracle_hits_on_ties": 0,
      "datasets": 10
     },
     "rule": {
@@ -619,6 +722,7 @@
      "worst_regret_pct": 0.0,
      "share_of_oracle_pct": 100.0,
      "oracle_hits": 10,
+     "oracle_hits_on_ties": 0,
      "datasets": 10
     },
     "tree2": {
@@ -626,6 +730,7 @@
      "worst_regret_pct": 0.0,
      "share_of_oracle_pct": 100.0,
      "oracle_hits": 10,
+     "oracle_hits_on_ties": 0,
      "datasets": 10
     },
     "always-raw": {
@@ -633,6 +738,7 @@
      "worst_regret_pct": 0.0,
      "share_of_oracle_pct": 100.0,
      "oracle_hits": 10,
+     "oracle_hits_on_ties": 0,
      "datasets": 10
     },
     "always-pw512": {
@@ -640,6 +746,7 @@
      "worst_regret_pct": 18.079606341642695,
      "share_of_oracle_pct": 87.95678009594624,
      "oracle_hits": 0,
+     "oracle_hits_on_ties": 0,
      "datasets": 10
     },
     "always-pw4096": {
@@ -647,6 +754,7 @@
      "worst_regret_pct": 24.395182601176945,
      "share_of_oracle_pct": 84.28056743662528,
      "oracle_hits": 0,
+     "oracle_hits_on_ties": 0,
      "datasets": 10
     },
     "always-nf": {
@@ -654,6 +762,7 @@
      "worst_regret_pct": 37.62672911605986,
      "share_of_oracle_pct": 64.01916162644628,
      "oracle_hits": 0,
+     "oracle_hits_on_ties": 0,
      "datasets": 10
     },
     "nflsw": {
@@ -661,6 +770,15 @@
      "worst_regret_pct": 18.079606341642695,
      "share_of_oracle_pct": 87.95678009594624,
      "oracle_hits": 0,
+     "oracle_hits_on_ties": 0,
+     "datasets": 10
+    },
+    "nflsw-strict": {
+     "mean_regret_pct": 6.7229866349658955,
+     "worst_regret_pct": 18.079606341642695,
+     "share_of_oracle_pct": 93.27701336503411,
+     "oracle_hits": 5,
+     "oracle_hits_on_ties": 0,
      "datasets": 10
     }
    },
@@ -1173,6 +1291,68 @@
       "dataset": "stack_10M",
       "choice": "pw512",
       "regret_pct": 13.03469583124488,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "pw512",
+      "regret_pct": 10.521359649528783,
+      "fold_model": ""
+     }
+    ],
+    "nflsw-strict": [
+     {
+      "dataset": "covid_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw512",
+      "regret_pct": 14.794164300596202,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw512",
+      "regret_pct": 9.267355111209309,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "pw512",
+      "regret_pct": 18.079606341642695,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "pw512",
+      "regret_pct": 14.567380946681963,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
       "fold_model": ""
      },
      {

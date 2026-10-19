@@ -62,10 +62,12 @@ def main():
             fok = fok and set(printed) == set(feats[d])
             bad += (choice != expected) + (not fok)
             mops = float(r['throughput_ops']) / 1e6
-            med, lo, hi = labels[(base, d, choice)]
+            lab = labels.get((base, d, choice))  # none: a variant the labels did not run (e.g. vetoed then)
+            med, lo, hi = lab if lab else (float('nan'),) * 3
             print('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.3f\t%.3f\t%.3f\t%s' % (
                 mode, base, d, choice, expected if expected != choice else 'same', 'same' if fok else 'DIFFER',
-                m.group(5), mops, med, mops / med, 'yes' if 0.95 * lo <= mops <= 1.05 * hi else 'no'))
+                m.group(5), mops, med, mops / med, 'no label' if not lab else
+                'yes' if 0.95 * lo <= mops <= 1.05 * hi else 'no'))
     print('check_gate: %s' % ('OK' if bad == 0 else '%d mismatches' % bad))
     sys.exit(1 if bad else 0)
 

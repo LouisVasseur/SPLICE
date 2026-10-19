@@ -13,7 +13,9 @@
 #                  (macOS GRE_CLANG=/usr/bin/false, Linux CONDA_PREFIX unset), so build_gre.sh stops right there
 #   KEEP_TMP=1     keep the temporary clone
 # Also checks add_transforms.py's anchors on the other platform's trim (Linux: alex,lipp,pgm,btree,artunsync with
-# --cmake; macOS: alex,lipp,pgm,btree). Refuses while a timed run is active (exit 2). Exit 1 on any difference.
+# --cmake; macOS: alex,lipp,pgm,btree). And that this branch contains REF: the comparison runs REF's scripts, so a
+# baselines fix that never reached this branch would otherwise pass unseen. Refuses while a timed run is active
+# (exit 2). Exit 1 on any difference.
 set -euo pipefail
 REF=${1:-gre-baselines}
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
@@ -31,12 +33,14 @@ for f in build_gre.sh trim_gre.py; do git -C "$ROOT" show "$REF:scripts/$f" > "$
 chmod +x "$T/ref/scripts/build_gre.sh"
 bad=0
 no() { echo "FAIL: $*"; bad=1; }
+git -C "$ROOT" merge-base --is-ancestor "$REF" HEAD || no "this branch does not contain $REF: merge it first"
 
 # build LABEL SCRIPT [VAR=value ...]: run a build_gre.sh into $G, then snapshot the edited sources into $T/LABEL/
 build() {
     local label=$1 script=$2; shift 2
     local stub=(); [ "${FULL:-0}" = 1 ] || { [ "$OS" = Darwin ] && stub=(GRE_CLANG=/usr/bin/false) || stub=(-u CONDA_PREFIX); }
     local st=0
+    rm -f "$G/build/BUILD_MANIFEST.txt"  # each label's own (a stubbed build writes none; EXTRA refuses a baselines one)
     env -u EXTRA ${stub[@]+"${stub[@]}"} GRE_SEED="$GRE_SEED" "$@" bash "$script" "$G" > "$T/$label.log" 2>&1 || st=$?
     if [ "${FULL:-0}" = 1 ]; then [ "$st" = 0 ] || no "$label: build failed ($T/$label.log)"
     elif ! grep -q '^== 3/4 build' "$T/$label.log"; then no "$label: stopped before the build step ($T/$label.log)"; fi

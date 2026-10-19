@@ -17,7 +17,7 @@
 #          shims for x86intrin popcount, single-thread OpenMP, tbb::parallel_sort -> std::sort, empty jemalloc.h.
 # Every edit starts from the pristine file, and DEST/build/BUILD_MANIFEST.txt records the commit, edits and compiler.
 #   GRE_SEED=DIR      clone GRE and its 5 submodules from a local GRE clone instead of GitHub
-#   GRE_FORCE=1       build even while a benchmark runs
+#   GRE_FORCE=1       build even while a benchmark runs (and, with EXTRA, over a DEST that holds a baselines build)
 #   EXTRA=transforms  after the trim, scripts/add_transforms.py registers include/gret/registry.h in competitor.h
 #                     (Linux: and include_directories in CMakeLists.txt; macOS: -I REPO/include); recorded in the
 #                     manifest. Without EXTRA nothing differs from the baselines build (tests/test_build_unchanged.sh).
@@ -26,10 +26,16 @@ EXTRA=${EXTRA:-}
 case "$EXTRA" in ''|transforms) ;; *) echo "EXTRA must be 'transforms' or unset, not '$EXTRA'" >&2; exit 1 ;; esac
 if [ -n "$EXTRA" ]; then
     DEST=${1:-$HOME/gre-transform/GRE}
-    # the baselines clone is what run_baselines.sh times by default: never put the transforms into it
+    # a baselines clone is what run_baselines.sh times: never put the transforms into one. That is
+    # $HOME/gre-baselines/GRE, and any DEST whose last build has no 'extra: transforms' manifest line (the Atom's
+    # /tmp/$USER/GRE, for one)
     if [ -d "$DEST" ] && [ -d "$HOME/gre-baselines/GRE" ] && \
        [ "$(cd "$DEST" && pwd -P)" = "$(cd "$HOME/gre-baselines/GRE" && pwd -P)" ]; then
         echo "EXTRA=$EXTRA: $DEST is the baselines clone; build into another DEST" >&2; exit 1; fi
+    if [ "${GRE_FORCE:-0}" != 1 ] && [ -f "$DEST/build/BUILD_MANIFEST.txt" ] && \
+       ! grep -q '^extra: transforms' "$DEST/build/BUILD_MANIFEST.txt"; then
+        echo "EXTRA=$EXTRA: $DEST holds a baselines build (no 'extra: transforms' in its manifest); build into another" \
+             "DEST, or GRE_FORCE=1" >&2; exit 1; fi
 else DEST=${1:-$HOME/gre-baselines/GRE}; fi
 HERE=$(cd "$(dirname "$0")" && pwd)
 ROOT=$(cd "$HERE/.." && pwd)
@@ -176,7 +182,13 @@ INDEXES=$(grep -oE '^  (else )?if ?\( ?index_type == "[a-z0-9_]+"' src/competito
   echo "ALEX_USE_LZCNT: $ALEX_LZCNT"
   if [ "$EXTRA" = transforms ]; then
       echo "extra: transforms (scripts/add_transforms.py, $ROOT/include; include/gret cksum $(cat "$ROOT"/include/gret/*.h | cksum))"
-      echo "transform indexes: pw<K>_B (K=2..65536) nf_B gate_B nflsw_B, B in ${KEEP//,/ }"
+      echo "transform indexes: pw<K>_B (K=2..65536) pw_B nf_B gate_B nflsw_B, B in ${KEEP//,/ }"
+      # MolFlow's madd (include/gret/flow.h): fused where the compiler defines __FP_FAST_FMA for the build's -mcpu or
+      # -march=native; T differs by 1 on ~0.1% of the keys between the two, so nf labels must not be mixed across them
+      if [ "$OS" = Linux ]; then FMA_CXX=$(sed -n 's/^CMAKE_CXX_COMPILER:[A-Z]*=//p' build/CMakeCache.txt); FMA_ARCH=-march=native
+      else FMA_CXX=$CLANG; FMA_ARCH=-mcpu=native; fi
+      if "$FMA_CXX" $FMA_ARCH -dM -E -x c++ /dev/null 2>/dev/null | grep -qw __FP_FAST_FMA; then echo "molflow madd: fma=1"
+      else echo "molflow madd: fma=0 (multiply and add)"; fi
   fi
   for p in $SUBS; do echo "submodule $p: $(git -C "$p" rev-parse HEAD)"; done
   echo "edits (diff cksum): GRE $(git diff | cksum); alex $(git -C src/competitor/alex/src diff | cksum)"

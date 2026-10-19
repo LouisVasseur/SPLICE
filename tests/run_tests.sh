@@ -9,8 +9,10 @@
 # with -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all (any UB report fails the test) and the include
 # paths, shims and defines of build_gre.sh: macOS GRE_DIR/build/mac/include,
 # -mcpu=native and the libc++ defines; Linux -march=native, -fopenmp and the activated conda environment's TBB. Plus
-# -I REPO/include -I GRE_DIR/src/competitor -I GRE_DIR/src. No UBSan check is exempted, in GRE's competitors either
-# (the gate never builds raw ALEX on 2^64 - 1, where its predict overflowed an int). Unlike the binary, NDEBUG is not
+# -I REPO/include -I GRE_DIR/src/competitor -I GRE_DIR/src. No UBSan check is exempted, in GRE's competitors either:
+# raw ALEX's int predict overflows on far outliers (UB), so the gate never builds raw ALEX there (gate.h's raw_veto,
+# exercised by test_index's ulp@2^60 and fb-like sets), and the tests build raw ALEX only on sets without such outliers
+# (GRE's own alex cells on fb rely on the UB behaving: saturation on arm64). Unlike the binary, NDEBUG is not
 # defined, so assert() stays on in the tests and in the competitors (TEST_NDEBUG=1 adds -DNDEBUG). ASan leak checks are
 # off (Linux; none on macOS arm64): leaks are not the contract. Each test then runs again as <test>-O3, compiled like
 # the GRE binary (build_gre.sh's -O3 -DNDEBUG flags, no sanitizer): exactness must hold for the code that is timed,

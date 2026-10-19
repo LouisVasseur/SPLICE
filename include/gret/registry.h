@@ -3,10 +3,11 @@
 // after GRE's own names and includes this header after GRE's competitor headers, which it needs and cannot include).
 //
 //   pw<K>_<base>   PwlCdf with K knots, K in [2, 65536] written without leading zeros (pw512_lipp, pw4096_btree)
-//   pw_<base>      PwlCdf with K = $TRANSFORM_K (default 512); it reports itself as pw<K>_<base>
+//   pw_<base>      PwlCdf with K = $TRANSFORM_K (default 512); it reports itself as pw<K>_<base>. Only these names
+//                  read $TRANSFORM_K: pw<K>_, gate_ (pw512, pw4096) and nflsw_ (pw512) have fixed K
 //   nf_<base>      MolFlow loaded from $TRANSFORM_FLOW
 //   gate_<base>    the learned gate (gate.h, gate_model.h)
-//   nflsw_<base>   NFL's switch: pw512 or raw
+//   nflsw_<base>   an NFL-style switch: pw512 or raw (gate.h)
 // Bases: lipp btree alex pgm, and artunsync where GRE's registry has it (Linux: competitor.h includes artunsync.h
 // before this header; detected through the include guard of ART/Tree.h, or set GRET_HAS_ARTUNSYNC to 0 or 1).
 // Returns nullptr for every other name, and for keys other than uint64_t.
@@ -71,12 +72,14 @@ indexInterface<K, P>* make_index(const std::string& name) {
     const size_t us = name.find('_');
     if (us == std::string::npos) return nullptr;
     const std::string kind = name.substr(0, us), base = name.substr(us + 1);
-    // the gate's raw limits (gate.h): LIPP's models run in long double, the 64-bit double on macOS arm64; ALEX and PGM
-    // use 2^64 - 1 as a sentinel
-    if (base == "lipp") return make_on<K, P, LIPPInterface<uint64_t, P>>(kind, base, RawLimits{LDBL_MANT_DIG < 64, false});
+    // the gate's raw limits (gate.h): LIPP's models run in long double, which is double on macOS arm64 (an 80-bit
+    // long double holds every uint64 exactly); ALEX and PGM use 2^64 - 1 as a sentinel; ALEX predicts slots as int
+    static_assert(LDBL_MANT_DIG == DBL_MANT_DIG || LDBL_MANT_DIG >= 64, "long double: neither double nor >= 64 bits");
+    if (base == "lipp")
+      return make_on<K, P, LIPPInterface<uint64_t, P>>(kind, base, RawLimits{LDBL_MANT_DIG < 64, false, false});
     if (base == "btree") return make_on<K, P, BTreeInterface<uint64_t, P>>(kind, base, RawLimits{});
-    if (base == "alex") return make_on<K, P, alexInterface<uint64_t, P>>(kind, base, RawLimits{false, true});
-    if (base == "pgm") return make_on<K, P, pgmInterface<uint64_t, P>>(kind, base, RawLimits{false, true});
+    if (base == "alex") return make_on<K, P, alexInterface<uint64_t, P>>(kind, base, RawLimits{false, true, true});
+    if (base == "pgm") return make_on<K, P, pgmInterface<uint64_t, P>>(kind, base, RawLimits{false, true, false});
 #if GRET_HAS_ARTUNSYNC
     if (base == "artunsync") return make_on<K, P, ARTUnsynchronizedInterface<uint64_t, P>>(kind, base, RawLimits{});
 #endif

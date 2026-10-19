@@ -36,6 +36,6 @@ print(' ' * w + ''.join('%16s' % i for i in indexes))
 for d in datasets:
     print(d.ljust(w) + ''.join('%9.2f (%3.0f%%)' % (by[d, i][3], by[d, i][4]) if (d, i) in by else '%16s' % '-'
                                for i in indexes))
-print('memory MB (GRE self-reported; 0 = not reported by the index)')
+print('memory MB (GRE self-reported; 0 = not reported by the index: GRE\'s B+tree, and the transform indexes on it)')
 for d in datasets:
     print(d.ljust(w) + ''.join('%16.1f' % by[d, i][5] if (d, i) in by else '%16s' % '-' for i in indexes))

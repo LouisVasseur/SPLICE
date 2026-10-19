@@ -79,6 +79,16 @@ lipp	nflsw	history_10M	pw512	40.337
 lipp	nflsw	planet_10M	pw512	26.383	
 lipp	nflsw	stack_10M	pw512	39.050	
 lipp	nflsw	wise_10M	pw512	31.996	
+lipp	nflsw-strict	covid_10M	pw512	0.000	
+lipp	nflsw-strict	genome_10M	raw	0.000	
+lipp	nflsw-strict	libio_10M	raw	0.000	
+lipp	nflsw-strict	osm_10M	pw512	0.000	
+lipp	nflsw-strict	books_10M	pw512	0.000	
+lipp	nflsw-strict	fb_10M	pw512	58.906	
+lipp	nflsw-strict	history_10M	raw	0.000	
+lipp	nflsw-strict	planet_10M	pw512	26.383	
+lipp	nflsw-strict	stack_10M	raw	0.000	
+lipp	nflsw-strict	wise_10M	pw512	31.996	
 btree	const	covid_10M	raw	0.000	raw|pw512
 btree	const	genome_10M	raw	0.000	raw|pw512
 btree	const	libio_10M	raw	0.000	raw|pw512
@@ -159,3 +169,13 @@ btree	nflsw	history_10M	pw512	7.419
 btree	nflsw	planet_10M	pw512	14.567	
 btree	nflsw	stack_10M	pw512	13.035	
 btree	nflsw	wise_10M	pw512	10.521	
+btree	nflsw-strict	covid_10M	raw	0.000	
+btree	nflsw-strict	genome_10M	raw	0.000	
+btree	nflsw-strict	libio_10M	raw	0.000	
+btree	nflsw-strict	osm_10M	pw512	14.794	
+btree	nflsw-strict	books_10M	pw512	9.267	
+btree	nflsw-strict	fb_10M	pw512	18.080	
+btree	nflsw-strict	history_10M	raw	0.000	
+btree	nflsw-strict	planet_10M	pw512	14.567	
+btree	nflsw-strict	stack_10M	raw	0.000	
+btree	nflsw-strict	wise_10M	pw512	10.521	

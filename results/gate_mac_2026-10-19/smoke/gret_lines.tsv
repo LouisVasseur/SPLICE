@@ -1,0 +1,283 @@
+books_10M.gate_alex.r1.log	gret: gate alex choice=raw features=[log2_range=63 central_share=0.974183 ks_uniform=0.367241 pla4_per_1k=0.84148 pla64_per_1k=0.198895 conflict_raw=2 conflict_pw512=1 gap_cv=2.04812 collide_pw512=0] feature_ms=4.09
+books_10M.gate_btree.r1.log	gret: gate btree choice=raw features=[log2_range=63 central_share=0.974183 ks_uniform=0.367241 pla4_per_1k=0.84148 pla64_per_1k=0.198895 conflict_raw=2 conflict_pw512=1 gap_cv=2.04812 collide_pw512=0] feature_ms=4.20
+books_10M.gate_pgm.r1.log	gret: gate pgm choice=raw features=[log2_range=63 central_share=0.974183 ks_uniform=0.367241 pla4_per_1k=0.84148 pla64_per_1k=0.198895 conflict_raw=2 conflict_pw512=1 gap_cv=2.04812 collide_pw512=0] feature_ms=4.22
+books_10M.gate_lipp.r1.log	gret: gate lipp choice=pw512 features=[log2_range=63 central_share=0.974183 ks_uniform=0.367241 pla4_per_1k=0.84148 pla64_per_1k=0.198895 conflict_raw=2 conflict_pw512=1 gap_cv=2.04812 collide_pw512=0] feature_ms=4.16 (raw unavailable: 8 adjacent key pairs are equal as long double (= double here))
+books_10M.gate_lipp.r1.log	gret: pw512_lipp n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=27244 build_ms=153.1
+books_10M.nf_alex.r1.log	gret: nf_alex n=10000000 unique=9999974 collided_keys=26 groups=5 aux_bytes=1680 fma=1 build_ms=1177.6
+books_10M.nf_btree.r1.log	gret: nf_btree n=10000000 unique=9999974 collided_keys=26 groups=5 aux_bytes=1680 fma=1 build_ms=720.1
+books_10M.nf_pgm.r1.log	gret: nf_pgm n=10000000 unique=9999974 collided_keys=26 groups=5 aux_bytes=1680 fma=1 build_ms=770.7
+books_10M.nf_lipp.r1.log	gret: nf_lipp n=10000000 unique=9999974 collided_keys=26 groups=5 aux_bytes=1680 fma=1 build_ms=756.5
+books_10M.nflsw_alex.r1.log	gret: nflsw alex choice=pw512 features=[log2_range=63 central_share=0.974183 ks_uniform=0.367241 pla4_per_1k=0.84148 pla64_per_1k=0.198895 conflict_raw=2 conflict_pw512=1 gap_cv=2.04812 collide_pw512=0] feature_ms=4.23
+books_10M.nflsw_alex.r1.log	gret: pw512_alex n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=27244 build_ms=494.1
+books_10M.nflsw_btree.r1.log	gret: nflsw btree choice=pw512 features=[log2_range=63 central_share=0.974183 ks_uniform=0.367241 pla4_per_1k=0.84148 pla64_per_1k=0.198895 conflict_raw=2 conflict_pw512=1 gap_cv=2.04812 collide_pw512=0] feature_ms=4.23
+books_10M.nflsw_btree.r1.log	gret: pw512_btree n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=27244 build_ms=100.3
+books_10M.nflsw_pgm.r1.log	gret: nflsw pgm choice=pw512 features=[log2_range=63 central_share=0.974183 ks_uniform=0.367241 pla4_per_1k=0.84148 pla64_per_1k=0.198895 conflict_raw=2 conflict_pw512=1 gap_cv=2.04812 collide_pw512=0] feature_ms=4.10
+books_10M.nflsw_pgm.r1.log	gret: pw512_pgm n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=27244 build_ms=159.7
+books_10M.nflsw_lipp.r1.log	gret: nflsw lipp choice=pw512 features=[log2_range=63 central_share=0.974183 ks_uniform=0.367241 pla4_per_1k=0.84148 pla64_per_1k=0.198895 conflict_raw=2 conflict_pw512=1 gap_cv=2.04812 collide_pw512=0] feature_ms=4.21
+books_10M.nflsw_lipp.r1.log	gret: pw512_lipp n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=27244 build_ms=169.3
+books_10M.pw4096_alex.r1.log	gret: pw4096_alex n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=213612 build_ms=911.4
+books_10M.pw4096_btree.r1.log	gret: pw4096_btree n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=213612 build_ms=100.3
+books_10M.pw4096_pgm.r1.log	gret: pw4096_pgm n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=213612 build_ms=157.4
+books_10M.pw4096_lipp.r1.log	gret: pw4096_lipp n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=213612 build_ms=157.6
+books_10M.pw512_alex.r1.log	gret: pw512_alex n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=27244 build_ms=513.9
+books_10M.pw512_btree.r1.log	gret: pw512_btree n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=27244 build_ms=100.2
+books_10M.pw512_pgm.r1.log	gret: pw512_pgm n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=27244 build_ms=161.3
+books_10M.pw512_lipp.r1.log	gret: pw512_lipp n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=27244 build_ms=156.3
+books_10M.pw_alex.r1.log	gret: pw1024_alex n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=53868 build_ms=452.0
+books_10M.pw_btree.r1.log	gret: pw1024_btree n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=53868 build_ms=102.4
+books_10M.pw_pgm.r1.log	gret: pw1024_pgm n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=53868 build_ms=161.8
+books_10M.pw_lipp.r1.log	gret: pw1024_lipp n=10000000 unique=9999978 collided_keys=22 groups=6 aux_bytes=53868 build_ms=153.5
+covid_10M.gate_alex.r1.log	gret: gate alex choice=raw features=[log2_range=56.499 central_share=0.995495 ks_uniform=0.0493193 pla4_per_1k=8.4301 pla64_per_1k=0.336592 conflict_raw=1 conflict_pw512=1 gap_cv=0.625099 collide_pw512=0] feature_ms=6.18
+covid_10M.gate_btree.r1.log	gret: gate btree choice=raw features=[log2_range=56.499 central_share=0.995495 ks_uniform=0.0493193 pla4_per_1k=8.4301 pla64_per_1k=0.336592 conflict_raw=1 conflict_pw512=1 gap_cv=0.625099 collide_pw512=0] feature_ms=6.13
+covid_10M.gate_pgm.r1.log	gret: gate pgm choice=raw features=[log2_range=56.499 central_share=0.995495 ks_uniform=0.0493193 pla4_per_1k=8.4301 pla64_per_1k=0.336592 conflict_raw=1 conflict_pw512=1 gap_cv=0.625099 collide_pw512=0] feature_ms=8.63
+covid_10M.gate_lipp.r1.log	gret: gate lipp choice=raw features=[log2_range=56.499 central_share=0.995495 ks_uniform=0.0493193 pla4_per_1k=8.4301 pla64_per_1k=0.336592 conflict_raw=1 conflict_pw512=1 gap_cv=0.625099 collide_pw512=0] feature_ms=6.06
+covid_10M.nf_alex.r1.log	gret: nf_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=1535.3
+covid_10M.nf_lipp.r1.log	gret: nf_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=724.1
+covid_10M.nf_btree.r1.log	gret: nf_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=710.0
+covid_10M.nf_pgm.r1.log	gret: nf_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=817.7
+covid_10M.nflsw_alex.r1.log	gret: nflsw alex choice=pw512 features=[log2_range=56.499 central_share=0.995495 ks_uniform=0.0493193 pla4_per_1k=8.4301 pla64_per_1k=0.336592 conflict_raw=1 conflict_pw512=1 gap_cv=0.625099 collide_pw512=0] feature_ms=6.13
+covid_10M.nflsw_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27632 build_ms=518.8
+covid_10M.nflsw_lipp.r1.log	gret: nflsw lipp choice=pw512 features=[log2_range=56.499 central_share=0.995495 ks_uniform=0.0493193 pla4_per_1k=8.4301 pla64_per_1k=0.336592 conflict_raw=1 conflict_pw512=1 gap_cv=0.625099 collide_pw512=0] feature_ms=5.97
+covid_10M.nflsw_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27632 build_ms=119.6
+covid_10M.nflsw_btree.r1.log	gret: nflsw btree choice=pw512 features=[log2_range=56.499 central_share=0.995495 ks_uniform=0.0493193 pla4_per_1k=8.4301 pla64_per_1k=0.336592 conflict_raw=1 conflict_pw512=1 gap_cv=0.625099 collide_pw512=0] feature_ms=6.18
+covid_10M.nflsw_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27632 build_ms=107.1
+covid_10M.nflsw_pgm.r1.log	gret: nflsw pgm choice=pw512 features=[log2_range=56.499 central_share=0.995495 ks_uniform=0.0493193 pla4_per_1k=8.4301 pla64_per_1k=0.336592 conflict_raw=1 conflict_pw512=1 gap_cv=0.625099 collide_pw512=0] feature_ms=6.13
+covid_10M.nflsw_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27632 build_ms=202.0
+covid_10M.pw4096_alex.r1.log	gret: pw4096_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=243076 build_ms=416.6
+covid_10M.pw4096_lipp.r1.log	gret: pw4096_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=243076 build_ms=120.4
+covid_10M.pw4096_btree.r1.log	gret: pw4096_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=243076 build_ms=104.2
+covid_10M.pw4096_pgm.r1.log	gret: pw4096_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=243076 build_ms=200.2
+covid_10M.pw512_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27632 build_ms=512.9
+covid_10M.pw512_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27632 build_ms=124.0
+covid_10M.pw512_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27632 build_ms=96.7
+covid_10M.pw512_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27632 build_ms=211.0
+covid_10M.pw_alex.r1.log	gret: pw1024_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=60892 build_ms=736.7
+covid_10M.pw_lipp.r1.log	gret: pw1024_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=60892 build_ms=119.9
+covid_10M.pw_btree.r1.log	gret: pw1024_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=60892 build_ms=99.1
+covid_10M.pw_pgm.r1.log	gret: pw1024_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=60892 build_ms=199.6
+fb_10M.gate_alex.r1.log	gret: gate alex choice=pw512 features=[log2_range=64 central_share=4.1833e-09 ks_uniform=0.999985 pla4_per_1k=4.05441 pla64_per_1k=0.0611986 conflict_raw=65360 conflict_pw512=2 gap_cv=255.654 collide_pw512=0.00162176] feature_ms=2.54 (raw unavailable: key 2^64 - 1 is the base's sentinel)
+fb_10M.gate_alex.r1.log	gret: pw512_alex n=10000000 unique=9980469 collided_keys=19531 groups=73 aux_bytes=338840 build_ms=505.3
+fb_10M.gate_lipp.r1.log	gret: gate lipp choice=raw features=[log2_range=64 central_share=4.1833e-09 ks_uniform=0.999985 pla4_per_1k=4.05441 pla64_per_1k=0.0611986 conflict_raw=65360 conflict_pw512=2 gap_cv=255.654 collide_pw512=0.00162176] feature_ms=2.55
+fb_10M.gate_btree.r1.log	gret: gate btree choice=raw features=[log2_range=64 central_share=4.1833e-09 ks_uniform=0.999985 pla4_per_1k=4.05441 pla64_per_1k=0.0611986 conflict_raw=65360 conflict_pw512=2 gap_cv=255.654 collide_pw512=0.00162176] feature_ms=2.58
+fb_10M.gate_pgm.r1.log	gret: gate pgm choice=pw512 features=[log2_range=64 central_share=4.1833e-09 ks_uniform=0.999985 pla4_per_1k=4.05441 pla64_per_1k=0.0611986 conflict_raw=65360 conflict_pw512=2 gap_cv=255.654 collide_pw512=0.00162176] feature_ms=2.73 (raw unavailable: key 2^64 - 1 is the base's sentinel)
+fb_10M.gate_pgm.r1.log	gret: pw512_pgm n=10000000 unique=9980469 collided_keys=19531 groups=73 aux_bytes=338840 build_ms=289.4
+fb_10M.nf_btree.r1.log	gret: nf_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=706.7
+fb_10M.nf_alex.r1.log	gret: nf_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=2414.2
+fb_10M.nf_lipp.r1.log	gret: nf_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=973.6
+fb_10M.nf_pgm.r1.log	gret: nf_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=862.3
+fb_10M.nflsw_btree.r1.log	gret: nflsw btree choice=pw512 features=[log2_range=64 central_share=4.1833e-09 ks_uniform=0.999985 pla4_per_1k=4.05441 pla64_per_1k=0.0611986 conflict_raw=65360 conflict_pw512=2 gap_cv=255.654 collide_pw512=0.00162176] feature_ms=2.54
+fb_10M.nflsw_btree.r1.log	gret: pw512_btree n=10000000 unique=9980469 collided_keys=19531 groups=73 aux_bytes=338840 build_ms=146.8
+fb_10M.nflsw_alex.r1.log	gret: nflsw alex choice=pw512 features=[log2_range=64 central_share=4.1833e-09 ks_uniform=0.999985 pla4_per_1k=4.05441 pla64_per_1k=0.0611986 conflict_raw=65360 conflict_pw512=2 gap_cv=255.654 collide_pw512=0.00162176] feature_ms=2.63
+fb_10M.nflsw_alex.r1.log	gret: pw512_alex n=10000000 unique=9980469 collided_keys=19531 groups=73 aux_bytes=338840 build_ms=499.3
+fb_10M.nflsw_lipp.r1.log	gret: nflsw lipp choice=pw512 features=[log2_range=64 central_share=4.1833e-09 ks_uniform=0.999985 pla4_per_1k=4.05441 pla64_per_1k=0.0611986 conflict_raw=65360 conflict_pw512=2 gap_cv=255.654 collide_pw512=0.00162176] feature_ms=2.69
+fb_10M.nflsw_lipp.r1.log	gret: pw512_lipp n=10000000 unique=9980469 collided_keys=19531 groups=73 aux_bytes=338840 build_ms=416.3
+fb_10M.nflsw_pgm.r1.log	gret: nflsw pgm choice=pw512 features=[log2_range=64 central_share=4.1833e-09 ks_uniform=0.999985 pla4_per_1k=4.05441 pla64_per_1k=0.0611986 conflict_raw=65360 conflict_pw512=2 gap_cv=255.654 collide_pw512=0.00162176] feature_ms=2.65
+fb_10M.nflsw_pgm.r1.log	gret: pw512_pgm n=10000000 unique=9980469 collided_keys=19531 groups=73 aux_bytes=338840 build_ms=278.5
+fb_10M.pw4096_btree.r1.log	gret: pw4096_btree n=10000000 unique=9997559 collided_keys=2441 groups=2 aux_bytes=235856 build_ms=173.6
+fb_10M.pw4096_alex.r1.log	gret: pw4096_alex n=10000000 unique=9997559 collided_keys=2441 groups=2 aux_bytes=235856 build_ms=1167.0
+fb_10M.pw4096_lipp.r1.log	gret: pw4096_lipp n=10000000 unique=9997559 collided_keys=2441 groups=2 aux_bytes=235856 build_ms=441.1
+fb_10M.pw4096_pgm.r1.log	gret: pw4096_pgm n=10000000 unique=9997559 collided_keys=2441 groups=2 aux_bytes=235856 build_ms=312.7
+fb_10M.pw512_btree.r1.log	gret: pw512_btree n=10000000 unique=9980469 collided_keys=19531 groups=73 aux_bytes=338840 build_ms=145.5
+fb_10M.pw512_alex.r1.log	gret: pw512_alex n=10000000 unique=9980469 collided_keys=19531 groups=73 aux_bytes=338840 build_ms=510.1
+fb_10M.pw512_lipp.r1.log	gret: pw512_lipp n=10000000 unique=9980469 collided_keys=19531 groups=73 aux_bytes=338840 build_ms=407.4
+fb_10M.pw512_pgm.r1.log	gret: pw512_pgm n=10000000 unique=9980469 collided_keys=19531 groups=73 aux_bytes=338840 build_ms=283.2
+fb_10M.pw_btree.r1.log	gret: pw1024_btree n=10000000 unique=9990234 collided_keys=9766 groups=17 aux_bytes=205960 build_ms=157.9
+fb_10M.pw_alex.r1.log	gret: pw1024_alex n=10000000 unique=9990234 collided_keys=9766 groups=17 aux_bytes=205960 build_ms=764.1
+fb_10M.pw_lipp.r1.log	gret: pw1024_lipp n=10000000 unique=9990234 collided_keys=9766 groups=17 aux_bytes=205960 build_ms=409.7
+fb_10M.pw_pgm.r1.log	gret: pw1024_pgm n=10000000 unique=9990234 collided_keys=9766 groups=17 aux_bytes=205960 build_ms=290.7
+genome_10M.gate_btree.r1.log	gret: gate btree choice=raw features=[log2_range=38.7003 central_share=0.997584 ks_uniform=0.13249 pla4_per_1k=10.0825 pla64_per_1k=0.719083 conflict_raw=2 conflict_pw512=2 gap_cv=3.74989 collide_pw512=0] feature_ms=3.64
+genome_10M.gate_alex.r1.log	gret: gate alex choice=raw features=[log2_range=38.7003 central_share=0.997584 ks_uniform=0.13249 pla4_per_1k=10.0825 pla64_per_1k=0.719083 conflict_raw=2 conflict_pw512=2 gap_cv=3.74989 collide_pw512=0] feature_ms=3.63
+genome_10M.gate_lipp.r1.log	gret: gate lipp choice=raw features=[log2_range=38.7003 central_share=0.997584 ks_uniform=0.13249 pla4_per_1k=10.0825 pla64_per_1k=0.719083 conflict_raw=2 conflict_pw512=2 gap_cv=3.74989 collide_pw512=0] feature_ms=3.63
+genome_10M.gate_pgm.r1.log	gret: gate pgm choice=raw features=[log2_range=38.7003 central_share=0.997584 ks_uniform=0.13249 pla4_per_1k=10.0825 pla64_per_1k=0.719083 conflict_raw=2 conflict_pw512=2 gap_cv=3.74989 collide_pw512=0] feature_ms=3.74
+genome_10M.nf_alex.r1.log	gret: nf_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=2190.2
+genome_10M.nf_btree.r1.log	gret: nf_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=720.2
+genome_10M.nf_lipp.r1.log	gret: nf_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=1170.1
+genome_10M.nflsw_alex.r1.log	gret: nflsw alex choice=pw512 features=[log2_range=38.7003 central_share=0.997584 ks_uniform=0.13249 pla4_per_1k=10.0825 pla64_per_1k=0.719083 conflict_raw=2 conflict_pw512=2 gap_cv=3.74989 collide_pw512=0] feature_ms=3.61
+genome_10M.nflsw_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28064 build_ms=918.6
+genome_10M.nf_pgm.r1.log	gret: nf_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=809.9
+genome_10M.nflsw_btree.r1.log	gret: nflsw btree choice=pw512 features=[log2_range=38.7003 central_share=0.997584 ks_uniform=0.13249 pla4_per_1k=10.0825 pla64_per_1k=0.719083 conflict_raw=2 conflict_pw512=2 gap_cv=3.74989 collide_pw512=0] feature_ms=3.69
+genome_10M.nflsw_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28064 build_ms=103.9
+genome_10M.nflsw_lipp.r1.log	gret: nflsw lipp choice=pw512 features=[log2_range=38.7003 central_share=0.997584 ks_uniform=0.13249 pla4_per_1k=10.0825 pla64_per_1k=0.719083 conflict_raw=2 conflict_pw512=2 gap_cv=3.74989 collide_pw512=0] feature_ms=3.63
+genome_10M.nflsw_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28064 build_ms=436.5
+genome_10M.pw4096_alex.r1.log	gret: pw4096_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=223392 build_ms=695.2
+genome_10M.nflsw_pgm.r1.log	gret: nflsw pgm choice=pw512 features=[log2_range=38.7003 central_share=0.997584 ks_uniform=0.13249 pla4_per_1k=10.0825 pla64_per_1k=0.719083 conflict_raw=2 conflict_pw512=2 gap_cv=3.74989 collide_pw512=0] feature_ms=3.81
+genome_10M.nflsw_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28064 build_ms=202.9
+genome_10M.pw4096_btree.r1.log	gret: pw4096_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=223392 build_ms=100.6
+genome_10M.pw4096_lipp.r1.log	gret: pw4096_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=223392 build_ms=431.5
+genome_10M.pw512_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28064 build_ms=915.0
+genome_10M.pw4096_pgm.r1.log	gret: pw4096_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=223392 build_ms=200.2
+genome_10M.pw512_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28064 build_ms=99.4
+genome_10M.pw512_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28064 build_ms=421.5
+genome_10M.pw_alex.r1.log	gret: pw1024_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=55968 build_ms=1625.9
+genome_10M.pw512_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28064 build_ms=198.6
+genome_10M.pw_btree.r1.log	gret: pw1024_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=55968 build_ms=104.1
+genome_10M.pw_lipp.r1.log	gret: pw1024_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=55968 build_ms=466.5
+history_10M.gate_alex.r1.log	gret: gate alex choice=raw features=[log2_range=33.0957 central_share=0.998157 ks_uniform=0.0161171 pla4_per_1k=2.46324 pla64_per_1k=0.0917979 conflict_raw=1 conflict_pw512=1 gap_cv=0.418394 collide_pw512=0] feature_ms=1.01
+genome_10M.pw_pgm.r1.log	gret: pw1024_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=55968 build_ms=203.7
+history_10M.gate_btree.r1.log	gret: gate btree choice=raw features=[log2_range=33.0957 central_share=0.998157 ks_uniform=0.0161171 pla4_per_1k=2.46324 pla64_per_1k=0.0917979 conflict_raw=1 conflict_pw512=1 gap_cv=0.418394 collide_pw512=0] feature_ms=1.02
+history_10M.gate_lipp.r1.log	gret: gate lipp choice=raw features=[log2_range=33.0957 central_share=0.998157 ks_uniform=0.0161171 pla4_per_1k=2.46324 pla64_per_1k=0.0917979 conflict_raw=1 conflict_pw512=1 gap_cv=0.418394 collide_pw512=0] feature_ms=1.02
+history_10M.gate_pgm.r1.log	gret: gate pgm choice=raw features=[log2_range=33.0957 central_share=0.998157 ks_uniform=0.0161171 pla4_per_1k=2.46324 pla64_per_1k=0.0917979 conflict_raw=1 conflict_pw512=1 gap_cv=0.418394 collide_pw512=0] feature_ms=1.02
+history_10M.nf_alex.r1.log	gret: nf_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=1106.2
+history_10M.nf_btree.r1.log	gret: nf_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=706.0
+history_10M.nf_pgm.r1.log	gret: nf_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=805.1
+history_10M.nf_lipp.r1.log	gret: nf_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=734.6
+history_10M.nflsw_alex.r1.log	gret: nflsw alex choice=pw512 features=[log2_range=33.0957 central_share=0.998157 ks_uniform=0.0161171 pla4_per_1k=2.46324 pla64_per_1k=0.0917979 conflict_raw=1 conflict_pw512=1 gap_cv=0.418394 collide_pw512=0] feature_ms=1.02
+history_10M.nflsw_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=26928 build_ms=437.5
+history_10M.nflsw_btree.r1.log	gret: nflsw btree choice=pw512 features=[log2_range=33.0957 central_share=0.998157 ks_uniform=0.0161171 pla4_per_1k=2.46324 pla64_per_1k=0.0917979 conflict_raw=1 conflict_pw512=1 gap_cv=0.418394 collide_pw512=0] feature_ms=1.12
+history_10M.nflsw_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=26928 build_ms=96.9
+history_10M.nflsw_pgm.r1.log	gret: nflsw pgm choice=pw512 features=[log2_range=33.0957 central_share=0.998157 ks_uniform=0.0161171 pla4_per_1k=2.46324 pla64_per_1k=0.0917979 conflict_raw=1 conflict_pw512=1 gap_cv=0.418394 collide_pw512=0] feature_ms=1.08
+history_10M.nflsw_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=26928 build_ms=195.3
+history_10M.nflsw_lipp.r1.log	gret: nflsw lipp choice=pw512 features=[log2_range=33.0957 central_share=0.998157 ks_uniform=0.0161171 pla4_per_1k=2.46324 pla64_per_1k=0.0917979 conflict_raw=1 conflict_pw512=1 gap_cv=0.418394 collide_pw512=0] feature_ms=1.11
+history_10M.nflsw_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=26928 build_ms=127.4
+history_10M.pw4096_alex.r1.log	gret: pw4096_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=231784 build_ms=426.3
+history_10M.pw4096_btree.r1.log	gret: pw4096_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=231784 build_ms=100.1
+history_10M.pw4096_pgm.r1.log	gret: pw4096_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=231784 build_ms=192.2
+history_10M.pw4096_lipp.r1.log	gret: pw4096_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=231784 build_ms=124.0
+history_10M.pw512_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=26928 build_ms=439.0
+history_10M.pw512_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=26928 build_ms=99.6
+history_10M.pw512_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=26928 build_ms=191.8
+history_10M.pw512_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=26928 build_ms=122.9
+history_10M.pw_alex.r1.log	gret: pw1024_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=58068 build_ms=450.7
+history_10M.pw_btree.r1.log	gret: pw1024_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=58068 build_ms=99.9
+history_10M.pw_pgm.r1.log	gret: pw1024_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=58068 build_ms=191.0
+history_10M.pw_lipp.r1.log	gret: pw1024_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=58068 build_ms=126.0
+libio_10M.gate_alex.r1.log	gret: gate alex choice=raw features=[log2_range=28.9737 central_share=0.996499 ks_uniform=0.0675535 pla4_per_1k=3.80961 pla64_per_1k=0.321293 conflict_raw=1 conflict_pw512=1 gap_cv=0.641001 collide_pw512=0] feature_ms=4.16
+libio_10M.gate_btree.r1.log	gret: gate btree choice=raw features=[log2_range=28.9737 central_share=0.996499 ks_uniform=0.0675535 pla4_per_1k=3.80961 pla64_per_1k=0.321293 conflict_raw=1 conflict_pw512=1 gap_cv=0.641001 collide_pw512=0] feature_ms=2.32
+libio_10M.gate_pgm.r1.log	gret: gate pgm choice=raw features=[log2_range=28.9737 central_share=0.996499 ks_uniform=0.0675535 pla4_per_1k=3.80961 pla64_per_1k=0.321293 conflict_raw=1 conflict_pw512=1 gap_cv=0.641001 collide_pw512=0] feature_ms=2.26
+libio_10M.gate_lipp.r1.log	gret: gate lipp choice=raw features=[log2_range=28.9737 central_share=0.996499 ks_uniform=0.0675535 pla4_per_1k=3.80961 pla64_per_1k=0.321293 conflict_raw=1 conflict_pw512=1 gap_cv=0.641001 collide_pw512=0] feature_ms=2.37
+libio_10M.nf_alex.r1.log	gret: nf_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=1917.2
+libio_10M.nf_lipp.r1.log	gret: nf_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=738.5
+libio_10M.nf_btree.r1.log	gret: nf_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=721.6
+libio_10M.nf_pgm.r1.log	gret: nf_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=843.6
+libio_10M.nflsw_alex.r1.log	gret: nflsw alex choice=pw512 features=[log2_range=28.9737 central_share=0.996499 ks_uniform=0.0675535 pla4_per_1k=3.80961 pla64_per_1k=0.321293 conflict_raw=1 conflict_pw512=1 gap_cv=0.641001 collide_pw512=0] feature_ms=2.45
+libio_10M.nflsw_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28760 build_ms=485.8
+libio_10M.nflsw_lipp.r1.log	gret: nflsw lipp choice=pw512 features=[log2_range=28.9737 central_share=0.996499 ks_uniform=0.0675535 pla4_per_1k=3.80961 pla64_per_1k=0.321293 conflict_raw=1 conflict_pw512=1 gap_cv=0.641001 collide_pw512=0] feature_ms=2.42
+libio_10M.nflsw_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28760 build_ms=123.1
+libio_10M.nflsw_btree.r1.log	gret: nflsw btree choice=pw512 features=[log2_range=28.9737 central_share=0.996499 ks_uniform=0.0675535 pla4_per_1k=3.80961 pla64_per_1k=0.321293 conflict_raw=1 conflict_pw512=1 gap_cv=0.641001 collide_pw512=0] feature_ms=2.37
+libio_10M.nflsw_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28760 build_ms=102.3
+libio_10M.nflsw_pgm.r1.log	gret: nflsw pgm choice=pw512 features=[log2_range=28.9737 central_share=0.996499 ks_uniform=0.0675535 pla4_per_1k=3.80961 pla64_per_1k=0.321293 conflict_raw=1 conflict_pw512=1 gap_cv=0.641001 collide_pw512=0] feature_ms=2.52
+libio_10M.nflsw_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28760 build_ms=223.1
+libio_10M.pw4096_alex.r1.log	gret: pw4096_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=228948 build_ms=691.7
+libio_10M.pw4096_lipp.r1.log	gret: pw4096_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=228948 build_ms=125.0
+libio_10M.pw4096_btree.r1.log	gret: pw4096_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=228948 build_ms=100.6
+libio_10M.pw4096_pgm.r1.log	gret: pw4096_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=228948 build_ms=220.2
+libio_10M.pw512_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28760 build_ms=484.9
+libio_10M.pw512_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28760 build_ms=127.1
+libio_10M.pw512_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28760 build_ms=102.1
+libio_10M.pw512_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28760 build_ms=224.6
+libio_10M.pw_alex.r1.log	gret: pw1024_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=57360 build_ms=482.5
+libio_10M.pw_lipp.r1.log	gret: pw1024_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=57360 build_ms=123.5
+libio_10M.pw_btree.r1.log	gret: pw1024_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=57360 build_ms=101.4
+libio_10M.pw_pgm.r1.log	gret: pw1024_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=57360 build_ms=236.5
+osm_10M.gate_alex.r1.log	gret: gate alex choice=raw features=[log2_range=63.5724 central_share=0.985863 ks_uniform=0.316927 pla4_per_1k=35.0821 pla64_per_1k=2.58564 conflict_raw=67 conflict_pw512=9 gap_cv=24.4757 collide_pw512=0] feature_ms=4.65
+osm_10M.gate_lipp.r1.log	gret: gate lipp choice=raw features=[log2_range=63.5724 central_share=0.985863 ks_uniform=0.316927 pla4_per_1k=35.0821 pla64_per_1k=2.58564 conflict_raw=67 conflict_pw512=9 gap_cv=24.4757 collide_pw512=0] feature_ms=4.67
+osm_10M.gate_btree.r1.log	gret: gate btree choice=raw features=[log2_range=63.5724 central_share=0.985863 ks_uniform=0.316927 pla4_per_1k=35.0821 pla64_per_1k=2.58564 conflict_raw=67 conflict_pw512=9 gap_cv=24.4757 collide_pw512=0] feature_ms=4.66
+osm_10M.gate_pgm.r1.log	gret: gate pgm choice=raw features=[log2_range=63.5724 central_share=0.985863 ks_uniform=0.316927 pla4_per_1k=35.0821 pla64_per_1k=2.58564 conflict_raw=67 conflict_pw512=9 gap_cv=24.4757 collide_pw512=0] feature_ms=4.60
+osm_10M.nf_btree.r1.log	gret: nf_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=697.7
+osm_10M.nf_alex.r1.log	gret: nf_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=2498.7
+osm_10M.nf_lipp.r1.log	gret: nf_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=916.4
+osm_10M.nf_pgm.r1.log	gret: nf_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=847.5
+osm_10M.nflsw_btree.r1.log	gret: nflsw btree choice=pw512 features=[log2_range=63.5724 central_share=0.985863 ks_uniform=0.316927 pla4_per_1k=35.0821 pla64_per_1k=2.58564 conflict_raw=67 conflict_pw512=9 gap_cv=24.4757 collide_pw512=0] feature_ms=4.61
+osm_10M.nflsw_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27784 build_ms=120.0
+osm_10M.nflsw_alex.r1.log	gret: nflsw alex choice=pw512 features=[log2_range=63.5724 central_share=0.985863 ks_uniform=0.316927 pla4_per_1k=35.0821 pla64_per_1k=2.58564 conflict_raw=67 conflict_pw512=9 gap_cv=24.4757 collide_pw512=0] feature_ms=4.68
+osm_10M.nflsw_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27784 build_ms=1760.6
+osm_10M.nflsw_lipp.r1.log	gret: nflsw lipp choice=pw512 features=[log2_range=63.5724 central_share=0.985863 ks_uniform=0.316927 pla4_per_1k=35.0821 pla64_per_1k=2.58564 conflict_raw=67 conflict_pw512=9 gap_cv=24.4757 collide_pw512=0] feature_ms=4.76
+osm_10M.nflsw_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27784 build_ms=389.0
+osm_10M.nflsw_pgm.r1.log	gret: nflsw pgm choice=pw512 features=[log2_range=63.5724 central_share=0.985863 ks_uniform=0.316927 pla4_per_1k=35.0821 pla64_per_1k=2.58564 conflict_raw=67 conflict_pw512=9 gap_cv=24.4757 collide_pw512=0] feature_ms=4.59
+osm_10M.nflsw_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27784 build_ms=262.2
+osm_10M.pw4096_btree.r1.log	gret: pw4096_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=221132 build_ms=127.9
+osm_10M.pw4096_alex.r1.log	gret: pw4096_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=221132 build_ms=1788.6
+osm_10M.pw4096_lipp.r1.log	gret: pw4096_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=221132 build_ms=314.0
+osm_10M.pw4096_pgm.r1.log	gret: pw4096_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=221132 build_ms=258.9
+osm_10M.pw512_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27784 build_ms=121.0
+osm_10M.pw512_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27784 build_ms=1765.4
+osm_10M.pw512_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27784 build_ms=335.6
+osm_10M.pw512_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=27784 build_ms=255.8
+osm_10M.pw_btree.r1.log	gret: pw1024_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=61496 build_ms=120.6
+osm_10M.pw_alex.r1.log	gret: pw1024_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=61496 build_ms=1929.2
+osm_10M.pw_lipp.r1.log	gret: pw1024_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=61496 build_ms=322.3
+osm_10M.pw_pgm.r1.log	gret: pw1024_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=61496 build_ms=254.7
+planet_10M.gate_btree.r1.log	gret: gate btree choice=raw features=[log2_range=33.0957 central_share=0.998004 ks_uniform=0.529848 pla4_per_1k=11.6277 pla64_per_1k=0.566087 conflict_raw=9 conflict_pw512=3 gap_cv=1.55174 collide_pw512=0] feature_ms=2.93
+planet_10M.gate_alex.r1.log	gret: gate alex choice=raw features=[log2_range=33.0957 central_share=0.998004 ks_uniform=0.529848 pla4_per_1k=11.6277 pla64_per_1k=0.566087 conflict_raw=9 conflict_pw512=3 gap_cv=1.55174 collide_pw512=0] feature_ms=3.20
+planet_10M.gate_lipp.r1.log	gret: gate lipp choice=raw features=[log2_range=33.0957 central_share=0.998004 ks_uniform=0.529848 pla4_per_1k=11.6277 pla64_per_1k=0.566087 conflict_raw=9 conflict_pw512=3 gap_cv=1.55174 collide_pw512=0] feature_ms=2.93
+planet_10M.gate_pgm.r1.log	gret: gate pgm choice=raw features=[log2_range=33.0957 central_share=0.998004 ks_uniform=0.529848 pla4_per_1k=11.6277 pla64_per_1k=0.566087 conflict_raw=9 conflict_pw512=3 gap_cv=1.55174 collide_pw512=0] feature_ms=3.31
+planet_10M.nf_alex.r1.log	gret: nf_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=2120.2
+planet_10M.nf_btree.r1.log	gret: nf_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=707.0
+planet_10M.nf_lipp.r1.log	gret: nf_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=849.7
+planet_10M.nflsw_alex.r1.log	gret: nflsw alex choice=pw512 features=[log2_range=33.0957 central_share=0.998004 ks_uniform=0.529848 pla4_per_1k=11.6277 pla64_per_1k=0.566087 conflict_raw=9 conflict_pw512=3 gap_cv=1.55174 collide_pw512=0] feature_ms=3.04
+planet_10M.nflsw_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=29116 build_ms=788.4
+planet_10M.nf_pgm.r1.log	gret: nf_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=831.2
+planet_10M.nflsw_btree.r1.log	gret: nflsw btree choice=pw512 features=[log2_range=33.0957 central_share=0.998004 ks_uniform=0.529848 pla4_per_1k=11.6277 pla64_per_1k=0.566087 conflict_raw=9 conflict_pw512=3 gap_cv=1.55174 collide_pw512=0] feature_ms=3.11
+planet_10M.nflsw_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=29116 build_ms=112.4
+planet_10M.nflsw_lipp.r1.log	gret: nflsw lipp choice=pw512 features=[log2_range=33.0957 central_share=0.998004 ks_uniform=0.529848 pla4_per_1k=11.6277 pla64_per_1k=0.566087 conflict_raw=9 conflict_pw512=3 gap_cv=1.55174 collide_pw512=0] feature_ms=2.90
+planet_10M.nflsw_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=29116 build_ms=243.6
+planet_10M.pw4096_alex.r1.log	gret: pw4096_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=231784 build_ms=1122.6
+planet_10M.nflsw_pgm.r1.log	gret: nflsw pgm choice=pw512 features=[log2_range=33.0957 central_share=0.998004 ks_uniform=0.529848 pla4_per_1k=11.6277 pla64_per_1k=0.566087 conflict_raw=9 conflict_pw512=3 gap_cv=1.55174 collide_pw512=0] feature_ms=2.96
+planet_10M.nflsw_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=29116 build_ms=240.9
+planet_10M.pw4096_btree.r1.log	gret: pw4096_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=231784 build_ms=107.1
+planet_10M.pw4096_lipp.r1.log	gret: pw4096_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=231784 build_ms=252.5
+planet_10M.pw512_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=29116 build_ms=788.1
+planet_10M.pw4096_pgm.r1.log	gret: pw4096_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=231784 build_ms=238.5
+planet_10M.pw512_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=29116 build_ms=107.1
+planet_10M.pw512_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=29116 build_ms=243.1
+planet_10M.pw_alex.r1.log	gret: pw1024_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=58068 build_ms=1011.6
+planet_10M.pw512_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=29116 build_ms=242.6
+planet_10M.pw_btree.r1.log	gret: pw1024_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=58068 build_ms=107.3
+planet_10M.pw_lipp.r1.log	gret: pw1024_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=58068 build_ms=242.4
+stack_10M.gate_alex.r1.log	gret: gate alex choice=raw features=[log2_range=27.8268 central_share=0.997525 ks_uniform=0.0152608 pla4_per_1k=1.59116 pla64_per_1k=0.244794 conflict_raw=1 conflict_pw512=1 gap_cv=0.383912 collide_pw512=0] feature_ms=2.35
+planet_10M.pw_pgm.r1.log	gret: pw1024_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=58068 build_ms=234.0
+stack_10M.gate_btree.r1.log	gret: gate btree choice=raw features=[log2_range=27.8268 central_share=0.997525 ks_uniform=0.0152608 pla4_per_1k=1.59116 pla64_per_1k=0.244794 conflict_raw=1 conflict_pw512=1 gap_cv=0.383912 collide_pw512=0] feature_ms=2.42
+stack_10M.gate_lipp.r1.log	gret: gate lipp choice=raw features=[log2_range=27.8268 central_share=0.997525 ks_uniform=0.0152608 pla4_per_1k=1.59116 pla64_per_1k=0.244794 conflict_raw=1 conflict_pw512=1 gap_cv=0.383912 collide_pw512=0] feature_ms=2.34
+stack_10M.gate_pgm.r1.log	gret: gate pgm choice=raw features=[log2_range=27.8268 central_share=0.997525 ks_uniform=0.0152608 pla4_per_1k=1.59116 pla64_per_1k=0.244794 conflict_raw=1 conflict_pw512=1 gap_cv=0.383912 collide_pw512=0] feature_ms=2.35
+stack_10M.nf_alex.r1.log	gret: nf_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=1522.9
+stack_10M.nf_btree.r1.log	gret: nf_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=713.0
+stack_10M.nf_lipp.r1.log	gret: nf_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=721.6
+stack_10M.nflsw_btree.r1.log	gret: nflsw btree choice=pw512 features=[log2_range=27.8268 central_share=0.997525 ks_uniform=0.0152608 pla4_per_1k=1.59116 pla64_per_1k=0.244794 conflict_raw=1 conflict_pw512=1 gap_cv=0.383912 collide_pw512=0] feature_ms=2.34
+stack_10M.nflsw_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28372 build_ms=97.9
+stack_10M.nf_pgm.r1.log	gret: nf_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=787.5
+stack_10M.nflsw_alex.r1.log	gret: nflsw alex choice=pw512 features=[log2_range=27.8268 central_share=0.997525 ks_uniform=0.0152608 pla4_per_1k=1.59116 pla64_per_1k=0.244794 conflict_raw=1 conflict_pw512=1 gap_cv=0.383912 collide_pw512=0] feature_ms=2.46
+stack_10M.nflsw_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28372 build_ms=342.3
+stack_10M.nflsw_lipp.r1.log	gret: nflsw lipp choice=pw512 features=[log2_range=27.8268 central_share=0.997525 ks_uniform=0.0152608 pla4_per_1k=1.59116 pla64_per_1k=0.244794 conflict_raw=1 conflict_pw512=1 gap_cv=0.383912 collide_pw512=0] feature_ms=2.39
+stack_10M.nflsw_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28372 build_ms=115.5
+stack_10M.nflsw_pgm.r1.log	gret: nflsw pgm choice=pw512 features=[log2_range=27.8268 central_share=0.997525 ks_uniform=0.0152608 pla4_per_1k=1.59116 pla64_per_1k=0.244794 conflict_raw=1 conflict_pw512=1 gap_cv=0.383912 collide_pw512=0] feature_ms=2.37
+stack_10M.nflsw_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28372 build_ms=165.8
+stack_10M.pw4096_btree.r1.log	gret: pw4096_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=225832 build_ms=98.8
+stack_10M.pw4096_lipp.r1.log	gret: pw4096_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=225832 build_ms=130.1
+stack_10M.pw4096_alex.r1.log	gret: pw4096_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=225832 build_ms=334.6
+stack_10M.pw4096_pgm.r1.log	gret: pw4096_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=225832 build_ms=146.3
+stack_10M.pw512_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28372 build_ms=92.5
+stack_10M.pw512_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28372 build_ms=122.3
+stack_10M.pw512_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28372 build_ms=343.1
+stack_10M.pw512_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28372 build_ms=165.7
+stack_10M.pw_btree.r1.log	gret: pw1024_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=56580 build_ms=96.7
+stack_10M.pw_lipp.r1.log	gret: pw1024_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=56580 build_ms=132.7
+stack_10M.pw_alex.r1.log	gret: pw1024_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=56580 build_ms=567.9
+stack_10M.pw_pgm.r1.log	gret: pw1024_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=56580 build_ms=161.7
+wise_10M.gate_alex.r1.log	gret: gate alex choice=raw features=[log2_range=43 central_share=0.997563 ks_uniform=0.0299418 pla4_per_1k=3.15173 pla64_per_1k=0.520188 conflict_raw=2 conflict_pw512=1 gap_cv=0.299623 collide_pw512=0] feature_ms=3.91
+wise_10M.gate_btree.r1.log	gret: gate btree choice=raw features=[log2_range=43 central_share=0.997563 ks_uniform=0.0299418 pla4_per_1k=3.15173 pla64_per_1k=0.520188 conflict_raw=2 conflict_pw512=1 gap_cv=0.299623 collide_pw512=0] feature_ms=3.83
+wise_10M.gate_pgm.r1.log	gret: gate pgm choice=raw features=[log2_range=43 central_share=0.997563 ks_uniform=0.0299418 pla4_per_1k=3.15173 pla64_per_1k=0.520188 conflict_raw=2 conflict_pw512=1 gap_cv=0.299623 collide_pw512=0] feature_ms=3.83
+wise_10M.gate_lipp.r1.log	gret: gate lipp choice=raw features=[log2_range=43 central_share=0.997563 ks_uniform=0.0299418 pla4_per_1k=3.15173 pla64_per_1k=0.520188 conflict_raw=2 conflict_pw512=1 gap_cv=0.299623 collide_pw512=0] feature_ms=3.91
+wise_10M.nf_alex.r1.log	gret: nf_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=1395.1
+wise_10M.nf_lipp.r1.log	gret: nf_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=734.5
+wise_10M.nf_btree.r1.log	gret: nf_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=725.7
+wise_10M.nf_pgm.r1.log	gret: nf_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=1168 fma=1 build_ms=793.6
+wise_10M.nflsw_alex.r1.log	gret: nflsw alex choice=pw512 features=[log2_range=43 central_share=0.997563 ks_uniform=0.0299418 pla4_per_1k=3.15173 pla64_per_1k=0.520188 conflict_raw=2 conflict_pw512=1 gap_cv=0.299623 collide_pw512=0] feature_ms=3.84
+wise_10M.nflsw_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28832 build_ms=727.7
+wise_10M.nflsw_lipp.r1.log	gret: nflsw lipp choice=pw512 features=[log2_range=43 central_share=0.997563 ks_uniform=0.0299418 pla4_per_1k=3.15173 pla64_per_1k=0.520188 conflict_raw=2 conflict_pw512=1 gap_cv=0.299623 collide_pw512=0] feature_ms=3.82
+wise_10M.nflsw_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28832 build_ms=126.2
+wise_10M.nflsw_btree.r1.log	gret: nflsw btree choice=pw512 features=[log2_range=43 central_share=0.997563 ks_uniform=0.0299418 pla4_per_1k=3.15173 pla64_per_1k=0.520188 conflict_raw=2 conflict_pw512=1 gap_cv=0.299623 collide_pw512=0] feature_ms=3.98
+wise_10M.nflsw_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28832 build_ms=95.7
+wise_10M.nflsw_pgm.r1.log	gret: nflsw pgm choice=pw512 features=[log2_range=43 central_share=0.997563 ks_uniform=0.0299418 pla4_per_1k=3.15173 pla64_per_1k=0.520188 conflict_raw=2 conflict_pw512=1 gap_cv=0.299623 collide_pw512=0] feature_ms=3.93
+wise_10M.nflsw_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28832 build_ms=189.0
+wise_10M.pw4096_alex.r1.log	gret: pw4096_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=262304 build_ms=701.6
+wise_10M.pw4096_lipp.r1.log	gret: pw4096_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=262304 build_ms=121.4
+wise_10M.pw4096_btree.r1.log	gret: pw4096_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=262304 build_ms=96.7
+wise_10M.pw4096_pgm.r1.log	gret: pw4096_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=262304 build_ms=184.4
+wise_10M.pw512_alex.r1.log	gret: pw512_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28832 build_ms=728.4
+wise_10M.pw512_lipp.r1.log	gret: pw512_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28832 build_ms=116.8
+wise_10M.pw512_btree.r1.log	gret: pw512_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28832 build_ms=99.0
+wise_10M.pw512_pgm.r1.log	gret: pw512_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=28832 build_ms=188.2
+wise_10M.pw_alex.r1.log	gret: pw1024_alex n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=57504 build_ms=694.3
+wise_10M.pw_lipp.r1.log	gret: pw1024_lipp n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=57504 build_ms=120.9
+wise_10M.pw_btree.r1.log	gret: pw1024_btree n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=57504 build_ms=98.3
+wise_10M.pw_pgm.r1.log	gret: pw1024_pgm n=10000000 unique=10000000 collided_keys=0 groups=0 aux_bytes=57504 build_ms=188.5

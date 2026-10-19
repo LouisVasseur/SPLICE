@@ -10,8 +10,11 @@
 //     a test is feature <= thr (nullptr always holds); leaves (root, child) = (holds, holds), (holds, fails),
 //     (fails, holds), (fails, fails); fallback is built where pick cannot be (raw vetoed, nf without a flow).
 //
-// Trained on ~/gre-transform/results/labels_2026-10-19/runs.tsv
-// with the features of ~/gre-transform/results/features_10M.jsonl.
+// Trained on results/gate_mac_2026-10-19/labels/runs.tsv
+// with the features of results/gate_mac_2026-10-19/features_10M.jsonl;
+// raw LIPP veto in the labels: more than 0.1% of the keys above 2^53 (--veto-rule count).
+// Caveat: labels from 10M-key samples on one Mac (Apple M3 Max, on AC power), ten datasets, GRE's uniform read-only
+// lookups; leave-one-dataset-out is the only validation.
 // lipp: const, LODO mean regret 0.00% (worst 0.00%): raw|pw512
 // btree: const, LODO mean regret 0.00% (worst 0.00%): raw|pw512
 // '*': the bases without labels (alex, pgm, artunsync) keep the placeholder: raw, pw512 where vetoed.
@@ -20,8 +23,8 @@
 namespace gret {
 
 inline constexpr const char* kGateModelSource =
-    "gate/train_gate.py on ~/gre-transform/results/labels_2026-10-19/runs.tsv (10 datasets); LODO-chosen "
-    "per base: lipp=const, btree=const";
+    "gate/train_gate.py on results/gate_mac_2026-10-19/labels/runs.tsv (10 datasets); LODO-chosen per "
+    "base: lipp=const, btree=const";
 
 inline constexpr GateTree kGateTrees[] = {
     {"lipp", {nullptr, nullptr, nullptr},

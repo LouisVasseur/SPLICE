@@ -1,0 +1,42 @@
+mode	base	dataset	choice	expected	features	feature_ms	mops	label_median	ratio	in_label_range
+gate	lipp	covid_10M	raw	pw512	same	6.06	40.632	nan	nan	no label
+nflsw	lipp	covid_10M	pw512	same	same	5.97	26.570	28.642	0.928	yes
+gate	btree	covid_10M	raw	same	same	6.13	4.358	6.071	0.718	no
+nflsw	btree	covid_10M	pw512	same	same	6.18	4.725	5.434	0.869	no
+gate	lipp	genome_10M	raw	same	same	3.63	10.955	12.542	0.873	no
+nflsw	lipp	genome_10M	pw512	same	same	3.63	6.481	7.822	0.829	no
+gate	btree	genome_10M	raw	same	same	3.64	5.313	6.019	0.883	no
+nflsw	btree	genome_10M	pw512	same	same	3.69	4.804	5.316	0.904	no
+gate	lipp	libio_10M	raw	same	same	2.37	40.661	49.489	0.822	no
+nflsw	lipp	libio_10M	pw512	same	same	2.42	25.518	28.289	0.902	yes
+gate	btree	libio_10M	raw	same	same	2.32	5.348	6.042	0.885	no
+nflsw	btree	libio_10M	pw512	same	same	2.37	4.561	5.403	0.844	no
+gate	lipp	osm_10M	raw	pw512	same	4.67	10.514	nan	nan	no label
+nflsw	lipp	osm_10M	pw512	same	same	4.76	5.850	8.200	0.713	no
+gate	btree	osm_10M	raw	same	same	4.66	5.671	6.033	0.940	yes
+nflsw	btree	osm_10M	pw512	same	same	4.61	4.607	5.141	0.896	no
+gate	lipp	books_10M	pw512	same	same	4.16	18.996	20.816	0.913	no
+nflsw	lipp	books_10M	pw512	same	same	4.21	18.487	20.816	0.888	no
+gate	btree	books_10M	raw	same	same	4.20	4.807	5.952	0.808	no
+nflsw	btree	books_10M	pw512	same	same	4.23	3.739	5.400	0.692	no
+gate	lipp	fb_10M	raw	same	same	2.55	11.530	16.837	0.685	no
+nflsw	lipp	fb_10M	pw512	same	same	2.69	5.880	6.919	0.850	no
+gate	btree	fb_10M	raw	same	same	2.58	4.805	5.989	0.802	no
+nflsw	btree	fb_10M	pw512	same	same	2.54	3.461	4.906	0.705	no
+gate	lipp	history_10M	raw	same	same	1.02	38.281	48.813	0.784	no
+nflsw	lipp	history_10M	pw512	same	same	1.11	25.884	29.124	0.889	no
+gate	btree	history_10M	raw	same	same	1.02	5.369	5.915	0.908	no
+nflsw	btree	history_10M	pw512	same	same	1.12	4.823	5.476	0.881	no
+gate	lipp	planet_10M	raw	same	same	2.93	13.868	15.819	0.877	no
+nflsw	lipp	planet_10M	pw512	same	same	2.90	10.775	11.645	0.925	yes
+gate	btree	planet_10M	raw	same	same	2.93	5.168	6.100	0.847	no
+nflsw	btree	planet_10M	pw512	same	same	3.11	3.556	5.211	0.682	no
+gate	lipp	stack_10M	raw	same	same	2.34	42.711	48.791	0.875	no
+nflsw	lipp	stack_10M	pw512	same	same	2.39	20.825	29.738	0.700	no
+gate	btree	stack_10M	raw	same	same	2.42	4.604	6.047	0.761	no
+nflsw	btree	stack_10M	pw512	same	same	2.34	4.667	5.259	0.887	no
+gate	lipp	wise_10M	raw	same	same	3.91	33.552	43.507	0.771	no
+nflsw	lipp	wise_10M	pw512	same	same	3.82	25.230	29.586	0.853	no
+gate	btree	wise_10M	raw	same	same	3.83	5.489	6.050	0.907	no
+nflsw	btree	wise_10M	pw512	same	same	3.98	4.646	5.413	0.858	no
+check_gate: 2 mismatches

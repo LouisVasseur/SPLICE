@@ -17,7 +17,8 @@ cannot dominate the likelihood; the flow file and every reported metric use the 
 The JSON report (default OUT.flow.json) gives the training NLL, the KS distance of u to uniform on the whole sample,
 the decreasing pairs and the collision fraction of T = clamp(floor(u 2^52), 0, 2^52 - 1) on the sorted sample (a
 sample is sparser than the key set, so the key set has more collisions), and the wall times. Same seed and --threads
-give the same file. Needs numpy and torch (a dev tool, not part of the benchmark).
+give the same file. Needs numpy >= 1.17 (default_rng) and torch (1.x or 2.x, CPU build is enough): a dev tool, not
+part of the benchmark. Without torch (e.g. a conda env on the Atom), train on the Mac and copy the .flow files.
 """
 import argparse
 import json
@@ -173,7 +174,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     ap.add_argument('keys', help='GRE key file')
     ap.add_argument('out', help='flow file to write')
-    ap.add_argument('--report', help='JSON report (default OUT.json)')
+    ap.add_argument('--report', help='JSON report (default OUT + ".json", e.g. t.flow.json)')
     ap.add_argument('--m', type=int, default=32, help='mixture components')
     ap.add_argument('--steps', type=int, default=2000)
     ap.add_argument('--batch', type=int, default=65536)

@@ -11,12 +11,14 @@ exactly the baseline binary, with the same `competitor.h`.
   - `get()` of a key that was bulk-loaded must return its own payload, always.
   - `put`, `update` and `remove` return false; `scan` returns 0. A transform is not order-preserving in general
     (NF rounding), and NFL itself serves point operations only.
-  - A lookup of a key that was never loaded may return a false positive. This is documented, not hidden.
+  - A lookup of a key that was never loaded may return a false positive: the payload of a loaded key with the same
+    transformed value. This is documented, not hidden. On a LIPP base it can also end the process, as on raw LIPP
+    (LIPP's lookup `RT_ASSERT`s, exit 0, when the slot it reaches holds another key).
 - **Exactness does not rely on GRE's check.** GRE gives every key the payload 123456789, so `success_read` cannot
   catch a lookup that returns another key's payload. Our tests must load distinct payloads and check each one.
 - **The transform's output range is `[0, 2^52)`** (`gret::kOutBits = 52`) on every machine. Outputs are therefore exact
   doubles, the double-based models in LIPP and ALEX behave the same on arm64 (64-bit `long double`) and x86, and LIPP
-  does not hit its macOS failure above 2^53.
+  does not hit its macOS failure (two keys equal as doubles).
 
 ## Files
 
@@ -76,27 +78,37 @@ It implements GRE's `indexInterface<K, P>`. `Base` is a GRE interface class such
 uint64_t>`; `Tr` is `PwlCdf` or `MolFlow`.
 
 - **`bulk_load`** (GRE passes the keys sorted):
-  1. Build or load `Tr`. `PwlCdf` is built from the input keys with `K = TRANSFORM_K` (env, default 512). `MolFlow`
-     is loaded from the file named by `TRANSFORM_FLOW` (env); stop with a clear message if it is missing.
+  1. Build or load `Tr`. `PwlCdf` is built from the input keys with the name's K (`pw<K>_`; `pw_<base>` alone reads
+     `TRANSFORM_K`, default 512). `MolFlow` is loaded from the file named by `TRANSFORM_FLOW` (env), or taken
+     preloaded from the gate; stop with a clear message if it is missing or invalid.
   2. Compute `t_i = Tr(k_i)` and sort `(t_i, i)` by t. Sorting is needed: NF rounding can make `t` locally
      non-monotone.
   3. Every group of equal `t` with two or more members is a **collision group**. All of its members go into
      `overflow_` (raw key and payload, sorted by key), and their `t` goes into `collided_` (sorted, unique).
-  4. The remaining unique `(t, payload)` pairs are bulk-loaded into `base_`.
-  5. Print one line to stderr: `gret: <name> n=... unique=... collided_keys=... groups=... build_ms=...`.
+  4. The remaining unique `(t, payload)` pairs are bulk-loaded into `base_`. If none remain, the base gets one
+     sentinel `t` outside `collided_`, which no lookup reaches (an unloaded key then returns false).
+  5. Print one line to stderr: `gret: <name> n=... unique=... collided_keys=... groups=... aux_bytes=... build_ms=...`
+     (MolFlow adds `fma=0/1`: whether its build fuses a * b + c, which changes T by 1 on ~0.1% of the keys).
 - **`get(k)`:**
   1. Compute `t = Tr(k)`.
-  2. If `collided_` is non-empty and `t` is in it, binary-search `overflow_` by raw key.
+  2. If `t` is in `collided_`, binary-search `overflow_` by raw key. A one-hash Bloom filter (64 bits per collided
+     `t`, false-positive rate at most 1/64) is tested first, so that most lookups skip the binary search of
+     `collided_`.
   3. Otherwise return `base_.get(t, val)`.
 
   The common path costs one predictable branch.
-- **`memory_consumption()`** is the base's own figure plus `Tr.bytes()` plus the overflow and collided arrays.
+- **`memory_consumption()`** is the base's own figure plus `Tr.bytes()` plus the overflow, collided and filter arrays;
+  0 (GRE's "not reported") when the base reports 0 (GRE's B+tree), so the overhead alone never reads as a total.
 
 ### `include/gret/gate.h`: the gate `GateIndex<K, P, Base>`
 
 - **What it chooses.** At `bulk_load`, from features of the keys, it picks one of `raw`, `pw512`, `pw4096` and `nf`
-  (`nf` only if a flow file is present), then builds that variant. It prints
+  (`nf` only if the flow file loads), then builds that variant. It prints
   `gret: gate <base> choice=<c> features=[...] feature_ms=...`.
+- **Raw vetoes** (`raw_veto()`): raw is never built where the base cannot hold the keys. LIPP where `long double` is
+  `double` (macOS arm64) and two adjacent keys are equal as doubles (`double_ties`, an exact count over the keys above
+  2^53); ALEX and PGM when the keys include 2^64 - 1, their sentinel; ALEX when n / central_share > 2^30, where its
+  int slot prediction overflows on a far outlier (UB).
 - **Features** (`gret::GateFeatures compute_features(const uint64_t* sorted, size_t n)`). Cheap: computed from a
   stride sample of at most 65,536 keys, plus the exact min and max.
   - log2 of the key range;
@@ -110,16 +122,17 @@ uint64_t>`; `Tr` is `PwlCdf` or `MolFlow`.
   - the collision fraction of `PwlCdf(512)` on the sample.
 - **The decision model.** The parameters live in `include/gret/gate_model.h`, generated by `gate/train_gate.py`.
   Until it is trained, the model is a documented placeholder that always chooses `raw`.
-- **A non-learned baseline, `nflsw_<base>`.** NFL's switch: use `pw512` if its tail conflict is at most the raw one,
-  else `raw`.
+- **A non-learned baseline, `nflsw_<base>`.** An NFL-style switch on `pw512` (NFL itself switches to its own flow):
+  use `pw512` if its tail conflict is at most the raw one, else `raw`. The conflict degrees come from the 65,536-key
+  sample and often tie at 1 or 2, so `train_gate.py` also scores the strict `<` (`nflsw-strict`).
 
 ### `include/gret/registry.h`
 
 `template<class K, class P> indexInterface<K, P>* make_index(const std::string& name)` returns nullptr for unknown
 names.
 
-- **Names.** `pw<K>_<base>` (any K from 2 to 65536, e.g. `pw512_lipp`, `pw4096_btree`), `nf_<base>`, `gate_<base>`,
-  `nflsw_<base>`.
+- **Names.** `pw<K>_<base>` (any K from 2 to 65536, e.g. `pw512_lipp`, `pw4096_btree`), `pw_<base>` (K =
+  `TRANSFORM_K`, default 512), `nf_<base>`, `gate_<base>`, `nflsw_<base>`.
 - **Bases.** `lipp`, `btree`, `alex`, `pgm`, and `artunsync` only where GRE's registry has it, i.e. not on macOS. Use
   `#ifdef`, or detect it through the include guard of `artunsync.h`.
 
@@ -137,8 +150,11 @@ names.
   - Without it, the behaviour is unchanged. Test this: `competitor.h` must be identical.
 - **`scripts/run_baselines.sh`:**
   - With `FLOW_DIR` set, it exports `TRANSFORM_FLOW=$FLOW_DIR/<dataset>.flow` per dataset.
-  - `TRANSFORM_K` passes through.
+  - `TRANSFORM_K` passes through; it affects `pw_<base>` only, and is validated as the registry does.
   - Add both to `SETTINGS` and `MANIFEST.txt`.
+  - Without `FLOW_DIR` and `TRANSFORM_K`, the behaviour is identical to the baselines script for GRE's ten file names.
+    For other names (the samples), raw `lipp` is skipped on macOS where `scripts/double_ties.py` finds keys equal as
+    doubles, and `TRANSFORM_FLOW` is always cleared.
 - **`data/sample.py SRC_DIR OUT_DIR --n 10000000`** writes stride samples of the sorted keys as GRE files named
   `<name>_10M`, plus `SAMPLES.txt` with their sha256.
   - Sampling preserves the CDF shape and avoids the sorted-prefix problem of `--table_size`.
@@ -184,8 +200,8 @@ All tests compile with `-O1 -g -fsanitize=address,undefined`, using the same inc
   - Variants: raw, pw512, pw4096 and nf, on lipp and btree (ALEX and PGM stay off for now), all ten datasets.
   - Settings: `OPS=10000000`, 3 repeats. Run under `caffeinate -ims ~/Downloads/SPLICE-clean/scripts/mac_lane.sh run
     --`, on AC power with Low Power Mode off, one process at a time.
-  - On the Mac, raw LIPP fails on covid, osm and books (keys above 2^53). Treat it as a failed variant there: the gate
-    must not choose it.
+  - On the Mac, raw LIPP fails where two adjacent keys are equal as doubles: covid, osm and books at 200M, books_10M
+    among the samples (covid_10M and osm_10M work). Treat it as a failed variant there: the gate must not choose it.
 - **Features:** `tools/gate_features.cpp` (the same code as `gate.h`) writes per-dataset JSON.
 - **Training:** `gate/train_gate.py` uses leave-one-dataset-out. Candidate models are a threshold rule on one feature
   and a depth-2 tree.

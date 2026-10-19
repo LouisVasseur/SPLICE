@@ -11,7 +11,9 @@
 // Forced collisions: a dense run below a 2^64 - 1 outlier and near-duplicate clusters (PwlCdf's flat segments), a
 // saturating flow, and a flow that maps every key to 0 (the sentinel base); each must reach the overflow.
 // Keys that were never loaded must not crash (not on LIPP: its get() of such a key can hit RT_ASSERT) and may only
-// return the payload of a loaded key with the same t.
+// return the payload of a loaded key with the same t. The raw vetoes (gate.h) on sets that need them: dense keys at
+// 2^60 that tie as doubles (raw LIPP would recurse until memory runs out with a 64-bit long double), the same keys
+// 1 ulp apart (no tie: raw LIPP must be built and exact), and far outliers (ALEX's int predict would overflow: UB).
 //
 //   test_index [GRE_KEY_FILE...]   each file also runs: its sorted unique keys, stride-sampled to at most 2M, on
 //                                  every base x {pw512, pw4096, gate, nflsw}, plus nf if FILE.flow or
@@ -124,6 +126,14 @@ static std::vector<Set> synthetic_sets() {
   for (uint64_t c = 0; c < 1000; ++c)
     for (uint64_t j = 0; j < 100; ++j) nd.push_back(c * (uint64_t(1) << 54) + j);
   s.push_back({"near-dup", sorted_unique(nd), true});
+  // 99,950 keys below 2^40 plus 50 keys at 2^60: consecutive (49 pairs equal as doubles), or 1 ulp (256) apart
+  Keys ties = uniform(n - 50, 0, (uint64_t(1) << 40) - 1, 7), ulp = ties;
+  for (uint64_t i = 0; i < 50; ++i) {
+    ties.push_back((uint64_t(1) << 60) + i);
+    ulp.push_back((uint64_t(1) << 60) + 256 * i);
+  }
+  s.push_back({"ties@2^60", sorted_unique(ties), false});
+  s.push_back({"ulp@2^60", sorted_unique(ulp), false});
   s.push_back({"n=100 (K>n)", uniform(100, 0, top, 4), false});
   s.push_back({"n=1", {5}, false});
   s.push_back({"n=2", {5, top}, false});
@@ -239,20 +249,27 @@ struct Suite {
                // only the sets and variants that reach its own code paths; GRET_TEST_FULL=1 runs everything
 
   // registry.h's raw limits for this base
-  RawLimits limits() const { return RawLimits{base == "lipp" && LDBL_MANT_DIG < 64, base == "alex" || base == "pgm"}; }
+  RawLimits limits() const {
+    return RawLimits{base == "lipp" && LDBL_MANT_DIG < 64, base == "alex" || base == "pgm", base == "alex"};
+  }
 
   // What GateIndex must build for leaf l (gate.h's rule, written out again): pick, else fallback, else pw512; nf needs
-  // $TRANSFORM_FLOW to name a readable file, raw is vetoed by the limits
+  // $TRANSFORM_FLOW to name a valid flow file, raw is vetoed by the limits
   static Variant expected(const GateLeaf& l, const GateFeatures& f, RawLimits raw) {
     auto ok = [&](Variant v) {
       if (v == Variant::nf) {
         const char* p = std::getenv("TRANSFORM_FLOW");
-        std::FILE* fp = p && *p ? std::fopen(p, "r") : nullptr;
-        if (fp) std::fclose(fp);
-        return fp != nullptr;
+        if (!p || !*p) return false;
+        try {
+          MolFlow::load(p);
+          return true;
+        } catch (const std::exception&) {
+          return false;
+        }
       }
       if (v != Variant::raw) return true;
-      return !(raw.needs_53_bits && f.above_2_53 * 1000 > f.n) && !(raw.max_is_sentinel && f.n && f.max == UINT64_MAX);
+      return !(raw.ld_is_double && f.double_ties > 0) && !(raw.max_is_sentinel && f.n && f.max == UINT64_MAX) &&
+             !(raw.int_predict && double(f.n) / f.v[GateFeatures::central_share] > 1073741824.0);
     };
     return ok(l.pick) ? l.pick : ok(l.fallback) ? l.fallback : Variant::pw512;
   }
@@ -270,7 +287,7 @@ struct Suite {
     const std::string name = "pw" + std::to_string(K) + "_" + base, what = s.name + " " + name;
     Pw* ti = make<Pw>(name);
     if (!ti) return SIZE_MAX;
-    load_and_check(ti, s.keys, what);
+    load_and_check(ti, s.keys, what, base == "btree");  // GRE's B+tree reports 0, and so does the wrapper on it
     CHECK(ti->unique() + ti->collided_keys() == s.keys.size() && ti->size() == s.keys.size(), "%s: counts",
           what.c_str());
     CHECK(ti->transform().K() == K, "%s: K = %u", what.c_str(), ti->transform().K());
@@ -287,7 +304,7 @@ struct Suite {
     setenv("TRANSFORM_FLOW", path.c_str(), 1);
     Nf* ti = make<Nf>(name);
     if (ti) {
-      load_and_check(ti, s.keys, what);
+      load_and_check(ti, s.keys, what, base == "btree");
       CHECK(ti->unique() + ti->collided_keys() == s.keys.size(), "%s: counts", what.c_str());
       if (std::string(tag) == "saturating" && s.keys.size() > 1000)
         CHECK(ti->collided_keys() > s.keys.size() / 2, "%s: only %zu collided", what.c_str(), ti->collided_keys());
@@ -303,7 +320,7 @@ struct Suite {
   void hash12(const Set& s) {
     const std::string what = s.name + " hash12_" + base;
     Hx* ti = new Hx("hash12_" + base);
-    load_and_check(ti, s.keys, what);
+    load_and_check(ti, s.keys, what, base == "btree");
     if (s.keys.size() > 10000) CHECK(ti->collided_keys() > 0 && ti->unique() > 0, "%s: expected a mix", what.c_str());
     if (probe) probe_unloaded(ti, s.keys, what);
     delete ti;
@@ -315,8 +332,8 @@ struct Suite {
     Gate* gi = make<Gate>(name);
     if (!gi) return Variant::raw;
     load_and_check(gi, s.keys, s.name + " " + name, true);
-    CHECK(gi->memory_consumption() > 0 || (gi->choice() == Variant::raw && base == "btree"), "%s %s: memory",
-          s.name.c_str(), name.c_str());  // GRE's B+tree reports 0
+    CHECK(gi->memory_consumption() > 0 || base == "btree", "%s %s: memory", s.name.c_str(),
+          name.c_str());  // GRE's B+tree reports 0, and so do the transforms on it
     const GateFeatures f = compute_features(s.keys.data(), s.keys.size());
     bool same = true;
     for (int i = 0; i < GateFeatures::kCount; ++i) same &= f.v[i] == gi->features().v[i];
@@ -341,6 +358,23 @@ struct Suite {
     delete gi;
   }
 
+  // TRANSFORM_FLOW names a directory, then a malformed file: a leaf picking nf must fall back (pw4096 on kTestTree's
+  // leaf 1), not exit through MolFlow::load's error
+  void gate_bad_flow(const Set& s) {
+    const std::string bad = write_flow("bad_" + base, s.keys, "1 0.5 -1\n", 1);  // s = -1
+    for (const std::string& p : {g_tmp, bad}) {
+      setenv("TRANSFORM_FLOW", p.c_str(), 1);
+      Gate* gi = new Gate(base, GateMode::learned, limits(), &kTestTree);
+      load_and_check(gi, s.keys, s.name + " gate_" + base + " (TRANSFORM_FLOW=" + p + ")", true);
+      CHECK(leaf_of(kTestTree, gate_decide(kTestTree, gi->features())) == 1 && gi->choice() == Variant::pw4096,
+            "%s: TRANSFORM_FLOW=%s: chose %s, want the fallback pw4096", s.name.c_str(), p.c_str(),
+            variant_name(gi->choice()));
+      delete gi;
+    }
+    unsetenv("TRANSFORM_FLOW");
+    std::remove(bad.c_str());
+  }
+
   void gate_variants(const Set& s, bool lean) {  // lean: raw and nf (pw is pw() above, through the same switch)
     const std::string path = write_flow("gate_" + base, s.keys, kSmooth, 4);
     setenv("TRANSFORM_FLOW", path.c_str(), 1);
@@ -359,7 +393,7 @@ struct Suite {
         bad += !gi->get(k, val, &param) || val != payload(k);
       }
       CHECK(bad == 0 && gi->choice() == v, "%s: %zu wrong", what.c_str(), bad);
-      CHECK(gi->memory_consumption() > 0 || (v == Variant::raw && base == "btree"), "%s: memory", what.c_str());
+      CHECK(gi->memory_consumption() > 0 || base == "btree", "%s: memory", what.c_str());
       delete gi;
     }
     unsetenv("TRANSFORM_FLOW");
@@ -399,13 +433,23 @@ struct Suite {
     for (const char* n : {"dense", "fb-like", "random2^50", "random64"})
       if (!lean || std::string(n) == "dense" || std::string(n) == "fb-like") gate_tree2(by_name(sets, n));
     gate_variants(by_name(sets, "random2^50"), lean);
-    // the veto itself, on every platform, on the placeholder tree (always raw): raw is replaced by the leaf's fallback
-    // (pw512) when > 0.1% of keys > 2^53. ALEX and PGM keep their sentinel veto: fb-like holds 2^64 - 1, and their raw
-    // lookup of it is not reliable (GRE's own bugs, see gate.h), so this test must not depend on it
-    for (const Set* s : {&above, &fb}) {
-      Gate* gi = new Gate(base, GateMode::learned, RawLimits{true, sentinel}, &kAlwaysRaw);
-      load_and_check(gi, s->keys, s->name + " gate_" + base + " (raw needs 53 bits)", true);
-      CHECK(gi->choice() == (s == &above || sentinel ? Variant::pw512 : Variant::raw), "veto on %s", s->name.c_str());
+    if (base == "btree") gate_bad_flow(by_name(sets, "random2^50"));
+    // the vetoes through the registry (this platform's limits): ties@2^60 vetoes raw LIPP only with a 64-bit long
+    // double; ulp@2^60 builds raw LIPP everywhere (and must be exact); ALEX vetoes both (far outliers)
+    const Set &ties = by_name(sets, "ties@2^60"), &ulp = by_name(sets, "ulp@2^60");
+    gate(ties, true);
+    gate(ulp, true);
+    // the vetoes themselves, on every platform, on the placeholder tree (always raw), with the long double limit on for
+    // every base: raw is replaced by the leaf's fallback (pw512) where two keys tie as doubles (above2^53: its dense
+    // run at 2^62; ties@2^60), and on ALEX where n / central_share > 2^30 (fb-like, ulp@2^60). ALEX and PGM keep their
+    // sentinel veto: fb-like holds 2^64 - 1, and their raw lookup of it is not reliable (GRE's own bugs, see gate.h)
+    const bool alex = base == "alex";
+    for (const Set* s : {&above, &fb, &ties, &ulp}) {
+      Gate* gi = new Gate(base, GateMode::learned, RawLimits{true, sentinel, alex}, &kAlwaysRaw);
+      load_and_check(gi, s->keys, s->name + " gate_" + base + " (vetoes on)", true);
+      const bool vetoed = s == &above || s == &ties || (s == &fb && sentinel) || (s != &above && alex);
+      CHECK(gi->choice() == (vetoed ? Variant::pw512 : Variant::raw), "veto on %s: chose %s", s->name.c_str(),
+            variant_name(gi->choice()));
       delete gi;
     }
   }
@@ -425,7 +469,7 @@ struct Suite {
     if (ff) {
       Nf* ti = make<Nf>("nf_" + base);
       if (ti) {
-        load_and_check(ti, keys, tag + " nf_" + base);
+        load_and_check(ti, keys, tag + " nf_" + base, base == "btree");
         delete ti;
       }
       unsetenv("TRANSFORM_FLOW");
@@ -464,6 +508,8 @@ static void check_registry() {
   expect<GateIndex<uint64_t, uint64_t, AL>>("nflsw_alex");
 }
 
+static size_t n_of(const std::vector<Set>& sets, const char* name) { return by_name(sets, name).keys.size(); }
+
 static void check_features(const std::vector<Set>& sets) {
   for (const Set& s : sets) {
     const GateFeatures f = compute_features(s.keys.data(), s.keys.size());
@@ -477,12 +523,26 @@ static void check_features(const std::vector<Set>& sets) {
   const GateFeatures d = compute_features(dense.keys.data(), dense.keys.size());
   CHECK(d.v[GateFeatures::ks_uniform] < 1e-3 && d.v[GateFeatures::central_share] > 0.99 &&
             d.v[GateFeatures::pla4_per_1k] * double(d.sample_n) / 1000 < 1.5 && d.v[GateFeatures::gap_cv] < 0.05 &&
-            d.v[GateFeatures::conflict_raw] <= 2 && d.above_2_53 == 0,
+            d.v[GateFeatures::conflict_raw] <= 2 && d.above_2_53 == 0 && d.double_ties == 0,
         "dense features: %s", d.list().c_str());
   const GateFeatures fb = compute_features(fbs.keys.data(), fbs.keys.size());
   CHECK(fb.v[GateFeatures::central_share] < 1e-3 && fb.v[GateFeatures::conflict_raw] > 100 &&
-            fb.v[GateFeatures::conflict_pw512] < fb.v[GateFeatures::conflict_raw] && fb.above_2_53 == 9,
+            fb.v[GateFeatures::conflict_pw512] < fb.v[GateFeatures::conflict_raw] && fb.above_2_53 == 9 &&
+            fb.double_ties == 0,
         "fb-like features: %s", fb.list().c_str());
+  // double_ties: exact, against a direct count; ties@2^60 has 49, ulp@2^60 none, above2^53 most of its dense run
+  for (const char* n : {"ties@2^60", "ulp@2^60", "above2^53", "random64", "two-clusters"}) {
+    const Keys& k = by_name(sets, n).keys;
+    uint64_t want = 0;
+    for (size_t i = 0; i + 1 < k.size(); ++i) want += double(k[i]) == double(k[i + 1]);
+    const GateFeatures f = compute_features(k.data(), k.size());
+    CHECK(f.double_ties == want, "%s: double_ties = %llu, want %llu", n, (unsigned long long)f.double_ties,
+          (unsigned long long)want);
+  }
+  CHECK(compute_features(by_name(sets, "ties@2^60").keys.data(), n_of(sets, "ties@2^60")).double_ties == 49 &&
+            compute_features(by_name(sets, "ulp@2^60").keys.data(), n_of(sets, "ulp@2^60")).double_ties == 0 &&
+            compute_features(by_name(sets, "above2^53").keys.data(), n_of(sets, "above2^53")).double_ties > 40000,
+        "double_ties on ties@2^60 / ulp@2^60 / above2^53");
 }
 
 // gate_model.h is well formed, and gate_decide routes features as documented (kTestTree)

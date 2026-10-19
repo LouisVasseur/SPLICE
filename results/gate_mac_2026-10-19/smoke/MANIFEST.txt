@@ -1,0 +1,76 @@
+started: 2026-10-19T21:00:47Z
+host: Apple M3 Max, Battery Power, powermode=2; load average: 3.98 4.60 4.87
+binary sha256 prefix: 7449426688598e6c (runs as /Users/louisvasseur/gre-transform/results/smoke_2026-10-19c/bin/microbench.7449426688598e6c)
+under: /bin/zsh -c source /Users/louisvasseur/.claude/shell-snapshots/snapshot-zsh-1792427466540-aep0ch.sh  | /Users/louisvasseur/Library/Application Support/Claude/claude-code/2.1.299/4fa9694b7975/claude.app/C | /Applications/Claude.app/Contents/Helpers/disclaimer --pgroup -- /Users/louisvasseur/Library/Applica | /Applications/Claude.app/Contents/MacOS/Claude
+data: /Users/louisvasseur/gre-transform/data10M; sha256 prefixes: covid_10M=2e8cf588659870b6 genome_10M=1a2721e5bb534e4b libio_10M=e3625527a98bf157 osm_10M=596dd3393edef90e books_10M=ef36c73e8fe4d785 fb_10M=be4e706fed0b0667 history_10M=f02ca1a65ea95f07 planet_10M=b31d22345e8ce333 stack_10M=27df43950e606dc7 wise_10M=9e002742b4b37719
+repo: 2cf9ee03b7b8b215470f06141d0f8a598690a539 (dirty)
+datasets: covid_10M genome_10M libio_10M osm_10M books_10M fb_10M history_10M planet_10M stack_10M wise_10M
+indexes: lipp pw512_lipp pw4096_lipp pw_lipp nf_lipp gate_lipp nflsw_lipp pw512_btree pw4096_btree pw_btree nf_btree gate_btree nflsw_btree pw512_alex pw4096_alex pw_alex nf_alex gate_alex nflsw_alex pw512_pgm pw4096_pgm pw_pgm nf_pgm gate_pgm nflsw_pgm
+repeats=1 ops=1000000 table=-1 ratio=1 core=none
+transforms: TRANSFORM_K=1024 FLOW_DIR=/Users/louisvasseur/gre-transform/flows
+flow sha256 prefixes: covid_10M=f05cac4d08032b9a genome_10M=d4a9d4e7717ce41f libio_10M=76a2d830abcba5a6 osm_10M=3cb11e8866760117 books_10M=a478607b8f78ae68 fb_10M=0f5250597aae0d4e history_10M=4d53513168df8400 planet_10M=1601b8e52b3ea68d stack_10M=c54a113ff8eafb34 wise_10M=de9df559c0a141fe
+--- BUILD_MANIFEST.txt
+GRE e807edcef51df6732f07f94d4c797fb3897519ba (/Users/louisvasseur/gre-baselines/GRE), built by GRE-baselines build_gre.sh
+repo: 2cf9ee03b7b8b215470f06141d0f8a598690a539 (dirty)
+indexes: alex pgm btree lipp
+ALEX_USE_LZCNT: 0
+extra: transforms (scripts/add_transforms.py, /Users/louisvasseur/Downloads/GRE-transform/include; include/gret cksum 2150688651 55669)
+transform indexes: pw<K>_B (K=2..65536) pw_B nf_B gate_B nflsw_B, B in alex lipp pgm btree
+molflow madd: fma=1
+submodule src/competitor/alex/src: f4365a73f910f43a71ee1da7924cd51219b42864
+submodule src/competitor/lipp/src: a1189c3956ebfef1335d252f8e13b91eb99fe8cf
+submodule src/competitor/pgm/src: aac467887be5ba354ea2d23f7bc51f6e212f0f04
+submodule src/competitor/btree/src: eff5e36975b62327755b2e05fd19c882ea6b4b0c
+submodule src/competitor/artsync/src: 808372ded6b8c5a6d3a1741090510b79042f2aa7
+edits (diff cksum): GRE 3448484053 5906; alex 358017356 1118
+   CMakeLists.txt              | 10 ++-------
+   src/benchmark/utils.h       |  2 ++
+   src/competitor/alex/src     |  0
+   src/competitor/competitor.h | 49 +++------------------------------------------
+   src/tscns.h                 |  4 ++++
+   5 files changed, 11 insertions(+), 54 deletions(-)
+compiler: Apple clang version 17.0.0 (clang-1700.0.13.5)
+flags: -faligned-new -mcpu=native -g -O3 -include cstdint -O3 -DNDEBUG -std=gnu++17 -D_LIBCPP_ENABLE_CXX17_REMOVED_RANDOM_SHUFFLE -D__float128=long\ double -Ibuild/mac/include -I/Users/louisvasseur/Downloads/GRE-transform/include
+host: Apple M3 Max, 12P+4E, macOS 15.7.5
+PREVIEW build: libc++ (Atom: libstdc++), so --seed samples other operation lists; no jemalloc, no OpenMP
+microbench sha256: 7449426688598e6c
+---
+started: 2026-10-19T21:08:37Z
+host: Apple M3 Max, Battery Power, powermode=2; load average: 3.85 4.57 4.76
+binary sha256 prefix: 7449426688598e6c (runs as /Users/louisvasseur/gre-transform/results/smoke_2026-10-19c/bin/microbench.7449426688598e6c)
+under: /bin/zsh -c source /Users/louisvasseur/.claude/shell-snapshots/snapshot-zsh-1792427466540-aep0ch.sh  | /Users/louisvasseur/Library/Application Support/Claude/claude-code/2.1.299/4fa9694b7975/claude.app/C | /Applications/Claude.app/Contents/Helpers/disclaimer --pgroup -- /Users/louisvasseur/Library/Applica | /Applications/Claude.app/Contents/MacOS/Claude
+data: /Users/louisvasseur/gre-transform/data10M; sha256 prefixes: covid_10M=2e8cf588659870b6 genome_10M=1a2721e5bb534e4b libio_10M=e3625527a98bf157 osm_10M=596dd3393edef90e books_10M=ef36c73e8fe4d785 fb_10M=be4e706fed0b0667 history_10M=f02ca1a65ea95f07 planet_10M=b31d22345e8ce333 stack_10M=27df43950e606dc7 wise_10M=9e002742b4b37719
+repo: 2cf9ee03b7b8b215470f06141d0f8a598690a539 (dirty)
+datasets: covid_10M genome_10M libio_10M osm_10M books_10M fb_10M history_10M planet_10M stack_10M wise_10M
+indexes: lipp pw512_lipp pw4096_lipp pw_lipp nf_lipp gate_lipp nflsw_lipp pw512_btree pw4096_btree pw_btree nf_btree gate_btree nflsw_btree pw512_alex pw4096_alex pw_alex nf_alex gate_alex nflsw_alex pw512_pgm pw4096_pgm pw_pgm nf_pgm gate_pgm nflsw_pgm
+repeats=1 ops=1000000 table=-1 ratio=1 core=none
+transforms: TRANSFORM_K=1024 FLOW_DIR=/Users/louisvasseur/gre-transform/flows
+flow sha256 prefixes: covid_10M=f05cac4d08032b9a genome_10M=d4a9d4e7717ce41f libio_10M=76a2d830abcba5a6 osm_10M=3cb11e8866760117 books_10M=a478607b8f78ae68 fb_10M=0f5250597aae0d4e history_10M=4d53513168df8400 planet_10M=1601b8e52b3ea68d stack_10M=c54a113ff8eafb34 wise_10M=de9df559c0a141fe
+--- BUILD_MANIFEST.txt
+GRE e807edcef51df6732f07f94d4c797fb3897519ba (/Users/louisvasseur/gre-baselines/GRE), built by GRE-baselines build_gre.sh
+repo: 2cf9ee03b7b8b215470f06141d0f8a598690a539 (dirty)
+indexes: alex pgm btree lipp
+ALEX_USE_LZCNT: 0
+extra: transforms (scripts/add_transforms.py, /Users/louisvasseur/Downloads/GRE-transform/include; include/gret cksum 2150688651 55669)
+transform indexes: pw<K>_B (K=2..65536) pw_B nf_B gate_B nflsw_B, B in alex lipp pgm btree
+molflow madd: fma=1
+submodule src/competitor/alex/src: f4365a73f910f43a71ee1da7924cd51219b42864
+submodule src/competitor/lipp/src: a1189c3956ebfef1335d252f8e13b91eb99fe8cf
+submodule src/competitor/pgm/src: aac467887be5ba354ea2d23f7bc51f6e212f0f04
+submodule src/competitor/btree/src: eff5e36975b62327755b2e05fd19c882ea6b4b0c
+submodule src/competitor/artsync/src: 808372ded6b8c5a6d3a1741090510b79042f2aa7
+edits (diff cksum): GRE 3448484053 5906; alex 358017356 1118
+   CMakeLists.txt              | 10 ++-------
+   src/benchmark/utils.h       |  2 ++
+   src/competitor/alex/src     |  0
+   src/competitor/competitor.h | 49 +++------------------------------------------
+   src/tscns.h                 |  4 ++++
+   5 files changed, 11 insertions(+), 54 deletions(-)
+compiler: Apple clang version 17.0.0 (clang-1700.0.13.5)
+flags: -faligned-new -mcpu=native -g -O3 -include cstdint -O3 -DNDEBUG -std=gnu++17 -D_LIBCPP_ENABLE_CXX17_REMOVED_RANDOM_SHUFFLE -D__float128=long\ double -Ibuild/mac/include -I/Users/louisvasseur/Downloads/GRE-transform/include
+host: Apple M3 Max, 12P+4E, macOS 15.7.5
+PREVIEW build: libc++ (Atom: libstdc++), so --seed samples other operation lists; no jemalloc, no OpenMP
+microbench sha256: 7449426688598e6c
+---
+finished: 2026-10-19T21:08:38Z
+host at finish: Apple M3 Max, Battery Power, powermode=2; load average: 3.85 4.57 4.76

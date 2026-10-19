@@ -1,0 +1,7 @@
+base	model	mean_regret_pct	worst_regret_pct	nonzero
+lipp	const	57.71	100.00	covid_10M=raw(100.0%) genome_10M=pw512(37.6%) libio_10M=pw512(42.8%) osm_10M=raw(100.0%) books_10M=raw(100.0%) fb_10M=pw512(58.9%) history_10M=pw512(40.3%) planet_10M=pw512(26.4%) stack_10M=pw512(39.0%) wise_10M=pw512(32.0%)
+lipp	rule	5.89	58.91	fb_10M=pw512(58.9%)
+lipp	tree2	5.89	58.91	fb_10M=pw512(58.9%)
+btree	const	0.00	0.00	-
+btree	rule	0.00	0.00	-
+btree	tree2	0.00	0.00	-

@@ -22,8 +22,10 @@
 // misses or returns another key's payload. So T is plain IEEE arithmetic in a fixed order. Contraction of a * b + c
 // into one fma is off in the evaluation (clang: the pragma; GCC: the optimize attribute, as GCC's default
 // -ffp-contract=fast may fuse one inlined copy and not another); the fused steps are explicit (madd: std::fma where the
-// hardware has it, else a multiply and an add); -ffast-math is refused at compile time; and operator() is kept out of
-// line, so that bulk_load and get() run the same machine code even under flags that ignore the pragma.
+// hardware has it, else a multiply and an add; kFusedMadd, printed as fma=0/1); -ffast-math is refused at compile
+// time; and operator() is kept out of line, so that bulk_load and get() run the same machine code even under flags
+// that ignore the pragma. The clamps are ternaries rather than fmin/fmax (no NaN reaches them, so the values are the
+// same), which GCC on x86 would otherwise turn into libm calls in the M loop.
 #pragma once
 #include <cerrno>
 #include <cmath>
@@ -128,14 +130,22 @@ class MolFlow {
     double acc[kLanes] = {0, 0, 0, 0};
     for (size_t m = 0; m < Mp_; m += kLanes)
       for (size_t l = 0; l < kLanes; ++l) {
-        const double t = std::fmin(std::fmax((mu[m + l] - x) * is[m + l], -kZMax), kZMax);  // t = -z, clamped
-        acc[l] += w[m + l] / (1.0 + exp_small(t));                                       // w sigmoid(z)
+        double t = (mu[m + l] - x) * is[m + l];  // t = -z, clamped to [-kZMax, kZMax]; never NaN (x, 1/s finite)
+        t = t < -kZMax ? -kZMax : t;
+        t = t > kZMax ? kZMax : t;
+        acc[l] += w[m + l] / (1.0 + exp_small(t));  // w sigmoid(z)
       }
     return (acc[0] + acc[1]) + (acc[2] + acc[3]);
   }
 
-  // a * b + c: one rounding where the hardware fuses it (arm64, x86-64 with FMA), else two; one or the other for the
-  // whole binary (__FP_FAST_FMA is a compile-time constant), never a mix.
+  // a * b + c: one rounding where the hardware fuses it (arm64, x86-64 built for an FMA CPU), else two; one or the
+  // other for the whole binary (__FP_FAST_FMA is a compile-time constant), never a mix. T differs by 1 between the two
+  // on ~0.1% of the keys, so the wrapper prints fma=0/1 and build_gre.sh records it: do not mix nf labels across them.
+#if defined(__FP_FAST_FMA)
+  static constexpr bool kFusedMadd = true;
+#else
+  static constexpr bool kFusedMadd = false;
+#endif
   GRET_FP_FN static double madd(double a, double b, double c) {
     GRET_FP_STRICT
 #if defined(__FP_FAST_FMA)
@@ -184,8 +194,10 @@ class MolFlow {
   // T(k): the only entry point of the wrapper, at bulk_load and get() (out of line: see the header comment)
   GRET_OUTLINE GRET_FP_FN uint64_t operator()(uint64_t k) const {
     GRET_FP_STRICT
-    // u is in [0, 1] up to rounding; fmax also maps a NaN to 0 (cannot happen: the file values are finite)
-    const double t = std::fmin(std::fmax(u(k) * kOutScale, 0.0), double(kOutMax));
+    // u is in [0, 1] up to rounding; the first test also maps a NaN to 0 (cannot happen: the file values are finite)
+    double t = u(k) * kOutScale;
+    t = t > 0.0 ? t : 0.0;
+    t = t < double(kOutMax) ? t : double(kOutMax);
     return uint64_t(t);  // truncation = floor for t >= 0
   }
 
