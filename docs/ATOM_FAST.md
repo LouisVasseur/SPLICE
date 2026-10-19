@@ -187,13 +187,12 @@ plans the Mac's own L2 clusters (E cores, then two P clusters).
 
 ## Commands on the Atom, in order
 
-Louis runs every command; nothing here contacts the server by itself. Before step 0, on the Mac:
-`git push -u origin atom-fast`.
+Louis runs every command; nothing here contacts the server by itself. The scheduler is on branch `clean`.
 
-0. Checkout, with the conda env active. Keep the shell on all CPUs for now: the builds of step 1 use them.
+0. Update the checkout, with the conda env active. Keep the shell on all CPUs for now: the builds of step 1 use them.
 
    ```bash
-   cd /tmp/louisvasseur/SPLICE && git status --short && git fetch && git checkout atom-fast
+   cd /tmp/louisvasseur/SPLICE && git status --short && git checkout clean && git pull
    ```
 
 1. Builds and tests, with nothing timed running yet. This is the only time builds run. Then move the shell to the
