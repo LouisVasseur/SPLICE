@@ -1,0 +1,7 @@
+# datasets, GRE clones, builds and results scratch never go in git
+/data/*
+!/data/download.sh
+!/data/SHA256SUMS
+build/
+*.part
+__pycache__/
