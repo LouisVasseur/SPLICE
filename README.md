@@ -137,10 +137,10 @@ GRE_DIR=$HOME/gre-transform/GRE DATA_DIR=data/samples DATASETS="fb_10M books_10M
     where the gate vetoes it: LIPP when more than 0.1% of the keys are above 2^53 on macOS, ALEX and PGM when the
     keys include 2^64 - 1 (fb), their sentinel. Bases without labels (alex, pgm) keep the placeholder: raw, pw512
     where raw is vetoed.
-  - The current model (`results/gate_mac_2026-10-19/REPORT.md`): on the Mac the fastest variant is raw on every
-    dataset where raw can be built, for both lipp and btree, and pw512 (within noise of pw4096) where raw LIPP is
-    vetoed; LODO picks the constant `raw, pw512 where vetoed`, which is the placeholder's rule. The transforms do not
-    pay on these bases for GRE's read-only uniform lookups at 10M keys.
+  - The current model (`results/gate_mac_2026-10-19/`, see `tables.md` there): on the Mac the fastest variant is
+    raw on every dataset where raw can be built, for both lipp and btree, and pw512 (within noise of pw4096) where
+    raw LIPP is vetoed; LODO picks the constant `raw, pw512 where vetoed`, which is the placeholder's rule. The
+    transforms do not pay on these bases for GRE's read-only uniform lookups at 10M keys.
   - `gate/check_gate.py RUN_DIR results/gate_mac_<date>` checks `gate_*` and `nflsw_*` runs of a rebuilt binary:
     each choice must match the model, and the features printed at bulk_load must match `gate_features`.
   - GRE's own raw ALEX and PGM mishandle the key 2^64 - 1, which fb contains: on `fb_10M` with distinct payloads,

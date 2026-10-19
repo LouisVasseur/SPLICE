@@ -1,0 +1,1188 @@
+{
+ "labels": "~/gre-transform/results/labels_2026-10-19/runs.tsv",
+ "features": "~/gre-transform/results/features_10M.jsonl",
+ "bases": {
+  "lipp": {
+   "oracle": {
+    "covid_10M": "pw512",
+    "genome_10M": "raw",
+    "libio_10M": "raw",
+    "osm_10M": "pw512",
+    "books_10M": "pw512",
+    "fb_10M": "raw",
+    "history_10M": "raw",
+    "planet_10M": "raw",
+    "stack_10M": "raw",
+    "wise_10M": "raw"
+   },
+   "summary": {
+    "const": {
+     "mean_regret_pct": 0.0,
+     "worst_regret_pct": 0.0,
+     "share_of_oracle_pct": 100.0,
+     "oracle_hits": 10,
+     "datasets": 10
+    },
+    "rule": {
+     "mean_regret_pct": 0.0,
+     "worst_regret_pct": 0.0,
+     "share_of_oracle_pct": 100.0,
+     "oracle_hits": 10,
+     "datasets": 10
+    },
+    "tree2": {
+     "mean_regret_pct": 0.0,
+     "worst_regret_pct": 0.0,
+     "share_of_oracle_pct": 100.0,
+     "oracle_hits": 10,
+     "datasets": 10
+    },
+    "always-raw": {
+     "mean_regret_pct": 0.0,
+     "worst_regret_pct": 0.0,
+     "share_of_oracle_pct": 100.0,
+     "oracle_hits": 10,
+     "datasets": 10
+    },
+    "always-pw512": {
+     "mean_regret_pct": 27.7140207155879,
+     "worst_regret_pct": 58.90620314464695,
+     "share_of_oracle_pct": 72.2859792844121,
+     "oracle_hits": 3,
+     "datasets": 10
+    },
+    "always-pw4096": {
+     "mean_regret_pct": 29.665223818534756,
+     "worst_regret_pct": 61.12210108928182,
+     "share_of_oracle_pct": 70.33477618146524,
+     "oracle_hits": 0,
+     "datasets": 10
+    },
+    "always-nf": {
+     "mean_regret_pct": 81.52916304431868,
+     "worst_regret_pct": 88.30271289517383,
+     "share_of_oracle_pct": 18.47083695568132,
+     "oracle_hits": 0,
+     "datasets": 10
+    },
+    "nflsw": {
+     "mean_regret_pct": 27.7140207155879,
+     "worst_regret_pct": 58.90620314464695,
+     "share_of_oracle_pct": 72.2859792844121,
+     "oracle_hits": 3,
+     "datasets": 10
+    }
+   },
+   "chosen_model": "const",
+   "final_tree": {
+    "leaf": [
+     "raw",
+     "pw512"
+    ]
+   },
+   "final_tree_text": "raw|pw512",
+   "final_in_sample_mean_regret_pct": 0.0,
+   "final_choices": {
+    "covid_10M": "pw512",
+    "genome_10M": "raw",
+    "libio_10M": "raw",
+    "osm_10M": "pw512",
+    "books_10M": "pw512",
+    "fb_10M": "raw",
+    "history_10M": "raw",
+    "planet_10M": "raw",
+    "stack_10M": "raw",
+    "wise_10M": "raw"
+   },
+   "lodo": {
+    "const": [
+     {
+      "dataset": "covid_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     }
+    ],
+    "rule": [
+     {
+      "dataset": "covid_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     }
+    ],
+    "tree2": [
+     {
+      "dataset": "covid_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     }
+    ],
+    "always-raw": [
+     {
+      "dataset": "covid_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     }
+    ],
+    "always-pw512": [
+     {
+      "dataset": "covid_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "pw512",
+      "regret_pct": 37.6312957243684,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "pw512",
+      "regret_pct": 42.83654271757181,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "pw512",
+      "regret_pct": 58.90620314464695,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "pw512",
+      "regret_pct": 40.33709917926749,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "pw512",
+      "regret_pct": 26.383007130429704,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "pw512",
+      "regret_pct": 39.049801490727695,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "pw512",
+      "regret_pct": 31.996257768866965,
+      "fold_model": ""
+     }
+    ],
+    "always-pw4096": [
+     {
+      "dataset": "covid_10M",
+      "choice": "pw4096",
+      "regret_pct": 1.5748781175772608,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "pw4096",
+      "regret_pct": 38.08328295483413,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "pw4096",
+      "regret_pct": 45.97382074232132,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw4096",
+      "regret_pct": 2.470846352165823,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw4096",
+      "regret_pct": 1.012338446805472,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "pw4096",
+      "regret_pct": 61.12210108928182,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "pw4096",
+      "regret_pct": 42.100901333214026,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "pw4096",
+      "regret_pct": 27.541340043374028,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "pw4096",
+      "regret_pct": 41.01546836784444,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "pw4096",
+      "regret_pct": 35.75726073792922,
+      "fold_model": ""
+     }
+    ],
+    "always-nf": [
+     {
+      "dataset": "covid_10M",
+      "choice": "nf",
+      "regret_pct": 79.7963965907172,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "nf",
+      "regret_pct": 81.82033318221113,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "nf",
+      "regret_pct": 88.30271289517383,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "nf",
+      "regret_pct": 66.06411729266823,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "nf",
+      "regret_pct": 75.09780013294794,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "nf",
+      "regret_pct": 84.37677083352513,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "nf",
+      "regret_pct": 88.10062009935454,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "nf",
+      "regret_pct": 77.09752304269092,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "nf",
+      "regret_pct": 88.03887251553924,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "nf",
+      "regret_pct": 86.59648385835862,
+      "fold_model": ""
+     }
+    ],
+    "nflsw": [
+     {
+      "dataset": "covid_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "pw512",
+      "regret_pct": 37.6312957243684,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "pw512",
+      "regret_pct": 42.83654271757181,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw512",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "pw512",
+      "regret_pct": 58.90620314464695,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "pw512",
+      "regret_pct": 40.33709917926749,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "pw512",
+      "regret_pct": 26.383007130429704,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "pw512",
+      "regret_pct": 39.049801490727695,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "pw512",
+      "regret_pct": 31.996257768866965,
+      "fold_model": ""
+     }
+    ]
+   }
+  },
+  "btree": {
+   "oracle": {
+    "covid_10M": "raw",
+    "genome_10M": "raw",
+    "libio_10M": "raw",
+    "osm_10M": "raw",
+    "books_10M": "raw",
+    "fb_10M": "raw",
+    "history_10M": "raw",
+    "planet_10M": "raw",
+    "stack_10M": "raw",
+    "wise_10M": "raw"
+   },
+   "summary": {
+    "const": {
+     "mean_regret_pct": 0.0,
+     "worst_regret_pct": 0.0,
+     "share_of_oracle_pct": 100.0,
+     "oracle_hits": 10,
+     "datasets": 10
+    },
+    "rule": {
+     "mean_regret_pct": 0.0,
+     "worst_regret_pct": 0.0,
+     "share_of_oracle_pct": 100.0,
+     "oracle_hits": 10,
+     "datasets": 10
+    },
+    "tree2": {
+     "mean_regret_pct": 0.0,
+     "worst_regret_pct": 0.0,
+     "share_of_oracle_pct": 100.0,
+     "oracle_hits": 10,
+     "datasets": 10
+    },
+    "always-raw": {
+     "mean_regret_pct": 0.0,
+     "worst_regret_pct": 0.0,
+     "share_of_oracle_pct": 100.0,
+     "oracle_hits": 10,
+     "datasets": 10
+    },
+    "always-pw512": {
+     "mean_regret_pct": 12.043219904053759,
+     "worst_regret_pct": 18.079606341642695,
+     "share_of_oracle_pct": 87.95678009594624,
+     "oracle_hits": 0,
+     "datasets": 10
+    },
+    "always-pw4096": {
+     "mean_regret_pct": 15.719432563374724,
+     "worst_regret_pct": 24.395182601176945,
+     "share_of_oracle_pct": 84.28056743662528,
+     "oracle_hits": 0,
+     "datasets": 10
+    },
+    "always-nf": {
+     "mean_regret_pct": 35.98083837355372,
+     "worst_regret_pct": 37.62672911605986,
+     "share_of_oracle_pct": 64.01916162644628,
+     "oracle_hits": 0,
+     "datasets": 10
+    },
+    "nflsw": {
+     "mean_regret_pct": 12.043219904053759,
+     "worst_regret_pct": 18.079606341642695,
+     "share_of_oracle_pct": 87.95678009594624,
+     "oracle_hits": 0,
+     "datasets": 10
+    }
+   },
+   "chosen_model": "const",
+   "final_tree": {
+    "leaf": [
+     "raw",
+     "pw512"
+    ]
+   },
+   "final_tree_text": "raw|pw512",
+   "final_in_sample_mean_regret_pct": 0.0,
+   "final_choices": {
+    "covid_10M": "raw",
+    "genome_10M": "raw",
+    "libio_10M": "raw",
+    "osm_10M": "raw",
+    "books_10M": "raw",
+    "fb_10M": "raw",
+    "history_10M": "raw",
+    "planet_10M": "raw",
+    "stack_10M": "raw",
+    "wise_10M": "raw"
+   },
+   "lodo": {
+    "const": [
+     {
+      "dataset": "covid_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     }
+    ],
+    "rule": [
+     {
+      "dataset": "covid_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     }
+    ],
+    "tree2": [
+     {
+      "dataset": "covid_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": "raw|pw512"
+     }
+    ],
+    "always-raw": [
+     {
+      "dataset": "covid_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "raw",
+      "regret_pct": 0.0,
+      "fold_model": ""
+     }
+    ],
+    "always-pw512": [
+     {
+      "dataset": "covid_10M",
+      "choice": "pw512",
+      "regret_pct": 10.48694129355332,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "pw512",
+      "regret_pct": 11.676327370776661,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "pw512",
+      "regret_pct": 10.585397194444235,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw512",
+      "regret_pct": 14.794164300596202,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw512",
+      "regret_pct": 9.267355111209309,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "pw512",
+      "regret_pct": 18.079606341642695,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "pw512",
+      "regret_pct": 7.418971000859543,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "pw512",
+      "regret_pct": 14.567380946681963,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "pw512",
+      "regret_pct": 13.03469583124488,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "pw512",
+      "regret_pct": 10.521359649528783,
+      "fold_model": ""
+     }
+    ],
+    "always-pw4096": [
+     {
+      "dataset": "covid_10M",
+      "choice": "pw4096",
+      "regret_pct": 13.499827544233177,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "pw4096",
+      "regret_pct": 13.813427963377379,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "pw4096",
+      "regret_pct": 12.847057522863537,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw4096",
+      "regret_pct": 20.55709978601773,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw4096",
+      "regret_pct": 13.70181609239819,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "pw4096",
+      "regret_pct": 24.395182601176945,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "pw4096",
+      "regret_pct": 11.97721781106229,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "pw4096",
+      "regret_pct": 16.89208352856273,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "pw4096",
+      "regret_pct": 15.33541486382104,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "pw4096",
+      "regret_pct": 14.175197920234217,
+      "fold_model": ""
+     }
+    ],
+    "always-nf": [
+     {
+      "dataset": "covid_10M",
+      "choice": "nf",
+      "regret_pct": 36.322347006039415,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "nf",
+      "regret_pct": 35.66763522909076,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "nf",
+      "regret_pct": 36.05899485514603,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "nf",
+      "regret_pct": 35.95676265205421,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "nf",
+      "regret_pct": 35.58430561494204,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "nf",
+      "regret_pct": 34.84981238341279,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "nf",
+      "regret_pct": 33.99466355221718,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "nf",
+      "regret_pct": 37.22793164604858,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "nf",
+      "regret_pct": 36.51920168052636,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "nf",
+      "regret_pct": 37.62672911605986,
+      "fold_model": ""
+     }
+    ],
+    "nflsw": [
+     {
+      "dataset": "covid_10M",
+      "choice": "pw512",
+      "regret_pct": 10.48694129355332,
+      "fold_model": ""
+     },
+     {
+      "dataset": "genome_10M",
+      "choice": "pw512",
+      "regret_pct": 11.676327370776661,
+      "fold_model": ""
+     },
+     {
+      "dataset": "libio_10M",
+      "choice": "pw512",
+      "regret_pct": 10.585397194444235,
+      "fold_model": ""
+     },
+     {
+      "dataset": "osm_10M",
+      "choice": "pw512",
+      "regret_pct": 14.794164300596202,
+      "fold_model": ""
+     },
+     {
+      "dataset": "books_10M",
+      "choice": "pw512",
+      "regret_pct": 9.267355111209309,
+      "fold_model": ""
+     },
+     {
+      "dataset": "fb_10M",
+      "choice": "pw512",
+      "regret_pct": 18.079606341642695,
+      "fold_model": ""
+     },
+     {
+      "dataset": "history_10M",
+      "choice": "pw512",
+      "regret_pct": 7.418971000859543,
+      "fold_model": ""
+     },
+     {
+      "dataset": "planet_10M",
+      "choice": "pw512",
+      "regret_pct": 14.567380946681963,
+      "fold_model": ""
+     },
+     {
+      "dataset": "stack_10M",
+      "choice": "pw512",
+      "regret_pct": 13.03469583124488,
+      "fold_model": ""
+     },
+     {
+      "dataset": "wise_10M",
+      "choice": "pw512",
+      "regret_pct": 10.521359649528783,
+      "fold_model": ""
+     }
+    ]
+   }
+  }
+ }
+}

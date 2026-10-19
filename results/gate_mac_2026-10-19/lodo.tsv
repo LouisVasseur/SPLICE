@@ -1,0 +1,161 @@
+base	model	dataset	choice	regret_pct	fold_model
+lipp	const	covid_10M	pw512	0.000	raw|pw512
+lipp	const	genome_10M	raw	0.000	raw|pw512
+lipp	const	libio_10M	raw	0.000	raw|pw512
+lipp	const	osm_10M	pw512	0.000	raw|pw512
+lipp	const	books_10M	pw512	0.000	raw|pw512
+lipp	const	fb_10M	raw	0.000	raw|pw512
+lipp	const	history_10M	raw	0.000	raw|pw512
+lipp	const	planet_10M	raw	0.000	raw|pw512
+lipp	const	stack_10M	raw	0.000	raw|pw512
+lipp	const	wise_10M	raw	0.000	raw|pw512
+lipp	rule	covid_10M	pw512	0.000	raw|pw512
+lipp	rule	genome_10M	raw	0.000	raw|pw512
+lipp	rule	libio_10M	raw	0.000	raw|pw512
+lipp	rule	osm_10M	pw512	0.000	raw|pw512
+lipp	rule	books_10M	pw512	0.000	raw|pw512
+lipp	rule	fb_10M	raw	0.000	raw|pw512
+lipp	rule	history_10M	raw	0.000	raw|pw512
+lipp	rule	planet_10M	raw	0.000	raw|pw512
+lipp	rule	stack_10M	raw	0.000	raw|pw512
+lipp	rule	wise_10M	raw	0.000	raw|pw512
+lipp	tree2	covid_10M	pw512	0.000	raw|pw512
+lipp	tree2	genome_10M	raw	0.000	raw|pw512
+lipp	tree2	libio_10M	raw	0.000	raw|pw512
+lipp	tree2	osm_10M	pw512	0.000	raw|pw512
+lipp	tree2	books_10M	pw512	0.000	raw|pw512
+lipp	tree2	fb_10M	raw	0.000	raw|pw512
+lipp	tree2	history_10M	raw	0.000	raw|pw512
+lipp	tree2	planet_10M	raw	0.000	raw|pw512
+lipp	tree2	stack_10M	raw	0.000	raw|pw512
+lipp	tree2	wise_10M	raw	0.000	raw|pw512
+lipp	always-raw	covid_10M	pw512	0.000	
+lipp	always-raw	genome_10M	raw	0.000	
+lipp	always-raw	libio_10M	raw	0.000	
+lipp	always-raw	osm_10M	pw512	0.000	
+lipp	always-raw	books_10M	pw512	0.000	
+lipp	always-raw	fb_10M	raw	0.000	
+lipp	always-raw	history_10M	raw	0.000	
+lipp	always-raw	planet_10M	raw	0.000	
+lipp	always-raw	stack_10M	raw	0.000	
+lipp	always-raw	wise_10M	raw	0.000	
+lipp	always-pw512	covid_10M	pw512	0.000	
+lipp	always-pw512	genome_10M	pw512	37.631	
+lipp	always-pw512	libio_10M	pw512	42.837	
+lipp	always-pw512	osm_10M	pw512	0.000	
+lipp	always-pw512	books_10M	pw512	0.000	
+lipp	always-pw512	fb_10M	pw512	58.906	
+lipp	always-pw512	history_10M	pw512	40.337	
+lipp	always-pw512	planet_10M	pw512	26.383	
+lipp	always-pw512	stack_10M	pw512	39.050	
+lipp	always-pw512	wise_10M	pw512	31.996	
+lipp	always-pw4096	covid_10M	pw4096	1.575	
+lipp	always-pw4096	genome_10M	pw4096	38.083	
+lipp	always-pw4096	libio_10M	pw4096	45.974	
+lipp	always-pw4096	osm_10M	pw4096	2.471	
+lipp	always-pw4096	books_10M	pw4096	1.012	
+lipp	always-pw4096	fb_10M	pw4096	61.122	
+lipp	always-pw4096	history_10M	pw4096	42.101	
+lipp	always-pw4096	planet_10M	pw4096	27.541	
+lipp	always-pw4096	stack_10M	pw4096	41.015	
+lipp	always-pw4096	wise_10M	pw4096	35.757	
+lipp	always-nf	covid_10M	nf	79.796	
+lipp	always-nf	genome_10M	nf	81.820	
+lipp	always-nf	libio_10M	nf	88.303	
+lipp	always-nf	osm_10M	nf	66.064	
+lipp	always-nf	books_10M	nf	75.098	
+lipp	always-nf	fb_10M	nf	84.377	
+lipp	always-nf	history_10M	nf	88.101	
+lipp	always-nf	planet_10M	nf	77.098	
+lipp	always-nf	stack_10M	nf	88.039	
+lipp	always-nf	wise_10M	nf	86.596	
+lipp	nflsw	covid_10M	pw512	0.000	
+lipp	nflsw	genome_10M	pw512	37.631	
+lipp	nflsw	libio_10M	pw512	42.837	
+lipp	nflsw	osm_10M	pw512	0.000	
+lipp	nflsw	books_10M	pw512	0.000	
+lipp	nflsw	fb_10M	pw512	58.906	
+lipp	nflsw	history_10M	pw512	40.337	
+lipp	nflsw	planet_10M	pw512	26.383	
+lipp	nflsw	stack_10M	pw512	39.050	
+lipp	nflsw	wise_10M	pw512	31.996	
+btree	const	covid_10M	raw	0.000	raw|pw512
+btree	const	genome_10M	raw	0.000	raw|pw512
+btree	const	libio_10M	raw	0.000	raw|pw512
+btree	const	osm_10M	raw	0.000	raw|pw512
+btree	const	books_10M	raw	0.000	raw|pw512
+btree	const	fb_10M	raw	0.000	raw|pw512
+btree	const	history_10M	raw	0.000	raw|pw512
+btree	const	planet_10M	raw	0.000	raw|pw512
+btree	const	stack_10M	raw	0.000	raw|pw512
+btree	const	wise_10M	raw	0.000	raw|pw512
+btree	rule	covid_10M	raw	0.000	raw|pw512
+btree	rule	genome_10M	raw	0.000	raw|pw512
+btree	rule	libio_10M	raw	0.000	raw|pw512
+btree	rule	osm_10M	raw	0.000	raw|pw512
+btree	rule	books_10M	raw	0.000	raw|pw512
+btree	rule	fb_10M	raw	0.000	raw|pw512
+btree	rule	history_10M	raw	0.000	raw|pw512
+btree	rule	planet_10M	raw	0.000	raw|pw512
+btree	rule	stack_10M	raw	0.000	raw|pw512
+btree	rule	wise_10M	raw	0.000	raw|pw512
+btree	tree2	covid_10M	raw	0.000	raw|pw512
+btree	tree2	genome_10M	raw	0.000	raw|pw512
+btree	tree2	libio_10M	raw	0.000	raw|pw512
+btree	tree2	osm_10M	raw	0.000	raw|pw512
+btree	tree2	books_10M	raw	0.000	raw|pw512
+btree	tree2	fb_10M	raw	0.000	raw|pw512
+btree	tree2	history_10M	raw	0.000	raw|pw512
+btree	tree2	planet_10M	raw	0.000	raw|pw512
+btree	tree2	stack_10M	raw	0.000	raw|pw512
+btree	tree2	wise_10M	raw	0.000	raw|pw512
+btree	always-raw	covid_10M	raw	0.000	
+btree	always-raw	genome_10M	raw	0.000	
+btree	always-raw	libio_10M	raw	0.000	
+btree	always-raw	osm_10M	raw	0.000	
+btree	always-raw	books_10M	raw	0.000	
+btree	always-raw	fb_10M	raw	0.000	
+btree	always-raw	history_10M	raw	0.000	
+btree	always-raw	planet_10M	raw	0.000	
+btree	always-raw	stack_10M	raw	0.000	
+btree	always-raw	wise_10M	raw	0.000	
+btree	always-pw512	covid_10M	pw512	10.487	
+btree	always-pw512	genome_10M	pw512	11.676	
+btree	always-pw512	libio_10M	pw512	10.585	
+btree	always-pw512	osm_10M	pw512	14.794	
+btree	always-pw512	books_10M	pw512	9.267	
+btree	always-pw512	fb_10M	pw512	18.080	
+btree	always-pw512	history_10M	pw512	7.419	
+btree	always-pw512	planet_10M	pw512	14.567	
+btree	always-pw512	stack_10M	pw512	13.035	
+btree	always-pw512	wise_10M	pw512	10.521	
+btree	always-pw4096	covid_10M	pw4096	13.500	
+btree	always-pw4096	genome_10M	pw4096	13.813	
+btree	always-pw4096	libio_10M	pw4096	12.847	
+btree	always-pw4096	osm_10M	pw4096	20.557	
+btree	always-pw4096	books_10M	pw4096	13.702	
+btree	always-pw4096	fb_10M	pw4096	24.395	
+btree	always-pw4096	history_10M	pw4096	11.977	
+btree	always-pw4096	planet_10M	pw4096	16.892	
+btree	always-pw4096	stack_10M	pw4096	15.335	
+btree	always-pw4096	wise_10M	pw4096	14.175	
+btree	always-nf	covid_10M	nf	36.322	
+btree	always-nf	genome_10M	nf	35.668	
+btree	always-nf	libio_10M	nf	36.059	
+btree	always-nf	osm_10M	nf	35.957	
+btree	always-nf	books_10M	nf	35.584	
+btree	always-nf	fb_10M	nf	34.850	
+btree	always-nf	history_10M	nf	33.995	
+btree	always-nf	planet_10M	nf	37.228	
+btree	always-nf	stack_10M	nf	36.519	
+btree	always-nf	wise_10M	nf	37.627	
+btree	nflsw	covid_10M	pw512	10.487	
+btree	nflsw	genome_10M	pw512	11.676	
+btree	nflsw	libio_10M	pw512	10.585	
+btree	nflsw	osm_10M	pw512	14.794	
+btree	nflsw	books_10M	pw512	9.267	
+btree	nflsw	fb_10M	pw512	18.080	
+btree	nflsw	history_10M	pw512	7.419	
+btree	nflsw	planet_10M	pw512	14.567	
+btree	nflsw	stack_10M	pw512	13.035	
+btree	nflsw	wise_10M	pw512	10.521	
