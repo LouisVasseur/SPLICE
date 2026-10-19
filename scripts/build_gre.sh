@@ -3,6 +3,7 @@
 # Build GRE (gre4index/GRE, Wongkham et al., VLDB 2022) at a pinned commit, with only its own competitors.
 #
 #   scripts/build_gre.sh [DEST]        default DEST=$HOME/gre-baselines/GRE (outside this repository)
+#   EXTRA=transforms scripts/build_gre.sh [DEST]   default DEST=$HOME/gre-transform/GRE; adds the transform indexes
 #
 # Linux x86-64 (reference, e.g. the DIAS Atom): inside an activated conda environment. Installs TBB 2020.2 and jemalloc
 #   5.4.0 into it, builds with GRE's own CMake. Indexes: alex lipp pgm btree artunsync.
@@ -17,9 +18,21 @@
 # Every edit starts from the pristine file, and DEST/build/BUILD_MANIFEST.txt records the commit, edits and compiler.
 #   GRE_SEED=DIR      clone GRE and its 5 submodules from a local GRE clone instead of GitHub
 #   GRE_FORCE=1       build even while a benchmark runs
+#   EXTRA=transforms  after the trim, scripts/add_transforms.py registers include/gret/registry.h in competitor.h
+#                     (Linux: and include_directories in CMakeLists.txt; macOS: -I REPO/include); recorded in the
+#                     manifest. Without EXTRA nothing differs from the baselines build (tests/test_build_unchanged.sh).
 set -euo pipefail
-DEST=${1:-$HOME/gre-baselines/GRE}
+EXTRA=${EXTRA:-}
+case "$EXTRA" in ''|transforms) ;; *) echo "EXTRA must be 'transforms' or unset, not '$EXTRA'" >&2; exit 1 ;; esac
+if [ -n "$EXTRA" ]; then
+    DEST=${1:-$HOME/gre-transform/GRE}
+    # the baselines clone is what run_baselines.sh times by default: never put the transforms into it
+    if [ -d "$DEST" ] && [ -d "$HOME/gre-baselines/GRE" ] && \
+       [ "$(cd "$DEST" && pwd -P)" = "$(cd "$HOME/gre-baselines/GRE" && pwd -P)" ]; then
+        echo "EXTRA=$EXTRA: $DEST is the baselines clone; build into another DEST" >&2; exit 1; fi
+else DEST=${1:-$HOME/gre-baselines/GRE}; fi
 HERE=$(cd "$(dirname "$0")" && pwd)
+ROOT=$(cd "$HERE/.." && pwd)
 GRE_SHA=e807edcef51df6732f07f94d4c797fb3897519ba          # GRE master as of 2022-11-09
 SUBS="src/competitor/alex/src src/competitor/lipp/src src/competitor/pgm/src src/competitor/btree/src src/competitor/artsync/src"
 OS=$(uname -s)
@@ -51,6 +64,8 @@ for p in $SUBS; do git -C "$p" checkout -q -- .; done
 
 echo "== 2/4 trim to $KEEP, ALEX LZCNT switch"
 python3 "$HERE/trim_gre.py" "$DEST" "$KEEP"
+XINC=()
+if [ "$EXTRA" = transforms ]; then python3 "$HERE/add_transforms.py" "$DEST" "$ROOT"; XINC=(-I"$ROOT/include"); fi
 ALEX_NODES=src/competitor/alex/src/src/core/alex_nodes.h
 if [ "$OS" = Darwin ]; then ALEX_LZCNT=0
 else MACROS=$("${CXX:-c++}" -march=native -dM -E -x c++ /dev/null)
@@ -135,9 +150,9 @@ EOF
         > $W/include/jemalloc/jemalloc.h
     # GRE's add_compile_options with -march=native -> -mcpu=native (the host core), plus CMake's Release flags.
     # __float128: none on arm64 (pgm_metric.h, --dataset_statistic only); random_shuffle: removed in C++17 libc++.
-    FLAGS="-faligned-new -mcpu=native -g -O3 -include cstdint -O3 -DNDEBUG -std=gnu++17 -D_LIBCPP_ENABLE_CXX17_REMOVED_RANDOM_SHUFFLE -D__float128=long\\ double -I$W/include"
+    FLAGS="-faligned-new -mcpu=native -g -O3 -include cstdint -O3 -DNDEBUG -std=gnu++17 -D_LIBCPP_ENABLE_CXX17_REMOVED_RANDOM_SHUFFLE -D__float128=long\\ double -I$W/include${XINC[*]+ ${XINC[*]}}"
     "$CLANG" -faligned-new -mcpu=native -g -O3 -include cstdint -O3 -DNDEBUG -std=gnu++17 \
-        -D_LIBCPP_ENABLE_CXX17_REMOVED_RANDOM_SHUFFLE '-D__float128=long double' -I$W/include \
+        -D_LIBCPP_ENABLE_CXX17_REMOVED_RANDOM_SHUFFLE '-D__float128=long double' -I$W/include ${XINC[@]+"${XINC[@]}"} \
         src/benchmark/microbench.cpp -o build/microbench 2> build/compile.log || { tail -n 30 build/compile.log; exit 1; }
     COMPILER=$("$CLANG" --version | sed -n 1p)
 fi
@@ -148,6 +163,10 @@ INDEXES=$(grep -oE '^  (else )?if ?\( ?index_type == "[a-z0-9_]+"' src/competito
   echo "repo: $(git -C "$HERE" rev-parse -q --verify HEAD || echo uncommitted)$(git -C "$HERE" diff --quiet 2>/dev/null || echo ' (dirty)')"
   echo "indexes: $INDEXES"
   echo "ALEX_USE_LZCNT: $ALEX_LZCNT"
+  if [ "$EXTRA" = transforms ]; then
+      echo "extra: transforms (scripts/add_transforms.py, $ROOT/include; include/gret cksum $(cat "$ROOT"/include/gret/*.h | cksum))"
+      echo "transform indexes: pw<K>_B (K=2..65536) nf_B gate_B nflsw_B, B in ${KEEP//,/ }"
+  fi
   for p in $SUBS; do echo "submodule $p: $(git -C "$p" rev-parse HEAD)"; done
   echo "edits (diff cksum): GRE $(git diff | cksum); alex $(git -C src/competitor/alex/src diff | cksum)"
   git diff --stat | sed 's/^/  /'

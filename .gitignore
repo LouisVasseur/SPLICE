@@ -2,6 +2,7 @@
 /data/*
 !/data/download.sh
 !/data/SHA256SUMS
+!/data/sample.py
 build/
 /results/
 *.part
