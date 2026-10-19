@@ -8,6 +8,8 @@
 //   nf_<base>      MolFlow loaded from $TRANSFORM_FLOW
 //   nfl_<base>     NFL's own flow (NflFlow), its weights loaded from $TRANSFORM_NFL
 //   vp_<base>      virtual points (VirtualIndex) in front of the base; <t>_vp_<base> is T then V (e.g. pw512_vp_alex)
+//   g_<name>       G: outlier keys peeled into an exception list (ExceptionIndex), then any other name on the bulk
+//                  (g_alex, g_pw512_alex, g_vp_lipp, g_pw512_vp_alex)
 //   gate_<base>    the learned gate (gate.h, gate_model.h)
 //   nflsw_<base>   an NFL-style switch: pw512 or raw (gate.h)
 // Bases: lipp btree alex pgm, and artunsync where GRE's registry has it (Linux: competitor.h includes artunsync.h
@@ -23,6 +25,7 @@
 #include "gret/gate.h"
 #include "gret/transform_index.h"
 #include "gret/vpoints.h"
+#include "gret/exceptions.h"
 
 #ifndef GRET_HAS_ARTUNSYNC
 #if defined(ARTVERSION1_TREE_H)  // src/competitor/artsync/src/ART/Tree.h, included by artunsync.h only
@@ -67,14 +70,30 @@ indexInterface<K, P>* make_on(const std::string& kind, const std::string& base, 
 }  // namespace registry_detail
 
 template <class K, class P>
+indexInterface<K, P>* raw_base(const std::string& b) {  // GRE's own index by name, for g_<base>
+  if (b == "lipp") return new LIPPInterface<uint64_t, P>;
+  if (b == "btree") return new BTreeInterface<uint64_t, P>;
+  if (b == "alex") return new alexInterface<uint64_t, P>;
+  if (b == "pgm") return new pgmInterface<uint64_t, P>;
+#if GRET_HAS_ARTUNSYNC
+  if (b == "artunsync") return new ARTUnsynchronizedInterface<uint64_t, P>;
+#endif
+  return nullptr;
+}
+
+template <class K, class P>
 indexInterface<K, P>* make_index(const std::string& name) {
   if constexpr (!std::is_same<K, uint64_t>::value) {
     (void)name;
     return nullptr;
   } else {
     using namespace registry_detail;
+    if (name.compare(0, 2, "g_") == 0) {  // G first: the exception list wraps whatever the rest of the name builds
+      indexInterface<K, P>* inner = make_index<K, P>(name.substr(2));
+      return inner ? new ExceptionIndex<K, P>(name, inner) : nullptr;
+    }
     const size_t us = name.find('_');
-    if (us == std::string::npos) return nullptr;
+    if (us == std::string::npos) return raw_base<K, P>(name);
     const std::string kind = name.substr(0, us), base = name.substr(us + 1);
     // the gate's raw limits (gate.h): LIPP's models run in long double, which is double on macOS arm64 (an 80-bit
     // long double holds every uint64 exactly); ALEX and PGM use 2^64 - 1 as a sentinel; ALEX predicts slots as int
