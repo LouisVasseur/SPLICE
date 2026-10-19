@@ -83,7 +83,7 @@ if [ "$OS" = Linux ]; then
     cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
           -DTBB_ROOT_DIR="$CONDA_PREFIX" -DJEMALLOC_ROOT_DIR="$CONDA_PREFIX" > build/cmake.log
     cmake --build build -j "$(nproc)" --target microbench > build/compile.log 2>&1 || { tail -n 30 build/compile.log; exit 1; }
-    COMPILER=$(sed -n 's/^-- The CXX compiler identification is //p' build/cmake.log)
+    COMPILER=$("$(sed -n 's/^CMAKE_CXX_COMPILER:[A-Z]*=//p' build/CMakeCache.txt)" --version | sed -n 1p)
     FLAGS="GRE CMakeLists.txt (Release): $(grep '^add_compile_options' CMakeLists.txt)"
 else
     CLANG=${GRE_CLANG:-/usr/bin/clang++}

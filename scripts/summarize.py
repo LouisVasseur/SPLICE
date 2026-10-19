@@ -16,6 +16,8 @@ cells = OrderedDict()
 with open(out + '/runs.tsv') as f:
     for r in csv.DictReader(f, delimiter='\t'):
         cells.setdefault((r['dataset'], r['index']), []).append((float(r['throughput_ops']), int(r['memory_bytes'])))
+if not cells:
+    sys.exit('summarize.py: no successful runs in %s/runs.tsv' % out)
 datasets = list(OrderedDict.fromkeys(d for d, _ in cells))
 indexes = list(OrderedDict.fromkeys(i for _, i in cells))
 rows = []

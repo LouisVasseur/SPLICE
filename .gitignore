@@ -3,5 +3,6 @@
 !/data/download.sh
 !/data/SHA256SUMS
 build/
+/results/
 *.part
 __pycache__/
