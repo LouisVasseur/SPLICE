@@ -7,6 +7,7 @@
 //                  read $TRANSFORM_K: pw<K>_, gate_ (pw512, pw4096) and nflsw_ (pw512) have fixed K
 //   nf_<base>      MolFlow loaded from $TRANSFORM_FLOW
 //   nfl_<base>     NFL's own flow (NflFlow), its weights loaded from $TRANSFORM_NFL
+//   vp_<base>      virtual points (VirtualIndex) in front of the base; <t>_vp_<base> is T then V (e.g. pw512_vp_alex)
 //   gate_<base>    the learned gate (gate.h, gate_model.h)
 //   nflsw_<base>   an NFL-style switch: pw512 or raw (gate.h)
 // Bases: lipp btree alex pgm, and artunsync where GRE's registry has it (Linux: competitor.h includes artunsync.h
@@ -21,6 +22,7 @@
 
 #include "gret/gate.h"
 #include "gret/transform_index.h"
+#include "gret/vpoints.h"
 
 #ifndef GRET_HAS_ARTUNSYNC
 #if defined(ARTVERSION1_TREE_H)  // src/competitor/artsync/src/ART/Tree.h, included by artunsync.h only
@@ -77,6 +79,21 @@ indexInterface<K, P>* make_index(const std::string& name) {
     // the gate's raw limits (gate.h): LIPP's models run in long double, which is double on macOS arm64 (an 80-bit
     // long double holds every uint64 exactly); ALEX and PGM use 2^64 - 1 as a sentinel; ALEX predicts slots as int
     static_assert(LDBL_MANT_DIG == DBL_MANT_DIG || LDBL_MANT_DIG >= 64, "long double: neither double nor >= 64 bits");
+    if (kind == "vp") {  // V alone
+      if (base == "lipp") return new VirtualIndex<K, P, LIPPInterface<uint64_t, P>>(name);
+      if (base == "btree") return new VirtualIndex<K, P, BTreeInterface<uint64_t, P>>(name);
+      if (base == "alex") return new VirtualIndex<K, P, alexInterface<uint64_t, P>>(name);
+      if (base == "pgm") return new VirtualIndex<K, P, pgmInterface<uint64_t, P>>(name);
+      return nullptr;
+    }
+    if (base.compare(0, 3, "vp_") == 0) {  // T then V: the transform wraps the virtual-point index (raw is never vetoed:
+      const std::string b = base.substr(3);  // the transformed keys stay below 2^52)
+      if (b == "lipp") return make_on<K, P, VirtualIndex<K, P, LIPPInterface<uint64_t, P>>>(kind, base, RawLimits{});
+      if (b == "btree") return make_on<K, P, VirtualIndex<K, P, BTreeInterface<uint64_t, P>>>(kind, base, RawLimits{});
+      if (b == "alex") return make_on<K, P, VirtualIndex<K, P, alexInterface<uint64_t, P>>>(kind, base, RawLimits{});
+      if (b == "pgm") return make_on<K, P, VirtualIndex<K, P, pgmInterface<uint64_t, P>>>(kind, base, RawLimits{});
+      return nullptr;
+    }
     if (base == "lipp")
       return make_on<K, P, LIPPInterface<uint64_t, P>>(kind, base, RawLimits{LDBL_MANT_DIG < 64, false, false});
     if (base == "btree") return make_on<K, P, BTreeInterface<uint64_t, P>>(kind, base, RawLimits{});
