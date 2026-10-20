@@ -144,6 +144,18 @@ verification; all are fixed after `b08866e`:
 - The cap overshoot is visible in their bytes per key.
 - The fixed code is rerun on the same cells (results/mac200M_fix_2026-10-20).
 
+## Interior G (`splice_gi`, after the first 200M runs)
+
+At 200M the smooth datasets choose a tiny top and lose up to 0.69 lines per lookup in the data (books, libio,
+covid). Dense runs overflow their predicted line, and V's expansion is capped at 32 B/key. Interior G is the reduce
+relaxation that mirrors V.
+- **Layouts.** Each segment may either *displace* (as before) or *spill*. In a spill segment every kept key sits in
+  its predicted line, and a key that finds its line full goes to the segment's tail: its spilled keys, sorted,
+  stored after its last kept line. A lookup reads its predicted line, and only on a miss scans the tail.
+- **Choice.** Per segment, the count picks the layout and e jointly, at 1 line per kept key and 2 + (tail line)
+  per spilled key. Segment entries are unchanged: d holds the tail's length, flagged by its top bit.
+- **Name.** `splice_gi` = splice + interior G.
+
 ## Limits
 
 - **One machine.** An Apple M3 Max, with three single-thread runs at once (`run_parallel.sh`, J = 3). macOS cannot

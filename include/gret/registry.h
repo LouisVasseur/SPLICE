@@ -101,6 +101,7 @@ indexInterface<K, P>* make_index(const std::string& name) {
     if (name == "spl_tv") return new SI(name, SC{false, true, SI::kPla, true});
     if (name == "splice_eq") return new SI(name, SC{true, true, SI::kEqui, true});
     if (name == "spl_fixk") return new SI(name, SC{true, true, SI::kPla, false});
+    if (name == "splice_gi") return new SI(name, SC{true, true, SI::kPla, true, true});  // + interior G (spill tails)
     {  // trace_ / w_ / trace_w_ on a raw base: held by value and inlined, so the layers add no call to the lookup
       auto raw = [&](const std::string& n, auto tag) -> indexInterface<K, P>* {
         using B = typename decltype(tag)::type;

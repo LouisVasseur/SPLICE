@@ -60,6 +60,7 @@ class SpliceIndex final : public indexInterface<K, P> {
     bool v = true;   // V: per-segment expansion (false: e = 1)
     Knots knots = kPla;
     bool adapt = true;  // T's granularity chosen by the count (false: K = n / 610 segments, the old fixed default)
+    bool gi = false;    // interior G: a segment may spill the keys its predicted lines cannot hold (see layout)
   };
   explicit SpliceIndex(std::string name = "splice", Config c = {}) : name_(std::move(name)), cfg_(c) { set_empty(); }
 
@@ -116,15 +117,25 @@ class SpliceIndex final : public indexInterface<K, P> {
     // segment's first key), so the array is sorted and every scan stops at the first key >= its own
     slots_.assign(best.total, std::pair<K, P>{});
     size_t i = 0;
+    std::vector<std::pair<K, P>> spilled;
     for (size_t j = 0; j < seg_.size(); ++j) {
       const Seg& s = seg_[j];
-      const size_t end = best.first[j + 1];
+      const size_t end = best.first[j + 1], b = size_t(s.b4) << 2;
+      const bool spill = s.d >> 31;
       size_t prev = SIZE_MAX;
+      spilled.clear();
       for (size_t r = best.first[j]; r < end; ++r) {
-        const size_t pos = place(s, uint64_t(d[r].first), prev);
-        while (i < (size_t(s.b4) << 2) + pos) slots_[i++] = d[r];
+        const size_t p = offset(s, uint64_t(d[r].first)), pos = place_at(p, prev);
+        if (spill && (pos >> 2) != (p >> 2)) { spilled.push_back(d[r]); continue; }  // its line is full: the tail
+        while (i < b + pos) slots_[i++] = d[r];
         slots_[i++] = d[r];
         prev = pos;
+      }
+      if (spill) {  // the kept area's last line padded with its last key, then the sorted tail, padded with its last
+        const size_t kept_end = b + ((size_t(s.last) + 4) & ~size_t(3));
+        while (i < kept_end) slots_[i] = slots_[i - 1], ++i;
+        for (const auto& kv1 : spilled) slots_[i++] = kv1;
+        while (i & 3) slots_[i] = slots_[i - 1], ++i;
       }
     }
     while (i < slots_.size()) slots_[i++] = d[n_ - 1];  // trailing pad (not reachable by a key's scan)
@@ -132,11 +143,12 @@ class SpliceIndex final : public indexInterface<K, P> {
     const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
     const size_t nv = best.expanded;
     std::fprintf(stderr, "gret: %s n=%zu exceptions=%zu K=%s knots=%s eps=%zu segments=%zu expanded=%zu (%.1f%%) "
-                 "slots/key=%.3f E[lines]=%.4f E[slots]=%.3f top_bytes=%zu top_steps=%u bytes_per_key=%.2f build_ms=%.1f\n",
+                 "slots/key=%.3f E[lines]=%.4f E[slots]=%.3f top_bytes=%zu top_steps=%u spill_segments=%zu spilled=%zu (%.2f%%) "
+                 "bytes_per_key=%.2f build_ms=%.1f\n",
                  name_.c_str(), n, exc_.size(), fixedK ? std::getenv("SPLICE_K") : "auto", pla_ ? "pla" : "equi", pla_ ? eps_ : 0, seg_.size(), nv,
                  100.0 * double(nv) / double(seg_.size()), double(slots_.size()) / double(n_), best.lines / double(n_),
                  best.scanned / double(n_), top_.bytes() + seg_.size() * sizeof(Seg), top_.search_steps(),
-                 double(memory_consumption()) / double(n), ms);
+                 best.spill_segs, best.spilled, 100.0 * double(best.spilled) / double(n_), double(memory_consumption()) / double(n), ms);
   }
 
   __attribute__((flatten)) bool get(K key, P& val, Param* = nullptr) override {
@@ -144,10 +156,25 @@ class SpliceIndex final : public indexInterface<K, P> {
     if (__builtin_expect(x - lo_ > span_, 0)) return find_exception(key, val);
     const Seg& s = seg_[top_.locate(x)];
     const size_t off = offset(s, x), b = size_t(s.b4) << 2;
+    const bool spill = s.d >> 31;
+    const size_t dd = s.d & 0x7fffffffu;  // displacement (spill: the number of spilled keys; kept keys never move)
     size_t i = b + (off & ~size_t(3));  // the predicted line
-    const size_t end = b + std::min<size_t>(size_t(s.last), off + s.d);
+    const size_t end = b + std::min<size_t>(size_t(s.last), off + (spill ? 0 : dd));
     for (;; i += 4) {  // sorted slots, one line at a time: the first key >= x decides
       const std::pair<K, P>* l = &slots_[i];
+      const size_t c = size_t(uint64_t(l[0].first) < x) + size_t(uint64_t(l[1].first) < x) +
+                       size_t(uint64_t(l[2].first) < x) + size_t(uint64_t(l[3].first) < x);
+      if (c < 4) {
+        if (uint64_t(l[c].first) != x) break;
+        val = l[c].second;
+        return true;
+      }
+      if (i + 4 > end) break;
+    }
+    if (!spill) return false;
+    // interior G: the segment's spilled keys, sorted, from the line after its last kept slot
+    for (size_t t = b + ((size_t(s.last) + 4) & ~size_t(3)), te = t + dd; t < te; t += 4) {
+      const std::pair<K, P>* l = &slots_[t];
       const size_t c = size_t(uint64_t(l[0].first) < x) + size_t(uint64_t(l[1].first) < x) +
                        size_t(uint64_t(l[2].first) < x) + size_t(uint64_t(l[3].first) < x);
       if (c < 4) {
@@ -155,8 +182,8 @@ class SpliceIndex final : public indexInterface<K, P> {
         val = l[c].second;
         return true;
       }
-      if (i + 4 > end) return false;
     }
+    return false;
   }
 
   double expected_lines() const { return e_lines_; }  // the build's E[lines]: lines a lookup of a bulk key touches
@@ -187,7 +214,7 @@ class SpliceIndex final : public indexInterface<K, P> {
     PwlCdf top;
     std::vector<Seg, LineAlloc<Seg>> seg;
     std::vector<size_t> first;      // first rank of each segment, and n at the end
-    size_t total = 0, eps = 0, top_bytes = 0, expanded = 0;
+    size_t total = 0, eps = 0, top_bytes = 0, expanded = 0, spilled = 0, spill_segs = 0;
     double lines = 0, scanned = 0, cost = 0;
   };
 
@@ -317,24 +344,33 @@ class SpliceIndex final : public indexInterface<K, P> {
       }
     }
     // V: exact lines touched and slots used per (segment, e)
-    const int ne = cfg_.v ? kNE : 1;
+    // options per segment: e (V), and with interior G on, displace or spill (a key whose predicted line is full goes
+    // to the segment's sorted tail: 1 line for the line read, then the tail's lines up to its own)
+    const int ne0 = cfg_.v ? kNE : 1, nm = cfg_.gi ? 2 : 1, ne = ne0 * nm;
     std::vector<double> L(S * ne), Sl(S * ne), Sc(S * ne);
     for (size_t j = 0; j < S; ++j) {
       const size_t f = B.first[j], g = B.first[j + 1], nk = g - f;
-      for (int ei = 0; ei < ne; ++ei) {
-        const Seg s = line(kx[j], ka[j], kr[j], f, kE[ei]);
-        size_t prev = SIZE_MAX;
+      for (int o = 0; o < ne; ++o) {
+        const bool spill = o >= ne0;
+        const Seg s = line(kx[j], ka[j], kr[j], f, kE[o % ne0]);
+        size_t prev = SIZE_MAX, ns = 0;
         double lines = 0, sc = 0;
         for (size_t r = f; r < g; ++r) {
           const size_t p = offset(s, uint64_t(d[r].first));
           const size_t pos = place_at(p, prev);
+          if (spill && (pos >> 2) != (p >> 2)) {
+            lines += double(2 + (ns >> 2));
+            sc += double(4 + (ns & ~size_t(3)) + (ns & 3) + 1);
+            ++ns;
+            continue;
+          }
           lines += double((pos >> 2) - (p >> 2) + 1);
           sc += double(pos - (p & ~size_t(3)) + 1);
           prev = pos;
         }
-        L[j * ne + ei] = lines;
-        Sc[j * ne + ei] = sc;
-        Sl[j * ne + ei] = double(nk ? ((prev + 1 + 3) & ~size_t(3)) : 0);
+        L[j * ne + o] = lines;
+        Sc[j * ne + o] = sc;
+        Sl[j * ne + o] = double(nk ? ((prev + 1 + 3) & ~size_t(3)) + ((ns + 3) & ~size_t(3)) : 0);
       }
     }
     // the top first: it depends only on the knots, and its real size enters the byte cap
@@ -372,23 +408,29 @@ class SpliceIndex final : public indexInterface<K, P> {
     size_t base = 0;
     for (size_t j = 0; j < S; ++j) {
       const int ei = pick[j];
+      const bool spill = ei >= ne0;
       const size_t f = B.first[j], g = B.first[j + 1], nk = g - f;
-      Seg s = line(kx[j], ka[j], kr[j], f, kE[ei]);
-      size_t prev = SIZE_MAX, dmax = 0;
+      Seg s = line(kx[j], ka[j], kr[j], f, kE[ei % ne0]);
+      size_t prev = SIZE_MAX, dmax = 0, ns = 0;
       for (size_t r = f; r < g; ++r) {
         const size_t p = offset(s, uint64_t(d[r].first));
         const size_t pos = place_at(p, prev);
+        if (spill && (pos >> 2) != (p >> 2)) { ++ns; continue; }
         dmax = std::max(dmax, pos > p ? pos - p : 0);
         prev = pos;
       }
+      if (spill) dmax = ns;  // a spill segment's kept keys never leave their line: d holds the tail's length
+      if (dmax >= 0x80000000u) throw std::length_error("SpliceIndex: a segment displaces or spills 2^31 keys");
       if (base >> 2 > UINT32_MAX) throw std::length_error("SpliceIndex: more than 2^34 slots");
       if (nk && prev >= UINT32_MAX) throw std::length_error("SpliceIndex: a segment of 2^32 slots");
       s.b4 = uint32_t(base >> 2);
       s.last = nk ? uint32_t(prev) : 0;
-      s.d = uint32_t(dmax);
+      s.d = uint32_t(dmax) | (spill ? 0x80000000u : 0u);
       B.seg[j] = s;
-      B.expanded += ei != 0;
-      base += nk ? (size_t(s.last) + 1 + 3) & ~size_t(3) : 0;
+      B.expanded += (ei % ne0) != 0;
+      B.spilled += ns;
+      B.spill_segs += spill;
+      base += nk ? ((size_t(s.last) + 1 + 3) & ~size_t(3)) + ((ns + 3) & ~size_t(3)) : 0;
       B.lines += L[j * ne + ei];
       B.scanned += Sc[j * ne + ei];
     }
