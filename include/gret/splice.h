@@ -17,8 +17,10 @@
 //      least that keeps the whole index within SPLICE_MAX_BPK bytes per key (default 32); ties go to the smaller e.
 //      e = 1 is the packed array: no V.
 // Hierarchy: G and the choice of knots are global (one decision per index), e is per segment (about n / K keys), the
-// search is per line. Every decision is an exact count at build, never a timing; E[lines] (the mean over the keys of
-// the lines a lookup touches) is printed with the build. Segment bases are line-aligned, so the count is exact.
+// search is per line. Every decision is an exact count at build, never a timing (v3, timed: T's granularity and the
+// top's form are chosen by timing a sample of lookups on each built candidate; G and V stay exact counts); E[lines] (the
+// mean over the keys of the lines a lookup touches) is printed with the build. Segment bases are line-aligned, so the
+// count is exact.
 // Names (registry.h), the attribution ladder: splice = G + T + V; spl_t = T alone (no G, e = 1); spl_gt = G + T;
 // spl_tv = T + V; splice_eq = splice with K equi-rank knots instead of the PLA's starts (the same K); spl_fixk = splice
 // with a fixed granularity (n / 610 keys per segment) instead of the count's. Environment: SPLICE_K=K fixes K (sweeps);
@@ -35,6 +37,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <new>
+#include <random>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
@@ -70,6 +74,9 @@ class SpliceIndex final : public indexInterface<K, P> {
     bool v2 = false;    // v2: the top's locate chosen per index by count (PwlCdf locator or RankTop, value or rank
                         // radix), every price in the machine's probed access costs (latency.h), and the granularity
                         // searched fine to coarse
+    bool timed = false; // v3: v2's candidates, and T's granularity and the top's form chosen by timing a sample of
+                        // lookups on each built candidate (measure): the price is the machine's, overlap and contention
+                        // included, where v2's probed prices are a model of it
   };
   explicit SpliceIndex(std::string name = "splice", Config c = {}) : name_(std::move(name)), cfg_(c) { set_empty(); }
 
@@ -91,6 +98,7 @@ class SpliceIndex final : public indexInterface<K, P> {
     if (!n_) { set_empty(); return; }
     const double cap_bytes = bpk * double(n);
     if (cfg_.v2) access_curve();  // the machine's prices, measured once per process
+    const std::vector<K> q = cfg_.timed ? sample(d) : std::vector<K>();  // timed: the lookups every candidate is timed on
     // T's granularity, chosen by the same exact count: PLA errors eps = 1, 2, 4, ..., 256 (segments from 8 keys each
     // on average down to 64 segments), each laid out by V; the least E[lines] + price * slots/key +
     // kTopPenalty * log2(top / 1 MiB) wins (a top past 1 MiB stops being cache-resident: measured, see kTopPenalty). SPLICE_K=K instead fixes K
@@ -99,8 +107,9 @@ class SpliceIndex final : public indexInterface<K, P> {
     std::vector<double> ka, kr;
     std::vector<uint64_t> kx;
     auto consider = [&](Build&& b) {
-      b.cost = cfg_.v2 ? (b.lines * b.line_cost + space_price() * double(b.total)) / double(n_) + b.top_cost
-                       : (b.lines + space_price() * double(b.total)) / double(n_) + top_penalty(b.top_bytes);
+      if (cfg_.timed) b.cost = measure(d, b, q);
+      else b.cost = cfg_.v2 ? (b.lines * b.line_cost + space_price() * double(b.total)) / double(n_) + b.top_cost
+                            : (b.lines + space_price() * double(b.total)) / double(n_) + top_penalty(b.top_bytes);
       const double c = b.cost;
       if (!best.ok || b.cost < best.cost) std::swap(best, b);
       return c;
@@ -108,7 +117,7 @@ class SpliceIndex final : public indexInterface<K, P> {
     const bool fixedK = std::getenv("SPLICE_K") && *std::getenv("SPLICE_K");
     if (n_ < 3 || cfg_.knots == kEqui) {
       size_t Ke = fixedK ? Kk : std::max<size_t>(1, n_ / 610);
-      if (!fixedK && cfg_.knots == kEqui && n_ >= 3) Ke = pla_choice(d, cap_bytes);  // the same segment count as splice
+      if (!fixedK && cfg_.knots == kEqui && n_ >= 3) Ke = pla_choice(d, cap_bytes, q);  // the same segment count as splice
       segments_equi(d, unsigned(std::min<size_t>(Ke, n_)), kx, ka, kr);
       consider(layout(d, kx, ka, kr, cap_bytes, false, 0));
     } else if (fixedK || !cfg_.adapt) {
@@ -139,45 +148,21 @@ class SpliceIndex final : public indexInterface<K, P> {
     nseg_ = best.first.size() - 1;
     eps_ = best.eps;
     pla_ = best.pla;
-    // the slots: each key at its position, each empty slot a copy of the next key (pads after a segment: the next
-    // segment's first key), so the array is sorted and every scan stops at the first key >= its own
-    slots_.assign(best.total, std::pair<K, P>{});
-    size_t i = 0;
-    std::vector<std::pair<K, P>> spilled;
-    for (size_t j = 0; j < nseg_; ++j) {
-      const Seg& s = seg_[j];
-      const size_t end = best.first[j + 1], b = size_t(s.b4) << 2;
-      const bool spill = s.d >> 31;
-      size_t prev = SIZE_MAX;
-      spilled.clear();
-      for (size_t r = best.first[j]; r < end; ++r) {
-        const size_t p = offset(s, uint64_t(d[r].first)), pos = place_at(p, prev);
-        if (spill && (pos >> 2) != (p >> 2)) { spilled.push_back(d[r]); continue; }  // its line is full: the tail
-        while (i < b + pos) slots_[i++] = d[r];
-        slots_[i++] = d[r];
-        prev = pos;
-      }
-      if (spill) {  // the kept area's last line padded with its last key, then the sorted tail, padded with its last
-        const size_t kept_end = b + ((size_t(s.last) + 4) & ~size_t(3));
-        while (i < kept_end) slots_[i] = slots_[i - 1], ++i;
-        for (const auto& kv1 : spilled) slots_[i++] = kv1;
-        while (i & 3) slots_[i] = slots_[i - 1], ++i;
-      }
-    }
-    while (i < slots_.size()) slots_[i++] = d[n_ - 1];  // trailing pad (not reachable by a key's scan)
+    if (cfg_.timed) decltype(slots_)().swap(slots_);  // a candidate's slots: released, so the best's are allocated exactly
+    fill(d, best.first, best.total);
     e_lines_ = best.lines / double(n_);
     const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
     const size_t nv = best.expanded;
     std::fprintf(stderr, "gret: %s n=%zu exceptions=%zu K=%s knots=%s eps=%zu segments=%zu expanded=%zu (%.1f%%) "
                  "slots/key=%.3f E[lines]=%.4f E[slots]=%.3f top=%s top_bytes=%zu top_steps=%u top_buckets=%zu top_dense=%zu top_dense2=%zu top_sub=%zu "
-                 "top_cost=%.3f spill_segments=%zu spilled=%zu (%.2f%%) "
+                 "top_cost=%.3f pwl_ns=%.1f rank_ns=%.1f spill_segments=%zu spilled=%zu (%.2f%%) "
                  "bytes_per_key=%.2f build_ms=%.1f\n",
                  name_.c_str(), n, exc_.size(), fixedK ? std::getenv("SPLICE_K") : "auto", pla_ ? "pla" : "equi", pla_ ? eps_ : 0, nseg_, nv,
                  100.0 * double(nv) / double(nseg_), double(slots_.size()) / double(n_), best.lines / double(n_),
                  best.scanned / double(n_), rank_ ? (vtop_ ? "radix" : "rank") : "pwl", best.top_bytes, rank_ ? rtop_.rank_steps() : top_.search_steps(),
                  rank_ ? rtop_.buckets() : top_.radix_buckets(), rank_ ? rtop_.dense_buckets() : size_t(0),
                  rank_ ? rtop_.dense_subbuckets() : size_t(0), rank_ ? rtop_.sub_entries() : size_t(0),
-                 best.top_cost, best.spill_segs, best.spilled, 100.0 * double(best.spilled) / double(n_), double(memory_consumption()) / double(n), ms);
+                 best.top_cost, best.pwl_ns, best.rank_ns, best.spill_segs, best.spilled, 100.0 * double(best.spilled) / double(n_), double(memory_consumption()) / double(n), ms);
   }
 
   __attribute__((flatten)) bool get(K key, P& val, Param* = nullptr) override {
@@ -254,8 +239,8 @@ class SpliceIndex final : public indexInterface<K, P> {
   static constexpr int kNE = 6;
 
   struct Build {
-    bool ok = false, pla = false, rank = false, vtop = true;
-    double top_cost = 0, line_cost = 1, dense_share = 0;
+    bool ok = false, pla = false, rank = false, vtop = true, both = false;  // both (timed): top and rtop built, to time
+    double top_cost = 0, line_cost = 1, dense_share = 0, pwl_ns = 0, rank_ns = 0;  // *_ns: timed, per lookup
     PwlCdf top;
     RankTop rtop;
     std::vector<Seg, LineAlloc<Seg>> seg;
@@ -340,14 +325,15 @@ class SpliceIndex final : public indexInterface<K, P> {
       if (segs < 64) break;
     }
   }
-  size_t pla_choice(const std::pair<K, P>* d, double cap_bytes) const {  // splice's segment count, for splice_eq
+  size_t pla_choice(const std::pair<K, P>* d, double cap_bytes, const std::vector<K>& q) {  // splice's count, for *_eq
     std::vector<uint64_t> kx; std::vector<double> ka, kr;
     double bc = 0; size_t bs = 1; bool any = false;
     auto ev = [&](size_t eps) {
       segments_pla(d, eps, kx, ka, kr);
       Build b = layout(d, kx, ka, kr, cap_bytes, true, eps);
-      const double c = cfg_.v2 ? (b.lines * b.line_cost + space_price() * double(b.total)) / double(n_) + b.top_cost
-                               : (b.lines + space_price() * double(b.total)) / double(n_) + top_penalty(b.top_bytes);
+      const double c = cfg_.timed ? measure(d, b, q)
+                       : cfg_.v2 ? (b.lines * b.line_cost + space_price() * double(b.total)) / double(n_) + b.top_cost
+                                 : (b.lines + space_price() * double(b.total)) / double(n_) + top_penalty(b.top_bytes);
       if (!any || c < bc) bc = c, bs = b.first.size() - 1, any = true;
       return c;
     };
@@ -365,6 +351,80 @@ class SpliceIndex final : public indexInterface<K, P> {
     return bytes > (size_t(1) << 20) ? kTopPenalty * std::log2(double(bytes) / double(size_t(1) << 20)) : 0;
   }
 
+  // timed: SPLICE_TIME_N (2^20) bulk keys drawn uniformly with a fixed seed, existing keys as in GRE's lookups
+  std::vector<K> sample(const std::pair<K, P>* d) const {
+    std::vector<K> q(std::min<size_t>(n_, env("SPLICE_TIME_N", size_t(1) << 20)));
+    std::mt19937_64 g(42);
+    std::uniform_int_distribution<size_t> u(0, n_ - 1);
+    for (K& k : q) k = d[u(g)].first;
+    return q;
+  }
+  // ns per lookup over the sample, the median of 3 passes; every sampled key must be found (a check of the candidate)
+  double time_lookups(const std::vector<K>& q) {
+    if (q.empty()) return 0;
+    double r[3];
+    for (double& t : r) {
+      size_t found = 0;
+      P v{};
+      const auto t0 = std::chrono::steady_clock::now();
+      for (const K& k : q) found += get(k, v);
+      t = std::chrono::duration<double, std::nano>(std::chrono::steady_clock::now() - t0).count() / double(q.size());
+      if (found != q.size()) throw std::logic_error("SpliceIndex: a timed candidate misses a bulk key");
+    }
+    std::sort(r, r + 3);
+    return r[1];
+  }
+  // timed: the candidate installed in place of the members, its slots filled, the sample timed with each top it has
+  // (both: the locator and RankTop; the slower is dropped), the members restored. Returns ns per lookup
+  double measure(const std::pair<K, P>* d, Build& b, const std::vector<K>& q) {
+    std::swap(seg_, b.seg), std::swap(top_, b.top), std::swap(rtop_, b.rtop);
+    const size_t nseg0 = nseg_;
+    const bool rank0 = rank_, vtop0 = vtop_, spill0 = has_spill_;
+    nseg_ = b.first.size() - 1, has_spill_ = b.spill_segs > 0, vtop_ = b.vtop;
+    fill(d, b.first, b.total);
+    if (b.both || !b.rank) rank_ = false, b.pwl_ns = time_lookups(q);
+    if (b.rank) rank_ = true, b.rank_ns = time_lookups(q);
+    std::swap(seg_, b.seg), std::swap(top_, b.top), std::swap(rtop_, b.rtop);
+    nseg_ = nseg0, rank_ = rank0, vtop_ = vtop0, has_spill_ = spill0;
+    if (b.both) {
+      b.rank = b.rank_ns < b.pwl_ns;
+      if (b.rank) b.top = PwlCdf(); else b.rtop = RankTop();
+      b.top_bytes = (b.rank ? b.rtop.bytes() : b.top.bytes()) + b.seg.size() * sizeof(Seg);
+    }
+    const double ns = b.rank ? b.rank_ns : b.pwl_ns;
+    std::fprintf(stderr, "gret: %s candidate eps=%zu segments=%zu E[lines]=%.4f slots/key=%.3f pwl_ns=%.1f rank_ns=%.1f\n",
+                 name_.c_str(), b.eps, b.first.size() - 1, b.lines / double(n_), double(b.total) / double(n_), b.pwl_ns,
+                 b.rank_ns);
+    return ns;
+  }
+  // the slots: each key at its position, each empty slot a copy of the next key (pads after a segment: the next
+  // segment's first key), so the array is sorted and every scan stops at the first key >= its own
+  void fill(const std::pair<K, P>* d, const std::vector<size_t>& first, size_t total) {
+    slots_.resize(total);  // every slot is written below
+    size_t i = 0;
+    std::vector<std::pair<K, P>> spilled;
+    for (size_t j = 0; j < nseg_; ++j) {
+      const Seg& s = seg_[j];
+      const size_t end = first[j + 1], b = size_t(s.b4) << 2;
+      const bool spill = s.d >> 31;
+      size_t prev = SIZE_MAX;
+      spilled.clear();
+      for (size_t r = first[j]; r < end; ++r) {
+        const size_t p = offset(s, uint64_t(d[r].first)), pos = place_at(p, prev);
+        if (spill && (pos >> 2) != (p >> 2)) { spilled.push_back(d[r]); continue; }  // its line is full: the tail
+        while (i < b + pos) slots_[i++] = d[r];
+        slots_[i++] = d[r];
+        prev = pos;
+      }
+      if (spill) {  // the kept area's last line padded with its last key, then the sorted tail, padded with its last
+        const size_t kept_end = b + ((size_t(s.last) + 4) & ~size_t(3));
+        while (i < kept_end) slots_[i] = slots_[i - 1], ++i;
+        for (const auto& kv1 : spilled) slots_[i++] = kv1;
+        while (i & 3) slots_[i] = slots_[i - 1], ++i;
+      }
+    }
+    while (i < slots_.size()) slots_[i++] = d[n_ - 1];  // trailing pad (not reachable by a key's scan)
+  }
   // V on given segments: per segment and e, the exact lines touched and slots used; mu bisected to the least that
   // fits the byte cap; then each segment's slots, displacement and clamp, and the top that locates them.
   Build layout(const std::pair<K, P>* d, std::vector<uint64_t> kx, std::vector<double> ka, std::vector<double> kr,
@@ -456,6 +516,7 @@ class SpliceIndex final : public indexInterface<K, P> {
       bool use_rank = forced ? std::string(tp) != "pwl" : (cfg_.v2 && S > 65536), use_value = true;
       if (forced) use_value = std::string(tp) == "radix";
       B.rank = use_rank;
+      B.both = use_rank && !forced && cfg_.timed;  // timed: the locator too, and measure keeps the faster
       if (use_rank) {  // 2^(bit_width(S) + RB) buckets: about 2-4 per segment
         const size_t rb = env("SPLICE_TOP_RB", 1);
         unsigned bw = 0;
@@ -482,13 +543,12 @@ class SpliceIndex final : public indexInterface<K, P> {
           B.rtop = std::move(use_value ? tv : tr);
           B.dense_share = use_value ? fv : fr;
         }
-      } else {
-        B.top = PwlCdf::locator(std::move(kt), alone);
       }
+      if (!use_rank || B.both) B.top = PwlCdf::locator(std::move(kt), alone);
       B.vtop = use_value;
     }
     const size_t pad = B.rank ? RankTop::kW - 1 : 0;  // the window reads up to kW - 1 entries past the last start
-    const size_t topb = B.rank ? B.rtop.bytes() : B.top.bytes();
+    const size_t topb = B.both ? std::max(B.rtop.bytes(), B.top.bytes()) : B.rank ? B.rtop.bytes() : B.top.bytes();
     if (cfg_.v2) {  // v2's prices: each dependent access at the probed cost of its structure's footprint (latency.h)
       const double segb = double((S + pad) * sizeof(Seg));
       if (B.rank) {

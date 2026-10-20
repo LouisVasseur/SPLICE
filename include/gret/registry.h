@@ -111,6 +111,13 @@ indexInterface<K, P>* make_index(const std::string& name) {
     if (name == "s2_tv") return new SI(name, SC{false, true, SI::kPla, true, false, true});
     if (name == "s2_eq") return new SI(name, SC{true, true, SI::kEqui, true, false, true});
     if (name == "s2_fixk") return new SI(name, SC{true, true, SI::kPla, false, false, true});
+    // v3 (timed): v2's candidates, T's granularity and the top's form chosen by timing a sample of lookups
+    if (name == "splice3") return new SI(name, SC{true, true, SI::kPla, true, false, true, true});
+    if (name == "s3_t") return new SI(name, SC{false, false, SI::kPla, true, false, true, true});
+    if (name == "s3_gt") return new SI(name, SC{true, false, SI::kPla, true, false, true, true});
+    if (name == "s3_tv") return new SI(name, SC{false, true, SI::kPla, true, false, true, true});
+    if (name == "s3_eq") return new SI(name, SC{true, true, SI::kEqui, true, false, true, true});
+    if (name == "s3_fixk") return new SI(name, SC{true, true, SI::kPla, false, false, true, true});
     {  // trace_ / w_ / trace_w_ on a raw base: held by value and inlined, so the layers add no call to the lookup
       auto raw = [&](const std::string& n, auto tag) -> indexInterface<K, P>* {
         using B = typename decltype(tag)::type;
