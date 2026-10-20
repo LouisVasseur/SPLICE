@@ -144,6 +144,7 @@ class SpliceIndex final : public indexInterface<K, P> {
     vtop_ = best.vtop;
     top_cost_ = best.top_cost;
     has_spill_ = best.spill_segs > 0;
+    plain_ = !rank_ && !has_spill_;
     seg_ = std::move(best.seg);
     nseg_ = best.first.size() - 1;
     eps_ = best.eps;
@@ -165,45 +166,18 @@ class SpliceIndex final : public indexInterface<K, P> {
                  best.top_cost, best.pwl_ns, best.rank_ns, best.spill_segs, best.spilled, 100.0 * double(best.spilled) / double(n_), double(memory_consumption()) / double(n), ms);
   }
 
+  // The common case (the locator top, no spilling segment) is v1's path exactly: every extra test in it costs
+  // throughput at 200M (measured: two predictable flag tests, about 9% on covid), so the other cases are out of line.
   __attribute__((flatten)) bool get(K key, P& val, Param* = nullptr) override {
     const uint64_t x = uint64_t(key);
     if (__builtin_expect(x - lo_ > span_, 0)) return find_exception(key, val);
-    const Seg& s = seg_[rank_ ? rtop_.locate(x, seg_.data()) : top_.locate(x)];
+    if (__builtin_expect(!plain_, 0)) return get_general(x, val);
+    const Seg& s = seg_[top_.locate(x)];
     const size_t off = offset(s, x), b = size_t(s.b4) << 2;
-    if (__builtin_expect(!has_spill_, 1)) {  // no segment spills (every name without interior G): the plain path
-      size_t i = b + (off & ~size_t(3));
-      const size_t end = b + std::min<size_t>(size_t(s.last), off + s.d);
-      for (;; i += 4) {
-        const std::pair<K, P>* l = &slots_[i];
-        const size_t c = size_t(uint64_t(l[0].first) < x) + size_t(uint64_t(l[1].first) < x) +
-                         size_t(uint64_t(l[2].first) < x) + size_t(uint64_t(l[3].first) < x);
-        if (c < 4) {
-          if (uint64_t(l[c].first) != x) return false;
-          val = l[c].second;
-          return true;
-        }
-        if (i + 4 > end) return false;
-      }
-    }
-    const bool spill = s.d >> 31;
-    const size_t dd = s.d & 0x7fffffffu;  // displacement (spill: the number of spilled keys; kept keys never move)
     size_t i = b + (off & ~size_t(3));  // the predicted line
-    const size_t end = b + std::min<size_t>(size_t(s.last), off + (spill ? 0 : dd));
+    const size_t end = b + std::min<size_t>(size_t(s.last), off + s.d);
     for (;; i += 4) {  // sorted slots, one line at a time: the first key >= x decides
       const std::pair<K, P>* l = &slots_[i];
-      const size_t c = size_t(uint64_t(l[0].first) < x) + size_t(uint64_t(l[1].first) < x) +
-                       size_t(uint64_t(l[2].first) < x) + size_t(uint64_t(l[3].first) < x);
-      if (c < 4) {
-        if (uint64_t(l[c].first) != x) break;
-        val = l[c].second;
-        return true;
-      }
-      if (i + 4 > end) break;
-    }
-    if (!spill) return false;
-    // interior G: the segment's spilled keys, sorted, from the line after its last kept slot
-    for (size_t t = b + ((size_t(s.last) + 4) & ~size_t(3)), te = t + dd; t < te; t += 4) {
-      const std::pair<K, P>* l = &slots_[t];
       const size_t c = size_t(uint64_t(l[0].first) < x) + size_t(uint64_t(l[1].first) < x) +
                        size_t(uint64_t(l[2].first) < x) + size_t(uint64_t(l[3].first) < x);
       if (c < 4) {
@@ -211,8 +185,8 @@ class SpliceIndex final : public indexInterface<K, P> {
         val = l[c].second;
         return true;
       }
+      if (i + 4 > end) return false;
     }
-    return false;
   }
 
   double expected_lines() const { return e_lines_; }  // the build's E[lines]: lines a lookup of a bulk key touches
@@ -382,10 +356,10 @@ class SpliceIndex final : public indexInterface<K, P> {
     const bool rank0 = rank_, vtop0 = vtop_, spill0 = has_spill_;
     nseg_ = b.first.size() - 1, has_spill_ = b.spill_segs > 0, vtop_ = b.vtop;
     fill(d, b.first, b.total);
-    if (b.both || !b.rank) rank_ = false, b.pwl_ns = time_lookups(q);
-    if (b.rank) rank_ = true, b.rank_ns = time_lookups(q);
+    if (b.both || !b.rank) rank_ = false, plain_ = !has_spill_, b.pwl_ns = time_lookups(q);
+    if (b.rank) rank_ = true, plain_ = false, b.rank_ns = time_lookups(q);
     std::swap(seg_, b.seg), std::swap(top_, b.top), std::swap(rtop_, b.rtop);
-    nseg_ = nseg0, rank_ = rank0, vtop_ = vtop0, has_spill_ = spill0;
+    nseg_ = nseg0, rank_ = rank0, vtop_ = vtop0, has_spill_ = spill0, plain_ = !rank0 && !spill0;
     if (b.both) {
       b.rank = b.rank_ns < b.pwl_ns;
       if (b.rank) b.top = PwlCdf(); else b.rtop = RankTop();
@@ -631,8 +605,56 @@ class SpliceIndex final : public indexInterface<K, P> {
     s.last = UINT32_MAX;
     return s;
   }
+  // RankTop, or a segment that spills (interior G): the general path
+  __attribute__((noinline)) bool get_general(uint64_t x, P& val) const {
+    const Seg& s = seg_[rank_ ? rtop_.locate(x, seg_.data()) : top_.locate(x)];
+    const size_t off = offset(s, x), b = size_t(s.b4) << 2;
+    if (__builtin_expect(!has_spill_, 1)) {  // no segment spills (every name without interior G): the plain path
+      size_t i = b + (off & ~size_t(3));
+      const size_t end = b + std::min<size_t>(size_t(s.last), off + s.d);
+      for (;; i += 4) {
+        const std::pair<K, P>* l = &slots_[i];
+        const size_t c = size_t(uint64_t(l[0].first) < x) + size_t(uint64_t(l[1].first) < x) +
+                         size_t(uint64_t(l[2].first) < x) + size_t(uint64_t(l[3].first) < x);
+        if (c < 4) {
+          if (uint64_t(l[c].first) != x) return false;
+          val = l[c].second;
+          return true;
+        }
+        if (i + 4 > end) return false;
+      }
+    }
+    const bool spill = s.d >> 31;
+    const size_t dd = s.d & 0x7fffffffu;  // displacement (spill: the number of spilled keys; kept keys never move)
+    size_t i = b + (off & ~size_t(3));  // the predicted line
+    const size_t end = b + std::min<size_t>(size_t(s.last), off + (spill ? 0 : dd));
+    for (;; i += 4) {  // sorted slots, one line at a time: the first key >= x decides
+      const std::pair<K, P>* l = &slots_[i];
+      const size_t c = size_t(uint64_t(l[0].first) < x) + size_t(uint64_t(l[1].first) < x) +
+                       size_t(uint64_t(l[2].first) < x) + size_t(uint64_t(l[3].first) < x);
+      if (c < 4) {
+        if (uint64_t(l[c].first) != x) break;
+        val = l[c].second;
+        return true;
+      }
+      if (i + 4 > end) break;
+    }
+    if (!spill) return false;
+    // interior G: the segment's spilled keys, sorted, from the line after its last kept slot
+    for (size_t t = b + ((size_t(s.last) + 4) & ~size_t(3)), te = t + dd; t < te; t += 4) {
+      const std::pair<K, P>* l = &slots_[t];
+      const size_t c = size_t(uint64_t(l[0].first) < x) + size_t(uint64_t(l[1].first) < x) +
+                       size_t(uint64_t(l[2].first) < x) + size_t(uint64_t(l[3].first) < x);
+      if (c < 4) {
+        if (uint64_t(l[c].first) != x) return false;
+        val = l[c].second;
+        return true;
+      }
+    }
+    return false;
+  }
   void set_empty() {  // no bulk: only x = 1 passes the range check, and it meets one dummy line holding key 0
-    n_ = 0, lo_ = 1, span_ = 0, rank_ = false, nseg_ = 1;
+    n_ = 0, lo_ = 1, span_ = 0, rank_ = false, has_spill_ = false, plain_ = true, nseg_ = 1;
     seg_.assign(1, Seg{});
     seg_[0].x0 = 1;
     top_ = PwlCdf::locator({1, 2});
@@ -652,7 +674,7 @@ class SpliceIndex final : public indexInterface<K, P> {
   double e_lines_ = 0;
   size_t n_ = 0, eps_ = 0;
   uint64_t lo_ = 1, span_ = 0;
-  bool rank_ = false, vtop_ = false, has_spill_ = false;
+  bool rank_ = false, vtop_ = false, has_spill_ = false, plain_ = true;  // plain_: !rank_ && !has_spill_ (get's fast path)
   double top_cost_ = 0;
   size_t nseg_ = 1;
   PwlCdf top_;
