@@ -13,6 +13,8 @@
 # OUT_DIR/runs.tsv (every cell's runs.tsv, rewritten atomically after each cell; logs stay under cells/).
 # HEAVY (an extended regex over index names, default '^lipp$'): at most one such cell at a time (a lock directory), for
 # indexes whose memory at 200M keys (LIPP: up to ~150 B/key) would not fit J times.
+# CORES="2 3" (Linux): each cell takes a free core from the list (a lock directory per core) and runs pinned to it
+# (run_baselines.sh's CORE); give at least J cores. Unset: CORE passes through as given (macOS cannot pin).
 # macOS cannot pin cores: J concurrent runs share the memory system and the last-level cache. OUT_DIR/PARALLEL.txt
 # records J, so these timings are compared with each other, not with one-at-a-time numbers.
 set -uo pipefail
@@ -23,7 +25,7 @@ RB=$(cd "$(dirname "$0")" && pwd)/run_baselines.sh
 mkdir -p "$OUT/cells"
 OUT=$(cd "$OUT" && pwd)
 { echo "started: $(date -u +%FT%TZ) host: $(hostname) J=$J passes: $PASSES"; echo "cells ($CELLS):"; grep -v '^#' "$CELLS" | awk NF
-  echo "env: GRE_DIR=${GRE_DIR:-} DATA_DIR=${DATA_DIR:-} OPS=${OPS:-} HASH_DATA=${HASH_DATA:-1} HEAVY=$HEAVY"; } >> "$OUT/PARALLEL.txt"
+  echo "env: GRE_DIR=${GRE_DIR:-} DATA_DIR=${DATA_DIR:-} OPS=${OPS:-} HASH_DATA=${HASH_DATA:-1} HEAVY=$HEAVY CORES=${CORES:-}"; } >> "$OUT/PARALLEL.txt"
 
 merge() {  # every cell's runs.tsv into OUT/runs.tsv (one header), atomically
   local tmp; tmp=$(mktemp "$OUT/.runs.XXXXXX")
@@ -37,15 +39,21 @@ cell() {  # cell DATASET INDEX PASS
   mkdir -p "$o"
   local heavy=0
   if [[ $i =~ $HEAVY ]]; then heavy=1; until mkdir "$OUT/.heavy.lock" 2>/dev/null; do sleep 5; done; fi
+  local core=""
+  if [ -n "${CORES:-}" ]; then
+    until for c in $CORES; do mkdir "$OUT/.core.$c.lock" 2>/dev/null && { core=$c; break; }; done; [ -n "$core" ]; do sleep 2; done
+  fi
   t0=$(date +%s)
-  DATASETS=$d INDEXES=$i REPEATS=$p "$RB" "$o" >> "$o/run.out" 2>&1; rc=$?
+  if [ -n "$core" ]; then CORE=$core DATASETS=$d INDEXES=$i REPEATS=$p "$RB" "$o" >> "$o/run.out" 2>&1; rc=$?
+  else DATASETS=$d INDEXES=$i REPEATS=$p "$RB" "$o" >> "$o/run.out" 2>&1; rc=$?; fi
+  [ -z "$core" ] || rmdir "$OUT/.core.$core.lock"
   [ $heavy = 0 ] || rmdir "$OUT/.heavy.lock"
   echo "$(date -u +%FT%TZ) pass=$p $d $i rc=$rc $(( $(date +%s) - t0 ))s | $(grep -E '^\[[0-9]+/[0-9]+\]' "$o/run.out" | tail -n 1)" \
       >> "$OUT/progress.log"
   merge
 }
-export -f cell merge; export OUT RB HEAVY
-rmdir "$OUT/.heavy.lock" 2>/dev/null || true  # a stale lock from an interrupted run
+export -f cell merge; export OUT RB HEAVY CORES
+rmdir "$OUT/.heavy.lock" "$OUT"/.core.*.lock 2>/dev/null || true  # stale locks from an interrupted run
 for p in $PASSES; do
   grep -v '^#' "$CELLS" | awk 'NF >= 2 { print $1, $2 }' | sed "s/\$/ $p/" | xargs -P "$J" -L 1 bash -c 'cell "$@"' _
   echo "$(date -u +%FT%TZ) pass $p finished" >> "$OUT/progress.log"

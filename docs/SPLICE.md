@@ -120,6 +120,30 @@ c++ -O3 -std=c++17 scripts/dataset_bounds.cpp -o build/dataset_bounds   # datase
 
 Results: `results/mac200M_2026-10-20/` (RESULTS.md, attribution.png).
 
+## Review (2026-10-20) and the fixes after the first 200M runs
+
+An adversarial review of the frozen code (`b08866e`) took three lenses: limits and overflow, metric honesty, and GRE
+integration. It found no wrong answer on real, fuzzed or edge-case inputs. The build's E[lines] matches an
+instrumented copy of `get()` to 4 decimals, and `memory_consumption()` matches the live heap. Three defects survived
+verification; all are fixed after `b08866e`:
+
+1. **A lone last key** (PGM's last segment holding only the last key) was merged into the interval before it. Lookups
+   stayed exact, but that segment could scan many lines (a run plus 2^64 - 1 with G off: 4167 lines instead of 1) or
+   waste slots (a mild outlier: 30 B/key instead of 16). Now the lone key keeps its own interval
+   (`PwlCdf::locator(..., last_starts)`), and `tests/test_splice_edge.cpp` checks the line count and size on both
+   cases.
+2. **The 32 B/key cap** budgeted the top at 16 B per segment against a real 17-30. Builds exceeded the cap by up to
+   0.4% (genome 200M: 32.11 B/key). The locator is now built before V chooses its expansion, and its real size
+   enters the cap.
+3. **Guards:** a segment of 2^32 slots throws instead of wrapping its uint32 offsets (only reachable at billions of
+   keys), and `get()` before `bulk_load` is safe.
+
+**Effect on the first 200M runs (`b08866e`).**
+- Every adaptive build there has E[lines] between 1.00 and 1.69 (results/mac200M_2026-10-20, SPLICE builds), so the
+  lone-key defect cost at most the last segment's few keys.
+- The cap overshoot is visible in their bytes per key.
+- The fixed code is rerun on the same cells (results/mac200M_fix_2026-10-20).
+
 ## Limits
 
 - **One machine.** An Apple M3 Max, with three single-thread runs at once (`run_parallel.sh`, J = 3). macOS cannot

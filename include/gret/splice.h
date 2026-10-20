@@ -61,7 +61,7 @@ class SpliceIndex final : public indexInterface<K, P> {
     Knots knots = kPla;
     bool adapt = true;  // T's granularity chosen by the count (false: K = n / 610 segments, the old fixed default)
   };
-  explicit SpliceIndex(std::string name = "splice", Config c = {}) : name_(std::move(name)), cfg_(c) {}
+  explicit SpliceIndex(std::string name = "splice", Config c = {}) : name_(std::move(name)), cfg_(c) { set_empty(); }
 
   void init(Param* = nullptr) override {}
 
@@ -78,14 +78,7 @@ class SpliceIndex final : public indexInterface<K, P> {
     const std::pair<K, P>* d = kv + lo;
     lo_ = n_ ? uint64_t(d[0].first) : 1;
     span_ = n_ ? uint64_t(d[n_ - 1].first) - lo_ : 0;
-    if (!n_) {  // no bulk: only x = 1 passes the range check, and it meets one dummy line holding key 0
-      lo_ = 1, span_ = 0;
-      seg_.assign(1, Seg{});
-      seg_[0].x0 = 1;
-      top_ = PwlCdf::from_knots({1, 2}, {0, kOutMax});
-      slots_.assign(4, std::pair<K, P>{});  // one whole line: lookups read lines
-      return;
-    }
+    if (!n_) { set_empty(); return; }
     const double cap_bytes = bpk * double(n);
     // T's granularity, chosen by the same exact count: PLA errors eps = 1, 2, 4, ..., 256 (segments from 8 keys each
     // on average down to 64 segments), each laid out by V; the least E[lines] + price * slots/key +
@@ -135,6 +128,7 @@ class SpliceIndex final : public indexInterface<K, P> {
       }
     }
     while (i < slots_.size()) slots_[i++] = d[n_ - 1];  // trailing pad (not reachable by a key's scan)
+    e_lines_ = best.lines / double(n_);
     const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
     const size_t nv = best.expanded;
     std::fprintf(stderr, "gret: %s n=%zu exceptions=%zu K=%s knots=%s eps=%zu segments=%zu expanded=%zu (%.1f%%) "
@@ -165,6 +159,7 @@ class SpliceIndex final : public indexInterface<K, P> {
     }
   }
 
+  double expected_lines() const { return e_lines_; }  // the build's E[lines]: lines a lookup of a bulk key touches
   bool put(K, P, Param* = nullptr) override { return false; }
   bool update(K, P, Param* = nullptr) override { return false; }
   bool remove(K, Param* = nullptr) override { return false; }
@@ -283,8 +278,12 @@ class SpliceIndex final : public indexInterface<K, P> {
     Build B;
     B.pla = pla;
     B.eps = eps;
-    if (uint64_t(d[n_ - 1].first) > kx.back()) kx.push_back(uint64_t(d[n_ - 1].first));
-    const size_t S = std::max<size_t>(1, kx.size() - 1);  // intervals; the last one includes the last key
+    // intervals: from each start to the next; the last one ends at the last key. When PGM's last segment is the last
+    // key alone, it keeps its own interval (and its own line) instead of joining the one before
+    const uint64_t lastk = uint64_t(d[n_ - 1].first);
+    const bool alone = kx.size() >= 2 && kx.back() == lastk;
+    if (lastk > kx.back()) kx.push_back(lastk);
+    const size_t S = alone ? kx.size() : std::max<size_t>(1, kx.size() - 1);
     B.first.assign(S + 1, n_);
     {
       size_t r = 0;
@@ -338,7 +337,16 @@ class SpliceIndex final : public indexInterface<K, P> {
         Sl[j * ne + ei] = double(nk ? ((prev + 1 + 3) & ~size_t(3)) : 0);
       }
     }
-    const double fixed = double(S * sizeof(Seg) + (S + 1) * 16 + exc_.size() * sizeof(std::pair<K, P>));
+    // the top first: it depends only on the knots, and its real size enters the byte cap
+    {
+      std::vector<uint64_t> kt(kx);
+      if (kt.size() == 1) {  // one key: a dummy second knot (before it at 2^64 - 1); locate gives interval 0 either way
+        if (kt[0] < UINT64_MAX) kt.push_back(kt[0] + 1);
+        else kt.insert(kt.begin(), kt[0] - 1);
+      }
+      B.top = PwlCdf::locator(std::move(kt), alone);
+    }
+    const double fixed = double(S * sizeof(Seg) + B.top.bytes() + exc_.size() * sizeof(std::pair<K, P>));
     const double cap_slots = std::max(0.0, (cap_bytes - fixed) / double(sizeof(std::pair<K, P>)));
     auto choose = [&](double mu, std::vector<int>& pick) {
       double slots = 0;
@@ -374,6 +382,7 @@ class SpliceIndex final : public indexInterface<K, P> {
         prev = pos;
       }
       if (base >> 2 > UINT32_MAX) throw std::length_error("SpliceIndex: more than 2^34 slots");
+      if (nk && prev >= UINT32_MAX) throw std::length_error("SpliceIndex: a segment of 2^32 slots");
       s.b4 = uint32_t(base >> 2);
       s.last = nk ? uint32_t(prev) : 0;
       s.d = uint32_t(dmax);
@@ -384,11 +393,6 @@ class SpliceIndex final : public indexInterface<K, P> {
       B.scanned += Sc[j * ne + ei];
     }
     B.total = base;
-    if (kx.size() == 1) {  // one key: a dummy second knot (before it at 2^64 - 1); locate gives interval 0 either way
-      if (kx[0] < UINT64_MAX) kx.push_back(kx[0] + 1);
-      else kx.insert(kx.begin(), kx[0] - 1);
-    }
-    B.top = PwlCdf::locator(std::move(kx));
     B.top_bytes = B.top.bytes() + B.seg.size() * sizeof(Seg);
     B.ok = true;
     return B;
@@ -401,6 +405,13 @@ class SpliceIndex final : public indexInterface<K, P> {
     s.last = UINT32_MAX;
     return s;
   }
+  void set_empty() {  // no bulk: only x = 1 passes the range check, and it meets one dummy line holding key 0
+    n_ = 0, lo_ = 1, span_ = 0;
+    seg_.assign(1, Seg{});
+    seg_[0].x0 = 1;
+    top_ = PwlCdf::locator({1, 2});
+    slots_.assign(4, std::pair<K, P>{});  // one whole line: lookups read lines
+  }
   bool find_exception(K key, P& val) const {
     const auto it = std::lower_bound(exc_.begin(), exc_.end(), key,
                                      [](const std::pair<K, P>& a, K k) { return a.first < k; });
@@ -412,6 +423,7 @@ class SpliceIndex final : public indexInterface<K, P> {
   std::string name_;
   Config cfg_;
   bool pla_ = false;
+  double e_lines_ = 0;
   size_t n_ = 0, eps_ = 0;
   uint64_t lo_ = 1, span_ = 0;
   PwlCdf top_;

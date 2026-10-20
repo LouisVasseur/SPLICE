@@ -3,7 +3,7 @@
 // every key - 1, key + 1, 0, 2^63 - 1, 2^63 and 2^64 - 1 that is not a key returns false, for every name of the
 // attribution ladder. Sets: n = 1, 2, 3, 5, 17; keys at 0 and at 2^64 - 1; a huge gap in the middle; dense runs of
 // consecutive integers next to sparse keys; a perfectly linear set; a set straddling 2^63; one line of keys; far
-// outliers at both ends; and 200,000 random keys.
+// outliers at both ends; 200,000 random keys; and a run whose last key forms PGM's last segment alone (far, mild).
 #include "indexInterface.h"
 #include "alex/alex.h"
 #include "lipp/lipp.h"
@@ -19,7 +19,8 @@
 
 static uint64_t payload(uint64_t k) { return k * 2654435761u + 17; }
 
-static size_t check(const std::vector<uint64_t>& keys, const char* name) {
+// also bounds the index's size (at most 64 B/key), and on the lone-last-key sets its line count and size
+static size_t check(const std::vector<uint64_t>& keys, const char* name, bool tight = false) {
   std::vector<std::pair<uint64_t, uint64_t>> kv(keys.size());
   for (size_t i = 0; i < keys.size(); ++i) kv[i] = {keys[i], payload(keys[i])};
   auto* idx = gret::make_index<uint64_t, uint64_t>(name);
@@ -32,6 +33,11 @@ static size_t check(const std::vector<uint64_t>& keys, const char* name) {
     uint64_t v = 0;
     const bool got = idx->get(x, v), want = std::binary_search(keys.begin(), keys.end(), x);
     err += got != want || (got && v != payload(x));
+  }
+  if (keys.size() > 1000 && idx->memory_consumption() > (long long)(64 * keys.size())) ++err;
+  if (tight) {  // a run plus a lone last key: about one line per lookup and close to 16 B/key (G-off names included)
+    auto* sp = dynamic_cast<gret::SpliceIndex<uint64_t, uint64_t>*>(idx);
+    if (sp && (sp->expected_lines() > 1.5 || idx->memory_consumption() > (long long)(20 * keys.size()))) ++err;
   }
   delete idx;
   return err;
@@ -76,15 +82,23 @@ int main() {
     sets.push_back({"outliers", v});
   }
   sets.push_back({"random", rnd(0, M, 200000)});
+  {  // PGM's last segment is the last key alone (review, 2026-10-20): it must keep its own interval
+    std::vector<uint64_t> v, w;
+    for (uint64_t i = 0; i < 33334; ++i) v.push_back(3 * i), w.push_back(3 * i);
+    v.push_back(M);
+    w.push_back(190000);
+    sets.push_back({"lastalone_far", v});
+    sets.push_back({"lastalone_mild", w});
+  }
   const char* names[] = {"splice", "spl_t", "spl_gt", "spl_tv", "splice_eq", "spl_fixk"};
   size_t bad = 0, cases = 0;
   for (auto& [label, keys] : sets) {
     std::sort(keys.begin(), keys.end());
     keys.erase(std::unique(keys.begin(), keys.end()), keys.end());
     for (const char* nm : names) {
-      const size_t e = check(keys, nm);
+      const size_t e = check(keys, nm, label.compare(0, 9, "lastalone") == 0 && std::string(nm) != "splice_eq");
       ++cases;
-      if (e) { ++bad; std::printf("FAIL %s %s: %zu wrong answers\n", label.c_str(), nm, e); }
+      if (e) { ++bad; std::printf("FAIL %s %s: %zu wrong answers or bound violations\n", label.c_str(), nm, e); }
     }
   }
   std::printf("test_splice_edge: %s (%zu cases, %zu failed)\n", bad ? "FAILED" : "ok", cases, bad);

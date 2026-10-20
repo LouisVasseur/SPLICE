@@ -2,13 +2,15 @@
 # SPDX-License-Identifier: MIT
 """SPLICE's results and attribution from a run_parallel.sh (or run_baselines.sh) directory.
 
-    python3 scripts/splice_report.py OUT_DIR [--props OUT_DIR/dataset_props_200M.jsonl] [--plot FILE.png]
+    python3 scripts/splice_report.py OUT_DIR [--headline DIR] [--props OUT_DIR/dataset_props_200M.jsonl] [--plot FILE.png]
 
 Reads OUT_DIR/runs.tsv (median throughput over repeats, spread = (max - min) / median), the SPLICE build lines
 ('gret: <name> ... E[lines]=...') in each run's log, and dataset properties from scripts/dataset_bounds.cpp. Prints
 markdown: (1) throughput, every index; (2) SPLICE's build per dataset; (3) attribution: what each component adds, as
 throughput ratios between ladder names that differ in one component; (4) SPLICE against the best GRE index, next to the
 dataset properties. --plot writes a three-panel figure. Needs numpy and matplotlib for --plot only.
+--headline DIR: a second run directory (e.g. one process at a time) for SPLICE against the GRE indexes (the headline
+table, table 4 and panels A and C); OUT_DIR then supplies the ladder's attribution (table 3 and panel B).
 """
 import argparse
 import json
@@ -61,9 +63,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('out')
     ap.add_argument('--props')
+    ap.add_argument('--headline')
     ap.add_argument('--plot')
     a = ap.parse_args()
     rows = load_runs(a.out)
+    hrows = load_runs(a.headline) if a.headline else rows
     props = {}
     pf = a.props or os.path.join(a.out, 'dataset_props_200M.jsonl')
     if os.path.exists(pf):
@@ -77,6 +81,21 @@ def main():
     spread = {(d, i): (max(r['thr'] for r in rows[(d, i)]) - min(r['thr'] for r in rows[(d, i)])) / T[(d, i)]
               for (d, i) in rows if T[(d, i)] > 0}
     nrep = {k: len(v) for k, v in rows.items()}
+    TH = {(d, i): med([r['thr'] for r in hrows[(d, i)]]) for (d, i) in hrows}
+    if a.headline:
+        hidx = [i for i in ['splice'] + BASES if any((d, i) in hrows for d in ds)]
+        print('## Headline: SPLICE and the GRE indexes, %s (M lookups/s)\n' % os.path.basename(a.headline.rstrip('/')))
+        print('| dataset | ' + ' | '.join(hidx) + ' |')
+        print('|---|' + '---|' * len(hidx))
+        for d in ds:
+            best = max([TH.get((d, j), 0) for j in hidx])
+            cells = []
+            for i in hidx:
+                if (d, i) not in TH: cells.append('-'); continue
+                v = '%.2f' % TH[(d, i)]
+                cells.append('**' + v + '**' if TH[(d, i)] == best else v)
+            print('| %s | %s |' % (d, ' | '.join(cells)))
+        print()
 
     print('## Throughput (M lookups/s, median over repeats; repeats and spread in the cell)\n')
     print('| dataset | ' + ' | '.join(idx) + ' |')
@@ -125,23 +144,23 @@ def main():
     print('|---|---|---|---|---|---|---|---|---|---|---|')
     summ = []
     for d in ds:
-        if (d, 'splice') not in T: continue
-        bb = [(T[(d, i)], i) for i in BASES if (d, i) in T]
+        if (d, 'splice') not in TH: continue
+        bb = [(TH[(d, i)], i) for i in BASES if (d, i) in TH]
         if not bb: continue
         bt, bi = max(bb)
-        sm = med([r['mem'] for r in rows[(d, 'splice')]]) / max(1, props.get(d, {}).get('n', 1))
-        bm = med([r['mem'] for r in rows[(d, bi)]]) / max(1, props.get(d, {}).get('n', 1))
+        sm = med([r['mem'] for r in hrows[(d, 'splice')]]) / max(1, props.get(d, {}).get('n', 1))
+        bm = med([r['mem'] for r in hrows[(d, bi)]]) / max(1, props.get(d, {}).get('n', 1))
         p = props.get(d, {})
         kg = p.get('Kg', [float('nan')] * 6); n = p.get('n', float('nan'))
-        r = T[(d, 'splice')] / bt
+        r = TH[(d, 'splice')] / bt
         summ.append((d, r, p))
         print('| %s | %.2f | %s %.2f | %.2fx | %.1f | %.1f | %s | %.3g | %.3g | %.2f | %.3f |' % (
-            d, T[(d, 'splice')], bi, bt, r, sm, bm, p.get('e', '-'), p.get('KL_B', float('nan')), p.get('DB', float('nan')),
+            d, TH[(d, 'splice')], bi, bt, r, sm, bm, p.get('e', '-'), p.get('KL_B', float('nan')), p.get('DB', float('nan')),
             1000 * kg[0] / n, 1000 * kg[3] / n))
-    if a.plot: plot(a.plot, ds, T, idx, summ)
+    if a.plot: plot(a.plot, ds, T, idx, summ, TH, 'one process at a time' if a.headline else 'median over repeats')
 
 
-def plot(path, ds, T, idx, summ):
+def plot(path, ds, T, idx, summ, TH, how):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
@@ -151,16 +170,18 @@ def plot(path, ds, T, idx, summ):
     col = {'splice': '#0072B2', 'lipp': '#E69F00', 'alex': '#009E73', 'pgm': '#CC79A7', 'btree': '#999999'}
     fig, axs = plt.subplots(1, 3, figsize=(16, 4.8), gridspec_kw={'width_ratios': [2.2, 2.2, 1.4]})
     # A: SPLICE and the GRE indexes
-    ax = axs[0]; x = np.arange(len(ds)); names = [i for i in ['splice'] + BASES if i in idx]; w = 0.8 / len(names)
+    ax = axs[0]; x = np.arange(len(ds)); names = [i for i in ['splice'] + BASES if any((d, i) in TH for d in ds)]
+    w = 0.8 / len(names)
     for k, i in enumerate(names):
-        v = [T.get((d, i), np.nan) for d in ds]
+        v = [TH.get((d, i), np.nan) for d in ds]
         ax.bar(x + (k - (len(names) - 1) / 2) * w, v, w * 0.92, color=col.get(i, mute), label=i)
     ax.set_xticks(x, ds, rotation=30, ha='right', color=ink); ax.set_ylabel('M lookups/s', color=ink)
-    ax.set_title('A  SPLICE and GRE\'s indexes (median)', loc='left', fontsize=10, color=ink)
+    ax.set_title('A  SPLICE and GRE\'s indexes at 200M keys (%s)' % how, loc='left', fontsize=10, color=ink)
     ax.legend(frameon=False, fontsize=8, ncol=len(names))
     # B: the ladder, relative to T alone
     ax = axs[1]
-    steps = [('spl_gt', '+G'), ('spl_tv', '+V'), ('splice', '+G+V'), ('splice_eq', 'equi knots'), ('spl_fixk', 'fixed K')]
+    steps = [('spl_gt', '+G'), ('spl_tv', '+V'), ('splice', '+G+V'), ('splice_eq', '+G+V, equi knots'),
+             ('spl_fixk', '+G+V, fixed granularity')]
     shades = ['#56B4E9', '#0072B2', '#003f6b', '#D55E00', '#F0E442']
     w = 0.8 / len(steps)
     for k, (i, lab) in enumerate(steps):
@@ -168,8 +189,8 @@ def plot(path, ds, T, idx, summ):
         ax.bar(x + (k - (len(steps) - 1) / 2) * w, v, w * 0.92, color=shades[k], label=lab)
     ax.axhline(1, color=mute, lw=1)
     ax.set_xticks(x, ds, rotation=30, ha='right', color=ink); ax.set_ylabel('throughput / T alone (spl_t)', color=ink)
-    ax.set_title('B  Attribution: each component against T alone', loc='left', fontsize=10, color=ink)
-    ax.legend(frameon=False, fontsize=8, ncol=3)
+    ax.set_title('B  Attribution: throughput against T alone (spl_t), per dataset', loc='left', fontsize=10, color=ink)
+    ax.legend(frameon=False, fontsize=8, ncol=2)
     # C: SPLICE / best GRE index against local roughness
     ax = axs[2]
     for d, r, p in summ:

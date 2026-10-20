@@ -88,8 +88,9 @@ class PwlCdf {
   }
 
   // Locate-only (SpliceIndex's top): the knots' search, without the interpolation; only locate(), segments(),
-  // knots() and bytes() may be called on it.
-  static PwlCdf locator(std::vector<uint64_t> x) {
+  // knots() and bytes() may be called on it. last_starts: the last knot starts an interval of its own (locate gives
+  // m - 1 at or above it, instead of m - 2), for a last segment that holds only the last key.
+  static PwlCdf locator(std::vector<uint64_t> x, bool last_starts = false) {
     if (x.empty()) throw std::invalid_argument("PwlCdf::locator: no knots");
     for (size_t j = 1; j < x.size(); ++j)
       if (!(x[j] > x[j - 1])) throw std::invalid_argument("PwlCdf::locator: x must increase strictly");
@@ -98,6 +99,7 @@ class PwlCdf {
     t.m_ = x.size();
     t.x0_ = x.front();
     t.xl_ = x.back();
+    t.last_starts_ = last_starts;
     if (t.m_ > 1) t.build_search(x);
     return t;
   }
@@ -119,10 +121,11 @@ class PwlCdf {
     const Seg& s = seg_[j];
     return s.y + uint64_t((u128(k - s.x) * s.mul) >> 64);
   }
-  // the knot interval of k only (eval without the interpolation): 0 below x0, m - 2 at or above the last knot
+  // the knot interval of k only (eval without the interpolation): 0 below x0, m - 2 at or above the last knot (m - 1
+  // for a locator whose last knot starts an interval)
   size_t locate(uint64_t k) const {
     if (k < x0_) return 0;
-    if (k >= xl_) return m_ > 1 ? m_ - 2 : 0;
+    if (k >= xl_) return m_ > 1 ? m_ - 2 + size_t(last_starts_) : 0;
     size_t j = start_[(k - x0_) >> shift_];
     for (size_t h = half_; h != 0; h >>= 1) j += xs_[j + h] <= k ? h : 0;
     return j;
@@ -189,6 +192,7 @@ class PwlCdf {
   }
 
   unsigned K_ = 0, steps_ = 0, shift_ = 0;
+  bool last_starts_ = false;
   size_t m_ = 1, half_ = 0;
   uint64_t x0_ = 0, y0_ = 0, xl_ = 0, yl_ = 0;  // a default PwlCdf maps every key to 0
   std::vector<uint64_t> xs_;                    // knot x, padded with UINT64_MAX for the fixed-step search
