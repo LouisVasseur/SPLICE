@@ -490,8 +490,13 @@ static void check_registry() {
   using PG = pgmInterface<uint64_t, uint64_t>;
   using AL = alexInterface<uint64_t, uint64_t>;
   for (const char* bad : {"pw1_btree", "pw65537_btree", "pw0512_btree", "pwx_btree", "pw512", "pw512_", "pw512_hot",
-                          "nf_", "gate_xindex", "raw_btree", "lipp", "pw512-btree", "nflsw_btree_x"})
+                          "nf_", "gate_xindex", "raw_btree", "lipp2", "pw512-btree", "nflsw_btree_x"})
     CHECK((make_index<uint64_t, uint64_t>(bad) == nullptr), "make_index(%s) should be nullptr", bad);
+  {  // a bare base name gives GRE's own index (raw_base, for g_<name>); GRE asks gret only after its own names
+    auto* raw = make_index<uint64_t, uint64_t>("lipp");
+    CHECK((dynamic_cast<LIPPInterface<uint64_t, uint64_t>*>(raw) != nullptr), "make_index(lipp) should be raw LIPP");
+    delete raw;
+  }
   CHECK((make_index<uint32_t, uint64_t>("pw512_btree") == nullptr), "non-uint64 keys should give nullptr");
   if (!GRET_HAS_ARTUNSYNC) CHECK((make_index<uint64_t, uint64_t>("pw512_artunsync") == nullptr), "artunsync");
   setenv("TRANSFORM_K", "64", 1);

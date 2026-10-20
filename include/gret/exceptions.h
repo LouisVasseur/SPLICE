@@ -22,6 +22,22 @@
 
 namespace gret {
 
+// The peeling rule above, shared with SpliceIndex: the bulk of the sorted kv[0, n) is kv[lo, hi).
+template <class K, class P>
+void peel_outliers(const std::pair<K, P>* kv, size_t n, size_t E, size_t& lo, size_t& hi) {
+  lo = 0, hi = n;
+  if (n > 2 * E + 2 && E > 0) {
+    const uint64_t trimmed = uint64_t(kv[n - 1 - E].first) - uint64_t(kv[E].first);
+    size_t pl = 0, ph = 0;
+    // span > 2 * trimmed, written as span - trimmed > trimmed: 2 * trimmed wraps when the keys span more than 2^63 (osm)
+    while (hi - lo > 2 && uint64_t(kv[hi - 1].first) - uint64_t(kv[lo].first) - trimmed > trimmed && (pl < E || ph < E)) {
+      const uint64_t gl = uint64_t(kv[lo + 1].first) - uint64_t(kv[lo].first);
+      const uint64_t gh = uint64_t(kv[hi - 1].first) - uint64_t(kv[hi - 2].first);
+      if (ph < E && (gh >= gl || pl >= E)) { --hi; ++ph; } else { ++lo; ++pl; }
+    }
+  }
+}
+
 template <class K, class P, class Inner = indexInterface<K, P>>
 class ExceptionIndex final : public indexInterface<K, P> {
   static constexpr bool kByValue = !std::is_same<Inner, indexInterface<K, P>>::value;
@@ -39,16 +55,8 @@ class ExceptionIndex final : public indexInterface<K, P> {
   void bulk_load(std::pair<K, P>* kv, size_t n, Param* param = nullptr) override {
     const char* e = std::getenv("TRANSFORM_G_E");
     const size_t E = e && *e ? size_t(std::strtoull(e, nullptr, 10)) : 64;
-    size_t lo = 0, hi = n;  // the bulk is kv[lo, hi)
-    if (n > 2 * E + 2 && E > 0) {
-      const uint64_t trimmed = uint64_t(kv[n - 1 - E].first) - uint64_t(kv[E].first);
-      size_t pl = 0, ph = 0;
-      while (hi - lo > 2 && uint64_t(kv[hi - 1].first) - uint64_t(kv[lo].first) > 2 * trimmed && (pl < E || ph < E)) {
-        const uint64_t gl = uint64_t(kv[lo + 1].first) - uint64_t(kv[lo].first);
-        const uint64_t gh = uint64_t(kv[hi - 1].first) - uint64_t(kv[hi - 2].first);
-        if (ph < E && (gh >= gl || pl >= E)) { --hi; ++ph; } else { ++lo; ++pl; }
-      }
-    }
+    size_t lo, hi;  // the bulk is kv[lo, hi)
+    peel_outliers(kv, n, E, lo, hi);
     exc_.assign(kv, kv + lo);
     exc_.insert(exc_.end(), kv + hi, kv + n);
     lo_ = n ? uint64_t(kv[lo].first) : 0;
