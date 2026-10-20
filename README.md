@@ -1,4 +1,4 @@
-# GRE baselines, and transform builds on them (branch `gre-transform`)
+# GRE baselines, transform builds on them, and SPLICE (branch `splice-gre`)
 
 The GRE baselines: GRE ([gre4index/GRE](https://github.com/gre4index/GRE), Wongkham et al., VLDB 2022) at a pinned
 commit, built with its own competitors and run with its own driver. On the `gre-baselines` branch, nothing else; this
@@ -13,8 +13,14 @@ branch adds one opt-in layer, described under [Transform builds](#transform-buil
 - Workload: GRE's own read-only, single-thread lookup benchmark: lookups of uniformly sampled bulk-loaded keys.
 - Datasets: the ten GRE/SOSD 200M-key files, checked against `data/SHA256SUMS`.
 
-This branch (`gre-transform`) adds one opt-in layer on top, GRE's indexes on transformed keys: see
+The `gre-transform` branch adds one opt-in layer on top, GRE's indexes on transformed keys: see
 [Transform builds](#transform-builds-branch-gre-transform). Without `EXTRA=transforms` everything below is unchanged.
+
+**This branch (`splice-gre`)** adds SPLICE as one more index in the same layer: G (end outliers, reduce), T (an
+adaptive PLA top) and V (per-segment gapped expansion) on one sorted array of slots, every decision an exact count at
+build, with its attribution ladder (`splice`, `spl_t`, `spl_gt`, `spl_tv`, `splice_eq`, `spl_fixk`). Design, the
+bounds behind it, how to run and its limits: [docs/SPLICE.md](docs/SPLICE.md). Results at 200M keys on the Mac:
+`results/mac200M_2026-10-20/`.
 
 ## Run
 
