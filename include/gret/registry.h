@@ -13,6 +13,8 @@
 //   trace_<name>   chunk timer around any name (warm-up detection runs only); w_<name>: untimed warm-up in bulk_load
 //   splice         SpliceIndex (splice.h): G + T + V; spl_t (T), spl_gt (G + T), spl_tv (T + V),
 //                  splice_eq (equi-rank knots), spl_fixk (fixed granularity) its attribution ladder; 'splice' is also a base for every layer (gate_splice, pw512_splice, nfl_splice, trace_splice, w_splice)
+//   sp_<parts>_<base>  SPLICE's parts on one of GRE's indexes (splice_on.h), each kept only where it pays: parts t
+//                  (T), gt (G + T), gtv (G + T + V), tv (T + V), g (G), v (V), gv (G + V); e.g. sp_gtv_alex
 //   gate_<base>    the learned gate (gate.h, gate_model.h)
 //   nflsw_<base>   an NFL-style switch: pw512 or raw (gate.h)
 // Bases: lipp btree alex pgm, and artunsync where GRE's registry has it (Linux: competitor.h includes artunsync.h
@@ -29,6 +31,7 @@
 #include "gret/transform_index.h"
 #include "gret/vpoints.h"
 #include "gret/exceptions.h"
+#include "gret/splice_on.h"
 #include "gret/warmup.h"
 #include "gret/splice.h"
 
@@ -144,6 +147,22 @@ indexInterface<K, P>* make_index(const std::string& name) {
       if (!inner) return nullptr;
       if (tr) return new TraceIndex<K, P>(name, inner);
       return new WarmIndex<K, P>(name, inner);
+    }
+    if (name.compare(0, 3, "sp_") == 0) {  // SPLICE's parts on a GRE index: sp_<parts>_<base>
+      const size_t u = name.find('_', 3);
+      if (u == std::string::npos) return nullptr;
+      const std::string parts = name.substr(3, u - 3), b = name.substr(u + 1);
+      if (parts.empty() || parts.find_first_not_of("gtv") != std::string::npos) return nullptr;
+      auto has = [&](char c) { return parts.find(c) != std::string::npos; };
+      auto make = [&](auto tag, bool ties) -> indexInterface<K, P>* {
+        using B = typename decltype(tag)::type;
+        return new SpliceOn<K, P, B>(name, b, typename SpliceOn<K, P, B>::Config{has('g'), has('t'), has('v'), ties});
+      };
+      if (b == "lipp") return make(std::common_type<LIPPInterface<uint64_t, P>>{}, LDBL_MANT_DIG < 64);
+      if (b == "btree") return make(std::common_type<BTreeInterface<uint64_t, P>>{}, false);
+      if (b == "alex") return make(std::common_type<alexInterface<uint64_t, P>>{}, false);
+      if (b == "pgm") return make(std::common_type<pgmInterface<uint64_t, P>>{}, false);
+      return nullptr;
     }
     if (name.compare(0, 2, "g_") == 0) {  // G first: the exception list wraps whatever the rest of the name builds
       const std::string rest = name.substr(2);  // g_<base>: the base by value, called directly

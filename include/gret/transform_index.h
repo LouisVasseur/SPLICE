@@ -48,12 +48,14 @@ namespace gret {
   std::exit(1);
 }
 
-// How the wrapper obtains its transform at bulk_load: PwlCdf is built on the keys with K knots; MolFlow is flow if set
-// (the gate loads it once, to check it), else loaded from flow_path (empty: the file named by $TRANSFORM_FLOW).
+// How the wrapper obtains its transform at bulk_load: PwlCdf is pwl if set (SpliceOn: the knots of an eps-PLA), else
+// built on the keys with K equi-rank knots; MolFlow is flow if set (the gate loads it once, to check it), else loaded
+// from flow_path (empty: the file named by $TRANSFORM_FLOW).
 struct TransformSpec {
   unsigned K = 512;
   std::string flow_path;
   std::shared_ptr<const MolFlow> flow;
+  std::shared_ptr<const PwlCdf> pwl;
 };
 
 inline std::string flow_path_of(const TransformSpec& s) {
@@ -64,6 +66,7 @@ inline std::string flow_path_of(const TransformSpec& s) {
 
 template <class P>
 PwlCdf make_transform(PwlCdf*, const TransformSpec& s, const std::pair<uint64_t, P>* kv, size_t n) {
+  if (s.pwl) return *s.pwl;
   try {  // reads only the K + 1 knot keys of GRE's (key, payload) pairs
     return PwlCdf::build_by(n, [kv](size_t i) { return uint64_t(kv[i].first); }, s.K);
   } catch (const std::exception& e) {
