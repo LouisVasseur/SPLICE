@@ -59,8 +59,18 @@ class PwlCdf {
         y.back() = yj;  // the last run keeps y_K
       }
     }
+    return from_knots(std::move(x), std::move(y), K);
+  }
+
+  // Explicit knots: x strictly increasing, y non-decreasing with consecutive values distinct, y < 2^52 (the knots
+  // of an eps-PLA, SpliceIndex). The same evaluation and search as the equi-rank build.
+  static PwlCdf from_knots(std::vector<uint64_t> x, std::vector<uint64_t> y, unsigned K = 0) {
+    if (x.empty() || x.size() != y.size()) throw std::invalid_argument("PwlCdf::from_knots: need one y per x");
+    for (size_t j = 1; j < x.size(); ++j)
+      if (!(x[j] > x[j - 1]) || !(y[j] > y[j - 1]) || y[j] > kOutMax)
+        throw std::invalid_argument("PwlCdf::from_knots: x and y must increase strictly, y < 2^52");
     PwlCdf t;
-    t.K_ = K;
+    t.K_ = K ? K : unsigned(x.size() - 1);
     t.m_ = x.size();
     t.x0_ = x.front();
     t.y0_ = y.front();
@@ -77,16 +87,47 @@ class PwlCdf {
     return t;
   }
 
+  // Locate-only (SpliceIndex's top): the knots' search, without the interpolation; only locate(), segments(),
+  // knots() and bytes() may be called on it.
+  static PwlCdf locator(std::vector<uint64_t> x) {
+    if (x.empty()) throw std::invalid_argument("PwlCdf::locator: no knots");
+    for (size_t j = 1; j < x.size(); ++j)
+      if (!(x[j] > x[j - 1])) throw std::invalid_argument("PwlCdf::locator: x must increase strictly");
+    PwlCdf t;
+    t.K_ = unsigned(x.size() - 1);
+    t.m_ = x.size();
+    t.x0_ = x.front();
+    t.xl_ = x.back();
+    if (t.m_ > 1) t.build_search(x);
+    return t;
+  }
+
   uint64_t operator()(uint64_t k) const {
-    if (k < x0_) return y0_;
-    if (k >= xl_) return yl_;
+    size_t seg;
+    return eval(k, seg);
+  }
+
+  // T(k) and the segment it falls in: 0 below x_0, the last segment (m - 2) at or above x_last, 0 when m = 1.
+  uint64_t eval(uint64_t k, size_t& seg) const {
+    if (k < x0_) { seg = 0; return y0_; }
+    if (k >= xl_) { seg = m_ > 1 ? m_ - 2 : 0; return yl_; }
     // invariant: xs_[j] <= k; the predicate xs_[j + d] <= k is monotone in d and true at most up to span <= 2^steps - 1,
     // and xs_ is padded with UINT64_MAX > k, so the lifting stops at the last knot <= k, which is below m-1.
     size_t j = start_[(k - x0_) >> shift_];
     for (size_t h = half_; h != 0; h >>= 1) j += xs_[j + h] <= k ? h : 0;
+    seg = j;
     const Seg& s = seg_[j];
     return s.y + uint64_t((u128(k - s.x) * s.mul) >> 64);
   }
+  // the knot interval of k only (eval without the interpolation): 0 below x0, m - 2 at or above the last knot
+  size_t locate(uint64_t k) const {
+    if (k < x0_) return 0;
+    if (k >= xl_) return m_ > 1 ? m_ - 2 : 0;
+    size_t j = start_[(k - x0_) >> shift_];
+    for (size_t h = half_; h != 0; h >>= 1) j += xs_[j + h] <= k ? h : 0;
+    return j;
+  }
+  size_t segments() const { return m_ > 1 ? m_ - 1 : 1; }
 
   unsigned K() const { return K_; }
   size_t knots() const { return m_; }  // after dropping equal x

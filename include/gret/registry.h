@@ -11,6 +11,8 @@
 //   g_<name>       G: outlier keys peeled into an exception list (ExceptionIndex), then any other name on the bulk
 //                  (g_alex, g_pw512_alex, g_vp_lipp, g_pw512_vp_alex)
 //   trace_<name>   chunk timer around any name (warm-up detection runs only); w_<name>: untimed warm-up in bulk_load
+//   splice         SpliceIndex (splice.h): G + T + V; spl_t (T), spl_gt (G + T), spl_tv (T + V),
+//                  splice_eq (equi-rank knots), spl_fixk (fixed granularity) its attribution ladder; 'splice' is also a base for every layer (gate_splice, pw512_splice, nfl_splice, trace_splice, w_splice)
 //   gate_<base>    the learned gate (gate.h, gate_model.h)
 //   nflsw_<base>   an NFL-style switch: pw512 or raw (gate.h)
 // Bases: lipp btree alex pgm, and artunsync where GRE's registry has it (Linux: competitor.h includes artunsync.h
@@ -28,6 +30,7 @@
 #include "gret/vpoints.h"
 #include "gret/exceptions.h"
 #include "gret/warmup.h"
+#include "gret/splice.h"
 
 #ifndef GRET_HAS_ARTUNSYNC
 #if defined(ARTVERSION1_TREE_H)  // src/competitor/artsync/src/ART/Tree.h, included by artunsync.h only
@@ -90,6 +93,14 @@ indexInterface<K, P>* make_index(const std::string& name) {
     return nullptr;
   } else {
     using namespace registry_detail;
+    using SI = SpliceIndex<K, P>;  // SPLICE and its attribution ladder (splice.h)
+    using SC = typename SI::Config;
+    if (name == "splice") return new SI(name, SC{true, true, SI::kPla, true});
+    if (name == "spl_t") return new SI(name, SC{false, false, SI::kPla, true});
+    if (name == "spl_gt") return new SI(name, SC{true, false, SI::kPla, true});
+    if (name == "spl_tv") return new SI(name, SC{false, true, SI::kPla, true});
+    if (name == "splice_eq") return new SI(name, SC{true, true, SI::kEqui, true});
+    if (name == "spl_fixk") return new SI(name, SC{true, true, SI::kPla, false});
     {  // trace_ / w_ / trace_w_ on a raw base: held by value and inlined, so the layers add no call to the lookup
       auto raw = [&](const std::string& n, auto tag) -> indexInterface<K, P>* {
         using B = typename decltype(tag)::type;
@@ -106,6 +117,7 @@ indexInterface<K, P>* make_index(const std::string& name) {
         if (b == "btree") return raw(pr, std::common_type<BTreeInterface<uint64_t, P>>{});
         if (b == "alex") return raw(pr, std::common_type<alexInterface<uint64_t, P>>{});
         if (b == "pgm") return raw(pr, std::common_type<pgmInterface<uint64_t, P>>{});
+        if (b == "splice") return raw(pr, std::common_type<SpliceIndex<K, P>>{});
         break;
       }
     }
@@ -149,6 +161,7 @@ indexInterface<K, P>* make_index(const std::string& name) {
     if (base == "lipp")
       return make_on<K, P, LIPPInterface<uint64_t, P>>(kind, base, RawLimits{LDBL_MANT_DIG < 64, false, false});
     if (base == "btree") return make_on<K, P, BTreeInterface<uint64_t, P>>(kind, base, RawLimits{});
+    if (base == "splice") return make_on<K, P, SpliceIndex<K, P>>(kind, base, RawLimits{});
     if (base == "alex") return make_on<K, P, alexInterface<uint64_t, P>>(kind, base, RawLimits{false, true, true});
     if (base == "pgm") return make_on<K, P, pgmInterface<uint64_t, P>>(kind, base, RawLimits{false, true, false});
 #if GRET_HAS_ARTUNSYNC
