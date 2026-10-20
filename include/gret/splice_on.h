@@ -75,6 +75,14 @@ class SpliceOn final : public indexInterface<K, P> {
     span_ = cfg_.g ? uint64_t(d[m - 1].first) - lo_ : UINT64_MAX;
     q_ = sample(d, m);
     margin_ = double(env_size("SPLICE_ON_MARGIN", 2)) / 100.0;
+    // G's own effect, for the attribution: when G peeled keys, the base on every key, timed on the same sample (the
+    // bulk's keys pass the range check, then reach this full build). Not a decision: G's rule decides
+    double ns_plain = -1;
+    if (cfg_.g && m < n && !(cfg_.raw_ties_veto && double_ties(kv, n)) && !std::getenv("SPLICE_ON_NO_PLAIN")) {
+      build(Form::raw, kv, n, param);
+      ns_plain = time_form();
+      drop();
+    }
     const char* force = std::getenv("SPLICE_ON_FORCE");
     const char* fv = std::getenv("SPLICE_ON_V");
 
@@ -84,8 +92,9 @@ class SpliceOn final : public indexInterface<K, P> {
     double ns_raw = -1, ns_t = -1, ns_v = -1;
     const bool raw_ok = !(cfg_.raw_ties_veto && double_ties(d, m));
     if (!cfg_.t && !raw_ok) die(name_ + ": the raw " + base_ + " cannot hold these keys (they tie as doubles); use a name with T");
-    if (cfg_.t) {
-      pick_t(d, m);
+    if (cfg_.t) pick_t(d, m);
+    if (cfg_.t && !tr_ && !raw_ok) die(name_ + ": no PLA knots for T and the raw base cannot hold these keys");
+    if (cfg_.t && tr_) {
       if (!raw_ok || (force && std::string(force) == "t")) use_t = true;
       else if (!(force && std::string(force) == "raw")) {
         build(Form::raw, d, m, param);
@@ -124,20 +133,18 @@ class SpliceOn final : public indexInterface<K, P> {
     const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
     std::fprintf(stderr,
                  "gret: %s n=%zu exceptions=%zu T=%s eps=%zu knots=%zu e_raw=%.0f e_t=%.0f probes_raw=%.0f probes_t=%.1f "
-                 "V=%s ns_raw=%.1f ns_t=%.1f ns_v=%.1f margin=%.0f%% build_ms=%.1f\n",
+                 "V=%s ns_plain=%.1f ns_raw=%.1f ns_t=%.1f ns_v=%.1f margin=%.0f%% build_ms=%.1f\n",
                  name_.c_str(), n, exc_.size(), !cfg_.t ? "off" : use_t ? "on" : "no", t_eps_,
                  tr_ ? tr_->knots() : size_t(0), e_raw_, e_t_, probes(e_raw_), t_score_, !cfg_.v ? "off" : use_v ? "on" : "no",
-                 ns_raw, ns_t, ns_v, 100 * margin_, ms);
+                 ns_plain, ns_raw, ns_t, ns_v, 100 * margin_, ms);
   }
 
+  // The raw base's lookup is the only one inlined here: inlining every form's lookup into one function costs the
+  // common path throughput (measured on LIPP, fb at 200M); the forms with T or V are one call further
   __attribute__((flatten)) bool get(K key, P& val, Param* param = nullptr) override {
     if (__builtin_expect(uint64_t(key) - lo_ > span_, 0)) return find_exception(key, val);
-    switch (form_) {  // fixed after bulk_load: always predicted
-      case Form::raw: return raw_->index.Base::get(key, val, param);
-      case Form::t: return t_->Tb::get(key, val, param);
-      case Form::v: return v_->Vb::get(key, val, param);
-      default: return tv_->Tv::get(key, val, param);
-    }
+    if (__builtin_expect(form_ == Form::raw, 1)) return raw_->index.Base::get(key, val, param);
+    return get_other(key, val, param);
   }
 
   bool put(K, P, Param* = nullptr) override { return false; }
@@ -156,6 +163,13 @@ class SpliceOn final : public indexInterface<K, P> {
   }
 
  private:
+  __attribute__((noinline)) bool get_other(K key, P& val, Param* param) {
+    switch (form_) {
+      case Form::t: return t_->Tb::get(key, val, param);
+      case Form::v: return v_->Vb::get(key, val, param);
+      default: return tv_->Tv::get(key, val, param);
+    }
+  }
   struct Raw final {  // final: destroying a bare Base (polymorphic, non-virtual destructor) in optional warns
     Base index;
   };
@@ -178,7 +192,10 @@ class SpliceOn final : public indexInterface<K, P> {
   void pick_t(const std::pair<K, P>* d, size_t m) {
     e_raw_ = endpoint_err(d, m, nullptr);
     t_score_ = -1;
-    for (size_t eps : {size_t(4), size_t(16), size_t(64), size_t(256), size_t(1024)}) {
+    // only maps small enough to stay in cache (SPLICE_ON_MAX_KNOTS, 65536 knots, about 2 MB): a map that misses cache
+    // costs each lookup more than the probes it saves (fb at eps 4: 8.3M knots, 3.4x slower on LIPP)
+    const size_t max_knots = env_size("SPLICE_ON_MAX_KNOTS", 65536);
+    for (size_t eps : {size_t(4), size_t(16), size_t(64), size_t(256), size_t(1024), size_t(4096), size_t(16384)}) {
       std::vector<uint64_t> x, y;
       auto in = [&](size_t i) { return std::pair<uint64_t, size_t>(uint64_t(d[i].first), i); };
       std::vector<size_t> starts;
@@ -188,6 +205,19 @@ class SpliceOn final : public indexInterface<K, P> {
       });
       if (x.empty() || x.back() != uint64_t(d[m - 1].first)) x.push_back(uint64_t(d[m - 1].first));
       if (x.size() < 2) continue;
+      if (x.size() > max_knots) {  // too big for cache: kept only as the fallback when nothing fits (raw vetoed)
+        if (!fallback_ || x.size() < fallback_->knots()) {
+          bool okf = true;
+          std::vector<uint64_t> yf(x.size());
+          for (size_t j = 0, r = 0; j < x.size(); ++j) {
+            while (uint64_t(d[r].first) < x[j]) ++r;
+            yf[j] = m > 1 ? uint64_t((__uint128_t(r) * kOutMax + (m - 1) / 2) / (m - 1)) : 0;
+            okf &= j == 0 || yf[j] > yf[j - 1];
+          }
+          if (okf) fallback_ = std::make_shared<const PwlCdf>(PwlCdf::from_knots(std::vector<uint64_t>(x), std::move(yf))), fallback_eps_ = eps;
+        }
+        continue;
+      }
       y.resize(x.size());
       size_t r = 0;
       for (size_t j = 0; j < x.size(); ++j) {  // the rank of each knot key
@@ -207,7 +237,7 @@ class SpliceOn final : public indexInterface<K, P> {
         tr_ = std::make_shared<const PwlCdf>(std::move(t));
       }
     }
-    if (!tr_) die(name_ + ": no PLA knots for T");
+    if (!tr_ && fallback_) tr_ = fallback_, t_eps_ = fallback_eps_, e_t_ = endpoint_err(d, m, tr_.get()), t_score_ = -1;
   }
   // max over the bulk of |m u_i - (i + 1)|, u_i the key scaled to [0, 1] by the first and last key (t: after T)
   static double endpoint_err(const std::pair<K, P>* d, size_t m, const PwlCdf* t) {
@@ -276,7 +306,8 @@ class SpliceOn final : public indexInterface<K, P> {
   uint64_t lo_ = 0, span_ = UINT64_MAX;
   double margin_ = 0.02, e_raw_ = 0, e_t_ = 0, t_score_ = 0;
   size_t t_eps_ = 0;
-  std::shared_ptr<const PwlCdf> tr_;
+  std::shared_ptr<const PwlCdf> tr_, fallback_;  // T's candidate; the smallest map over the knot cap
+  size_t fallback_eps_ = 0;
   std::vector<K> q_;
   std::vector<std::pair<K, P>> exc_;
   std::optional<Raw> raw_;
