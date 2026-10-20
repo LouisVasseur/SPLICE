@@ -156,6 +156,24 @@ relaxation that mirrors V.
   per spilled key. Segment entries are unchanged: d holds the tail's length, flagged by its top bit.
 - **Name.** `splice_gi` = splice + interior G.
 
+## SPLICE v2 (`splice2`, its ladder `s2_*`)
+
+The same G, T and V, with the three changes the 200M results asked for:
+- **The top's locate is chosen per index by count.** With up to 65,536 segments it is the PwlCdf locator (a small,
+  cache-resident search). Beyond that it is RankTop (`ranktop.h`): one 4-byte radix entry, then a fixed 4-entry
+  window over the 32-byte segment entries, searched directly. A second radix handles dense buckets. The radix runs
+  over the key's value or its rank (an equi-rank PwlCdf), whichever sends fewer keys to a dense bucket (key-weighted).
+  On fb at 200M this halves the dependent misses of the locate (4.5 to 2.3, simulated on the real segment starts).
+- **The prices are learned on the fly.** `latency.h` probes, once per process, what one dependent access costs at
+  each footprint (pointer chases from 256 KiB to 256 MiB, in DRAM units, rounded to 1/64). A candidate's top costs
+  its dependent accesses at the probed cost of each structure's size, and a data line costs the probed price of the
+  slot array. This replaces the hand-set 0.15 lines per doubling.
+- **The granularity search runs fine to coarse** and stops once the exact cost has risen twice in a row. It lays out
+  3-4 candidates instead of all of them.
+
+Names: `splice2` = G + T + V; `splice2_gi` = + interior G; `s2_t`, `s2_gt`, `s2_tv`, `s2_eq`, `s2_fixk` as before. With
+no spilling segment, a lookup takes the plain path, so interior G costs nothing where it does not fire.
+
 ## Limits
 
 - **One machine.** An Apple M3 Max, with three single-thread runs at once (`run_parallel.sh`, J = 3). macOS cannot

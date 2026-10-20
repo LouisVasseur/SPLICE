@@ -90,13 +90,13 @@ int main() {
     sets.push_back({"lastalone_far", v});
     sets.push_back({"lastalone_mild", w});
   }
-  const char* names[] = {"splice", "spl_t", "spl_gt", "spl_tv", "splice_eq", "spl_fixk", "splice_gi"};
+  const char* names[] = {"splice", "spl_t", "spl_gt", "spl_tv", "splice_eq", "spl_fixk", "splice_gi", "splice2", "splice2_gi", "s2_t", "s2_gt", "s2_tv", "s2_eq", "s2_fixk"};
   size_t bad = 0, cases = 0;
   for (auto& [label, keys] : sets) {
     std::sort(keys.begin(), keys.end());
     keys.erase(std::unique(keys.begin(), keys.end()), keys.end());
     for (const char* nm : names) {
-      const size_t e = check(keys, nm, label.compare(0, 9, "lastalone") == 0 && std::string(nm) != "splice_eq");
+      const size_t e = check(keys, nm, label.compare(0, 9, "lastalone") == 0 && std::string(nm).find("eq") == std::string::npos);
       ++cases;
       if (e) { ++bad; std::printf("FAIL %s %s: %zu wrong answers or bound violations\n", label.c_str(), nm, e); }
     }

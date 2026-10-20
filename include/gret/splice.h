@@ -23,6 +23,10 @@
 // spl_tv = T + V; splice_eq = splice with K equi-rank knots instead of the PLA's starts (the same K); spl_fixk = splice
 // with a fixed granularity (n / 610 keys per segment) instead of the count's. Environment: SPLICE_K=K fixes K (sweeps);
 // TRANSFORM_G_E (64) G's per-end cap; SPLICE_MAX_BPK (32) bytes per key; SPLICE_SPACE_PRICE (20, in 1/1000 lines).
+// The top's locate (SPLICE_TOP): 'rank' (default) RankTop (ranktop.h): a radix over an approximate rank of the key
+// (an equi-rank PwlCdf of SPLICE_TOP_K = min(65536, S / 2) knots), 2^(bit_width(S) + SPLICE_TOP_RB) buckets (RB 1), then
+// a branch-free window of 4 segment entries searched directly; 'pwl' the PwlCdf::locator (radix over the key's value,
+// fixed-step lifting over the starts, then the entry).
 #pragma once
 #include <algorithm>
 #include <chrono>
@@ -37,6 +41,8 @@
 
 #include "gret/exceptions.h"
 #include "gret/pwlcdf.h"
+#include "gret/latency.h"
+#include "gret/ranktop.h"
 
 namespace gret {
 
@@ -61,6 +67,9 @@ class SpliceIndex final : public indexInterface<K, P> {
     Knots knots = kPla;
     bool adapt = true;  // T's granularity chosen by the count (false: K = n / 610 segments, the old fixed default)
     bool gi = false;    // interior G: a segment may spill the keys its predicted lines cannot hold (see layout)
+    bool v2 = false;    // v2: the top's locate chosen per index by count (PwlCdf locator or RankTop, value or rank
+                        // radix), every price in the machine's probed access costs (latency.h), and the granularity
+                        // searched fine to coarse
   };
   explicit SpliceIndex(std::string name = "splice", Config c = {}) : name_(std::move(name)), cfg_(c) { set_empty(); }
 
@@ -81,6 +90,7 @@ class SpliceIndex final : public indexInterface<K, P> {
     span_ = n_ ? uint64_t(d[n_ - 1].first) - lo_ : 0;
     if (!n_) { set_empty(); return; }
     const double cap_bytes = bpk * double(n);
+    if (cfg_.v2) access_curve();  // the machine's prices, measured once per process
     // T's granularity, chosen by the same exact count: PLA errors eps = 1, 2, 4, ..., 256 (segments from 8 keys each
     // on average down to 64 segments), each laid out by V; the least E[lines] + price * slots/key +
     // kTopPenalty * log2(top / 1 MiB) wins (a top past 1 MiB stops being cache-resident: measured, see kTopPenalty). SPLICE_K=K instead fixes K
@@ -89,8 +99,11 @@ class SpliceIndex final : public indexInterface<K, P> {
     std::vector<double> ka, kr;
     std::vector<uint64_t> kx;
     auto consider = [&](Build&& b) {
-      b.cost = (b.lines + space_price() * double(b.total)) / double(n_) + top_penalty(b.top_bytes);
+      b.cost = cfg_.v2 ? (b.lines * b.line_cost + space_price() * double(b.total)) / double(n_) + b.top_cost
+                       : (b.lines + space_price() * double(b.total)) / double(n_) + top_penalty(b.top_bytes);
+      const double c = b.cost;
       if (!best.ok || b.cost < best.cost) std::swap(best, b);
+      return c;
     };
     const bool fixedK = std::getenv("SPLICE_K") && *std::getenv("SPLICE_K");
     if (n_ < 3 || cfg_.knots == kEqui) {
@@ -104,13 +117,26 @@ class SpliceIndex final : public indexInterface<K, P> {
       segments_pla(d, eps, kx, ka, kr);
       consider(layout(d, kx, ka, kr, cap_bytes, true, eps));
     } else {
-      for (size_t eps : candidates(d)) {
-        segments_pla(d, eps, kx, ka, kr);
-        consider(layout(d, kx, ka, kr, cap_bytes, true, eps));
+      if (cfg_.v2) {
+        search(d, [&](size_t eps) {
+          segments_pla(d, eps, kx, ka, kr);
+          return consider(layout(d, kx, ka, kr, cap_bytes, true, eps));
+        });
+      } else {
+        for (size_t eps : candidates(d)) {
+          segments_pla(d, eps, kx, ka, kr);
+          consider(layout(d, kx, ka, kr, cap_bytes, true, eps));
+        }
       }
     }
     top_ = std::move(best.top);
+    rtop_ = std::move(best.rtop);
+    rank_ = best.rank;
+    vtop_ = best.vtop;
+    top_cost_ = best.top_cost;
+    has_spill_ = best.spill_segs > 0;
     seg_ = std::move(best.seg);
+    nseg_ = best.first.size() - 1;
     eps_ = best.eps;
     pla_ = best.pla;
     // the slots: each key at its position, each empty slot a copy of the next key (pads after a segment: the next
@@ -118,7 +144,7 @@ class SpliceIndex final : public indexInterface<K, P> {
     slots_.assign(best.total, std::pair<K, P>{});
     size_t i = 0;
     std::vector<std::pair<K, P>> spilled;
-    for (size_t j = 0; j < seg_.size(); ++j) {
+    for (size_t j = 0; j < nseg_; ++j) {
       const Seg& s = seg_[j];
       const size_t end = best.first[j + 1], b = size_t(s.b4) << 2;
       const bool spill = s.d >> 31;
@@ -143,19 +169,37 @@ class SpliceIndex final : public indexInterface<K, P> {
     const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
     const size_t nv = best.expanded;
     std::fprintf(stderr, "gret: %s n=%zu exceptions=%zu K=%s knots=%s eps=%zu segments=%zu expanded=%zu (%.1f%%) "
-                 "slots/key=%.3f E[lines]=%.4f E[slots]=%.3f top_bytes=%zu top_steps=%u spill_segments=%zu spilled=%zu (%.2f%%) "
+                 "slots/key=%.3f E[lines]=%.4f E[slots]=%.3f top=%s top_bytes=%zu top_steps=%u top_buckets=%zu top_dense=%zu top_dense2=%zu top_sub=%zu "
+                 "top_cost=%.3f spill_segments=%zu spilled=%zu (%.2f%%) "
                  "bytes_per_key=%.2f build_ms=%.1f\n",
-                 name_.c_str(), n, exc_.size(), fixedK ? std::getenv("SPLICE_K") : "auto", pla_ ? "pla" : "equi", pla_ ? eps_ : 0, seg_.size(), nv,
-                 100.0 * double(nv) / double(seg_.size()), double(slots_.size()) / double(n_), best.lines / double(n_),
-                 best.scanned / double(n_), top_.bytes() + seg_.size() * sizeof(Seg), top_.search_steps(),
-                 best.spill_segs, best.spilled, 100.0 * double(best.spilled) / double(n_), double(memory_consumption()) / double(n), ms);
+                 name_.c_str(), n, exc_.size(), fixedK ? std::getenv("SPLICE_K") : "auto", pla_ ? "pla" : "equi", pla_ ? eps_ : 0, nseg_, nv,
+                 100.0 * double(nv) / double(nseg_), double(slots_.size()) / double(n_), best.lines / double(n_),
+                 best.scanned / double(n_), rank_ ? (vtop_ ? "radix" : "rank") : "pwl", best.top_bytes, rank_ ? rtop_.rank_steps() : top_.search_steps(),
+                 rank_ ? rtop_.buckets() : top_.radix_buckets(), rank_ ? rtop_.dense_buckets() : size_t(0),
+                 rank_ ? rtop_.dense_subbuckets() : size_t(0), rank_ ? rtop_.sub_entries() : size_t(0),
+                 best.top_cost, best.spill_segs, best.spilled, 100.0 * double(best.spilled) / double(n_), double(memory_consumption()) / double(n), ms);
   }
 
   __attribute__((flatten)) bool get(K key, P& val, Param* = nullptr) override {
     const uint64_t x = uint64_t(key);
     if (__builtin_expect(x - lo_ > span_, 0)) return find_exception(key, val);
-    const Seg& s = seg_[top_.locate(x)];
+    const Seg& s = seg_[rank_ ? rtop_.locate(x, seg_.data()) : top_.locate(x)];
     const size_t off = offset(s, x), b = size_t(s.b4) << 2;
+    if (__builtin_expect(!has_spill_, 1)) {  // no segment spills (every name without interior G): the plain path
+      size_t i = b + (off & ~size_t(3));
+      const size_t end = b + std::min<size_t>(size_t(s.last), off + s.d);
+      for (;; i += 4) {
+        const std::pair<K, P>* l = &slots_[i];
+        const size_t c = size_t(uint64_t(l[0].first) < x) + size_t(uint64_t(l[1].first) < x) +
+                         size_t(uint64_t(l[2].first) < x) + size_t(uint64_t(l[3].first) < x);
+        if (c < 4) {
+          if (uint64_t(l[c].first) != x) return false;
+          val = l[c].second;
+          return true;
+        }
+        if (i + 4 > end) return false;
+      }
+    }
     const bool spill = s.d >> 31;
     const size_t dd = s.d & 0x7fffffffu;  // displacement (spill: the number of spilled keys; kept keys never move)
     size_t i = b + (off & ~size_t(3));  // the predicted line
@@ -192,8 +236,8 @@ class SpliceIndex final : public indexInterface<K, P> {
   bool remove(K, Param* = nullptr) override { return false; }
   size_t scan(K, size_t, std::pair<K, P>*, Param* = nullptr) override { return 0; }
   long long memory_consumption() override {
-    return (long long)(slots_.size() * sizeof(std::pair<K, P>) + seg_.size() * sizeof(Seg) + top_.bytes() +
-                       exc_.size() * sizeof(std::pair<K, P>));
+    return (long long)(slots_.size() * sizeof(std::pair<K, P>) + seg_.size() * sizeof(Seg) +
+                       (rank_ ? rtop_.bytes() : top_.bytes()) + exc_.size() * sizeof(std::pair<K, P>));
   }
 
  private:
@@ -210,8 +254,10 @@ class SpliceIndex final : public indexInterface<K, P> {
   static constexpr int kNE = 6;
 
   struct Build {
-    bool ok = false, pla = false;
+    bool ok = false, pla = false, rank = false, vtop = true;
+    double top_cost = 0, line_cost = 1, dense_share = 0;
     PwlCdf top;
+    RankTop rtop;
     std::vector<Seg, LineAlloc<Seg>> seg;
     std::vector<size_t> first;      // first rank of each segment, and n at the end
     size_t total = 0, eps = 0, top_bytes = 0, expanded = 0, spilled = 0, spill_segs = 0;
@@ -277,15 +323,36 @@ class SpliceIndex final : public indexInterface<K, P> {
     if (c.empty()) c.push_back(256);
     return c;
   }
+  // T's granularity search (v2), fine to coarse over eps = 2^i (segments of at least 8 keys on average, down to 64
+  // segments): eval(eps) lays out and returns the exact cost; the search stops once the cost has risen twice in a row
+  // past its best (close to unimodal in eps: finer pays in the top, coarser in lines), which skips most layouts
+  template <class Eval>
+  void search(const std::pair<K, P>* d, Eval eval) const {
+    double best = 0;
+    int rises = 0;
+    bool any = false;
+    for (size_t eps = 1; eps <= 256; eps *= 2) {
+      const size_t segs = pla_count(d, eps);
+      if (segs * 8 > n_ && eps < 256) continue;
+      const double c = eval(eps);
+      if (!any || c < best) best = c, rises = 0, any = true;
+      else if (++rises >= 2) break;
+      if (segs < 64) break;
+    }
+  }
   size_t pla_choice(const std::pair<K, P>* d, double cap_bytes) const {  // splice's segment count, for splice_eq
     std::vector<uint64_t> kx; std::vector<double> ka, kr;
     double bc = 0; size_t bs = 1; bool any = false;
-    for (size_t eps : candidates(d)) {
+    auto ev = [&](size_t eps) {
       segments_pla(d, eps, kx, ka, kr);
       Build b = layout(d, kx, ka, kr, cap_bytes, true, eps);
-      const double c = (b.lines + space_price() * double(b.total)) / double(n_) + top_penalty(b.top_bytes);
-      if (!any || c < bc) bc = c, bs = b.seg.size(), any = true;
-    }
+      const double c = cfg_.v2 ? (b.lines * b.line_cost + space_price() * double(b.total)) / double(n_) + b.top_cost
+                               : (b.lines + space_price() * double(b.total)) / double(n_) + top_penalty(b.top_bytes);
+      if (!any || c < bc) bc = c, bs = b.first.size() - 1, any = true;
+      return c;
+    };
+    if (cfg_.v2) search(d, ev);
+    else for (size_t eps : candidates(d)) ev(eps);
     return bs;
   }
   // the price of a slot in lines (SPLICE_SPACE_PRICE, in 1/1000 lines; default 20: an extra slot per key must save
@@ -380,9 +447,61 @@ class SpliceIndex final : public indexInterface<K, P> {
         if (kt[0] < UINT64_MAX) kt.push_back(kt[0] + 1);
         else kt.insert(kt.begin(), kt[0] - 1);
       }
-      B.top = PwlCdf::locator(std::move(kt), alone);
+      // the top's locate. v2: the PwlCdf locator while the segments are few (<= 65536: cache-resident, a fixed-step
+      // search); beyond, RankTop over the key's value or over its rank (an equi-rank PwlCdf of the bulk), whichever
+      // sends fewer keys to a dense bucket (key-weighted, every 16th bulk key). The other names: the locator.
+      // SPLICE_TOP=pwl|radix|rank forces one.
+      const char* tp = std::getenv("SPLICE_TOP");
+      const bool forced = tp && *tp;
+      bool use_rank = forced ? std::string(tp) != "pwl" : (cfg_.v2 && S > 65536), use_value = true;
+      if (forced) use_value = std::string(tp) == "radix";
+      B.rank = use_rank;
+      if (use_rank) {  // 2^(bit_width(S) + RB) buckets: about 2-4 per segment
+        const size_t rb = env("SPLICE_TOP_RB", 1);
+        unsigned bw = 0;
+        for (size_t v = S; v; v >>= 1) ++bw;
+        // the rank map: an equi-rank PwlCdf of the bulk, S / 2 knots (at most 65536: a few MB, cache-resident)
+        const size_t kd = std::min<size_t>(65536, std::max<size_t>(64, S / 2));
+        const size_t Kc = std::max<size_t>(1, std::min<size_t>(env("SPLICE_TOP_K", kd), n_ / 16));
+        auto make = [&](bool value) {
+          return RankTop::build(kt, alone, value ? PwlCdf() : PwlCdf::build_by(n_, [d](size_t i) { return uint64_t(d[i].first); }, unsigned(Kc)),
+                                unsigned(bw + rb), value);
+        };
+        auto dense_share = [&](const RankTop& t) {
+          size_t c = 0, m = 0;
+          for (size_t i = 0; i < n_; i += 16, ++m) c += t.dense(uint64_t(d[i].first));
+          return m ? double(c) / double(m) : 0.0;
+        };
+        if (forced) {
+          B.rtop = make(use_value);
+          B.dense_share = dense_share(B.rtop);
+        } else {
+          RankTop tv = make(true), tr = make(false);
+          const double fv = dense_share(tv), fr = dense_share(tr);
+          use_value = !(fr < fv);
+          B.rtop = std::move(use_value ? tv : tr);
+          B.dense_share = use_value ? fv : fr;
+        }
+      } else {
+        B.top = PwlCdf::locator(std::move(kt), alone);
+      }
+      B.vtop = use_value;
     }
-    const double fixed = double(S * sizeof(Seg) + B.top.bytes() + exc_.size() * sizeof(std::pair<K, P>));
+    const size_t pad = B.rank ? RankTop::kW - 1 : 0;  // the window reads up to kW - 1 entries past the last start
+    const size_t topb = B.rank ? B.rtop.bytes() : B.top.bytes();
+    if (cfg_.v2) {  // v2's prices: each dependent access at the probed cost of its structure's footprint (latency.h)
+      const double segb = double((S + pad) * sizeof(Seg));
+      if (B.rank) {
+        B.top_cost = access_cost(double(B.rtop.buckets()) * 4) + access_cost(segb) +
+                     B.dense_share * (access_cost(double(B.rtop.sub_entries()) * 4) + 2 * access_cost(segb)) +
+                     (B.vtop ? 0.0 : double(1 + B.rtop.rank_steps()) * access_cost(double(B.rtop.c_bytes())));
+      } else {  // the radix entry, the lifting's distinct lines over the starts (the last 3 steps share one), the entry
+        const unsigned st = B.top.search_steps();
+        B.top_cost = double(1 + (st > 3 ? st - 2 : 1)) * access_cost(double(B.top.bytes())) + access_cost(segb);
+      }
+      B.line_cost = access_cost(std::min(cap_bytes, 24.0 * double(n_)));  // a data line: the slots' footprint
+    }
+    const double fixed = double((S + pad) * sizeof(Seg) + topb + exc_.size() * sizeof(std::pair<K, P>));
     const double cap_slots = std::max(0.0, (cap_bytes - fixed) / double(sizeof(std::pair<K, P>)));
     auto choose = [&](double mu, std::vector<int>& pick) {
       double slots = 0;
@@ -435,7 +554,12 @@ class SpliceIndex final : public indexInterface<K, P> {
       B.scanned += Sc[j * ne + ei];
     }
     B.total = base;
-    B.top_bytes = B.top.bytes() + B.seg.size() * sizeof(Seg);
+    if (pad) {  // padding entries: x0 = 2^64 - 1 is above every key the window compares
+      Seg z{};
+      z.x0 = UINT64_MAX;
+      B.seg.resize(S + pad, z);
+    }
+    B.top_bytes = topb + B.seg.size() * sizeof(Seg);
     B.ok = true;
     return B;
   }
@@ -448,7 +572,7 @@ class SpliceIndex final : public indexInterface<K, P> {
     return s;
   }
   void set_empty() {  // no bulk: only x = 1 passes the range check, and it meets one dummy line holding key 0
-    n_ = 0, lo_ = 1, span_ = 0;
+    n_ = 0, lo_ = 1, span_ = 0, rank_ = false, nseg_ = 1;
     seg_.assign(1, Seg{});
     seg_[0].x0 = 1;
     top_ = PwlCdf::locator({1, 2});
@@ -468,7 +592,11 @@ class SpliceIndex final : public indexInterface<K, P> {
   double e_lines_ = 0;
   size_t n_ = 0, eps_ = 0;
   uint64_t lo_ = 1, span_ = 0;
+  bool rank_ = false, vtop_ = false, has_spill_ = false;
+  double top_cost_ = 0;
+  size_t nseg_ = 1;
   PwlCdf top_;
+  RankTop rtop_;
   std::vector<Seg, LineAlloc<Seg>> seg_;  // 64-byte aligned: 32-byte entries never straddle a line
   std::vector<std::pair<K, P>, LineAlloc<std::pair<K, P>>> slots_;  // 64-byte aligned: 4 slots are one line
   std::vector<std::pair<K, P>> exc_;
