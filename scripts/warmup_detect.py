@@ -53,6 +53,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('out')
     ap.add_argument('--plot')
+    ap.add_argument('--choose-w', action='store_true', help='print "W <lookups>": the warm-up length for every cold run')
     ap.add_argument('--window', type=int, default=10)
     ap.add_argument('--chunk', type=int, default=100000)
     a = ap.parse_args()
@@ -74,6 +75,16 @@ def main():
         before = y[:c].mean() if c else float('nan')
         print('%-36s %8d %10d %8d %10d %9.2f %9.2f %9.2f' % (name, r['cut_var'], r['cut_var'] * chunk, r['cut_der'],
               r['cut_der'] * chunk, before, y[c:].mean() if c < y.size else float('nan'), r['tail']))
+    if a.choose_w:  # the protocol: derivative cut, unless the drift it marks is under 2% (then the variance cut); x1.5
+        cuts = []
+        for name, y in runs.items():
+            if '.trace_w_' in name or '.trace_' not in name: continue
+            r = res[name]; c = r['cut_der']
+            before = y[:c].mean() if c else y.mean(); after = y[c:].mean() if c < y.size else y.mean()
+            if abs(before - after) < 0.02 * after: c = r['cut_var']
+            cuts.append(c * chunk)
+        W = int(-(-1.5 * max(cuts + [0]) // 1e6) * 1e6) if cuts else 0
+        print('W %d' % max(W, 1000000))
     if a.plot and runs:
         import matplotlib
         matplotlib.use('Agg')
