@@ -79,6 +79,45 @@ for d in $ALL; do
 done
 python3 -c "import random,sys;l=open(sys.argv[1]).readlines();random.seed(8);random.shuffle(l);open(sys.argv[1],'w').writelines(l)" "$B/scan/cells"
 scans "$B/scan/cells" "$B/scan"; echo "== $(date +%T) BASE_SCANS_DONE"
+# 3b. misses, skew and locality on every dataset, for the comparison set; 3c. huge pages on the point numbers
+"$REPO/build/tests/cxx-O3" $IN/misses.cpp -o "$B/misses" -L/scratch/lvasseur/env/lib -ljemalloc -Wl,-rpath,/scratch/lvasseur/env/lib 2>&1 | grep -E "error:" | head -5 | cut -c1-170
+mkdir -p "$B/miss" "$B/thp"
+python3 - "$F" "$B" <<'PY'
+import sys,random
+F,B=sys.argv[1:3]
+win={}
+for l in open(F+"/winners.txt"):
+    idx,ds,leaf,tau,v=l.split()
+    win.setdefault(ds,(idx,leaf,tau,v))
+rows=[]
+for ds,(idx,leaf,tau,v) in win.items():
+    rows.append(f"{ds} {idx} AB_BUDGET=20 AB_V={v} AR_LEAF={leaf} AR_TAU={tau} RADIX_BITS=18")
+    rows.append(f"{ds} hf4 HASHLINE_SPK=1.2497")
+    rows.append(f"{ds} ph4 HASHLINE_SPK=1.2497 AR_LEAF=65536 RADIX_BITS=18")
+    for b in ("lipp","alex","pgm","btree","spgm64"): rows.append(f"{ds} {b} NOTHING=0")
+random.seed(10); random.shuffle(rows)
+open(B+"/miss/cells","w").write("\n".join(rows)+"\n")
+with open(B+"/thp/cells","w") as o:
+    for ds,(idx,leaf,tau,v) in win.items():
+        o.write(f"{ds} {idx} {leaf} {tau} {v}\n{ds} hf4 0 0 0\n{ds} ph4 65536 0 0\n{ds} lipp 0 0 0\n{ds} alex 0 0 0\n")
+PY
+awk -v m=4 -v o="$B/miss/lane" '{print > (o (NR-1)%m)}' "$B/miss/cells"
+j=0; for c in 2 20 38 56; do
+  ( [ -f "$B/miss/lane$j" ] && while read -r ds idx envs; do
+      env RULE_FILE=$([ "$idx" = gr4 ] && echo "$G/rules/genome.rule") $envs taskset -c $c /scratch/lvasseur/bin/nothp "$B/misses" "$DATA_DIR/$ds" "$idx" "$ds" >> "$B/miss/out_$c.tsv" 2>> "$B/miss/err.txt" || echo "$(date +%T) FAILED $ds $idx" >> "$B/miss/failed.txt"
+    done < "$B/miss/lane$j" ) &
+  j=$((j+1)); done; wait
+cat "$B"/miss/out_*.tsv > "$B/miss/out.tsv"; echo "== $(date +%T) MISSES_ALL_DONE"
+awk -v m=4 -v o="$B/thp/lane" '{print > (o (NR-1)%m)}' "$B/thp/cells"
+j=0; for c in 2 20 38 56; do
+  ( [ -f "$B/thp/lane$j" ] && while read -r ds idx leaf tau v; do
+      out=$B/thp/${idx}__b18_s20_t${tau}_l${leaf}_c${v}__${ds}; mkdir -p "$out"; echo "$ds $idx" > "$out/cells.txt"
+      case $idx in ab4|gr4) bud=20;; *) bud=0;; esac
+      [ "$idx" = gr4 ] && rf=$G/rules/genome.rule || rf=""
+      RULE_FILE=$rf RADIX_BITS=18 HASHLINE_SPK=1.2497 AB_BUDGET=$bud AB_V=$v AR_TAU=$tau AR_LEAF=$leaf CORE=$c J=1 HEAVY="^$" HASH_DATA=0 PASSES="1" "$REPO/scripts/run_parallel.sh" "$out" "$out/cells.txt" > /dev/null 2>&1
+    done < "$B/thp/lane$j" ) &
+  j=$((j+1)); done; wait
+python3 /scratch/lvasseur/arm_agg2.py "$B/thp" | tail -1; echo "== $(date +%T) HUGE_PAGES_DONE"
 # 4. what the rule's arithmetic costs by itself: S=0 makes the coordinate the key, so the structure is ab4's and only the transform differs
 printf 'S 0\n0 1048576\n' > "$B/pure/one.rule"
 python3 -c "

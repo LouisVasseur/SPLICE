@@ -39,6 +39,15 @@ static size_t check(const std::vector<uint64_t>& keys, const std::string& label,
     around(keys[r]);
     if (r + 1 < keys.size() && keys[r + 1] - keys[r] > 2) starts.push_back(keys[r] + 1 + g() % (keys[r + 1] - keys[r] - 1));
   }
+  {  // point lookups too: the ends, where the peeled keys are, and a sample through the middle
+    const size_t step = std::max<size_t>(1, keys.size() / 20000);
+    size_t lost = 0;
+    uint64_t v = 0;
+    for (size_t i = 0; i < keys.size(); ++i)
+      if (i < 300 || i + 300 >= keys.size() || i % step == 0) lost += !(idx->get(keys[i], v, &p) && v == payload(keys[i]));
+    if (lost) std::printf("FAIL %s on %s: %zu stored keys not found\n", name, label.c_str(), lost);
+    if (lost) { delete idx; return lost; }
+  }
   const size_t lens[] = {1, 2, 3, 16, 256, 4096, 65536, keys.size() + 5};
   std::vector<std::pair<uint64_t, uint64_t>> out;
   size_t bad = 0;
@@ -99,12 +108,15 @@ int main(int argc, char** argv) {
                           {"wrong_period", "S 67108864\n1000 77777\n", 100000, 10000},
                           {"period_1", "0 1\n", 100000, 10000},
                           {"period_2_40", "S 1048576\n0 1099511627776\n", uint64_t(1) << 40, 1000},
-                          {"two_blocks", "S 67108864\n1000 100000\n2000000000 77777\n", 100000, 10000}};
+                          {"two_blocks", "S 67108864\n1000 100000\n2000000000 77777\n", 100000, 10000},
+                          {"wraps", "S 2199023255552\n1000 100000\n", 100000, 10000}};
     const std::string path = std::string(std::getenv("TMPDIR") ? std::getenv("TMPDIR") : "/tmp") + "/test_scan_rule.txt";
     for (const Rule& r : rules) {
       std::vector<uint64_t> keys;
       for (uint64_t q = 0; q < 2000; ++q)
         for (uint64_t j = 0; j < 20; ++j) keys.push_back(1000 + q * r.period + j * j * 3);
+      if (std::string(r.label) == "wraps")  // far keys beyond what peeling takes, whose coordinates overflow into the bulk's range
+        for (uint64_t j = 0; j < 60; ++j) keys.push_back((uint64_t(1) << 63) + j * 0x0100000000000000ull / 2 + 12345);
       std::sort(keys.begin(), keys.end());
       keys.erase(std::unique(keys.begin(), keys.end()), keys.end());
       FILE* o = std::fopen(path.c_str(), "w");

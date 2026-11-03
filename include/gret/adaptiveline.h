@@ -90,6 +90,8 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
     exc_.insert(exc_.end(), kv + hi, kv + n);
     d_keys_ = kv + lo;
     m_ = hi - lo;
+    raw_lo_ = uint64_t(d_keys_[0].first);
+    raw_hi_ = uint64_t(d_keys_[m_ - 1].first);
     coord_.load(d_keys_, m_);
     if constexpr (!Coord::kIdentity) {
       y_.resize(m_);
@@ -159,7 +161,11 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
   }
 
   bool get(K key, P& val, Param* = nullptr) override {
-    const uint64_t x = uint64_t(key), v = coord_(x) - lo_;
+    const uint64_t x = uint64_t(key);
+    if constexpr (!Coord::kIdentity) {  // a far key's coordinate can wrap into the span, so the raw key decides whether it is in the bulk
+      if (__builtin_expect(x < raw_lo_ || x > raw_hi_, 0)) return find_exception(key, val);
+    }
+    const uint64_t v = coord_(x) - lo_;
     if (__builtin_expect(v > span_, 0)) return find_exception(key, val);
     size_t b = bucket(v);
     const size_t b0 = b;
@@ -340,7 +346,7 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
   }
 
   std::string name_;
-  uint64_t lo_ = 1, span_ = 0;
+  uint64_t lo_ = 1, span_ = 0, raw_lo_ = 1, raw_hi_ = 0;
   unsigned shift_ = 0, depth_ = 3, kmax_ = 8;
   double tau_ = 1.5, per_ = 1, e_lines_ = 0;
   size_t leaf_ = 64, m_ = 0, total_ = 1, d_ = 0, levels_ = 0;

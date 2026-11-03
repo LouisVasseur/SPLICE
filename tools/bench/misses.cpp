@@ -56,7 +56,7 @@ int main(int, char** v) {
   std::vector<std::pair<u64, u64>>().swap(kv);
   const size_t S = size_t(1) << 24;
   std::mt19937_64 g(21);
-  std::vector<u64> hit(S), miss(S), zipf(S);
+  std::vector<u64> hit(S), miss(S), zipf(S), zipf_near(S), hot(S);
   for (auto& x : hit) x = k[g() % n];
   size_t got_miss = 0;
   for (auto& x : miss) {
@@ -75,9 +75,13 @@ int main(int, char** v) {
       const u64 rank = std::min<u64>(n - 1, u64(std::pow(U(g) * H * a + 1, 1 / a)) - 1);
       x = k[(rank * 0x9E3779B97F4A7C15ull) % n];
     }
+    // the same skew with no shuffle, so popular keys are neighbours; and uniform lookups inside one random 1% of the keys
+    for (auto& x : zipf_near) x = k[std::min<u64>(n - 1, u64(std::pow(U(g) * H * a + 1, 1 / a)) - 1)];
+    const u64 width = std::max<u64>(1, n / 100), from = g() % (n - width);
+    for (auto& x : hot) x = k[from + g() % width];
   }
   if (sentinel) {  // the key the index cannot hold is looked up as the one before it, in every list, so all indexes draw the same sample
-    for (auto* l : {&hit, &zipf})
+    for (auto* l : {&hit, &zipf, &zipf_near, &hot})
       for (auto& x : *l)
         if (x == ~u64(0)) x = k[n - 2];
   }
@@ -111,6 +115,8 @@ int main(int, char** v) {
   bench("miss50", &hit, &miss, 50, SIZE_MAX);
   bench("miss100", &hit, &miss, 100, 0);
   bench("zipf099", &zipf, &miss, 0, SIZE_MAX);
+  bench("zipf099_near", &zipf_near, &miss, 0, SIZE_MAX);
+  bench("hot1pct", &hot, &miss, 0, SIZE_MAX);
   std::printf("%s\t%s\tgaps_found=%zu of %zu\tBkey=%.2f\n", v[3], v[2], got_miss, S, double(idx->memory_consumption()) / double(stored));
   return 0;
 }

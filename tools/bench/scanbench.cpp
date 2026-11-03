@@ -89,6 +89,25 @@ class FilledArt final : public indexInterface<u64, u64> {
 };
 #endif
 
+static double rss_mb() {  // resident now, Linux only
+  FILE* f = std::fopen("/proc/self/statm", "r");
+  if (!f) return 0;
+  long size = 0, res = 0;
+  const int got = std::fscanf(f, "%ld %ld", &size, &res);
+  std::fclose(f);
+  return got == 2 ? double(res) * 4096 / 1048576 : 0;
+}
+static double peak_mb() {  // highest resident so far, Linux only
+  FILE* f = std::fopen("/proc/self/status", "r");
+  if (!f) return 0;
+  char line[256];
+  double kb = 0;
+  while (std::fgets(line, sizeof line, f))
+    if (std::sscanf(line, "VmHWM: %lf", &kb) == 1) break;
+  std::fclose(f);
+  return kb / 1024;
+}
+
 static volatile u64 g_sink;
 
 int main(int, char** v) {
@@ -113,10 +132,13 @@ int main(int, char** v) {
   if (!idx) { std::printf("%s not registered\n", v[2]); return 3; }
   Param p(1, 0);
   idx->init(&p);
+  const double rss0 = rss_mb();
   const auto b0 = Clock::now();
   idx->bulk_load(kv.data(), n, &p);
   const double build_s = secs(b0, Clock::now());
+  const double build_peak = peak_mb();
   std::vector<Pair>().swap(kv);
+  const double rss_index = rss_mb() - (rss0 - double(n) * sizeof(Pair) / 1048576);  // what stays once the input pairs are gone
 
   // starts: the same sequence for every index on a dataset. 2^24 of them, so a timed window does not come back to the same lines
   const size_t S = size_t(1) << 24;
@@ -185,9 +207,9 @@ int main(int, char** v) {
     u64 keys;
     loop(warm_s, scans, keys);
     const double el = loop(run_s, scans, keys);
-    std::printf("%s\t%s\tspk=%s\tleaf=%s\ttau=%s\tsorted=%d\t%s\tL=%zu\tns_scan=%.0f\tns_key=%.2f\tscans=%zu\tmean_got=%.1f\tpoint_ns=%.1f\thits=%zu\tBkey=%.2f\tbuild_s=%.1f\tchecked=%zu\tbad=%zu\n", label.c_str(), v[2],
+    std::printf("%s\t%s\tspk=%s\tleaf=%s\ttau=%s\tsorted=%d\t%s\tL=%zu\tns_scan=%.0f\tns_key=%.2f\tscans=%zu\tmean_got=%.1f\tpoint_ns=%.1f\thits=%zu\tBkey=%.2f\tbuild_s=%.1f\tchecked=%zu\tbad=%zu\trss_Bkey=%.2f\tbuild_peak_GB=%.2f\n", label.c_str(), v[2],
                 getenv("HASHLINE_SPK") ? getenv("HASHLINE_SPK") : "", getenv("AR_LEAF") ? getenv("AR_LEAF") : "", getenv("AR_TAU") ? getenv("AR_TAU") : "", int(sorted_output), kind, L,
-                el * 1e9 / double(scans), el * 1e9 / double(keys ? keys : 1), scans, double(keys) / double(scans), point_ns, hit, double(idx->memory_consumption()) / double(n), build_s, checked, bad);
+                el * 1e9 / double(scans), el * 1e9 / double(keys ? keys : 1), scans, double(keys) / double(scans), point_ns, hit, double(idx->memory_consumption()) / double(n), build_s, checked, bad, rss_index * 1048576 / double(n), build_peak / 1024);
     std::fflush(stdout);
   };
   for (size_t L : Ls) timed(stored, "stored", L);
