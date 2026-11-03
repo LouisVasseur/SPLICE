@@ -11,6 +11,7 @@ for root in sys.argv[2:]:
             if r["dataset"]!=ds or not r["Mops"]: continue
             idx=r["index"]
             if idx=="gr4" and "/real" in p: idx="gd4"
+            if idx=="gr4" and "/hand" in p: idx="hand_rule"
             T[(idx,r["spk"],r["tau"],r["leaf"],r["cap"])].append((float(r["Mops"]),float(r["Bkey"])))
 P=[(float(np.median([x[1] for x in v])),float(np.median([x[0] for x in v])),k,len(v)) for k,v in T.items()]
 P.sort()
@@ -19,7 +20,7 @@ def front(items):
     for b,m,k,n in items:
         if m>best: out.append((b,m,k,n)); best=m
     return out
-ORDER={"ab4","gr4","gd4","alex","lipp","pgm","btree","splice"}
+ORDER={"ab4","gr4","gd4","hand_rule","alex","lipp","pgm","btree","splice"}
 for label,sel in (("order-keeping",lambda k:k[0] in ORDER),("any order",lambda k:True)):
     print(label,"frontier for",ds)
     for b,m,k,n in front([x for x in P if sel(x[2])]):

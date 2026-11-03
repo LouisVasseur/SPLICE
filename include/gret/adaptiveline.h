@@ -75,6 +75,7 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
     double spk = env_d("HASHLINE_SPK", 1.25);
     const double budget = env_d("AB_BUDGET", 0);
     fit_ = env_d("AB_V", 0) != 0;
+    skip_ = env_d("AB_NOSKIP", 0) == 0;  // for ablation: the same lookup path, with nodes spanning their whole cell
     const unsigned want = unsigned(env_d("RADIX_BITS", 16));
     tau_ = env_d("AR_TAU", 1.5);
     const double leaf = env_d("AR_LEAF", 64), kmax = env_d("AR_KMAX", 8), depth = env_d("AR_DEPTH", 3);
@@ -231,8 +232,7 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
     const size_t a1 = rank_slot(j), nk = j - i;
     if (nk) {  // only the bits that differ between its keys are left to tell them apart
       const uint64_t differ = (key(i) - lo_) ^ (key(j - 1) - lo_);
-      if (differ) s = std::min(s, 64u - unsigned(__builtin_clzll(differ)));
-      else s = 0;
+      if (skip_) s = differ ? std::min(s, 64u - unsigned(__builtin_clzll(differ))) : 0u;
     } else {
       a = std::min(a, rank_slot(m_) - 1);  // past the last key: a never-stored key can get here and must read inside the slots
     }
@@ -344,7 +344,7 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
   unsigned shift_ = 0, depth_ = 3, kmax_ = 8;
   double tau_ = 1.5, per_ = 1, e_lines_ = 0;
   size_t leaf_ = 64, m_ = 0, total_ = 1, d_ = 0, levels_ = 0;
-  bool fit_ = false;
+  bool fit_ = false, skip_ = true;
   std::vector<LeafAt> leaves_;  // during bulk_load only
   std::vector<uint64_t> y_;     // during bulk_load only, and only with a Coord
   Coord coord_;

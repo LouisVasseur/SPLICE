@@ -1,6 +1,6 @@
 // Payload-chained latency: each key's payload is the next key of one random cycle over all keys, so k = get(k) is a serial
 // dependent lookup with no separate key-array read. Reports the mean, sampled percentiles and hardware counters per lookup,
-// next to the mean with independent lookups (keys read from an array of 2^20 prepared keys, which stays in cache).
+// next to the mean with independent lookups (keys read in order from 2^24 prepared keys, so a run does not keep coming back to the same lines).
 //   chain KEYS NAME LABEL
 #include "indexInterface.h"
 #include "alex/alex.h"
@@ -76,7 +76,7 @@ int main(int, char** v) {
   idx->bulk_load(kv.data(), n, &p);
   const double build_s = std::chrono::duration<double>(std::chrono::steady_clock::now() - b0).count();
   std::vector<std::pair<u64, u64>>().swap(kv);
-  std::vector<u64> q(size_t(1) << 20);
+  std::vector<u64> q(size_t(1) << 24);
   for (auto& x : q) x = k[g() % n];
   const u64 start = k[0];
   std::vector<u64>().swap(k);
@@ -85,7 +85,7 @@ int main(int, char** v) {
   size_t hit = 0;
   u64 val = 0;
   auto t0 = std::chrono::steady_clock::now();
-  for (size_t i = 0; i < Qi; ++i) hit += idx->get(q[i & ((size_t(1) << 20) - 1)], val, &p);
+  for (size_t i = 0; i < Qi; ++i) hit += idx->get(q[i & ((size_t(1) << 24) - 1)], val, &p);
   const double ind = std::chrono::duration<double, std::nano>(std::chrono::steady_clock::now() - t0).count() / double(Qi);
 
   Counters c;

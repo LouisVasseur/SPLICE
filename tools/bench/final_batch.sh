@@ -9,8 +9,9 @@ echo "== $(date +%T) G batch done"
 mkdir -p "$ROOT/reg" "$ROOT/cnt" "$ROOT/fin" "$ROOT/rep" "$ROOT/scan" "$ROOT/chain"; cd /scratch/lvasseur
 cp $IN/*.h GRE-hash/include/gret/; cp $IN/test_scan.cpp $IN/test_worstcase.cpp $IN/test_splice_edge.cpp GRE-hash/tests/
 bash /scratch/lvasseur/hash_build.sh 2>&1 | tail -3 | cut -c1-110
+{ date; sha256sum "$GRE_DIR"/build/microbench* 2>/dev/null; cat GRE-hash/include/gret/*.h | cksum; cat $IN/COMMIT; } > "$ROOT/build_check.txt"
 for t in "$REPO/tests/test_scan.cpp" "$REPO/tests/test_worstcase.cpp" $IN/abcount.cpp $IN/scanbench.cpp $IN/chain.cpp; do
-  "$REPO/build/tests/cxx-O3" "$t" -o "$ROOT/$(basename "$t" .cpp)" 2>&1 | grep -E " error " | head -5
+  "$REPO/build/tests/cxx-O3" "$t" -o "$ROOT/$(basename "$t" .cpp)" 2>&1 | grep -E "error:" | head -5
 done
 taskset -c 2 "$ROOT/test_scan" 2>/dev/null | tail -1 | tee "$ROOT/tests.txt" | cut -c1-110
 taskset -c 2 "$ROOT/test_worstcase" 2000000 2>/dev/null | tee -a "$ROOT/tests.txt" | tail -1 | cut -c1-110
@@ -89,16 +90,18 @@ python3 $IN/final_pick.py "$ROOT"
 lanes "$ROOT/cells.txt" "$ROOT/fin"
 python3 /scratch/lvasseur/arm_agg2.py "$ROOT/fin" | tail -1
 echo "== $(date +%T) GRID_DONE"
-# 4. two more passes on the fastest order-keeping cell and the fastest any-order cell of each dataset and budget
+# 4. two more passes on every order-keeping cell within 2% of the fastest, at most three, and likewise any-order, at most two, per dataset and budget
 python3 - "$ROOT" <<'PY'
 import csv,sys,collections
 root=sys.argv[1]; t=collections.defaultdict(list)
 for r in csv.DictReader(open(root+"/fin/table.tsv"),delimiter="\t"):
-    t[(r["dataset"],r["spk"])].append(r)
+    if r["Mops"]: t[(r["dataset"],r["spk"])].append(r)
 out=[]
 for k,rs in t.items():
-    o=sorted([r for r in rs if r["index"] in("ab4","gr4")],key=lambda r:-float(r["Mops"]))[:1]
-    h=sorted([r for r in rs if r["index"] in("hf4","ph4")],key=lambda r:-float(r["Mops"]))[:1]
+    o=sorted([r for r in rs if r["index"] in("ab4","gr4")],key=lambda r:-float(r["Mops"]))
+    h=sorted([r for r in rs if r["index"] in("hf4","ph4")],key=lambda r:-float(r["Mops"]))
+    o=[r for r in o if float(r["Mops"])>=0.98*float(o[0]["Mops"])][:3] if o else []
+    h=[r for r in h if float(r["Mops"])>=0.98*float(h[0]["Mops"])][:2] if h else []
     for r in o+h: out.append((r["index"],r["dataset"],r["spk"],r["leaf"],r["tau"],r["cap"],2))
 open(root+"/rep/cells","w").write("".join(" ".join(map(str,x))+"\n" for x in out))
 print(len(out),"repeat cells")
@@ -110,9 +113,11 @@ echo "== $(date +%T) REPEATS_DONE"
 python3 - "$ROOT" <<'PY'
 import csv,sys,collections,statistics as st
 root=sys.argv[1]; t=collections.defaultdict(list)
-for p in ("/fin/table.tsv","/rep/table.tsv"):
+import os
+for p in ("/fin/table.tsv","/rep/table.tsv","/../jed200M_g_2026-11-03/real/table.tsv"):  # the rule's cells at leaves 8 and 16 were timed in G
+    if not os.path.exists(root+p): continue
     for r in csv.DictReader(open(root+p),delimiter="\t"):
-        t[(r["dataset"],r["spk"],r["index"],r["leaf"],r["tau"],r["cap"])].append(float(r["Mops"]))
+        if r["Mops"]: t[(r["dataset"],r["spk"],r["index"],r["leaf"],r["tau"],r["cap"])].append(float(r["Mops"]))
 win={}
 for k,v in t.items():
     if k[1]!="20" or k[2] not in("ab4","gr4"): continue

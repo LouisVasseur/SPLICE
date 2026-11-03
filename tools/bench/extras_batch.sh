@@ -7,21 +7,30 @@ F=$REPO/results/jed200M_final_2026-11-03; G=$REPO/results/jed200M_g_2026-11-03; 
 until [ -e "$F/DONE" ]; do sleep 20; done
 echo "== $(date +%T) final batch done"
 mkdir -p "$ROOT/gate" "$ROOT/picks" "$ROOT/miss"; cd /scratch/lvasseur
-"$REPO/build/tests/cxx-O3" $IN/gate_select.cpp -o "$ROOT/gate_select" 2>&1 | grep -E " error " | head -5
-"$REPO/build/tests/cxx-O3" $IN/misses.cpp -o "$ROOT/misses" 2>&1 | grep -E " error " | head -5
+"$REPO/build/tests/cxx-O3" $IN/gate_select.cpp -o "$ROOT/gate_select" 2>&1 | grep -E "error:" | head -5
+"$REPO/build/tests/cxx-O3" $IN/misses.cpp -o "$ROOT/misses" 2>&1 | grep -E "error:" | head -5
 W=$(cat $IN/gate_weights.txt)
-RULE_NS=$(head -1 "$G/rulecost.tsv" | sed 's/.*rule_ns=\([0-9.]*\).*/\1/'); [ -n "$RULE_NS" ] || RULE_NS=12
-echo "weights: $W, rule_ns: $RULE_NS" | tee "$ROOT/gate/frozen.txt"
+# two prices for the rule: its cost in a tight loop, and what timed arms with the rule actually pay beyond the frozen model, read from the synthetics
+# so that no genome timing goes in. The first misses that its instructions also cut how many misses overlap.
+RULE_TIGHT=$(head -1 "$G/rulecost.tsv" | sed 's/.*rule_ns=\([0-9.]*\).*/\1/'); [ -n "$RULE_TIGHT" ] || RULE_TIGHT=12
+RULE_NS=$(python3 - "$G/synt/table.tsv" "$W" <<'PY'
+import csv,statistics,sys
+A,B,C,D=map(float,sys.argv[2].split())
+v=[1e3/float(r["Mops"])-(A+B*(float(r["lines"])-1)+C*(float(r["levels"])-1)) for r in csv.DictReader(open(sys.argv[1]),delimiter="\t") if r["index"]=="gr4" and r["Mops"] and r["lines"]]
+print("%.1f"%max(statistics.median(v),0) if v else "")
+PY
+); [ -n "$RULE_NS" ] || RULE_NS=$RULE_TIGHT
+echo "weights: $W, rule_ns in context: $RULE_NS, in a tight loop: $RULE_TIGHT" | tee "$ROOT/gate/frozen.txt"
 ALL="fb genome osm planet books covid libio history stack wise"
 : > "$ROOT/gate/cells"
 rule_of() { local r="$G/rules/$1.rule"; [ -f "$r" ] && [ "$(head -1 "$r")" != "S 0" ] && echo "$r" || echo NONE; }
-for d in $ALL; do for b in 20 23 25; do echo "$d $DATA_DIR/$d $b $(rule_of $d)" >> "$ROOT/gate/cells"; done; done
-for f in rows three_blocks triangle; do echo "syn_$f $G/syn/$f 20 $(rule_of syn_$f)" >> "$ROOT/gate/cells"; done
+for d in $ALL; do for b in 20 23 25; do r=$(rule_of $d); echo "$d $DATA_DIR/$d $b $r $RULE_NS" >> "$ROOT/gate/cells"; [ "$r" = NONE ] || echo "$d $DATA_DIR/$d $b $r $RULE_TIGHT" >> "$ROOT/gate/cells"; done; done
+for f in rows three_blocks triangle; do r=$(rule_of syn_$f); echo "syn_$f $G/syn/$f 20 $r $RULE_NS" >> "$ROOT/gate/cells"; [ "$r" = NONE ] || echo "syn_$f $G/syn/$f 20 $r $RULE_TIGHT" >> "$ROOT/gate/cells"; done
 awk -v m=4 -v o="$ROOT/gate/lane" '{print > (o (NR-1)%m)}' "$ROOT/gate/cells"
 j=0; for c in 2 20 38 56; do
-  ( while read -r ds path b rule; do [ "$rule" = NONE ] && rule=""
-      out=$(RADIX_BITS=18 taskset -c $c "$ROOT/gate_select" "$path" "$b" "$W" "$RULE_NS" $rule 2>/dev/null)
-      printf '%s\t%s\t%s\t%s\n' "$ds" "$b" "${rule:-NONE}" "$out" >> "$ROOT/gate/choices_$c.tsv"
+  ( while read -r ds path b rule price; do [ "$rule" = NONE ] && rule=""
+      out=$(RADIX_BITS=18 taskset -c $c "$ROOT/gate_select" "$path" "$b" "$W" "$price" $rule 2>/dev/null)
+      printf '%s\t%s\t%s\t%s\t%s\n' "$ds" "$b" "${rule:-NONE}" "$out" "rule_ns=$price" >> "$ROOT/gate/choices_$c.tsv"
     done < "$ROOT/gate/lane$j" ) &
   j=$((j+1)); done; wait
 cat "$ROOT"/gate/choices_*.tsv > "$ROOT/gate/choices.tsv"
@@ -32,7 +41,7 @@ run_arm() {  # lane root data idx ds budget leaf tau v rule
   mkdir -p "$out"; echo "$ds $idx" > "$out/cells.txt"
   DATA_DIR=$data RULE_FILE=$rule RADIX_BITS=18 HASHLINE_SPK=1.25 AB_BUDGET=$b AB_V=$v AR_TAU=$tau AR_LEAF=$leaf CORE=$c J=1 HEAVY="^$" HASH_DATA=0 PASSES="1" /scratch/lvasseur/bin/nothp "$REPO/scripts/run_parallel.sh" "$out" "$out/cells.txt" > /dev/null 2>&1
 }
-awk -F'\t' 'NF>=7 && $4!="infeasible"{print $1,$2,$3,$4,$5,$6,$7}' "$ROOT/gate/choices.tsv" > "$ROOT/picks/cells"
+awk -F'\t' 'NF>=7 && $4!="infeasible"{print $1,$2,$3,$4,$5,$6,$7}' "$ROOT/gate/choices.tsv" | sort -u > "$ROOT/picks/cells"
 awk -v m=4 -v o="$ROOT/picks/lane" '{print > (o (NR-1)%m)}' "$ROOT/picks/cells"
 j=0; for c in 2 20 38 56; do
   ( [ -f "$ROOT/picks/lane$j" ] && while read -r ds b rule idx leaf tau v; do
