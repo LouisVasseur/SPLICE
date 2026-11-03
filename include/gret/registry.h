@@ -15,6 +15,12 @@
 //                  splice_eq (equi-rank knots), spl_fixk (fixed granularity) its attribution ladder; 'splice' is also a base for every layer (gate_splice, pw512_splice, nfl_splice, trace_splice, w_splice)
 //   sp_<parts>_<base>  SPLICE's parts on one of GRE's indexes (splice_on.h), each kept only where it pays: parts t
 //                  (T), gt (G + T), gtv (G + T + V), tv (T + V), g (G), v (V), gv (G + V); e.g. sp_gtv_alex
+//   hl4, hl8       HashLineIndex (hashline.h): hashed keys in buckets of 4 or 8 slots, no model, no top, no key order
+//   hf4            hl4 with one multiply in place of the mix (hashline.h)
+//   ab4            AdaptiveLineIndex (adaptiveline.h): rl4 with the directory refined where lookups read too many lines
+//   ph4            PartitionHashIndex (partitionhash.h): T, then G: a directory on the raw key, a hash inside each leaf
+//   gr4            RuleLineIndex (ruleline.h): ab4 over a compact arithmetic coordinate, G as one rule from $RULE_FILE; experimental
+//   rl4            RadixLineIndex (radixline.h): G, a directory of equal-width cells for T, spare slots for V; keeps key order
 //   gate_<base>    the learned gate (gate.h, gate_model.h)
 //   nflsw_<base>   an NFL-style switch: pw512 or raw (gate.h)
 // Bases: lipp btree alex pgm, and artunsync where GRE's registry has it (Linux: competitor.h includes artunsync.h
@@ -34,6 +40,11 @@
 #include "gret/splice_on.h"
 #include "gret/warmup.h"
 #include "gret/splice.h"
+#include "gret/hashline.h"
+#include "gret/radixline.h"
+#include "gret/adaptiveline.h"
+#include "gret/partitionhash.h"
+#include "gret/ruleline.h"
 
 #ifndef GRET_HAS_ARTUNSYNC
 #if defined(ARTVERSION1_TREE_H)  // src/competitor/artsync/src/ART/Tree.h, included by artunsync.h only
@@ -98,6 +109,13 @@ indexInterface<K, P>* make_index(const std::string& name) {
     using namespace registry_detail;
     using SI = SpliceIndex<K, P>;  // SPLICE and its attribution ladder (splice.h)
     using SC = typename SI::Config;
+    if (name == "hl4") return new HashLineIndex<K, P, 4>(name);
+    if (name == "hl8") return new HashLineIndex<K, P, 8>(name);
+    if (name == "rl4") return new RadixLineIndex<K, P, 4>(name);
+    if (name == "hf4") return new HashLineIndex<K, P, 4, mul64, true>(name);
+    if (name == "ab4") return new AdaptiveLineIndex<K, P, 4>(name);
+    if (name == "ph4") return new PartitionHashIndex<K, P, 4>(name);
+    if (name == "gr4") return new RuleLineIndex<K, P, 4>(name);
     if (name == "splice") return new SI(name, SC{true, true, SI::kPla, true});
     if (name == "spl_t") return new SI(name, SC{false, false, SI::kPla, true});
     if (name == "spl_gt") return new SI(name, SC{true, false, SI::kPla, true});
