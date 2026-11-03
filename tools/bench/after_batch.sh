@@ -223,19 +223,43 @@ lanes "$A/budgets/cells" "$A/budgets"; echo "== $(date +%T) BUDGETS_DONE"
 # 8. the mix against one multiply
 : > "$A/hash/cells"; for d in $ALL; do echo "hl4 $d 20 0 0 0 3" >> "$A/hash/cells"; done
 lanes "$A/hash/cells" "$A/hash"; echo "== $(date +%T) HASH_DONE"
-# 9. what T and V do to range scans, ends peeled
-python3 - "$F" "$A" "$B" <<'PY'
-import sys
-F,A,B=sys.argv[1:4]
+# 9. every switch again for range scans: peeling, directory and fit in every combination, the rule on genome, and spare slots at each budget that fit
+python3 - "$F" "$A" "$G" <<'PY'
+import csv,random,sys
+F,A,G=sys.argv[1:4]
 win={}
 for l in open(F+"/winners.txt"):
     idx,ds,leaf,tau,v=l.split()
     win.setdefault(ds,(leaf,tau))
-with open(A+"/scan/cells","w") as o:
-    for ds,(leaf,tau) in win.items():
-        for t,(depth,noskip) in enumerate(((0,1),(3,1),(3,0))):
+fits=set()
+try:
+    for r in csv.DictReader(open(A+"/budgets/table.tsv"),delimiter="\t"):
+        if r["index"]=="ab4" and r["Mops"]: fits.add((r["dataset"],r["spk"],r["leaf"],r["tau"]))
+except OSError:
+    pass
+rows=[]
+dirs=((0,1),(3,1),(3,0))
+for ds,(leaf,tau) in win.items():
+    base=f"RADIX_BITS=18 AR_LEAF={leaf} AR_TAU={tau}"
+    for E in (64,0):
+        for t,(depth,noskip) in enumerate(dirs):
             for v in (0,1):
-                o.write(f"{ds} {ds}.T{t}.V{v} ab4 AB_BUDGET=20 AB_V={v} RADIX_BITS=18 AR_LEAF={leaf} AR_TAU={tau} AR_DEPTH={depth} AB_NOSKIP={noskip}\n")
+                rows.append(f"{ds} {ds}.P{1 if E else 0}.T{t}.V{v} ab4 AB_BUDGET=20 AB_V={v} TRANSFORM_G_E={E} AR_DEPTH={depth} AB_NOSKIP={noskip} {base}")
+    if ds=="genome":
+        for t,(depth,noskip) in enumerate(dirs):
+            for v in (0,1):
+                rows.append(f"{ds} {ds}.R1.T{t}.V{v} gr4 RULE_FILE={G}/rules/genome.rule AB_BUDGET=20 AB_V={v} AR_DEPTH={depth} AB_NOSKIP={noskip} {base}")
+    for b in (17,18,19):
+        for lf,ta in ((leaf,tau),("64","3")):
+            if (ds,str(b),lf,ta) in fits:
+                rows.append(f"{ds} {ds}.B{b}.l{lf} ab4 AB_BUDGET={b} AB_V=1 RADIX_BITS=18 AR_LEAF={lf} AR_TAU={ta}")
+                break
+    for b in (23,25):
+        rows.append(f"{ds} {ds}.B{b}.l{leaf} ab4 AB_BUDGET={b} AB_V=1 {base}")
+    rows.append(f"{ds} {ds}.nospare ab4 AB_BUDGET=0 HASHLINE_SPK=1.0 AB_V=1 {base}")
+random.seed(11); random.shuffle(rows)
+open(A+"/scan/cells","w").write("\n".join(rows)+"\n")
+print(len(rows),"scan ablation cells")
 PY
 scans "$A/scan/cells" "$A/scan"; echo "== $(date +%T) ABLATION_SCANS_DONE"
 python3 $IN/smoke_report.py "$RES" > "$RES/jed200M_smoke_2026-11-03.txt" 2>&1; tail -n 2 "$RES/jed200M_smoke_2026-11-03.txt" | cut -c1-120
