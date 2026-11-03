@@ -90,6 +90,8 @@ class PartitionHashIndex final : public indexInterface<K, P> {
     slots_.resize(total_ * B);
     const Slot last = slots_[prev_];  // trailing slots: any pair of the bulk keeps every slot a real key
     while (w_ < slots_.size()) slots_[w_++] = last;
+    slots_.shrink_to_fit();  // the slots may have grown past their final size, and what is resident should be what is reported
+    std::vector<std::pair<uint64_t, size_t>>().swap(tmp_);
     d_keys_ = nullptr;
     const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
     std::fprintf(stderr, "gret: %s n=%zu B=%u exceptions=%zu cells=%zu nodes=%zu leaves=%zu biggest_leaf=%zu slots/key=%.3f buckets=%zu d=%zu E[buckets]=%.4f lines_p99=%zu lines_p999=%zu lines_max=%zu fallback=%d E[levels]=%.3f dir_bytes=%zu bytes_per_key=%.2f build_ms=%.1f\n",
@@ -225,7 +227,7 @@ class PartitionHashIndex final : public indexInterface<K, P> {
     for (const auto& t : tmp_) {  // hash order inside the leaf, forward across leaves
       const size_t p = b0 + size_t((u128(t.first) * cnt) >> 64), st = p * B, pos = prev_ == SIZE_MAX || st > prev_ ? st : prev_ + 1;
       lines_.add(pos / B - p + 1);
-      if (pos >= slots_.size()) slots_.resize(std::max(slots_.size() * 2, (pos / B + 1) * B));
+      if (pos >= slots_.size()) slots_.resize(std::max(slots_.size() + slots_.size() / 64, (pos / B + 1) * B));
       const Slot sl(key(t.second), d_keys_[t.second].second);
       while (w_ <= pos) slots_[w_++] = sl;
       prev_ = pos;

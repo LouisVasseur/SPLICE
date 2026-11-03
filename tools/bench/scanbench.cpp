@@ -43,7 +43,7 @@ class FilledBTree final : public indexInterface<u64, u64> {
 };
 
 #ifdef WITH_ART
-// GRE's wrapper for ART only counts what its range scan finds, so this one hands back the pairs, as the others do.
+// For ART's point lookups and real memory only: the range lookup in GRE's copy of its unsynchronized tree is commented out and returns nothing.
 class FilledArt final : public indexInterface<u64, u64> {
   static void load(TID tid, Key& key) {
     u64 r = __builtin_bswap64(reinterpret_cast<Pair*>(tid)->first);
@@ -54,8 +54,7 @@ class FilledArt final : public indexInterface<u64, u64> {
     key.set(reinterpret_cast<char*>(&r), sizeof(r));
   }
   ART_unsynchronized::Tree t{load};
-  std::vector<TID> buf;
- public:
+  public:
   void init(Param* = nullptr) override {}
   void bulk_load(Pair* kv, size_t n, Param* = nullptr) override {
     for (size_t i = 0; i < n; ++i) {
@@ -75,16 +74,7 @@ class FilledArt final : public indexInterface<u64, u64> {
   bool put(u64, u64, Param* = nullptr) override { return false; }
   bool update(u64, u64, Param* = nullptr) override { return false; }
   bool remove(u64, Param* = nullptr) override { return false; }
-  size_t scan(u64 x, size_t n, Pair* out, Param* = nullptr) override {
-    if (buf.size() < n) buf.resize(n);
-    Key a, b, cont;
-    make(x, a);
-    make(~u64(0), b);
-    size_t got = 0;
-    t.lookupRange(a, b, cont, buf.data(), n, got);
-    for (size_t i = 0; i < got; ++i) out[i] = *reinterpret_cast<Pair*>(buf[i]);
-    return got;
-  }
+  size_t scan(u64, size_t, Pair*, Param* = nullptr) override { return 0; }
   long long memory_consumption() override { return (long long)t.size(); }
 };
 #endif
@@ -167,7 +157,8 @@ int main(int, char** v) {
     ++checked;
     if (!ok && ++bad <= 3) std::fprintf(stderr, "scan wrong: %s start %llu len %zu: got %zu want %zu\n", v[2], (unsigned long long)x, L, got, want);
   };
-  for (size_t L : Ls) {
+  const bool scans = name != "artunsync";  // see FilledArt: no range lookup to test or time
+  if (scans) for (size_t L : Ls) {
     const size_t m = L <= 256 ? 2000 : L == 4096 ? 300 : 40;
     for (size_t i = 0; i < m; ++i) { check(stored[i], L); check(absent[i], L); }
     for (size_t i = 0; i < std::min<u64>(80, n); ++i) { check(k[i], L); check(k[n - 1 - i], L); if (k[i]) check(k[i] - 1, L); if (k[n - 1 - i] != ~u64(0)) check(k[n - 1 - i] + 1, L); }
@@ -212,9 +203,14 @@ int main(int, char** v) {
                 el * 1e9 / double(scans), el * 1e9 / double(keys ? keys : 1), scans, double(keys) / double(scans), point_ns, hit, double(idx->memory_consumption()) / double(n), build_s, checked, bad, rss_index * 1048576 / double(n), build_peak / 1024);
     std::fflush(stdout);
   };
-  for (size_t L : Ls) timed(stored, "stored", L);
-  timed(absent, "absent", 16);
-  timed(absent, "absent", 256);
+  if (scans) {
+    for (size_t L : Ls) timed(stored, "stored", L);
+    timed(absent, "absent", 16);
+    timed(absent, "absent", 256);
+  } else {
+    std::printf("%s\t%s\tno_scans\tpoint_ns=%.1f\thits=%zu\tBkey=%.2f\tbuild_s=%.1f\trss_Bkey=%.2f\tbuild_peak_GB=%.2f\n", label.c_str(), v[2], point_ns, hit,
+                double(idx->memory_consumption()) / double(n), build_s, rss_index * 1048576 / double(n), build_peak / 1024);
+  }
   g_sink = sink ^ val;
   return bad ? 1 : 0;
 }
