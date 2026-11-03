@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
   { std::vector<uint64_t> v; for (int c = 0; c < 300; ++c) { const uint64_t b = g() >> 1; for (uint64_t i = 0; i < 100; ++i) v.push_back(b + i); } sets.push_back({"clusters", v}); }
   { std::vector<uint64_t> v; for (uint64_t i = 0; i < 20000; ++i) v.push_back(i * 65536 + 12345); sets.push_back({"stride", v}); }
   { std::vector<uint64_t> v; for (uint64_t i = 0; i < 10000; ++i) { v.push_back(i); v.push_back(M - i); } sets.push_back({"hugegap", v}); }
-  const char* names[] = {"rl4", "ab4", "ph4", "gr4"};
+  const char* names[] = {"rl4", "ab4", "ph4", "gr4", "spgm16", "spgm256"};
   const char* leaves[] = {"4", "64", "1024"};
   size_t bad = 0, cases = 0;
   for (auto& [label, keys] : sets) {

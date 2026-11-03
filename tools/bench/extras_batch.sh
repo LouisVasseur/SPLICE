@@ -7,6 +7,7 @@ F=$REPO/results/jed200M_final_2026-11-03; G=$REPO/results/jed200M_g_2026-11-03; 
 until [ -e "$F/DONE" ]; do sleep 20; done
 echo "== $(date +%T) final batch done"
 mkdir -p "$ROOT/gate" "$ROOT/picks" "$ROOT/miss"; cd /scratch/lvasseur
+[ "$(grep -c ': ok' "$F/tests.txt" 2>/dev/null)" = 2 ] || { echo "== final tests failed, no extras"; touch "$ROOT/DONE"; exit 1; }
 "$REPO/build/tests/cxx-O3" $IN/gate_select.cpp -o "$ROOT/gate_select" 2>&1 | grep -E "error:" | head -5
 "$REPO/build/tests/cxx-O3" $IN/misses.cpp -o "$ROOT/misses" 2>&1 | grep -E "error:" | head -5
 W=$(cat $IN/gate_weights.txt)

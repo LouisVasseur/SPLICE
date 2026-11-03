@@ -7,6 +7,9 @@
 #include "lipp/lipp.h"
 #include "pgm/pgm.h"
 #include "btree/btree.h"
+#ifdef WITH_ART
+#include "artsync/artunsync.h"
+#endif
 #include "gret/registry.h"
 #include <algorithm>
 #include <chrono>
@@ -39,6 +42,53 @@ class FilledBTree final : public indexInterface<u64, u64> {
   long long memory_consumption() override { const auto& s = t.get_stats(); return (long long)((s.leaves * s.leafslots + s.innernodes * s.innerslots) * 16); }
 };
 
+#ifdef WITH_ART
+// GRE's wrapper for ART only counts what its range scan finds, so this one hands back the pairs, as the others do.
+class FilledArt final : public indexInterface<u64, u64> {
+  static void load(TID tid, Key& key) {
+    u64 r = __builtin_bswap64(reinterpret_cast<Pair*>(tid)->first);
+    key.set(reinterpret_cast<char*>(&r), sizeof(r));
+  }
+  static void make(u64 x, Key& key) {
+    u64 r = __builtin_bswap64(x);
+    key.set(reinterpret_cast<char*>(&r), sizeof(r));
+  }
+  ART_unsynchronized::Tree t{load};
+  std::vector<TID> buf;
+ public:
+  void init(Param* = nullptr) override {}
+  void bulk_load(Pair* kv, size_t n, Param* = nullptr) override {
+    for (size_t i = 0; i < n; ++i) {
+      Key k;
+      make(kv[i].first, k);
+      t.insert(k, reinterpret_cast<TID>(new Pair(kv[i])));
+    }
+  }
+  bool get(u64 x, u64& v, Param* = nullptr) override {
+    Key k;
+    make(x, k);
+    auto* p = reinterpret_cast<Pair*>(t.lookup(k));
+    if (!p) return false;
+    v = p->second;
+    return true;
+  }
+  bool put(u64, u64, Param* = nullptr) override { return false; }
+  bool update(u64, u64, Param* = nullptr) override { return false; }
+  bool remove(u64, Param* = nullptr) override { return false; }
+  size_t scan(u64 x, size_t n, Pair* out, Param* = nullptr) override {
+    if (buf.size() < n) buf.resize(n);
+    Key a, b, cont;
+    make(x, a);
+    make(~u64(0), b);
+    size_t got = 0;
+    t.lookupRange(a, b, cont, buf.data(), n, got);
+    for (size_t i = 0; i < got; ++i) out[i] = *reinterpret_cast<Pair*>(buf[i]);
+    return got;
+  }
+  long long memory_consumption() override { return (long long)t.size(); }
+};
+#endif
+
 static volatile u64 g_sink;
 
 int main(int, char** v) {
@@ -53,10 +103,13 @@ int main(int, char** v) {
   n = k.size();
   const std::string name = v[2], label = v[3];
   const bool sorted_output = !(std::getenv("PH_SCAN_SORTED") && std::string(std::getenv("PH_SCAN_SORTED")) == "0");
-  if (k.back() == ~u64(0) && (name == "alex" || name == "pgm")) { k.pop_back(); --n; }  // their sentinel, as in GRE's own runs on fb
+  if (k.back() == ~u64(0) && (name == "alex" || name == "pgm" || name == "artunsync")) { k.pop_back(); --n; }  // their sentinel, as in GRE's own runs on fb
   std::vector<Pair> kv(n);
   for (u64 i = 0; i < n; ++i) kv[i] = Pair(k[i], payload(k[i]));
   indexInterface<u64, u64>* idx = name == "btree" ? static_cast<indexInterface<u64, u64>*>(new FilledBTree) : gret::make_index<u64, u64>(name);
+#ifdef WITH_ART
+  if (name == "artunsync") idx = new FilledArt;
+#endif
   if (!idx) { std::printf("%s not registered\n", v[2]); return 3; }
   Param p(1, 0);
   idx->init(&p);

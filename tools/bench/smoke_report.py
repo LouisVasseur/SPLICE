@@ -6,27 +6,29 @@ import csv,glob,os,re,sys,collections
 root=sys.argv[1]
 fails=0
 def line(s): print(s)
-def timed(stage,cellfile,parse):
+def timed(stage,cellfile,parse,with_code=False):
     global fails
     tp=stage+"/table.tsv"
     if not os.path.exists(cellfile):
         line(f"-- {stage}: no cells file"); fails+=1; return
-    want=collections.Counter()
+    want=collections.Counter(); ops={}
     for l in open(cellfile):
-        k,passes=parse(l.split())
-        if k: want[k]=passes
+        p=parse(l.split())
+        if p[0]:
+            want[p[0]]=p[1]
+            ops[p[0]]=p[2] if len(p)>2 else 100000000
     got=collections.Counter(); short=[]
     if os.path.exists(tp):
         for r in csv.DictReader(open(tp),delimiter="\t"):
-            k=(r["index"],r["dataset"],r["spk"],r["leaf"],r["tau"],r["cap"])
+            k=(r["index"],r["dataset"],r["spk"],r["leaf"],r["tau"],r["cap"])+((r["bits"],) if with_code else ())
             got[k]+=1
-            if r.get("ok") not in("100000000","100000000.0"): short.append((k,r.get("ok")))
+            if k in ops and float(r.get("ok") or 0)!=ops[k]: short.append((k,r.get("ok")))
     miss=[(k,want[k],got[k]) for k in want if got[k]<want[k]]
     st="PASS" if not miss and not short else "FAIL"
     fails+=st=="FAIL"
     line(f"{st} {os.path.relpath(stage,root)}: {len(want)} cells, {sum(want.values())} passes asked, {sum(got.values())} rows"+(f", {len(miss)} short" if miss else "")+(f", {len(short)} with lookups missing" if short else ""))
     for m in miss[:40]: line(f"   missing {m[0]}: wanted {m[1]} got {m[2]}")
-    for s in short[:20]: line(f"   short {s}")
+    for x in short[:20]: line(f"   short {x}")
     bad=[]
     for p in glob.glob(stage+"/*/cells/*/run.out"):
         t=open(p,errors="ignore").read()
@@ -49,23 +51,26 @@ def g_parse(a):  # data idx ds b leaf tau v passes [rule]
     return ((a[1],a[2],a[3],a[4],a[5],a[6]),int(a[7]))
 def f_parse(a):  # idx ds b leaf tau v passes
     return ((a[0],a[1],a[2],a[3],a[4],a[5]),int(a[6]))
-for name,base,subs in (("G","jed200M_g_2026-11-03",[("real",g_parse),("hand",g_parse),("synt",g_parse)]),
-                       ("final","jed200M_final_2026-11-03",[("reg",f_parse),("fin",None),("rep",f_parse)]),
-                       ("baselines","jed200M_base_2026-11-03",[("point",f_parse),("readonly",f_parse),("readonly_rep",f_parse)]),
-                       ("ablation","jed200M_ablation_2026-11-03",[("abl",f_parse)])):
+def a_parse(a):  # idx ds b leaf tau v passes code spk E depth noskip ops rule
+    return ((a[0],a[1],a[2],a[3],a[4],a[5],a[7]),int(a[6]),int(a[12]))
+for name,base,subs in (("G","jed200M_g_2026-11-03",[("real",g_parse,0),("hand",g_parse,0),("synt",g_parse,0)]),
+                       ("final","jed200M_final_2026-11-03",[("reg",f_parse,0),("fin",f_parse,0),("rep",f_parse,0)]),
+                       ("baselines","jed200M_base_2026-11-03",[("point",f_parse,0),("readonly",f_parse,0),("readonly_rep",f_parse,0),("calib",f_parse,0)]),
+                       ("ablation","jed200M_ablation_2026-11-03",[("abl",a_parse,1),("hash",f_parse,0)])):
     r=f"{root}/{base}"
     if not os.path.isdir(r): line(f"-- {name}: not run yet ({base})"); continue
-    for sub,parse in subs:
+    for sub,parse,code in subs:
         cf=f"{r}/{sub}/cells" if sub!="fin" else f"{r}/cells.txt"
-        timed(f"{r}/{sub}",cf,parse or f_parse)
-    for s in ("scan/out.tsv","readonly_scan/out.tsv","ablation_scan/out.tsv"):
-        if os.path.exists(f"{r}/{s}"): scanfile(f"{r}/{s}",f"{name} {s}")
+        timed(f"{r}/{sub}",cf,parse,bool(code))
+    for x in ("scan/out.tsv",):
+        if os.path.exists(f"{r}/{x}"): scanfile(f"{r}/{x}",f"{name} {x}")
     ch=f"{r}/chain/out.tsv"
     if os.path.exists(ch): line(f"-- {name} chain: {sum(1 for _ in open(ch))} rows")
+    for x in ("scan/failed.txt",):
+        if os.path.exists(f"{r}/{x}"): line(f"FAIL {name} {x}: "+open(f"{r}/{x}").read()[:300]); fails+=1
     if os.path.exists(f"{r}/tests.txt"): line(f"-- {name} tests: "+" | ".join(x.strip()[:60] for x in open(f"{r}/tests.txt") if ": " in x and ("ok" in x or "FAILED" in x))[:200])
 e=f"{root}/jed200M_extras_2026-11-03"
 if os.path.isdir(e):
-    timed(f"{e}/picks",f"{e}/picks/cells",lambda a:(None,0)) if False else None
     if os.path.exists(f"{e}/gate/choices.tsv"): line(f"-- gate: {sum(1 for _ in open(e+'/gate/choices.tsv'))} choices")
     if os.path.exists(f"{e}/miss/out.tsv"):
         rows=[l.split("\t") for l in open(f"{e}/miss/out.tsv")]

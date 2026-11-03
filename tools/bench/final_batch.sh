@@ -10,6 +10,7 @@ mkdir -p "$ROOT/reg" "$ROOT/cnt" "$ROOT/fin" "$ROOT/rep" "$ROOT/scan" "$ROOT/cha
 cp $IN/*.h GRE-hash/include/gret/; cp $IN/test_scan.cpp $IN/test_worstcase.cpp $IN/test_splice_edge.cpp GRE-hash/tests/
 bash /scratch/lvasseur/hash_build.sh 2>&1 | tail -3 | cut -c1-110
 { date; sha256sum "$GRE_DIR"/build/microbench* 2>/dev/null; cat GRE-hash/include/gret/*.h | cksum; cat $IN/COMMIT; } > "$ROOT/build_check.txt"
+grep -qF "include/gret cksum $(cat "$REPO"/include/gret/*.h | cksum))" "$GRE_DIR/build/BUILD_MANIFEST.txt" || { echo "== microbench not built from these headers, no timing"; touch "$ROOT/DONE"; exit 1; }
 for t in "$REPO/tests/test_scan.cpp" "$REPO/tests/test_worstcase.cpp" $IN/abcount.cpp $IN/scanbench.cpp $IN/chain.cpp; do
   "$REPO/build/tests/cxx-O3" "$t" -o "$ROOT/$(basename "$t" .cpp)" 2>&1 | grep -E "error:" | head -5
 done

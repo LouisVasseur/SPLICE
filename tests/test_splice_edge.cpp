@@ -90,7 +90,7 @@ int main() {
     sets.push_back({"lastalone_far", v});
     sets.push_back({"lastalone_mild", w});
   }
-  const char* names[] = {"hl4", "hl8", "hf4", "rl4", "ab4", "ph4", "gr4", "splice", "spl_t", "spl_gt", "spl_tv", "splice_eq", "spl_fixk", "splice_gi", "splice2", "splice2_gi", "s2_t", "s2_gt", "s2_tv", "s2_eq", "s2_fixk", "splice3", "s3_t", "s3_gt", "s3_tv", "s3_eq", "s3_fixk"};
+  const char* names[] = {"hl4", "hl8", "hf4", "rl4", "spgm64", "ab4", "ph4", "gr4", "splice", "spl_t", "spl_gt", "spl_tv", "splice_eq", "spl_fixk", "splice_gi", "splice2", "splice2_gi", "s2_t", "s2_gt", "s2_tv", "s2_eq", "s2_fixk", "splice3", "s3_t", "s3_gt", "s3_tv", "s3_eq", "s3_fixk"};
   size_t bad = 0, cases = 0;
   for (auto& [label, keys] : sets) {
     std::sort(keys.begin(), keys.end());

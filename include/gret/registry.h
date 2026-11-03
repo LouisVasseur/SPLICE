@@ -19,6 +19,7 @@
 //   hf4            hl4 with one multiply in place of the mix (hashline.h)
 //   ab4            AdaptiveLineIndex (adaptiveline.h): rl4 with the directory refined where lookups read too many lines
 //   ph4            PartitionHashIndex (partitionhash.h): T, then G: a directory on the raw key, a hash inside each leaf
+//   spgm16, 64, 256  SortedBoundIndex (readonly.h): static PGM over one sorted array, at those error bounds
 //   gr4            RuleLineIndex (ruleline.h): ab4 over a compact arithmetic coordinate, G as one rule from $RULE_FILE; experimental
 //   rl4            RadixLineIndex (radixline.h): G, a directory of equal-width cells for T, spare slots for V; keeps key order
 //   gate_<base>    the learned gate (gate.h, gate_model.h)
@@ -45,6 +46,7 @@
 #include "gret/adaptiveline.h"
 #include "gret/partitionhash.h"
 #include "gret/ruleline.h"
+#include "gret/readonly.h"
 
 #ifndef GRET_HAS_ARTUNSYNC
 #if defined(ARTVERSION1_TREE_H)  // src/competitor/artsync/src/ART/Tree.h, included by artunsync.h only
@@ -116,6 +118,9 @@ indexInterface<K, P>* make_index(const std::string& name) {
     if (name == "ab4") return new AdaptiveLineIndex<K, P, 4>(name);
     if (name == "ph4") return new PartitionHashIndex<K, P, 4>(name);
     if (name == "gr4") return new RuleLineIndex<K, P, 4>(name);
+    if (name == "spgm16") return new SortedBoundIndex<K, P, PgmBound<K, 16>>(name);
+    if (name == "spgm64") return new SortedBoundIndex<K, P, PgmBound<K, 64>>(name);
+    if (name == "spgm256") return new SortedBoundIndex<K, P, PgmBound<K, 256>>(name);
     if (name == "splice") return new SI(name, SC{true, true, SI::kPla, true});
     if (name == "spl_t") return new SI(name, SC{false, false, SI::kPla, true});
     if (name == "spl_gt") return new SI(name, SC{true, false, SI::kPla, true});
