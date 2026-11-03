@@ -109,14 +109,15 @@ int main(int argc, char** argv) {
                           {"period_1", "0 1\n", 100000, 10000},
                           {"period_2_40", "S 1048576\n0 1099511627776\n", uint64_t(1) << 40, 1000},
                           {"two_blocks", "S 67108864\n1000 100000\n2000000000 77777\n", 100000, 10000},
-                          {"wraps", "S 2199023255552\n1000 100000\n", 100000, 10000}};
+                          // S + P = 2^44, so row 2^20 m lands on coordinate 0 + its offset: right inside the bulk, however far the key is
+                          {"wraps", "S 17592184995840\n1000 1048576\n", 1048576, 10000}};
     const std::string path = std::string(std::getenv("TMPDIR") ? std::getenv("TMPDIR") : "/tmp") + "/test_scan_rule.txt";
     for (const Rule& r : rules) {
       std::vector<uint64_t> keys;
       for (uint64_t q = 0; q < 2000; ++q)
         for (uint64_t j = 0; j < 20; ++j) keys.push_back(1000 + q * r.period + j * j * 3);
-      if (std::string(r.label) == "wraps")  // far keys beyond what peeling takes, whose coordinates overflow into the bulk's range
-        for (uint64_t j = 0; j < 60; ++j) keys.push_back((uint64_t(1) << 63) + j * 0x0100000000000000ull / 2 + 12345);
+      if (std::string(r.label) == "wraps")  // stored, peeled as far outliers, and with coordinates that overflow into the bulk's range
+        for (uint64_t m = 1; m <= 20; ++m) keys.push_back(1000 + (m << 40));
       std::sort(keys.begin(), keys.end());
       keys.erase(std::unique(keys.begin(), keys.end()), keys.end());
       FILE* o = std::fopen(path.c_str(), "w");
