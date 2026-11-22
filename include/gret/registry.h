@@ -18,9 +18,20 @@
 //   hl4, hl8       HashLineIndex (hashline.h): hashed keys in buckets of 4 or 8 slots, no model, no top, no key order
 //   hf4            hl4 with one multiply in place of the mix (hashline.h)
 //   ab4            AdaptiveLineIndex (adaptiveline.h): rl4 with the directory refined where lookups read too many lines
+//   aw4            ab4 with put (in place within two cache lines, else an overflow table that get asks only on a miss)
 //   ph4            PartitionHashIndex (partitionhash.h): T, then G: a directory on the raw key, a hash inside each leaf
 //   spgm16, 64, 256  SortedBoundIndex (readonly.h): static PGM over one sorted array, at those error bounds
 //   gr4            RuleLineIndex (ruleline.h): ab4 over a compact arithmetic coordinate, G as one rule from $RULE_FILE; experimental
+//   gf4            GapLineIndex (gapline.h): gr4 with the $GAP_K widest interior gaps shrunk to the typical gap; experimental
+//   gp4            FastRuleLineIndex (fastrule.h): gr4's coordinate (up to a constant and rounding) in fewer instructions (block
+//                  table, exact reciprocal); experimental
+//   gb4            AdaptiveLineIndex over BitCoord (gatedg.h): ab4 with the bulk's inner constant bits dropped (PEXT), sg4's bits
+//                  candidate alone, to time it; experimental
+//   sg4            GatedGIndex (gatedg.h): ab4 with G chosen at build time among identity, gp4's rule (from $RULE_FILE, or
+//                  discovered on the bulk) and bit compaction
+//   name@VAR=v:..  any name above, with those environment variables set first (':' or ',' between them; a value cannot hold
+//                  either, nor '@'). They stay set for the rest of the process, so later names see them too. An entry without
+//                  '=' or without a variable name, a second '@', or nothing before or after the '@' throws std::invalid_argument
 //   rl4            RadixLineIndex (radixline.h): G, a directory of equal-width cells for T, spare slots for V; keeps key order
 //   gate_<base>    the learned gate (gate.h, gate_model.h)
 //   nflsw_<base>   an NFL-style switch: pw512 or raw (gate.h)
@@ -31,8 +42,11 @@
 #include <cfloat>
 #include <cstdint>
 #include <cstdlib>
+#include <stdexcept>
 #include <string>
 #include <type_traits>
+#include <utility>
+#include <vector>
 
 #include "gret/gate.h"
 #include "gret/transform_index.h"
@@ -46,7 +60,25 @@
 #include "gret/adaptiveline.h"
 #include "gret/partitionhash.h"
 #include "gret/ruleline.h"
+#include "gret/gapline.h"
+#include "gret/fastrule.h"
+#include "gret/gatedg.h"
 #include "gret/readonly.h"
+#include "gret/sota/updating.h"  // alexu, btreeu: GRE's ALEX and B+tree wrappers with update implemented (ours)
+// Baselines from the literature (include/gret/sota/, docs/sota/), only in a build that defines GRET_SOTA and puts their authors'
+// code on the include path: RadixSpline/include, CHT/include, the parent of PLEX, and for the hash tables unordered_dense/include,
+// robin-map/include and parallel-hashmap. rmi is a reimplementation and says so in its name line.
+#ifdef GRET_SOTA
+#include "gret/sota/radixspline.h"
+#include "gret/sota/cht.h"
+#include "gret/sota/plex.h"
+#include "gret/sota/rmi.h"
+#include "gret/sota/hashtable.h"
+#include "gret/sota/fast.h"  // FAST, a third-party implementation (Leis, via TLI); x86-64 AVX2 only
+#ifdef GRET_SOTA_DILI  // also needs DILI/src on the include path; the header compiles the authors' sources into this unit
+#include "gret/sota/dili.h"
+#endif
+#endif
 
 #ifndef GRET_HAS_ARTUNSYNC
 #if defined(ARTVERSION1_TREE_H)  // src/competitor/artsync/src/ART/Tree.h, included by artunsync.h only
@@ -111,16 +143,60 @@ indexInterface<K, P>* make_index(const std::string& name) {
     using namespace registry_detail;
     using SI = SpliceIndex<K, P>;  // SPLICE and its attribution ladder (splice.h)
     using SC = typename SI::Config;
+    // base@VAR=value:VAR=value: set those variables, then build base; one gated batch can then mix settings. ':' separates them
+    // (',' also works outside GRE, whose --index may split on commas). setenv: they persist for the process, and every later
+    // name sees them unless it sets them again. The whole name is checked before anything is set
+    if (const size_t at = name.find('@'); at != std::string::npos) {
+      const std::string base = name.substr(0, at), rest = name.substr(at + 1);
+      auto bad = [&](const std::string& why) { throw std::invalid_argument("gret::make_index: '" + name + "': " + why); };
+      if (base.empty()) bad("no index name before '@'");
+      if (rest.find('@') != std::string::npos) bad("a second '@'");
+      std::vector<std::pair<std::string, std::string>> vars;
+      for (size_t p = 0;;) {  // every entry, empty ones included: "a=1:" and "a=1::b=2" are malformed
+        const size_t e = rest.find_first_of(":,", p);
+        const std::string kv = rest.substr(p, e == std::string::npos ? std::string::npos : e - p);
+        const size_t eq = kv.find('=');
+        if (eq == std::string::npos) bad("'" + kv + "' is not VAR=value");
+        if (eq == 0) bad("'" + kv + "' has no variable name");
+        vars.emplace_back(kv.substr(0, eq), kv.substr(eq + 1));
+        if (e == std::string::npos) break;
+        p = e + 1;
+      }
+      for (const auto& [var, value] : vars)
+        if (setenv(var.c_str(), value.c_str(), 1) != 0) bad("cannot set " + var);
+      return make_index<K, P>(base);
+    }
     if (name == "hl4") return new HashLineIndex<K, P, 4>(name);
     if (name == "hl8") return new HashLineIndex<K, P, 8>(name);
     if (name == "rl4") return new RadixLineIndex<K, P, 4>(name);
     if (name == "hf4") return new HashLineIndex<K, P, 4, mul64, true>(name);
     if (name == "ab4") return new AdaptiveLineIndex<K, P, 4>(name);
+    if (name == "aw4") return new AdaptiveLineIndex<K, P, 4, IdentityCoord, true>(name);  // ab4 that takes writes: put in place, else an overflow table
     if (name == "ph4") return new PartitionHashIndex<K, P, 4>(name);
     if (name == "gr4") return new RuleLineIndex<K, P, 4>(name);
+    if (name == "gp4") return new FastRuleLineIndex<K, P, 4>(name);
+    if (name == "gb4") return new AdaptiveLineIndex<K, P, 4, BitCoord>(name);
+    if (name == "sg4") return new GatedGIndex<K, P, 4>(name);
+    if (name == "gf4") return new GapLineIndex<K, P, 4>(name);
+    if (name.rfind("gf4k", 0) == 0) {  // gf4k<K>: gf4 with GAP_K = K, so one batch can hold several K
+      setenv("GAP_K", name.c_str() + 4, 1);
+      return new GapLineIndex<K, P, 4>(name);
+    }
     if (name == "spgm16") return new SortedBoundIndex<K, P, PgmBound<K, 16>>(name);
     if (name == "spgm64") return new SortedBoundIndex<K, P, PgmBound<K, 64>>(name);
     if (name == "spgm256") return new SortedBoundIndex<K, P, PgmBound<K, 256>>(name);
+    if (indexInterface<K, P>* i = sota::make_updating<K, P>(name)) return i;  // alexu, btreeu
+#ifdef GRET_SOTA
+    if (indexInterface<K, P>* i = sota::make_radixspline<K, P>(name)) return i;  // rs<max_error>r<radix_bits>
+    if (indexInterface<K, P>* i = sota::make_cht<K, P>(name)) return i;          // cht<bins>e<max_error>[std], ccht<bins>e<max_error>
+    if (indexInterface<K, P>* i = make_plex<K, P>(name)) return i;               // plex<max_error>
+    if (indexInterface<K, P>* i = make_rmi<K, P>(name)) return i;                // rmi<L>[lin|spl|cub|rob|rdx|rt18|rt22][k]: a reimplementation
+    if (indexInterface<K, P>* i = sota::make_fast<K, P>(name)) return i;         // fast: third-party implementation (Leis, via TLI)
+    if (name.compare(0, 3, "ht_") == 0) return sota::make_hashtable<K, P>(name);  // ht_std, ht_ankerl, ht_robin, ht_robinpg, ht_phmap
+#ifdef GRET_SOTA_DILI
+    if (indexInterface<K, P>* i = make_dili<K, P>(name)) return i;  // dili, dili<B>[r<PP>]: the DILI authors' code, guarded (sota/dili.h)
+#endif
+#endif
     if (name == "splice") return new SI(name, SC{true, true, SI::kPla, true});
     if (name == "spl_t") return new SI(name, SC{false, false, SI::kPla, true});
     if (name == "spl_gt") return new SI(name, SC{true, false, SI::kPla, true});

@@ -60,6 +60,26 @@ size_t scan_sorted_slots(const Slots& slots, const std::vector<std::pair<K, P>>&
   return got;
 }
 
+// The same scan, taking each key's payload from the last of its copies rather than the first. For indexes that write in place
+// (AdaptiveLineIndex::update): the copies a lookup can read are the last ones of a run, so those are the ones a write keeps
+// current, and the copies before them may hold an older payload.
+template <class K, class P, class Slots, class Locate>
+size_t scan_sorted_slots_last(const Slots& slots, const std::vector<std::pair<K, P>>& exc, K key, size_t n, std::pair<K, P>* out, Locate locate) {
+  const uint64_t x = uint64_t(key), first = slots.front().first, last = slots.back().first;
+  auto e = std::lower_bound(exc.begin(), exc.end(), key, [](const std::pair<K, P>& a, K k) { return a.first < k; });
+  size_t got = 0;
+  while (got < n && e != exc.end() && uint64_t(e->first) < first) out[got++] = *e++;
+  if (got < n && x <= last) {
+    const size_t m = slots.size();
+    for (size_t i = x <= first ? 0 : locate(x); got < n && i < m; ++i) {
+      if (i + 1 < m && slots[i + 1].first == slots[i].first) continue;
+      out[got++] = std::pair<K, P>(K(slots[i].first), slots[i].second);
+    }
+  }
+  while (got < n && e != exc.end()) out[got++] = *e++;
+  return got;
+}
+
 // The lines a lookup of each stored key reads, exactly, as the build places them: the mean and the tail.
 class LineCount {
  public:

@@ -14,13 +14,17 @@
 //      leaf's line is then chosen among shifted and rescaled ones, in key order, by the lines its keys and the next leaf's really
 //      read given the backlog so far. No metadata: a leaf's first slot and slope already hold it.
 //
+// AB_SLACK_Z=<z> (default 0: by key, as above) shares the slots beyond one a key by leaf instead, k + z sqrt(k) for k keys, for
+// layouts that will take writes (tools/corrupt/sim.cpp measures what that buys).
+//
 // AB_BUDGET=<bytes per key> replaces HASHLINE_SPK: everything counts against it, slots, directory and exceptions. Finer splits
 // leave fewer slots, so the directory is rebuilt until the two agree; below one slot per key it throws.
 //
 // get walks the levels with one branch per level (a fixed branchless walk measured 1.3 to 1.8x slower), then reads as
 // RadixLineIndex does. A key that was never stored may differ from a node's skipped bits and so reach any of its children; the raw
 // key compare still answers exactly. Keys must be sorted and unique, as GRE's driver guarantees.
-// put, update and remove return false. scan reads the sorted slots from the start key on.
+// update and remove work in place on stored keys (see update); put returns false: no inserts. scan reads the sorted slots from the
+// start key on.
 #pragma once
 #include <algorithm>
 #include <chrono>
@@ -35,6 +39,7 @@
 
 #include "gret/exceptions.h"
 #include "gret/hashline.h"
+#include "gret/overflow.h"
 
 namespace gret {
 
@@ -45,8 +50,14 @@ struct IdentityCoord {  // no G beyond the peeled ends: the directory is on the 
   size_t bytes() const { return 0; }
 };
 
-template <class K, class P, unsigned B, class Coord = IdentityCoord>
+template <class K, class P, unsigned B, class Coord> struct AdaptiveLineProbe;  // tools/corrupt/sim.cpp: reads and edits the layout
+
+// W (default false): the writable variant (aw4). put takes a free slot within the key's reach, or moves at most kShift keys by one
+// slot, and otherwise keeps the key in an OverflowTable, which get then asks only when the slots do not have the key. With W false
+// none of that is compiled in, and get is the code it was.
+template <class K, class P, unsigned B, class Coord = IdentityCoord, bool W = false>
 class AdaptiveLineIndex final : public indexInterface<K, P> {
+  friend struct AdaptiveLineProbe<K, P, B, Coord>;
   __extension__ typedef unsigned __int128 u128;  // __extension__: no -Wpedantic warning
   using Slot = std::pair<uint64_t, P>;
   struct Node {
@@ -56,6 +67,10 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
   struct LeafAt {  // a leaf with keys, for AB_V's pass
     uint64_t i;
     uint32_t nk, at;
+  };
+  struct SlackAt {  // AB_SLACK_Z: the keys from rank i on weigh w each, after a total weight of cum
+    uint64_t i;
+    double cum, w;
   };
   static constexpr uint32_t kInner = 0x80000000u, kSlots = (uint32_t(1) << 24) - 1;
 
@@ -75,6 +90,10 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
     double spk = env_d("HASHLINE_SPK", 1.25);
     const double budget = env_d("AB_BUDGET", 0);
     fit_ = env_d("AB_V", 0) != 0;
+    const double slack_z = env_d("AB_SLACK_Z", 0);
+    if (!(slack_z >= 0)) throw std::invalid_argument("AdaptiveLineIndex: AB_SLACK_Z >= 0");
+    collect_ = fit_ || slack_z > 0;
+    slack_.clear();
     skip_ = env_d("AB_NOSKIP", 0) == 0;  // for ablation: the same lookup path, with nodes spanning their whole cell
     const unsigned want = unsigned(env_d("RADIX_BITS", 16));
     tau_ = env_d("AR_TAU", 1.5);
@@ -127,7 +146,23 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
     } else {
       build_tree(cells, spk);
     }
+    if (slack_z > 0) {
+      // Spare slots by leaf rather than by key: every key keeps one slot, and the slots beyond that are shared by weight, a leaf
+      // of k keys weighing k + z sqrt(k), as the keys later written into it vary by about sqrt(k). So small leaves, which fill
+      // first, get more room and large ones give some up. The directory is then built again by the same rule on these shares.
+      // The total is unchanged.
+      double cum = 0;
+      slack_.reserve(leaves_.size());
+      for (const LeafAt& f : leaves_) {  // in key order, and every bulk key is in one
+        const double w = 1 + slack_z / std::sqrt(double(f.nk));
+        slack_.push_back(SlackAt{f.i, cum, w});
+        cum += w * double(f.nk);
+      }
+      slack_total_ = cum;
+      build_tree(cells, spk);
+    }
     if (fit_) fit_lines();
+    std::vector<SlackAt>().swap(slack_);
     std::vector<LeafAt>().swap(leaves_);
     nodes_.shrink_to_fit();  // memory_consumption counts size(), and resize leaves spare capacity
     size_t prev = SIZE_MAX;
@@ -152,6 +187,9 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
     const Slot last(uint64_t(d_keys_[m_ - 1].first), d_keys_[m_ - 1].second);
     while (w < slots_.size()) slots_[w++] = last;
     d_keys_ = nullptr;
+    live_ = m_;
+    last_key_ = last.first;
+    removed_ = false;
     std::vector<uint64_t>().swap(y_);
     const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
     std::fprintf(stderr, "gret: %s n=%zu B=%u exceptions=%zu cells=%zu nodes=%zu slots/key=%.3f buckets=%zu d=%zu E[buckets]=%.4f lines_p99=%zu lines_p999=%zu lines_max=%zu E[levels]=%.3f dir_bytes=%zu fit=%d budget_rounds=%u rule_bytes=%zu bytes_per_key=%.2f build_ms=%.1f\n",
@@ -166,28 +204,199 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
       if (__builtin_expect(x < raw_lo_ || x > raw_hi_, 0)) return find_exception(key, val);
     }
     const uint64_t v = coord_(x) - lo_;
-    if (__builtin_expect(v > span_, 0)) return find_exception(key, val);
+    if (__builtin_expect(v > span_, 0)) {
+      if constexpr (W) return find_exception(key, val) || ov_.find(x, val);
+      else return find_exception(key, val);
+    }
     size_t b = bucket(v);
     const size_t b0 = b;
     for (const Slot* l = &slots_[b * B];; l += B) {
       size_t c = 0;
       for (unsigned j = 0; j < B; ++j) c += size_t(l[j].first < x);
       if (__builtin_expect(c < B, 1)) {  // the first key >= x decides
-        if (l[c].first != x) return false;
+        if (l[c].first != x) {
+          if constexpr (W) return ov_.find(x, val);
+          else return false;
+        }
         val = l[c].second;
         return true;
       }
-      if (++b > b0 + d_ || b >= total_) return false;
+      if (++b > b0 + d_ || b >= total_) {
+        if constexpr (W) return ov_.find(x, val);
+        else return false;
+      }
     }
   }
 
-  bool put(K, P, Param* = nullptr) override { return false; }
-  bool update(K, P, Param* = nullptr) override { return false; }
-  bool remove(K, Param* = nullptr) override { return false; }
+  // put (W only): the key must be new. In order of preference: a free slot within its reach (the copies before the next key's own
+  // slot, at or after its bucket's start); the nearest free slot within kShift slots to the right, the keys between moving up by
+  // one; the same to the left when the key's place is past its bucket's start; else the overflow table. A move is made only if
+  // every key it touches stays within d_ lines of its bucket, so get needs no new bound. tools/corrupt/sim.cpp measured this
+  // policy: longer shifts absorb more keys but cost more lines than the overflow lookups they save.
+  bool put(K key, P val, Param* = nullptr) override {
+    if constexpr (!W) {
+      return false;
+    } else {
+      static_assert(Coord::kIdentity, "put: the plain coordinate only");
+      const uint64_t x = uint64_t(key);
+      const uint64_t v = x - lo_;
+      if (__builtin_expect(v > span_ || live_ == 0, 0)) {  // outside the directory's span: G takes it
+        if (exception_at(key) != exc_.end()) return false;
+        return ov_insert(x, val);
+      }
+      const size_t n = slots_.size(), b = bucket(v), p = lower_slot(x);
+      if (p < n && slots_[p].first == x) return false;
+      if (__builtin_expect(!ov_.empty(), 0) && ov_.contains(x)) return false;
+      removed_ = true;  // from now on a key may have copies after the one get reads
+      const Slot me(x, val);
+      if (__builtin_expect(p == n, 0)) {  // above every key in the slots: the copies after the last key's own slot are free
+        const uint64_t lastk = slots_[n - 1].first;
+        size_t f = n - 1;
+        while (f > 0 && slots_[f - 1].first == lastk) --f;
+        const size_t q = std::max(std::max(f, bucket(lastk - lo_) * B) + 1, b * B);
+        if (q >= n || q / B > b + d_) return ov_insert(x, val);
+        std::fill(slots_.begin() + std::ptrdiff_t(q), slots_.end(), me);
+        last_key_ = x;
+        return ++live_, true;
+      }
+      const uint64_t sk = slots_[p].first;  // the next key, whose copies fill [p, r]
+      size_t r = p;
+      while (r + 1 < n && slots_[r + 1].first == sk) ++r;
+      const size_t q = std::max(p, b * B);  // the first slot x may take
+      if (q > r || q / B > b + d_) return ov_insert(x, val);
+      if (q < r) {
+        if (!reachable(sk, q + 1, r)) return ov_insert(x, val);
+        std::fill(slots_.begin() + std::ptrdiff_t(p), slots_.begin() + std::ptrdiff_t(q + 1), me);
+        return ++live_, true;
+      }
+      // q == r: the slot x needs holds the next key itself
+      size_t er = SIZE_MAX, el = SIZE_MAX;
+      for (size_t i = r + 1; i + 1 < n && i <= r + kShift; ++i)
+        if (slots_[i].first == slots_[i + 1].first) { er = i; break; }
+      if (er != SIZE_MAX) {  // every key in [r, er) moves one slot right, and the key at er loses that copy
+        for (size_t i = r; i <= er && er != SIZE_MAX;) {
+          const uint64_t k = slots_[i].first;
+          size_t j = i;
+          while (j + 1 < n && slots_[j + 1].first == k) ++j;
+          if (!(i < er ? reachable(k, i + 1, j + 1) : reachable(k, er + 1, j))) er = SIZE_MAX;
+          i = j + 1;
+        }
+      }
+      if (er == SIZE_MAX && p == r && r >= 1 && r - 1 >= b * B) {
+        for (size_t i = r - 1; i-- > 0 && r - 1 - i <= kShift;)
+          if (slots_[i].first == slots_[i + 1].first) { el = i; break; }
+        if (el != SIZE_MAX) {  // every key in (el, r - 1] moves one slot left
+          for (size_t i = el + 1; i <= r - 1 && el != SIZE_MAX;) {
+            const uint64_t k = slots_[i].first;
+            size_t j = i, f = i;
+            while (j + 1 <= r - 1 && slots_[j + 1].first == k) ++j;
+            while (f > 0 && slots_[f - 1].first == k) --f;
+            if (!reachable(k, f == i ? i - 1 : f, j - 1)) el = SIZE_MAX;
+            i = j + 1;
+          }
+        }
+      }
+      if (er != SIZE_MAX) {
+        std::copy_backward(slots_.begin() + std::ptrdiff_t(r), slots_.begin() + std::ptrdiff_t(er), slots_.begin() + std::ptrdiff_t(er + 1));
+        std::fill(slots_.begin() + std::ptrdiff_t(p), slots_.begin() + std::ptrdiff_t(r + 1), me);  // the next key's copies before r are x's now
+        return ++live_, true;
+      }
+      if (el != SIZE_MAX) {
+        std::copy(slots_.begin() + std::ptrdiff_t(el + 1), slots_.begin() + std::ptrdiff_t(r), slots_.begin() + std::ptrdiff_t(el));
+        slots_[r - 1] = me;
+        return ++live_, true;
+      }
+      return ov_insert(x, val);
+    }
+  }
+  size_t overflow_keys() const { return ov_.size(); }
+  // Writes on stored keys, in place; get is not touched. An empty slot holds a copy of the next pair, so a key's pairs are one run
+  // of equal slots. As built, the run ends at the slot get reads (the key's own; the copies are in the lines before its bucket), so
+  // only the last key, whose copies also fill the slots after it, has copies behind that slot. Removing a key turns its run into
+  // copies of the next pair (of the previous pair when the key is the last), which is how the build writes empty slots, and from
+  // then on a run may go on past the slot get reads.
+  //   update  writes the slot get reads, and the copies after it only once a key was removed or for the last key. The copies
+  //           before it keep the old payload: no lookup reads them, and scan takes a key's payload from its last copy. So an
+  //           update is get's lines and one store, with no second line to wait for.
+  //   remove  needs the copies on both sides: those before the slot exist only when it is the first of its line, and that
+  //           neighbour's address is known before the line arrives, so both neighbours are fetched along with it.
+  // No other key moves, so the directory and d_ stay valid, d_ as an upper bound once keys are gone.
+  bool update(K key, P val, Param* = nullptr) override {
+    const uint64_t x = uint64_t(key);
+    size_t i = 0;
+    const At at = find_slot(x, i, false);
+    if (__builtin_expect(at != At::kSlot, 0)) {
+      if (at == At::kNone) {
+        if constexpr (W) return ov_dirty_ = true, ov_.assign(x, val);
+        else return false;
+      }
+      const auto it = exception_at(key);
+      if (it == exc_.end()) {
+        if constexpr (W) return ov_dirty_ = true, ov_.assign(x, val);
+        else return false;
+      }
+      it->second = val;
+      return true;
+    }
+    slots_[i].second = val;
+    if (__builtin_expect(removed_ || x == last_key_, 0))
+      for (size_t j = i + 1, n = slots_.size(); j < n && slots_[j].first == x; ++j) slots_[j].second = val;
+    return true;
+  }
+  bool remove(K key, Param* = nullptr) override {
+    const uint64_t x = uint64_t(key);
+    size_t i = 0;
+    const At at = find_slot(x, i, true);
+    if (__builtin_expect(at != At::kSlot, 0)) {
+      if (at == At::kNone) {
+        if constexpr (W) return ov_dirty_ = true, ov_.erase(x);
+        else return false;
+      }
+      const auto it = exception_at(key);
+      if (it == exc_.end()) {
+        if constexpr (W) return ov_dirty_ = true, ov_.erase(x);
+        else return false;
+      }
+      exc_.erase(it);
+      return true;
+    }
+    size_t f = i, e = i + 1;
+    const size_t n = slots_.size();
+    if (i % B == 0)  // the slots before i in its line hold smaller keys, so copies before i exist only when i starts a line
+      while (f > 0 && slots_[f - 1].first == x) --f;
+    while (e < n && slots_[e].first == x) ++e;
+    --live_;
+    removed_ = true;
+    if (e < n) {
+      std::fill(slots_.begin() + std::ptrdiff_t(f), slots_.begin() + std::ptrdiff_t(e), slots_[e]);
+    } else if (f > 0) {
+      std::fill(slots_.begin() + std::ptrdiff_t(f), slots_.end(), slots_[f - 1]);
+      last_key_ = slots_[f - 1].first;
+    } else {
+      // the last bulk key: from here only x passes get's range check, and no slot answers it
+      for (Slot& s : slots_) s.first = x + 1;
+      if constexpr (Coord::kIdentity) lo_ = x;
+      span_ = 0;
+      raw_lo_ = 1, raw_hi_ = 0;
+    }
+    return true;
+  }
   size_t scan(K key, size_t n, std::pair<K, P>* out, Param* = nullptr) override {
-    return scan_sorted_slots(slots_, exc_, key, n, out, [this](uint64_t x) { return lower_slot(x); });
+    if constexpr (W) {
+      if (__builtin_expect(!ov_.empty(), 0)) return scan_with_overflow(key, n, out);
+    }
+    if (__builtin_expect(live_ == 0, 0)) {  // every bulk key removed: the exceptions are all there is
+      size_t got = 0;
+      for (auto e = std::lower_bound(exc_.begin(), exc_.end(), key, [](const std::pair<K, P>& a, K k) { return a.first < k; }); got < n && e != exc_.end(); ++e) out[got++] = *e;
+      return got;
+    }
+    return scan_sorted_slots_last(slots_, exc_, key, n, out, [this](uint64_t x) { return lower_slot(x); });
   }
   long long memory_consumption() override {
+    if constexpr (W) return (long long)(slots_.size() * sizeof(Slot) + nodes_.size() * sizeof(Node) + exc_.size() * sizeof(std::pair<K, P>) + coord_.bytes() + ov_.bytes() + ov_sorted_.capacity() * sizeof(std::pair<K, P>));
+    else return memory_consumption_ro();
+  }
+  long long memory_consumption_ro() {
     return (long long)(slots_.size() * sizeof(Slot) + nodes_.size() * sizeof(Node) + exc_.size() * sizeof(std::pair<K, P>) + coord_.bytes());
   }
   double expected_lines() const { return e_lines_; }  // lines a lookup of a stored key reads, from the build's exact count
@@ -201,7 +410,13 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
     else return y_[r];
   }
   size_t rank_slot(size_t r) const {  // the first slot of the keys from rank r on
-    return r < m_ ? size_t(double(r) * per_ * double(B)) : size_t(std::ceil(double(m_) * per_)) * B;
+    const size_t all = size_t(std::ceil(double(m_) * per_)) * B;
+    if (r >= m_) return all;
+    if (!slack_.empty() && all > m_) {  // one slot a key, and the spare ones in proportion to the weight before rank r
+      const auto it = std::upper_bound(slack_.begin(), slack_.end(), r, [](size_t x, const SlackAt& a) { return x < a.i; }) - 1;
+      return std::min(r + size_t((it->cum + double(r - it->i) * it->w) / slack_total_ * double(all - m_)), all - 1);
+    }
+    return size_t(double(r) * per_ * double(B));
   }
   void build_tree(size_t cells, double spk) {
     per_ = spk / B;
@@ -266,7 +481,7 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
     }
     nodes_[at] = Node{uint32_t(a), (64 - s) << 24 | uint32_t(c)};
     levels_ += nk * (depth + 1);
-    if (fit_ && nk) leaves_.push_back(LeafAt{uint64_t(i), uint32_t(nk), uint32_t(at)});
+    if (collect_ && nk) leaves_.push_back(LeafAt{uint64_t(i), uint32_t(nk), uint32_t(at)});
   }
   // AB_V's search, leaf by leaf in key order, behind the real backlog. A line replaces the leaf's rank line only if its keys read fewer
   // lines (counting the next leaf's behind whatever backlog it leaves), none of them reads more than the rank line's worst, and it ends
@@ -337,6 +552,68 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
     const size_t s = p * B;
     return prev == SIZE_MAX || s > prev ? s : prev + 1;
   }
+  // get's walk, for the writes: the first slot holding x (kSlot), x not stored (kNone), or x outside the bulk (kException)
+  enum class At { kSlot, kNone, kException };
+  // around: also fetch the slot before the bucket and the line after it, for remove
+  At find_slot(uint64_t x, size_t& i, bool around) const {
+    if constexpr (!Coord::kIdentity) {
+      if (__builtin_expect(x < raw_lo_ || x > raw_hi_, 0)) return At::kException;
+    }
+    const uint64_t v = coord_(x) - lo_;
+    if (__builtin_expect(v > span_, 0)) return At::kException;
+    if (__builtin_expect(live_ == 0, 0)) return At::kNone;
+    size_t b = bucket(v);
+    const size_t b0 = b;
+    if (around) {  // a prefetch never faults, so the slots before the first and after the last need no check
+      __builtin_prefetch(slots_.data() + b * B - 1);
+      __builtin_prefetch(slots_.data() + b * B + B);
+    }
+    for (;;) {
+      const Slot* l = &slots_[b * B];
+      size_t c = 0;
+      for (unsigned j = 0; j < B; ++j) c += size_t(l[j].first < x);
+      if (__builtin_expect(c < B, 1)) {
+        if (l[c].first != x) return At::kNone;
+        i = b * B + c;
+        return At::kSlot;
+      }
+      if (++b > b0 + d_ || b >= total_) return At::kNone;
+    }
+  }
+  typename std::vector<std::pair<K, P>>::iterator exception_at(K key) {
+    const auto it = std::lower_bound(exc_.begin(), exc_.end(), key, [](const std::pair<K, P>& a, K k) { return a.first < k; });
+    return it != exc_.end() && it->first == key ? it : exc_.end();
+  }
+  // for put: key k, whose copies would start at slot f and end at slot r, is where get finds it
+  bool reachable(uint64_t k, size_t f, size_t r) const {
+    const size_t b = bucket(k - lo_), first = std::max(f, b * B);
+    return first <= r && first / B <= b + d_;
+  }
+  bool ov_insert(uint64_t x, P val) {
+    if (!ov_.insert(x, val)) return false;
+    return ov_dirty_ = true, true;
+  }
+  // scan when keys sit in the overflow: the slots' keys and the overflow's, merged. The overflow has no order, so a sorted copy
+  // is kept and redone after a write to it.
+  size_t scan_with_overflow(K key, size_t n, std::pair<K, P>* out) {
+    if (ov_dirty_) {
+      ov_sorted_.clear();
+      ov_.for_each([this](uint64_t k, P v) { ov_sorted_.emplace_back(K(k), v); });
+      std::sort(ov_sorted_.begin(), ov_sorted_.end(), [](const std::pair<K, P>& a, const std::pair<K, P>& b) { return a.first < b.first; });
+      ov_dirty_ = false;
+    }
+    std::vector<std::pair<K, P>> main(n);
+    size_t got = 0;
+    if (live_ == 0) {
+      for (auto e = std::lower_bound(exc_.begin(), exc_.end(), key, [](const std::pair<K, P>& a, K k) { return a.first < k; }); got < n && e != exc_.end(); ++e) main[got++] = *e;
+    } else {
+      got = scan_sorted_slots_last(slots_, exc_, key, n, main.data(), [this](uint64_t x) { return lower_slot(x); });
+    }
+    auto o = std::lower_bound(ov_sorted_.begin(), ov_sorted_.end(), key, [](const std::pair<K, P>& a, K k) { return a.first < k; });
+    size_t i = 0, w = 0;
+    while (w < n && (i < got || o != ov_sorted_.end())) out[w++] = o == ov_sorted_.end() || (i < got && main[i].first < o->first) ? main[i++] : *o++;
+    return w;
+  }
   bool find_exception(K key, P& val) const {
     const auto it = std::lower_bound(exc_.begin(), exc_.end(), key,
                                      [](const std::pair<K, P>& a, K k) { return a.first < k; });
@@ -358,6 +635,19 @@ class AdaptiveLineIndex final : public indexInterface<K, P> {
   std::vector<Node> nodes_;
   std::vector<Slot, BucketAlloc<Slot>> slots_;
   std::vector<std::pair<K, P>> exc_;
+  // for the writes. Last, so that no member get reads moves: its code stays byte for byte what it was
+  size_t live_ = 0;        // bulk keys not removed
+  uint64_t last_key_ = 0;  // the last key of the slots, whose copies fill the slots after it
+  bool removed_ = false;   // a bulk key was removed: a run may go on past the slot get reads
+  // during bulk_load only
+  std::vector<SlackAt> slack_;
+  double slack_total_ = 0;
+  bool collect_ = false;
+  // W only
+  static constexpr size_t kShift = 8;  // slots one put may move: two cache lines
+  OverflowTable<P> ov_;
+  std::vector<std::pair<K, P>> ov_sorted_;
+  bool ov_dirty_ = false;
 };
 
 }  // namespace gret
