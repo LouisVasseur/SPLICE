@@ -21,6 +21,7 @@
 #include <map>
 #include <memory>
 #include <random>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
@@ -65,12 +66,19 @@ static size_t verify(Index& idx, const Map& ref, const std::vector<uint64_t>& al
   return bad;
 }
 
+static size_t skipped = 0;  // (TEST_INDEX only) a budget the index's own coordinate tables leave under one slot a key: refused at build
 static size_t run(const std::vector<uint64_t>& keys, const std::string& label, int order, std::mt19937_64& g) {
   std::vector<std::pair<uint64_t, uint64_t>> kv;
   for (uint64_t k : keys) kv.emplace_back(k, payload(k));
-  std::unique_ptr<Index> idx(gret::make_index<uint64_t, uint64_t>("aw4"));
+  const char* tn = std::getenv("TEST_INDEX");  // gw4: the same cases through G's coordinate (its identity block without $RULE_FILE)
+  std::unique_ptr<Index> idx(gret::make_index<uint64_t, uint64_t>(tn && *tn ? tn : "aw4"));
   idx->init();
-  idx->bulk_load(kv.data(), kv.size());
+  try {
+    idx->bulk_load(kv.data(), kv.size());
+  } catch (const std::invalid_argument& e) {
+    if (!(tn && *tn) || std::string(e.what()).find("under one slot") == std::string::npos) throw;
+    return ++skipped, 0;
+  }
   Map ref(kv.begin(), kv.end());
   size_t bad = verify(*idx, ref, keys, g, label + " after load");
   std::vector<uint64_t> all = keys;  // every key ever stored: verify probes them all
@@ -166,6 +174,6 @@ int main() {
           bad += e != 0;
         }
   }
-  std::printf("test_put: %s (%zu cases, %zu failed)\n", bad ? "FAILED" : "ok", cases, bad);
+  std::printf("test_put: %s (%zu cases, %zu failed, %zu refused at build)\n", bad ? "FAILED" : "ok", cases, bad, skipped);
   return bad ? 1 : 0;
 }

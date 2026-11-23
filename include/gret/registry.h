@@ -23,6 +23,7 @@
 //   spgm16, 64, 256  SortedBoundIndex (readonly.h): static PGM over one sorted array, at those error bounds
 //   gr4            RuleLineIndex (ruleline.h): ab4 over a compact arithmetic coordinate, G as one rule from $RULE_FILE; experimental
 //   gf4            GapLineIndex (gapline.h): gr4 with the $GAP_K widest interior gaps shrunk to the typical gap; experimental
+//   gw4            aw4 over gp4's coordinate: put, update and remove with G's period rule ($RULE_FILE), no rebuilds
 //   gp4            FastRuleLineIndex (fastrule.h): gr4's coordinate (up to a constant and rounding) in fewer instructions (block
 //                  table, exact reciprocal); experimental
 //   gb4            AdaptiveLineIndex over BitCoord (gatedg.h): ab4 with the bulk's inner constant bits dropped (PEXT), sg4's bits
@@ -75,6 +76,23 @@
 #include "gret/sota/rmi.h"
 #include "gret/sota/hashtable.h"
 #include "gret/sota/fast.h"  // FAST, a third-party implementation (Leis, via TLI); x86-64 AVX2 only
+#include "gret/sota/searches.h"  // bsearch, rbs<bits> (SOSD's class, by path), rbst<bits>, interp, tip (ours; they say so): needs the parent of SOSD
+#include "gret/sota/csv.h"       // CSV on GRE's LIPP and ALEX: a reimplementation from the paper, no authors' code exists
+#include "gret/sota/pgmpp.h"     // PGM++: the authors' builder, our lookup: needs bench_search on the include path
+// Each of the next four compiles its authors' sources into this unit and needs their directories on the include path, so each
+// has a define of its own (docs/sota/<name>.md says which paths). One translation unit only.
+#ifdef GRET_SOTA_AFLI
+#include "gret/sota/afli.h"   // AFLI, the NFL authors' index (GPL-3.0), and nfl_afli, a hybrid (our flow, their index)
+#endif
+#ifdef GRET_SOTA_SALI
+#include "gret/sota/sali.h"   // SALI, the authors' code, one thread
+#endif
+#ifdef GRET_SOTA_DYTIS
+#include "gret/sota/dytis.h"  // DyTIS, the authors' code; one index alive at a time
+#endif
+#ifdef GRET_SOTA_BLI
+#include "gret/sota/bli.h"    // BLI, the authors' code; x86-64 AVX2
+#endif
 #ifdef GRET_SOTA_DILI  // also needs DILI/src on the include path; the header compiles the authors' sources into this unit
 #include "gret/sota/dili.h"
 #endif
@@ -175,6 +193,7 @@ indexInterface<K, P>* make_index(const std::string& name) {
     if (name == "ph4") return new PartitionHashIndex<K, P, 4>(name);
     if (name == "gr4") return new RuleLineIndex<K, P, 4>(name);
     if (name == "gp4") return new FastRuleLineIndex<K, P, 4>(name);
+    if (name == "gw4") return new AdaptiveLineIndex<K, P, 4, FastPeriodRule, true>(name);  // gp4 that takes writes: aw4 over G's period rule (no rebuilds)
     if (name == "gb4") return new AdaptiveLineIndex<K, P, 4, BitCoord>(name);
     if (name == "sg4") return new GatedGIndex<K, P, 4>(name);
     if (name == "gf4") return new GapLineIndex<K, P, 4>(name);
@@ -193,6 +212,21 @@ indexInterface<K, P>* make_index(const std::string& name) {
     if (indexInterface<K, P>* i = make_rmi<K, P>(name)) return i;                // rmi<L>[lin|spl|cub|rob|rdx|rt18|rt22][k]: a reimplementation
     if (indexInterface<K, P>* i = sota::make_fast<K, P>(name)) return i;         // fast: third-party implementation (Leis, via TLI)
     if (name.compare(0, 3, "ht_") == 0) return sota::make_hashtable<K, P>(name);  // ht_std, ht_ankerl, ht_robin, ht_robinpg, ht_phmap
+    if (indexInterface<K, P>* i = sota::make_searches<K, P>(name)) return i;  // bsearch | bsearchstd | rbs<b> | rbsstd<b> | rbst<b> | interp[<k>][e] | tip[<g>][a]
+    if (indexInterface<K, P>* i = make_csv<K, P>(name)) return i;             // csv_lipp[<PP>], csv_alex[<PP>]: a reimplementation of CSV
+    if (indexInterface<K, P>* i = sota::make_pgmpp<K, P>(name)) return i;     // pgmpp<eps>[i<eps_i>][d<delta>][n]: authors' builder, our lookup
+#ifdef GRET_SOTA_AFLI
+    if (indexInterface<K, P>* i = make_afli<K, P>(name)) return i;   // afli[<B>][_cut], nfl_afli[_cut] (a hybrid): before the nfl_<base> prefix below
+#endif
+#ifdef GRET_SOTA_SALI
+    if (indexInterface<K, P>* i = make_sali<K, P>(name)) return i;   // sali, saliu
+#endif
+#ifdef GRET_SOTA_DYTIS
+    if (indexInterface<K, P>* i = make_dytis<K, P>(name)) return i;  // dytis, dytiss, dytisu
+#endif
+#ifdef GRET_SOTA_BLI
+    if (indexInterface<K, P>* i = make_bli<K, P>(name)) return i;    // bli[<L>][s<S>][f<PP>][e<E>][u]
+#endif
 #ifdef GRET_SOTA_DILI
     if (indexInterface<K, P>* i = make_dili<K, P>(name)) return i;  // dili, dili<B>[r<PP>]: the DILI authors' code, guarded (sota/dili.h)
 #endif

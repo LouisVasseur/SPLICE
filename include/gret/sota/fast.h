@@ -51,8 +51,8 @@
 //   - fast.h and (with GRET_FAST_TLI_UTIL) util.h are included INSIDE namespace gret::sota::tli, after every header they include has
 //     been included at global scope, so that FAST, SIMD_BYTE, CACHE_LINE_BYTE and PAGE_BYTE do not become global names.
 //
-// x86-64 with AVX2 only. In any other build this header declares nothing of TLI's and make_fast("fast") throws std::runtime_error with
-// a message that says why; every other name is still nullptr. GRET_FAST_AVAILABLE is 1 or 0 accordingly.
+// x86-64 with AVX2 only. In any other build this header declares nothing of TLI's and make_fast("fast") and make_fast("fast_asis")
+// throw std::runtime_error with a message that says why; every other name is still nullptr. GRET_FAST_AVAILABLE is 1 or 0 accordingly.
 //
 // Include after indexInterface.h and GRE's pgm header, like readonly.h (which this includes). Include path: the directory that holds
 // the TLI clone (#include "TLI/competitors/fast/src/fast.h"), or the clone itself (#include "competitors/fast/src/fast.h").
